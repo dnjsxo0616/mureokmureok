@@ -4,8 +4,12 @@ from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFit
 # from taggit.managers import TaggableManager
 
+
+def plant_images_path(instance, filename):
+    return f'images/plants/{instance.title}/{filename}'
+
 # Create your models here.
-class Plant(models.model):
+class Plant(models.Model):
     users = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=20)
     content = models.TextField()
@@ -19,8 +23,7 @@ class Plant(models.model):
     humidity = models.CharField(max_length=20)
     temperature = models.CharField(max_length=20)
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_plants')
-    def plant_images_path(instance, filename):
-        return f'products/{instance.title}/{filename}'
+
     image = ProcessedImageField(
         upload_to=plant_images_path, 
         processors=[ResizeToFit(800, 800)], 

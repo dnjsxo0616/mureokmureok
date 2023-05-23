@@ -9,7 +9,7 @@ class PlantForm(forms.ModelForm):
     ]
 
     preferences = forms.MultipleChoiceField(
-        lable = '선호도',
+        label = '선호도',
         widget = forms.SelectMultiple(attrs={
             'class': 'form-control',
             'id': 'category',
@@ -123,7 +123,7 @@ class PlantForm(forms.ModelForm):
     ]
 
     Temperature = forms.MultipleChoiceField(
-        labeel = '온도',
+        label = '온도',
         widget = forms.SelectMultiple(attrs={
             'class': 'form-control',
             'id': 'category',

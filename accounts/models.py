@@ -9,6 +9,7 @@ from imagekit.processors import Thumbnail, ResizeToFit
 
 class User(AbstractUser):
     followings = models.ManyToManyField('self', related_name='followers', symmetrical=False)
+    birthday = models.DateField(null=True)
     image = ProcessedImageField(upload_to='users', 
                                 blank=True,
                                 processors=[Thumbnail(100,100)],
