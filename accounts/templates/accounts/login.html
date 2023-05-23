@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container" style="width: 500px;">
+    <h1 class='text-center fw-bold'>로그인</h1>
+    <form action="{% url 'accounts:login' %}" method="POST" class="form-text">
+        {% csrf_token %}
+        {% for field in form  %}
+        <div class="mb-3">
+            <label for="{{ field.label }}">{{ field.label }}</label>
+            {{ field }}
+        </div>
+        {% endfor %}
+        <input type="submit" class="button--color rounded w-100 fs-3 mt-5" value="로그인">
+    </form>
+    <div class="w-100 text-center mt-5">
+        {% comment %} 소셜 로그인 부분입니다. {% endcomment %}
+
+          {% load socialaccount %}
+          <a href="{% provider_login_url 'kakao' method='oauth2' %}">
+            <img src="" alt="kakao"  class="w-100">
+          </a>
+
+          <a href="{% provider_login_url 'google' method='oauth2' %}">
+            <button type='button'class="btn btn-link w-100 social--btn_google container mt-3 p-0">
+              <div class='col-5'>
+                <img src="" alt="logo">
+              </div>
+              <div class='col-7'>
+                Google 로그인
+              </div>
+            </button>
+          </a>
+
+          <a href="{% provider_login_url 'naver' method='oauth2' %}">
+            <button type='button'class="w-100 social--btn_naver container mt-3 rounded">
+              <div class='col-5'>
+                <img src="" alt="logo" style='width: 40px;' class='ms-2'>
+              </div>
+              <div class='col-7'>
+                네이버  로그인
+              </div>
+            </button>
+          </a> 
+                   
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid">
+    <div class="container" style="width: 500px;">
+      <h1 class="text-center fw-bold">간단한 회원가입</h1>
+        <form action="{% url 'accounts:signup' %}" method="POST" class="form-text" enctype = 'multipart/form-data'>
+          {% csrf_token %}
+          {% for field in form %}
+          <div class="mb-3">
+            <label for="{{ field.label }}">{{ field.label }}</label>
+            {{ field }}
+          </div>
+          {% endfor %}
+          <input type="submit" class="button--color rounded w-100 mt-3 fs-3" value="회원가입">
+        </form>
+    </div>
+</div>
+
+{% endblock content %}
