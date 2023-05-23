@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'plants',
     'supplies',
     'django_extensions',
-    'pillow',
     'imagekit',
     'django.contrib.admin',
     'django.contrib.auth',
