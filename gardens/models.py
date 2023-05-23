@@ -2,9 +2,12 @@ from django.db import models
 from django.conf import settings
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFit
+from django.utils import timezone
+from datetime import timedelta,datetime
 
 # Create your models here.
 class Garden(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=500)
     content = models.TextField()
     like_user = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_gradens')
@@ -28,7 +31,7 @@ class Garden(models.Model):
     # tag = models.CharField(max_length=100, choices=tag_Choices)
 
     def garden_images_path(instance, filename):
-        return f'products/{instance.title}/{filename}'
+        return f'gardens/{instance.title}/{filename}'
     image = ProcessedImageField(
         upload_to=garden_images_path, 
         processors=[ResizeToFit(800, 800)], 
@@ -39,3 +42,36 @@ class Garden(models.Model):
     site_link = models.URLField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class Comment(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    comment = models.ForeignKey(Garden, on_delete=models.CASCADE, related_name='comments')
+    content = models.TextField(null=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def garden_images_path(instance, filename):
+        return f'gardens/{instance.title}/{filename}'
+    image = ProcessedImageField(
+        upload_to=garden_images_path, 
+        processors=[ResizeToFit(800, 800)], 
+        format='JPEG', 
+        options={'quality': 100}
+    )
+
+    @property
+    def created_time(self):
+        time = datetime.now(tz=timezone.utc) - self.created_at
+
+        if time < timedelta(minutes=1):
+            return '방금 전'
+        elif time < timedelta(hours=1):
+            return str(int(time.seconds / 60)) + '분 전'
+        elif time < timedelta(days=1):
+            return str(int(time.seconds / 3600)) + '시간 전'
+        elif time < timedelta(days=7):
+            time = datetime.now(tz=timezone.utc).date() - self.created_at.date()
+            return str(time.days) + '일 전'
+        else:
+            return self.strftime('%Y-%m-%d')
