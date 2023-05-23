@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid">
+    <div class="container" style="width: 500px;">
+      <h1 class="fw-bold text-center">회원정보 수정</h1>
+      <form action="{% url 'accounts:update' %}" method="POST" class="form-text" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="mb-3">
+            <label for="{{ field.label }}">{{ field.label }}</label>
+            {{ field }}
+        </div>
+        {% endfor %}
+        <input type="submit" class="button--color rounded w-100 mt-5 mb-3 fs-3" value="정보수정">
+        
+        <a href="{% url 'accounts:change_password' %}" class="btn button--color rounded fs-3 w-100">비밀번호 변경</a>
+      </form>
+    </div>
+</div>
+{% endblock content %}
