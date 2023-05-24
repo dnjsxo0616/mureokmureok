@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from .forms import GardenForm, CommentForm
-from .models import Garden
+from .models import Garden, Comment
 
 # Create your views here.
 def create(request):
