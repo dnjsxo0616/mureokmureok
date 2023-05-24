@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'supplies',
     'django_extensions',
     'imagekit',
+    'taggit',
+    'taggit_templatetags2',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
