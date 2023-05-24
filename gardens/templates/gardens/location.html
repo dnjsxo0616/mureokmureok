@@ -12,15 +12,20 @@
       <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=tzzd5t1bsm"></script>
   </head>
   <body>
-  <div id="map" style="width:100%;height:400px;"></div>
+  <div id="map" style="width:100%;height:600px;"></div>
 
   <script>
   var mapOptions = {
-      center: new naver.maps.LatLng(37.3595704, 127.105399),
-      zoom: 10
+      center: new naver.maps.LatLng(37.5126405872327,127.10247645993987),
+      zoom: 16
   };
 
   var map = new naver.maps.Map('map', mapOptions);
+  var marker = new naver.maps.Marker({
+    position: new naver.maps.LatLng(37.5126405872327,127.10247645993987),
+    map: map,
+    animation: naver.maps.Animation.BOUNCE
+});
   </script>
   </body>
   </html>
@@ -29,28 +34,27 @@
 
 {% comment %} {% block content %}
   <h1>{{ garden.title }}의 위치 설정</h1>
-  <div id="map" style="width:100%;height:400px;"></div>
-
-  <form method="POST" action="{% url 'gardens:location' garden_pk=garden.pk %}">
-    {% csrf_token %}
-    <input type="hidden" id="latitude" name="latitude" value="{{ garden.latitude }}">
-    <input type="hidden" id="longitude" name="longitude" value="{{ garden.longitude }}">
-    <button type="submit">위치 저장</button>
-  </form>
+  <div id="map" style="width:100%;height:600px;"></div>
 
   <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=tzzd5t1bsm"></script>
   <script>
     var mapOptions = {
       center: new naver.maps.LatLng({{ garden.latitude }}, {{ garden.longitude }}),
-      zoom: 10
+      zoom: 16
     };
 
     var map = new naver.maps.Map('map', mapOptions);
 
+    var marker = new naver.maps.Marker({
+      position: new naver.maps.LatLng({{ garden.latitude }}, {{ garden.longitude }}),
+      map: map
+      animation: naver.maps.Animation.BOUNCE
+    });
+
     naver.maps.Event.addListener(map, 'click', function (e) {
       var latlng = e.coord;
-      document.getElementById('latitude').value = latlng.lat();
-      document.getElementById('longitude').value = latlng.lng();
+      marker.setPosition(latlng);
     });
   </script>
 {% endblock content %} {% endcomment %}
+
