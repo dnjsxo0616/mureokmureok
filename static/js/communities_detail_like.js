@@ -7,7 +7,7 @@ forms.forEach((form) => {
     const communityId = e.target.dataset.communityId
     axios({
       method: 'post',
-      url: `/communities/${communityId}/likes/`,
+      url: `/communities/${communityId}/community_likes/`,
       headers: { "X-CSRFToken": csrftokenLike},
     }).then((response) => {
       const isLiked = response.data.is_liked
