@@ -88,7 +88,7 @@ def delete(request,community_pk):
 
 
 @login_required
-def Community_likes(request, community_pk):
+def community_likes(request, community_pk):
     community = Community.objects.get(pk=community_pk)
     if community.like_users.filter(pk=request.user.pk).exists():
         community.like_users.remove(request.user)
