@@ -9,8 +9,9 @@ class CustomAuthenticationForm(AuthenticationForm):
         label='사용자 ID',
         widget=forms.TextInput(
             attrs={
-                'class': 'form-control',
+                'class': 'bg-gray-100 rounded-lg p-2 ps-4 w-full focus:outline-none focus:ring-1 focus:ring-[#1EB564] m-0',
                 'id': '사용자 ID',
+                'placeholder': '아이디를 입력해주세요',
             }
         )
     )
@@ -18,9 +19,9 @@ class CustomAuthenticationForm(AuthenticationForm):
         label='비밀번호',
         widget=forms.PasswordInput(
             attrs={
-                'class': 'form-control',
+                'class': 'bg-gray-100 rounded-lg p-2 ps-4 w-full focus:outline-none focus:ring-1 focus:ring-[#1EB564] m-0',
                 'id': '비밀번호',
-            
+                'placeholder': '비밀번호를 입력해주세요',
             }
         )
     )
