@@ -2,5 +2,12 @@
 {% load static %}
 
 {% block content %}
-<h1>listing</h1>
+    <h1>Listing</h1>
+    <ul>
+        {% for garden in gardens %}
+            <li>{{ garden.name }}</li>
+        {% empty %}
+            <li>No gardens found.</li>
+        {% endfor %}
+    </ul>
 {% endblock content %}
