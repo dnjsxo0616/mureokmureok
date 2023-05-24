@@ -24,7 +24,8 @@ class Community(models.Model):
     )
     need_expert = models.BooleanField(default=False)
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_community')
-
+    category = models.CharField(max_length=20)
+    
     def __str__(self):
         return self.title
 

@@ -169,3 +169,13 @@ def community_comment_likes(request,product_pk, community_comment_pk):
     }
 
     return JsonResponse(context)
+
+
+def filter_communities(request, category):
+    communities = Community.objects.filter(category=category)[::-1]
+    need_experts = Community.objects.filter(category=category).filter(need_expert=True)[::-1]
+    content ={
+        'communities':communities,
+        'need_experts':need_experts,
+    }
+    return render(request, 'communities/index.html', content)

@@ -8,4 +8,164 @@
 
 {% block content  %}
 디테일
+{% comment %}  본문 부분 {% endcomment %}
+
+
+{% comment %}  본문 위쪽 본문 수정 삭제 부분 {% endcomment %}
+
+
+
+{{ community.category }}
+{% if request.user == community.user %}
+              <div class="dropdown text-end">
+                <button class="btn dropdown pe-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{% url 'communities:update' community.pk %}"><i class="bi bi-pencil-square"></i> 수정하기</a></li>
+                  <li><a class="dropdown-item" onclick="return confirm('게시글을 삭제하시겠습니까?')" href="{% url 'communities:delete' community.pk %}">삭제하기</a></li>
+                </ul>
+              </div>
+{% endif %}
+
+
+
+{% comment %}  본문 제목(조회수) 및 본문 좋아요 부분 {% endcomment %}
+<div>
+    <div class='title--box'>
+      <p class='title--font title--style m-0'>{{ community.title }}</p>
+      <p>{{ community.hits }}</p>
+    </div>
+    <form class="like-form" data-community-id="{{ community.pk }}">
+      {% csrf_token %}
+      {% if request.user.is_authenticated %}  
+        {% if request.user == community.user %}
+            <div class="heart-fill title--likescount p-0 m-0" disable></div>
+        {% else %}
+          {% if request.user in community.like_users.all %}
+            <button type='submit' class="heart-fill" id="like-btn"></button>
+            {% else %}
+            <button type='submit' class="heart" id="like-btn"></button>
+          {% endif %}
+        {% endif %}
+      {% else %}
+        <a href="{% url 'accounts:login' %}" class="heart title--likescount btn m-0 p-0" id="like-btn"></a>
+      {% endif %}
+    </form> 
+  </div>
+  <p id="like-count" class='ms-3'> 좋아요 {{community.like_users.count}}</p> 
+  <hr>
+
+
+
+  {% comment %}  본문 내용 부분 {% endcomment %}
+  <div class='ms-3'>
+    <p class='fs-5 mb-3'>{{ community.content }}</p>
+    <p>{{ community.need_expert }}</p>
+  </div>
+
+
+
+  {% comment %}  본문 내용 수정 및 삭제 부분 {% endcomment %}
+    <div>
+        <a href="{% url 'communities:community_update' community.pk %}">수정쓰</a>
+        <a href="{% url 'communities:community_delete' community.pk %}">삭제쓰</a>
+    </div>
+
+
+
+{% comment %}  댓글 부분 {% endcomment %}
+<h2> 댓글 작성 </h2>
+  <div class="container">
+    <form id="community-comment-form" action="{% url 'communities:community_comment_create' community.pk %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      {% comment %} 댓글 본문 작성 부분 {% endcomment %}
+      <div class="comment-content--container">
+        {{ community_comment_form.content }}
+      </div>
+      <div class='col-2 p-0'>
+        {% if request.user.is_authenticated %}
+          <input type="submit" value="댓글 작성" class=''>
+        {% else %}
+          <a href="{% url 'accounts:login' %}"><input type="button" value="댓글 작성" class=''></a>
+        {% endif %}
+      </div>
+    </form>
+  </div>
+
+
+
+    {% comment %}  작성된 댓글 부분 {% endcomment %}
+    <div class="community_comment_status">
+      <h3> 작성된 댓글  <span class='text--main'>{{ community_comments|length }}</span></h3>
+    </div>
+    {% for community_comment in community_comments %}
+    <div class="community_comment_container">
+      <div class="community_comment_info">
+        <div class="community_comment_info__left">
+          <div class="community_comment_user__container">
+            {% if community_comment.user.image %}
+            <img class="community_comment_image" src="{{ community_comment.user.image.url }}" alt="{{ community_comment.user.username }}의 프로필 이미지">
+            {% else %}
+            <img class="community_comment_image" src="{% static 'image/solo.png' %}" alt="유저 프로필 사진 없음">
+            {% endif %}
+          </div>
+          <div>
+            <div>
+              {{ community_comment.user.username }}
+            </div>
+            <div>
+              <span class="text--sub">{{ community_comment.updated_at|date:"Y-m-d" }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="community_comment__info__right">
+
+
+
+          {% comment %} 댓글 좋아요 부분{% endcomment %}
+          <p id='c_likes_count_{{community_comment.pk}}' class=''> {{community_comment.like_users.count}} </p>
+          <form class="community_comment_like_forms" id="community_comment-like-form-{{ community_comment.pk }}" data-community_comment-id="{{ community_comment.pk }}"  data-community-id="{{ community_comment.pk }}">
+            {% csrf_token %}
+            {% if request.user == community_comment.user %}
+              <div class="">
+                <span>{{ community_comment.like_user.count }}</span>
+              </div>
+                
+            {% else %}
+                {% if request.user in comment.like_users.all %}
+                <button type='submit' class="heart-fill title--likescount btn m-0 p-0  fs-5" id="community_comment-like-btn-{{community_comment.pk}}"></button>
+                {% else %}
+                <button type='submit' class="heart title--likescount btn m-0 p-0 fs-5" id="community_comment-like-btn-{{community_comment.pk}}"></button>
+                {% endif %}
+            {% endif %}
+          </form>
+
+
+
+          {% comment %} 댓글 수정 및 삭제 부분{% endcomment %}
+          {% if request.user == community_comment.user %}
+          <a href="{% url 'communities:community_comment_update' community.pk community_comment.pk %}">수정쓰</a>
+          <a href="{% url 'communities:community_comment_delete' community.pk community_comment.pk %}">삭제쓰</a>
+          {% endif %}
+        </div>
+      </div>
+      <div class="community_comment__content__container">
+        <div>
+          {{ community_comment.content }}
+        </div>
+      </div>
+    </div>
+
+
 {% endblock content %}
+
+
+
+{% block script %}
+    <script src="{% static 'js/community_detail_like.js' %}"></script>
+    <script src="{% static 'js/community_detail_comment_like.js' %}"></script>
+    <script src="{% static 'js/community_detail_comment_create.js' %}"></script>
+    <script src="{% static 'js/community_detail_comment_delete.js' %}"></script>
+{% endblock script %}

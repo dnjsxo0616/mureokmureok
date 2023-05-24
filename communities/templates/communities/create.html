@@ -7,15 +7,19 @@
 {% endblock style %}
 
 {% block content  %}
-<h1>제품 등록</h1>
-<form action="{% url 'communities:create' %}" method = 'POST' enctype="multipart/form-data">
-  {% csrf_token %}
-  {% for field in form %}
-  <div class="mb-3">
-    {{ field.label_tag}}
-    {{ field }}
+<h1>글 작성</h1>
+<div class="container d-flex justify-content-center">
+  <div class="card" style="width: 50rem; border-color: orange; border-style: solid;">
+    <form action="{% url 'communities:create' %}" method = 'POST' enctype="multipart/form-data">
+      {% csrf_token %}
+      {% for field in form %}
+      <div class="mb-3">
+        {{ field.label_tag}}
+        {{ field }}
+      </div>
+      {% endfor %}
+      <button type="submit" class='button--color w-100 rounded'>등록</button> 
+    </form>
   </div>
-  {% endfor %}
-  <button type="submit" class='button--color w-100 rounded'>등록</button> 
-</form>
+</div>
 {% endblock content %}
