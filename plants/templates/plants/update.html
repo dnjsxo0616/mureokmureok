@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+<h1>plants update</h1>
+
+<form action="{% url 'plants:update' plant_pk=plant.pk%}" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button class='btn btn-primary w-100 mb-3' type='submit'>수정</button>
+</form>
+{% endblock content %}
