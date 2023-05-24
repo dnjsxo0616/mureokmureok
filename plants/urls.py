@@ -6,8 +6,9 @@ from django.conf.urls.static import static
 
 app_name = 'plants'
 urlpatterns = [
-    path('create/', views.create_plant, name = 'create_plant'),
-    path('<int:plant_pk>/update/', views.update_plant, name = 'update_plant'),
-    path('<int:plant_pk>/delete/', views.delete_plant, name = 'delete_plant'),
-
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('', views.index, name='index'),
+    path('create/', views.create, name = 'create'),
+    path('<int:plant_pk>/update/', views.update, name = 'update'),
+    path('<int:plant_pk>/delete/', views.delete, name = 'delete'),
+    path('<int:plant_pk>/', views.detail, name='detail'),
+]

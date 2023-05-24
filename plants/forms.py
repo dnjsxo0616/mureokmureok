@@ -10,7 +10,7 @@ class PlantForm(forms.ModelForm):
 
     preferences = forms.MultipleChoiceField(
         label = '선호도',
-        widget = forms.SelectMultiple(attrs={
+        widget = forms.CheckboxSelectMultiple(attrs={
             'class': 'form-control',
             'id': 'category',
             'placeholder': '분류',
@@ -68,7 +68,7 @@ class PlantForm(forms.ModelForm):
 
     category = forms.MultipleChoiceField(
         label = '카테고리',
-        widget = forms.CheckboxInput(attrs={
+        widget = forms.CheckboxSelectMultiple(attrs={
             'class': 'form-control',
             'id': 'category',
             'placeholder': '분류',
@@ -77,12 +77,12 @@ class PlantForm(forms.ModelForm):
     )
 
     WATERING_CHOICE = [
-        ('주1회', '주1회'), ('주2회', '주2회'), ('주3회', '주3회'),
+        ('주1~2회', '주1~2회'), ('월1회이하', '월1회이하'), ('월1~2회', '월1~2회'),
     ]
 
     watering = forms.MultipleChoiceField(
         label = '물 주기',
-        widget= forms.SelectMultiple(attrs={
+        widget= forms.CheckboxSelectMultiple(attrs={
             'class': 'form-control',
             'id': 'category',
             'placeholder': '분류',
@@ -94,9 +94,9 @@ class PlantForm(forms.ModelForm):
         ('양지', '양지'), ('음지', '음지'), ('반양지', '반양지'), ('반음지', '반음지'),
     ]
 
-    watering = forms.MultipleChoiceField(
+    sunlight = forms.MultipleChoiceField(
         label = '일조량',
-        widget= forms.SelectMultiple(attrs={
+        widget= forms.CheckboxSelectMultiple(attrs={
             'class': 'form-control',
             'id': 'category',
             'placeholder': '분류',
@@ -105,12 +105,12 @@ class PlantForm(forms.ModelForm):
     )
 
     HUMIDITY_CHOICE = [
-        ('10~30%', '10~30%'), ('40~70%', '40~70%'), ('70~90%', '70~90%'),
+        ('40% 이하', '40% 이하'), ('40~70%', '40~70%'), ('70~90%', '70~90%'),
     ]
 
     humidity = forms.MultipleChoiceField(
         label = '습도',
-        widget= forms.SelectMultiple(attrs={
+        widget= forms.CheckboxSelectMultiple(attrs={
             'class': 'form-control',
             'id': 'category',
             'placeholder': '분류',
@@ -119,12 +119,12 @@ class PlantForm(forms.ModelForm):
     )
 
     TEMPERATURE_CHOICE = [
-        ('0 ~ 10도', '0 ~ 10도'), ('10 ~ 20도', '10 ~ 20도'), ('20 ~ 30도', '20 ~ 30도'),
+        ('18~28도', '18~28도'), ('16~27도', '16~27도'), ('21~25도', '21~25도'),
     ]
 
-    Temperature = forms.MultipleChoiceField(
+    temperature = forms.MultipleChoiceField(
         label = '온도',
-        widget = forms.SelectMultiple(attrs={
+        widget = forms.CheckboxSelectMultiple(attrs={
             'class': 'form-control',
             'id': 'category',
             'placeholder': '분류',
@@ -132,6 +132,21 @@ class PlantForm(forms.ModelForm):
         choices= TEMPERATURE_CHOICE,
     )
 
+    BIRTHFLOWER_CHOICE = [
+        ('1월', '1월'), ('2월', '2월'), ('3월', '3월'), ('4월', '4월'), ('5월', '5월'), ('6월', '6월'), ('7월', '7월'), ('8월', '8월'), ('9월', '9월'), ('10월', '10월'), ('11월', '11월'), ('12월', '12월'), ('없음', '없음'),  
+    ]
+
+    birthflower = forms.MultipleChoiceField(
+        label = '탄생화',
+        widget = forms.CheckboxSelectMultiple(attrs={
+            'class': 'form-control',
+            'id': 'category',
+            'placeholder': '분류',
+        }),
+        choices= BIRTHFLOWER_CHOICE,
+    )
+
+
     class Meta:
         model = Plant
-        fields = '__all__'
+        fields = ('title', 'content', 'preferences', 'allergy', 'flowering', 'season', 'category', 'watering', 'sunlight', 'humidity', 'temperature', 'meaning', 'birthflower','image',)

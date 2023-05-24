@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+<h1>plants detail</h1>
+
+<p>{{plant.title}}</p>
+
+<ul>
+  {% for category in category_list  %}
+    <li>{{ category }}</li>
+  {% endfor %}
+</ul>
+<p>----------------------------------</p>
+
+<ul>
+  {% for preferences in preferences_list  %}
+    <li>{{ preferences }}</li>
+  {% endfor %}
+</ul>
+
+<p>----------------------------------</p>
+
+<ul>
+  {% for allergy in allergy_list  %}
+    <li>{{ allergy }}</li>
+  {% endfor %}
+</ul>
+
+<p>----------------------------------</p>
+
+<ul>
+  {% for flowering in flowering_list  %}
+    <li>{{ flowering }}</li>
+  {% endfor %}
+</ul>
+
+<p>----------------------------------</p>
+
+<ul>
+  {% for season in season_list  %}
+    <li>{{ season }}</li>
+  {% endfor %}
+</ul>
+<p>----------------------------------</p>
+
+<ul>
+  {% for watering in watering_list  %}
+    {% if watering == '주1~2회' %}
+      <li>{{ watering }}</li>
+      <p>흙 표면부터 3cm까지 마르면, 듬뿍 주세요</p>
+    {% elif watering == '월1~2회'%}
+      <li>{{ watering }}</li>
+      <p>통통한 몸통이 살짝 쭈글해지면 듬뿍 주세요</p>
+    {% elif watering == '월1회이하'%}
+    <li>{{ watering }}</li>
+    <p>단단한 몸통이 말랑해지면 듬뿍 주세요</p>
+    {% endif %}
+    
+  {% endfor %}
+</ul>
+
+<p>----------------------------------</p>
+
+<ul>
+  {% for sunlight in sunlight_list  %}
+    {% if sunlight == '양지' %}
+      <li>{{ sunlight }}</li>
+      <p>하루 6시간 이상 밝은 햇빛이 필요해요</p>
+    {% elif sunlight == '반양지'%}
+      <li>{{ sunlight }}</li>
+      <p>하루 2~3시간 정도의 밝은 햇빛이 필요해요</p>
+    {% elif sunlight == '음지'%}
+      <li>{{ sunlight }}</li>
+      <p>하루  2시간 이하 정도의 은은한 햇빛이 필요해요</p>
+    {% elif sunlight == '반음지'%}
+      <li>{{ sunlight }}</li>
+      <p>반그늘로 아침나절 또는 오후 3~4시간 정도의 은은한 햇빛이 필요해요</p>
+    {% endif %}
+  {% endfor %}
+</ul>
+
+<p>----------------------------------</p>
+
+<ul>
+  {% for humidity in humidity_list  %}
+    {% if humidity == '40% 이하' %}
+      <li>{{humidity}}</li>
+      <p>주변 공기를 건조하게 관리해주세요</p>
+    {% elif humidity == '40~70%' %}
+      <li>{{humidity}}</li>
+      <p>주변 공기가 건조해지지 않도록 관리해주세요</p>
+    {% endif %}
+    <li>{{ humidity }}</li>
+  {% endfor %}
+</ul>
+
+<p>----------------------------------</p>
+
+<ul>
+  {% for temperature in temperature_list  %}
+    {% if temperature == '21~25도' %}
+    <p>잘 자라는 온도</p>
+    <li>{{ temperature }}에서 잘 자라요</li>
+    {% elif temperature == '16~27도' %}
+      <p>잘 자라는 온도</p>
+      <li>{{ temperature }}에서 잘 자라요</li>
+    {% elif temperature == '21~25도' %}
+      <p>잘 자라는 온도</p>
+      <li>{{ temperature }}에서 잘 자라요</li>
+    {% endif %}
+  {% endfor %}
+</ul>
+
+<p>----------------------------------</p>
+
+<ul>
+  {% for birthflower in birthflower_list  %}
+    <li>{{ birthflower }}</li>
+  {% endfor %}
+</ul>
+
+
+<a href="{% url 'plants:update' plant.pk %}">수정</a>
+<a href="{% url 'plants:delete' plant.pk %}">삭제</a>
+
+{% endblock content %}

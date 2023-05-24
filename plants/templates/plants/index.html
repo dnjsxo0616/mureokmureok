@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+<h1>plants index</h1>
+
+{% for plant in plants %}
+  <a href="{% url 'plants:detail' plant.pk %}">{{plant.title}}</a>
+  <img src="{{plant.image.url}}" alt="" width="300">
+{% endfor %}
+{% comment %} <a href="{% url 'plants:update' plant.pk%} ">수정</a> {% endcomment %}
+{% endblock content %}

@@ -10,8 +10,8 @@ def plant_images_path(instance, filename):
 
 # Create your models here.
 class Plant(models.Model):
-    users = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    name = models.CharField(max_length=20)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    title = models.CharField(max_length=20)
     content = models.TextField()
     preferences = models.CharField(max_length=20)
     allergy = models.CharField(max_length=20)
@@ -22,6 +22,8 @@ class Plant(models.Model):
     sunlight = models.CharField(max_length=20)
     humidity = models.CharField(max_length=20)
     temperature = models.CharField(max_length=20)
+    meaning = models.CharField(max_length=20)
+    birthflower = models.CharField(max_length=20)
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_plants')
 
     image = ProcessedImageField(
