@@ -3,5 +3,37 @@
 
 {% block content %}
 <h1>detail</h1>
+
+이름 : {{ garden.name }}
+번호 : {{ garden.pk }}
+
+{% comment %} 댓글 {% endcomment %}
+{% for comment in comments %}
+    <p>{{ comment.content }}</p>
+{% endfor %}
+
+{% comment %} 삭제기능 {% endcomment %}
+{% for comment in comments %}
+    <p>{{ comment.content }}</p>
+    {% if request.user == comment.user %}
+        <form method="POST" action="{% url 'comment_delete' product_pk=product.pk comment_pk=comment.pk %}">
+            {% csrf_token %}
+            <button type="submit">삭제</button>
+        </form>
+    {% endif %}
+{% endfor %}
+
+{% comment %} 좋아요 {% endcomment %}
+<form method="POST" action="{% url 'like_garden' garden_pk=garden.pk %}">
+  {% csrf_token %}
+  <button type="submit">
+    {% if request.user in garden.like_users.all %}
+      좋아요 취소
+    {% else %}
+      좋아요
+    {% endif %}
+  </button>
+</form>
+
 {% endblock content %}
 

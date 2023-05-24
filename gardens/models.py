@@ -12,6 +12,10 @@ class Garden(models.Model):
     content = models.TextField()
     like_user = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_gradens')
     location_garden = models.CharField(max_length=200)
+    
+    # 지도 위도 경도
+    # latitude = models.FloatField()
+    # longitude = models.FloatField()
 
     category_Choices = (
         ('전체', '전체'),
