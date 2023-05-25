@@ -12,7 +12,7 @@ def create(request):
             fo = form.save(commit=False)
             fo.user = request.user
             fo.save()
-            return redirect('gardens:index')
+            return redirect('gardens:listing')
         else:
             messages.error(request, '폼을 올바르게 입력해주세요.')  # 오류 메시지 추가
             print(form.errors)

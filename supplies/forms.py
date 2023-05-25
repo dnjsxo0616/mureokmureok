@@ -2,9 +2,11 @@ from django import forms
 from .models import Supply
 from taggit.forms import TagField, TagWidget
 from taggit.managers import TaggableManager
+from ckeditor.widgets import CKEditorWidget
 
 
 class SupplyForm(forms.ModelForm):
+    content = forms.CharField(widget=CKEditorWidget())
 
     class Meta:
         model = Supply
@@ -67,14 +69,14 @@ class SupplyForm(forms.ModelForm):
         )
     )
 
-    content = forms.CharField(
-        label='제품 설명',
-        widget=forms.Textarea(
-            attrs={
-                'class': 'form-control',
-                'id' : 'content',
-            }
-        )
-    )
+    # content = forms.CharField(
+    #     label='제품 설명',
+    #     widget=forms.Textarea(
+    #         attrs={
+    #             'class': 'form-control',
+    #             'id' : 'content',
+    #         }
+    #     )
+    # )
 
 
