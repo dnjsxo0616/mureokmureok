@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFit, ResizeToFill
-# from taggit.managers import TaggableManager
+from taggit.managers import TaggableManager
 
 
 # Create your models here.
@@ -22,6 +22,7 @@ class Plant(models.Model):
     meaning = models.CharField(max_length=20)
     birthflower = models.CharField(max_length=20)
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_plants')
+    tags = TaggableManager()
 
 
 class PlantImage(models.Model):
