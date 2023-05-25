@@ -4,6 +4,8 @@
 
 {% block content %}
 <h1>plants index</h1>
+<h2>{{user}}</h2>
+<a href="{% url 'plants:create' %}">생성하기</a>
 
 {% for plant in plants %}
   <a href="{% url 'plants:detail' plant.pk %}">{{plant.title}}</a>

@@ -1,12 +1,9 @@
 from django.db import models
 from django.conf import settings
 from imagekit.models import ProcessedImageField
-from imagekit.processors import ResizeToFit
+from imagekit.processors import ResizeToFit, ResizeToFill
 # from taggit.managers import TaggableManager
 
-
-def plant_images_path(instance, filename):
-    return f'images/plants/{instance.title}/{filename}'
 
 # Create your models here.
 class Plant(models.Model):
@@ -26,9 +23,17 @@ class Plant(models.Model):
     birthflower = models.CharField(max_length=20)
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_plants')
 
+
+class PlantImage(models.Model):
+    def default_image():
+        return "default_image_path.jpg"
+    
+    plant = models.ForeignKey(Plant, on_delete=models.CASCADE, related_name="plant_images")
     image = ProcessedImageField(
-        upload_to=plant_images_path, 
-        processors=[ResizeToFit(800, 800)], 
-        format='JPEG', 
-        options={'quality': 100}
+        upload_to="plants/images",
+        processors=[ResizeToFill(600, 600)],
+        format="JPEG",
+        options={"quality": 90},
+        blank = False,
+        default=default_image,
     )

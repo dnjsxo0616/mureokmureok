@@ -28,13 +28,13 @@ def supply_create(request):
             supply.save()
             for tag in tags:
                 supply.tags.add(tag.strip())
-            return redirect('supplies:detail', supply.pk)
+            return redirect('supplies:supply_detail', supply.pk)
     else:
         form = SupplyForm()
     context = {
         'form' : form,
     }
-    return render(request, 'supply_create.html', context)
+    return render(request, 'supplies/create.html', context)
 
 
 
