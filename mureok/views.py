@@ -7,3 +7,7 @@ def main(request):
         'form': form,
     }
     return render(request, 'main.html', context)
+
+
+def home(request):
+    return render(request, 'home.html')
