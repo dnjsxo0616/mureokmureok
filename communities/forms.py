@@ -51,13 +51,15 @@ class CommunityForm(forms.ModelForm):
     )
     category = forms.ChoiceField(
         label='카테고리',
-        widget=forms.CheckboxInput(
+        widget=forms.Select(
             attrs={
                 'placeholder': '카테고리 입력',
                 'class': 'form-select w-75',
             }
         ),
-        choices = (('실내 식물','실내 식물'), ('실외 식물', '실외 식물'), 
+        choices = (('실내 식물','실내 식물'), ('실외 식물', '실외 식물'),
+                    ('실내 식물 종자', '실내 식물 종자'), ('실외 식물 종자', '실외 식물 종자'),
+                     
         ), 
         required=True,
     )

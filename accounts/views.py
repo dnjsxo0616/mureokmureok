@@ -7,7 +7,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth import update_session_auth_hash
 from django.http import JsonResponse
 from django.urls import reverse
-
+from .models import User_profile, User_title
 
 def login(request):
     if request.user.is_authenticated:
@@ -54,12 +54,22 @@ def signup(request):
     if request.user.is_authenticated:
         return redirect('communities:index')
 
-    next_page = request.GET.get('next')
 
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            user = form.save()  # User 객체 저장
+            user_profile = User_profile.objects.create(user=user)
+            user_profile.points = 0
+
+            min_points = user_profile.points
+            max_points = user_profile.points
+            user_title = User_title.objects.filter(min_points__lte=min_points, max_points__gte=max_points).first()
+            user_profile.title = user_title
+
+
+            user_profile.save()
+
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=password)
