@@ -1,5 +1,14 @@
 from django import forms
-from .models import Plant
+from .models import Plant, PlantImage
+
+
+class PlantImageForm(forms.ModelForm):
+    class Meta:
+        model = PlantImage
+        fields = ['image']
+        widgets = {
+            'image': forms.ClearableFileInput(attrs={'multiple': True}),
+        }
 
 class PlantForm(forms.ModelForm):
     PREFERENCES_CHOICES = [
@@ -33,7 +42,7 @@ class PlantForm(forms.ModelForm):
     )
 
     FLOWERING_CHOICE = [
-        ('10일', '10일'), ('15일', '15일'), ('20일', '20일'),
+        ('10일', '10일'), ('15일', '15일'), ('20일', '20일'), ('없음', '없음'),
     ]
 
     flowering = forms.MultipleChoiceField(
@@ -146,7 +155,7 @@ class PlantForm(forms.ModelForm):
         choices= BIRTHFLOWER_CHOICE,
     )
 
-
+    images = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
     class Meta:
         model = Plant
-        fields = ('title', 'content', 'preferences', 'allergy', 'flowering', 'season', 'category', 'watering', 'sunlight', 'humidity', 'temperature', 'meaning', 'birthflower','image',)
+        fields = ('title', 'content', 'preferences', 'allergy', 'flowering', 'season', 'category', 'watering', 'sunlight', 'humidity', 'temperature', 'meaning', 'birthflower', 'images',)

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-from .models import Plant
-from .forms import PlantForm
+from .models import Plant, PlantImage
+from .forms import PlantForm, PlantImageForm
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 def index(request):
     plants = Plant.objects.all()
@@ -9,7 +10,7 @@ def index(request):
     }
     return render(request, 'plants/index.html', context)
 
-
+@login_required
 def create(request):
     if request.method == 'POST':
         form = PlantForm(request.POST, request.FILES)
@@ -17,19 +18,24 @@ def create(request):
             plant = form.save(commit=False)
             plant.user = request.user
             plant.save()
+
+            images = request.FILES.getlist('images')
+            for image in images:
+                PlantImage.objects.create(plant=plant, image=image)
+                
             return redirect('plants:index')
     else:
         form = PlantForm()
+        imageForm = PlantImageForm()
     context = {
         'form':form,
+        'imageForm':imageForm,
     }
     return render(request, 'plants/create.html', context)
-    
+
 
 def update(request, plant_pk):
     plant = Plant.objects.get(pk=plant_pk)
-    print('----------------------------------')
-    print(plant)
     if request.method == 'POST':
         form = PlantForm(request.POST, request.FILES, instance=plant)
         if form.is_valid():
@@ -67,7 +73,6 @@ def detail(request, plant_pk):
             else:
                 category_word = category_word + category
     else:
-        # 수정
         category_list = []
 
 
@@ -83,7 +88,6 @@ def detail(request, plant_pk):
             else:
                 preferences_word = preferences_word + preferences
     else:
-        # 수정
         preferences_list = []
 
 
