@@ -2,38 +2,36 @@
 {% load static %}
 
 {% block content %}
-<h1>detail</h1>
+  <h1>detail</h1>
 
-이름 : {{ garden.name }}
-번호 : {{ garden.pk }}
+  이름: {{ garden.name }}
+  번호: {{ garden.pk }}
 
-{% comment %} 댓글 {% endcomment %}
-{% for comment in comments %}
+  {% comment %} 댓글 {% endcomment %}
+  {% for comment in comments %}
     <p>{{ comment.content }}</p>
-{% endfor %}
+  {% endfor %}
 
-{% comment %} 삭제기능 {% endcomment %}
-{% for comment in comments %}
+  {% comment %} 삭제기능 {% endcomment %}
+  {% for comment in comments %}
     <p>{{ comment.content }}</p>
     {% if request.user == comment.user %}
-        <form method="POST" action="{% url 'comment_delete' product_pk=product.pk comment_pk=comment.pk %}">
-            {% csrf_token %}
-            <button type="submit">삭제</button>
-        </form>
+      <form method="POST" action="{% url 'comment_delete' product_pk=product.pk comment_pk=comment.pk %}">
+        {% csrf_token %}
+        <button type="submit">삭제</button>
+      </form>
     {% endif %}
-{% endfor %}
+  {% endfor %}
 
-{% comment %} 좋아요 {% endcomment %}
-<form method="POST" action="{% url 'like_garden' garden_pk=garden.pk %}">
+
+<form class='sidebar-interest' action="{% if user.is_anonymous %}{% url 'accounts:login' %}{% else %}{% url 'gardens:like_garden' garden.pk %}{% endif %}" method="POST">
   {% csrf_token %}
-  <button type="submit">
+  <button class='option-btn' type='submit'>
     {% if request.user in garden.like_users.all %}
-      좋아요 취소
+      <div>관심상품 취소</div>
     {% else %}
-      좋아요
+      <div>관심상품</div>
     {% endif %}
   </button>
 </form>
-
 {% endblock content %}
-
