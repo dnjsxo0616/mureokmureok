@@ -155,3 +155,9 @@ def follow(request, user_pk):
         }
         return JsonResponse(context)
     return redirect('accounts:profile', you.username)
+
+
+@login_required
+def user_profile(request):
+    user_profile = User_profile.objects.get(user=request.user)
+    return render(request, 'accounts/profile.html', {'user_profile': user_profile})
