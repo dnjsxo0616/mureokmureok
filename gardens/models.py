@@ -4,18 +4,17 @@ from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFit
 from django.utils import timezone
 from datetime import timedelta,datetime
+from django_ckeditor_5.fields import CKEditor5Field
 
 # Create your models here.
 class Garden(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=500)
-    content = models.TextField()
+    content = CKEditor5Field('Content', config_name='extends')
     like_user = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_gradens')
-    location_garden = models.CharField(max_length=200)
-    
     # 지도 위도 경도
-    # latitude = models.FloatField()
-    # longitude = models.FloatField()
+    latitude = models.FloatField()
+    longitude = models.FloatField()
 
     category_Choices = (
         ('전체', '전체'),

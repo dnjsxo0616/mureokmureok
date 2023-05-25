@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 
 from .forms import GardenForm, CommentForm
 from .models import Garden, Comment
-
+from django.contrib import messages
 
 # Create your views here.
 def create(request):
@@ -14,6 +14,7 @@ def create(request):
             fo.save()
             return redirect('gardens:index')
         else:
+            messages.error(request, '폼을 올바르게 입력해주세요.')  # 오류 메시지 추가
             print(form.errors)
     else:
         form = GardenForm()
