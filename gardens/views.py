@@ -12,7 +12,7 @@ def create(request):
             fo = form.save(commit=False)
             fo.user = request.user
             fo.save()
-            return redirect('gardens:listing')
+            return redirect('gardens:detail', fo.pk)
         else:
             messages.error(request, '폼을 올바르게 입력해주세요.')  # 오류 메시지 추가
             print(form.errors)
@@ -74,13 +74,13 @@ def update(request, garden_pk):
     return render(request, 'gardens/update.html', context)
 
 
-def like_garden(request,garden_pk):
+def like_garden(request, garden_pk):
     garden = Garden.objects.get(pk=garden_pk)
-    if garden.like_user.filter(pk=request.user.pk).exists():
-        garden.like_user.remove(request.user)
+    if garden.like_users.filter(pk=request.user.pk).exists():
+        garden.like_users.remove(request.user)
     else:
-        garden.like_user.add(request.user)
-    return redirect('gardens:detail', garden_pk)
+        garden.like_users.add(request.user)
+    return redirect('gardens:detail', garden_pk=garden_pk)
 
 
 def listing(request):
