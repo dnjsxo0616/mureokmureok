@@ -4,7 +4,11 @@ from .forms import CommunityForm, Community_commentForm
 from django.db.models import Count
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from accounts.models import User, User_title
+from accounts.models import User, User_title, User_profile
+
+
+
+
 
 def index(request):
     communities = Community.objects.all()[::-1]
@@ -114,19 +118,22 @@ def community_comment_create(request, community_pk):
         community_comment = community_comment_form.save(commit=False)
         community_comment.community = community
         community_comment.user = request.user
-        community_comment.save()
+        
 
-        user_profile = User_profile.objects.get(user=request.user)
+       
         if not Community_comment.objects.filter(user=request.user, community=community).exists():
+            user_profile = User_profile.objects.get(user=request.user)
             user_profile.points += 1
             user_profile.save()
         
         # 칭호 확인 및 업데이트
-        titles = User_title.objects.filter(min_points__lte=user_profile.points, max_points__gte=user_profile.points)
-        if titles.exists():
-            user_profile.title = titles.first()
-            user_profile.save()
+            titles = User_title.objects.filter(min_points__lte=user_profile.points, max_points__gte=user_profile.points)
+            if titles.exists():
+                user_profile.title = titles.first()
+                user_profile.save()
 
+        community_comment.save()
+        
         return JsonResponse({'success': True})
     else:
         return JsonResponse({'success': False, 'errors': community_comment_form.errors})

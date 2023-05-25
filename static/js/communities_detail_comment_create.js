@@ -1,15 +1,14 @@
-const commentForm = document.querySelector('#community-comment-form')
+const Community_commentForm = document.querySelector('#Community_comment-Form')
 
-commentForm.addEventListener('submit', function (event) {
+Community_commentForm.addEventListener('submit', function (event) {
   event.preventDefault();
 
-  const formData = new FormData(community_commentForm)
+  const formData = new FormData(Community_commentForm)
 
   axios({
     method: 'post',
-    url: commentForm.getAttribute('action'),
+    url: Community_commentForm.getAttribute('action'),
     data: formData,
-    headers: {'Content-Type': 'multipart/form-data'},
   })
     .then((response) => {
       location.reload();

@@ -6,7 +6,7 @@ from imagekit.processors import Thumbnail
 
 # Create your models here.
 def community_img_path(instance, filename):
-    return f'images/community/{instance.name}/{filename}'
+    return f'images/community/{instance.title}/{filename}'
 
 
 
