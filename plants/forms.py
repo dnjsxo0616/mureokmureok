@@ -158,4 +158,4 @@ class PlantForm(forms.ModelForm):
     images = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
     class Meta:
         model = Plant
-        fields = ('title', 'content', 'preferences', 'allergy', 'flowering', 'season', 'category', 'watering', 'sunlight', 'humidity', 'temperature', 'meaning', 'birthflower', 'images',)
+        fields = ('title', 'content', 'preferences', 'allergy', 'flowering', 'season', 'category', 'watering', 'sunlight', 'humidity', 'temperature', 'meaning', 'birthflower', 'images', 'tags',)

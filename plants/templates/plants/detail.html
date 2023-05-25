@@ -128,6 +128,14 @@
   <img src="{{ image.image.url }}" alt="Plant Image">
 {% endfor %}
 
+<p>----------------------------------</p>
+
+<h2>Tags</h2>
+<ul>
+  {% for tag in plant.tags.all %}
+    <li>{{ tag }}</li>
+  {% endfor %}
+</ul>
 
 <a href="{% url 'plants:update' plant.pk %}">수정</a>
 <a href="{% url 'plants:delete' plant.pk %}">삭제</a>

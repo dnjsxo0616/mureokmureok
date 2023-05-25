@@ -13,6 +13,7 @@ def index(request):
 @login_required
 def create(request):
     if request.method == 'POST':
+        tags = request.POST.get('tags').split(',')
         form = PlantForm(request.POST, request.FILES)
         if form.is_valid():
             plant = form.save(commit=False)
@@ -22,7 +23,9 @@ def create(request):
             images = request.FILES.getlist('images')
             for image in images:
                 PlantImage.objects.create(plant=plant, image=image)
-                
+            
+            for tag in tags:
+                plant.tags.add(tag.strip())
             return redirect('plants:index')
     else:
         form = PlantForm()
