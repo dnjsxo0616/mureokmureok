@@ -133,10 +133,10 @@ def change_password(request):
 def profile(request, username):
     User = get_user_model()
     person = User.objects.get(username=username)
-    plants = Plant.objects.filter(user=person).order_by('-pk')
-    gardens = Garden.objects.filter(user=person).order_by('-pk')
-    communities = Community.objects.filter(user=person).order_by('-pk')
-    supplies = Supply.objects.filter(user=person).order_by('-pk')
+    # plants = Plant.objects.filter(user=person).order_by('-pk')
+    # gardens = Garden.objects.filter(user=person).order_by('-pk')
+    # communities = Community.objects.filter(user=person).order_by('-pk')
+    # supplies = Supply.objects.filter(user=person).order_by('-pk')
 
     context = {
         'person': person,
