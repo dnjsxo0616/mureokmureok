@@ -31,9 +31,28 @@
             {% comment %} 로그인 영역 {% endcomment %}
             <div class="relative w-4/12 flex flex-col gap-8 items-center border rounded-[30px] px-[60px] pb-[60px] shadow-lg">
                 <img src="{% static 'img/watering_plant.png' %}" alt="" class="absolute top-[-100px]">
+
+                {% comment %} 이미 로그인 된 유저인지 검증 {% endcomment %}
+                {% if request.user.is_authenticated %}
+                <div class="mt-[65%] w-full flex flex-col items-center gap-5">
+                    <div class="rounded-full profile-image_wrapper border-[0.5px] border-[#1EB564]">
+                        {% if request.user.image %}
+                            <img src="{{ request.user.image.url }}" alt="">
+                        {% else %}
+                            <img src="{% static 'img/no_profile.jpg' %}" alt="">
+                        {% endif %}
+                    </div>
+                    <div>
+                        <p class="text-[18px]"><b>{{ user.username }}님</b></p>
+                    </div>
+                    <a href="{% url 'home' %}" class="rounded-lg bg-[#1EB564] text-white text-center w-full py-2 text-[16px] font-semibold">홈으로 이동</a>
+                    <a href="{% url 'accounts:logout' %}" class="block px-4 py-2 text-sm text-gray-700 hover:text-black" role="menuitem" tabindex="-1" id="user-menu-item-2">로그아웃</a>
+                </div>
+                {% else %}
                 <div class="mt-[65%] w-full">
                     <h2 class="text-[22px] text-center mb-5"><b>로그인</b></h2>
-                    <form action="#" class="flex flex-col items-center gap-3 w-full">
+                    <form action="{% url 'accounts:login' %}" method="POST" class="flex flex-col items-center gap-3 w-full">
+                        {% csrf_token %}
                         <div class="w-full">{{ form.username }}</div>
                         <div class="w-full">{{ form.password }}</div>
                         <input type="submit" class="rounded-lg bg-[#1EB564] text-white w-full py-2 text-[16px] font-semibold" value="시작하기">
@@ -67,6 +86,7 @@
                         </a>
                     </div>
                 </div>
+                {% endif %}
             </div>
         </div>
         <div class="absolute left-1/2 bottom-8 animate-bounce text-center">
