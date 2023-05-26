@@ -128,3 +128,22 @@ def recommendation(request):
         'plant_likes':plant_likes,
     }
     return render(request, 'plants/recommendation.html', context)
+
+def search(request):
+    query = request.GET.get('searched', '')
+    plants = Plant.objects.filter(title__contains=query)
+
+    context = {
+        'plants':plants,
+        'query':query,
+    }
+    return render(request, 'plants/search.html', context)
+
+
+def filter_plants(request, tag):
+    filtered_plants = Plant.objects.filter(tags__name__in=[tag])
+    context = {
+        'filtered_plants': filtered_plants
+    }
+    return render(request, 'plants/filter.html', context)
+

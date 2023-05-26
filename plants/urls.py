@@ -13,5 +13,9 @@ urlpatterns = [
     path('<int:plant_pk>/', views.detail, name='detail'),
     path('<int:plant_pk>/likes/', views.likes, name='likes'),
 
+    path('search/', views.search, name='search'),
+    path('filter-plants/<str:tag>/', views.filter_plants, name='filter_plants'),
+    # path('filter-plants-ajax/', views.filter_plants_ajax, name='filter_plants_ajax'),
+
     path('recommendation/', views.recommendation, name='recommendation'),
 ]
