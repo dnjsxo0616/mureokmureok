@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+<div class="container">
+
+  <div class="font-blod text-3xl">
+    <div class="mt-4">
+      <div class="text-slide">
+        <p class="select-text">
+          <span>어떤 식물</span>을 찾고 있나요?
+        </p>
+      </div>
+    </div>
+    <div id="tag-selection">
+      <ul class="flex text-base mt-4">
+        <li class="rounded-full py-2 px-4 m-2 bg-white border border-gray-500 text-gray-500 cursor-pointer transition-colors duration-300 ease-in-out hover:bg-green-500 hover:text-white"  style="pointer-events: auto;">
+          <a href="{% url 'plants:filter_plants' '잎을 감상하는' %}">잎을 감상하는</a>
+        </li>
+        <li class="rounded-full py-2 px-4 m-2 bg-white border border-gray-500 text-gray-500 cursor-pointer transition-colors duration-300 ease-in-out hover:bg-green-500 hover:text-white"  style="pointer-events: auto;">
+          <a href="{% url 'plants:filter_plants' '꽃을 감상하는' %}">꽃을 감상하는</a>
+        </li>
+        <li class="rounded-full py-2 px-4 m-2 bg-white border border-gray-500 text-gray-500 cursor-pointer transition-colors duration-300 ease-in-out hover:bg-green-500 hover:text-white"  style="pointer-events: auto;">
+          <a href="{% url 'plants:filter_plants' '열매를 감상하는' %}">열매를 감상하는</a>
+        </li>
+        <li class="rounded-full py-2 px-4 m-2 bg-white border border-gray-500 text-gray-500 cursor-pointer transition-colors duration-300 ease-in-out hover:bg-green-500 hover:text-white"  style="pointer-events: auto;">
+          <a href="{% url 'plants:filter_plants' '열매를 감상하는' %}">다육/선인장</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  
+  {% for plant in filtered_plants %}
+    <a href="{% url 'plants:detail' plant.pk %}">{{plant.title}}</a>
+  {% endfor %}
+</div>
+
+
+{% endblock content %}
+
+{% block script %}
+
+{% endblock script %}
