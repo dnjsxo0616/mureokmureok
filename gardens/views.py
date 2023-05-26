@@ -3,8 +3,22 @@ from django.shortcuts import render,redirect
 from .forms import GardenForm, CommentForm
 from .models import Garden, Comment
 from django.contrib import messages
+from django.core.paginator import Paginator
 
 # Create your views here.
+def index(request):
+    gardens = Garden.objects.order_by('id')
+    paginator = Paginator(gardens, 4)  
+    page_number = request.GET.get('page')  
+    page_obj = paginator.get_page(page_number) 
+    
+    content = {
+        'page_obj': page_obj,
+    }
+    return render(request, 'gardens/index.html', content)
+
+
+
 def create(request):
     if request.method == 'POST':
         form = GardenForm(request.POST, request.FILES)
@@ -12,7 +26,7 @@ def create(request):
             fo = form.save(commit=False)
             fo.user = request.user
             fo.save()
-            return redirect('gardens:listing')
+            return redirect('gardens:index')
         else:
             messages.error(request, '폼을 올바르게 입력해주세요.')  # 오류 메시지 추가
             print(form.errors)
@@ -24,11 +38,11 @@ def create(request):
     return render(request, 'gardens/create.html', context)
 
 
-def delete(request, garden_pk):
+def delete(request,garden_pk):
     garden = Garden.objects.get(pk=garden_pk)
     if request.user == garden.user:
         garden.delete()
-    return redirect('garden:index')
+    return redirect('gardens:index')
 
 
 def comment(request,garden_pk):
@@ -74,22 +88,30 @@ def update(request, garden_pk):
     return render(request, 'gardens/update.html', context)
 
 
-def like_garden(request,garden_pk):
+def like_garden(request, garden_pk):
     garden = Garden.objects.get(pk=garden_pk)
-    if garden.like_user.filter(pk=request.user.pk).exists():
-        garden.like_user.remove(request.user)
+    if garden.like_users.filter(pk=request.user.pk).exists():
+        garden.like_users.remove(request.user)
     else:
-        garden.like_user.add(request.user)
-    return redirect('gardens:detail', garden_pk)
+        garden.like_users.add(request.user)
+    return redirect('gardens:detail', garden_pk=garden_pk)
 
 
 def listing(request):
-    category = request.GET.get('category')
-    gardens = Garden.objects.filter(category=category)
+    category = request.GET.get('category') 
+
+    if category == '전체':  
+        gardens = Garden.objects.all()
+    else:  
+        gardens = Garden.objects.filter(category=category)
+
+    paginator = Paginator(gardens, 4)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
     context = {
         'category': category,
-        'gardens': gardens,
+        'gardens': page_obj,
     }
     return render(request, 'gardens/listing.html', context)
 

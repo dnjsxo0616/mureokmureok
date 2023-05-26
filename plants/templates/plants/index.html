@@ -5,11 +5,12 @@
 {% block content %}
 <h1>plants index</h1>
 <h2>{{user}}</h2>
-<a href="{% url 'plants:create' %}">생성하기</a>
+<p><a href="{% url 'plants:create' %}">생성하기</a></p>
 
 {% for plant in plants %}
   <a href="{% url 'plants:detail' plant.pk %}">{{plant.title}}</a>
   <img src="{{plant.image.url}}" alt="" width="300">
+  <p>-----------------------------------------------</p>
 {% endfor %}
 {% comment %} <a href="{% url 'plants:update' plant.pk%} ">수정</a> {% endcomment %}
 {% endblock content %}

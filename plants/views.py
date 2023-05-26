@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from .models import Plant, PlantImage
 from .forms import PlantForm, PlantImageForm
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.db.models import Count
+
 # Create your views here.
 def index(request):
     plants = Plant.objects.all()
@@ -63,144 +66,65 @@ def delete(request, plant_pk):
 
 def detail(request, plant_pk):
     plant = Plant.objects.get(pk=plant_pk)
+    
+    def extract_list(field):
+        if plant is not None and "[" in field:
+            word = ""
+            for item in field:
+                if item in ["[", "'", ",", "]"]:
+                    continue
+                else:
+                    word += item
+            return word.split()
+        else:
+            return []
+        
+    category_list = extract_list(plant.category)
+    preferences_list = extract_list(plant.preferences)
+    allergy_list = extract_list(plant.allergy)
+    flowering_list = extract_list(plant.flowering)
+    season_list = extract_list(plant.season)
+    watering_list = extract_list(plant.watering)
+    sunlight_list = extract_list(plant.sunlight)
+    humidity_list = extract_list(plant.humidity)
+    temperature_list = extract_list(plant.temperature)
+    birthflower_list = extract_list(plant.birthflower)
 
-    category_list = []
-    if plant is not None and "[" in plant.category:
-        category_word = ""
-        for category in plant.category:
-            if category in ["[", "'",]:
-                pass
-            elif category in [",", "]"]:
-                category_list.append(category_word.strip())
-                category_word = ""
-            else:
-                category_word = category_word + category
-    else:
-        category_list = []
-
-
-    preferences_list = []
-    if plant is not None and "[" in plant.preferences:
-        preferences_word = ""
-        for preferences in plant.preferences:
-            if preferences in ["[", "'",]:
-                pass
-            elif preferences in [",", "]"]:
-                preferences_list.append(preferences_word.strip())
-                preferences_word = ""
-            else:
-                preferences_word = preferences_word + preferences
-    else:
-        preferences_list = []
-
-
-    allergy_list = []
-    if plant is not None and "[" in plant.allergy:
-        allergy_word = ""
-        for allergy in plant.allergy:
-            if allergy in ["[", "'", ",", "]"]:
-                continue
-            else:
-                allergy_word = allergy_word + allergy
-        allergy_list = allergy_word.split()
-    else:
-        allergy_list = []
-
-    flowering_list = []
-    if plant is not None and "[" in plant.flowering:
-        flowering_word = ""
-        for flowering in plant.flowering:
-            if flowering in ["[", "'", ",", "]"]:
-                continue
-            else:
-                flowering_word = flowering_word + flowering
-        flowering_list = flowering_word.split()
-    else:
-        flowering_list = []
-
-    season_list = []
-    if plant is not None and "[" in plant.season:
-        season_word = ""
-        for season in plant.season:
-            if season in ["[", "'", ",", "]"]:
-                continue
-            else:
-                season_word = season_word + season
-        season_list = season_word.split()
-    else:
-        season_list = []
-
-    watering_list = []
-    if plant is not None and "[" in plant.watering:
-        watering_word = ""
-        for watering in plant.watering:
-            if watering in ["[", "'", ",", "]"]:
-                continue
-            else:
-                watering_word = watering_word + watering
-        watering_list = watering_word.split()
-    else:
-        watering_list = []
-
-    sunlight_list = []
-    if plant is not None and "[" in plant.sunlight:
-        sunlight_word = ""
-        for sunlight in plant.sunlight:
-            if sunlight in ["[", "'", ",", "]"]:
-                continue
-            else:
-                sunlight_word = sunlight_word + sunlight
-        sunlight_list = sunlight_word.split()
-    else:
-        sunlight_list = []
-
-    humidity_list = []
-    if plant is not None and "[" in plant.humidity:
-        humidity_word = ""
-        for humidity in plant.humidity:
-            if humidity in ["[", "'", ",", "]"]:
-                continue
-            else:
-                humidity_word = humidity_word + humidity
-        humidity_list = humidity_word.split()
-    else:
-        humidity_list = []
-
-    temperature_list = []
-    if plant is not None and "[" in plant.temperature:
-        temperature_word = ""
-        for temperature in plant.temperature:
-            if temperature in ["[", "'", ",", "]"]:
-                continue
-            else:
-                temperature_word = temperature_word + temperature
-        temperature_list = temperature_word.split()
-    else:
-        temperature_list = []
-
-    birthflower_list = []
-    if plant is not None and "[" in plant.birthflower:
-        birthflower_word = ""
-        for birthflower in plant.birthflower:
-            if birthflower in ["[", "'", ",", "]"]:
-                continue
-            else:
-                birthflower_word = birthflower_word + birthflower
-        birthflower_list = birthflower_word.split()
-    else:
-        birthflower_list = []
-    print(temperature_list)
     context = {
-        'plant':plant,
-        'category_list':category_list,
-        'preferences_list':preferences_list,
-        'allergy_list':allergy_list,
-        'flowering_list':flowering_list,
-        'season_list':season_list,
-        'watering_list':watering_list,
-        'sunlight_list':sunlight_list,
-        'humidity_list':humidity_list,
-        'temperature_list':temperature_list,
-        'birthflower_list':birthflower_list,
+        'plant': plant,
+        'category_list': category_list,
+        'preferences_list': preferences_list,
+        'allergy_list': allergy_list,
+        'flowering_list': flowering_list,
+        'season_list': season_list,
+        'watering_list': watering_list,
+        'sunlight_list': sunlight_list,
+        'humidity_list': humidity_list,
+        'temperature_list': temperature_list,
+        'birthflower_list': birthflower_list,
     }
     return render(request, 'plants/detail.html', context)
+
+@login_required
+def likes(request, plant_pk):
+    plant = Plant.objects.get(pk=plant_pk)
+
+    if request.user in plant.like_users.all():
+        plant.like_users.remove(request.user)
+        is_liked=False
+    else:
+        plant.like_users.add(request.user)
+        is_liked=True
+
+    context = {
+        'is_liked' : is_liked,
+    }
+    return JsonResponse(context)
+
+
+def recommendation(request):
+    plant_likes = Plant.objects.annotate(num_likes = Count('likes')).order_by('-num_likes')
+    context = {
+        'plant_likes':plant_likes,
+    }
+    return render(request, 'plants/recommendation.html', context)

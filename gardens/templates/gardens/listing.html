@@ -1,13 +1,69 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block head %}
+<script src="https://cdn.tailwindcss.com"></script>
+{% endblock head %}
+
 {% block content %}
-    <h1>Listing</h1>
-    <ul>
+    <div class="flex p-2">
+        <div class='category-box px-2'>
+          <a href="{% url 'gardens:listing' %}?category=전체">
+            <span>전체</span>
+          </a>
+        </div>
+        <div class='category-box px-2'>
+          <a href="{% url 'gardens:listing' %}?category=전시회">
+            <span>전시회</span>
+          </a>
+        </div>
+        <div class='category-box px-2'>
+          <a href="{% url 'gardens:listing' %}?category=식물원">
+            <span>식물원</span>
+          </a>
+        </div>
+        <div class='category-box px-2'>
+          <a href="{% url 'gardens:listing' %}?category=정원센터">
+            <span>정원센터</span>
+          </a>
+        </div>
+        <div class='category-box px-2'>
+          <a href="{% url 'gardens:listing' %}?category=이벤트">
+            <span>이벤트</span>
+          </a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4 justify-center">
         {% for garden in gardens %}
-            <li>{{ garden.name }}</li>
-        {% empty %}
-            <li>No gardens found.</li>
+        <a href="{% url 'gardens:detail' garden.pk %}">
+            <div class="flex justify-center">
+                {{ garden.title }}
+                {% comment %} {{ garden.content|safe }} {% endcomment %}
+                <img src="{{ garden.image.url }}" alt="Garden Image" style="max-width: 300px;">
+            </div>
+        </a>
         {% endfor %}
-    </ul>
+    </div>
+    
+
+    {% if gardens.has_other_pages %}
+    <div class="flex justify-center mt-4">
+        {% if gardens.has_previous %}
+        <a href="?category={{ category }}&page={{ gardens.previous_page_number }}" class="px-2 py-1 bg-transparent text-gray-700 hover:bg-blue-300">이전</a>
+        {% endif %}
+
+        {% for num in gardens.paginator.page_range %}
+        {% if gardens.number == num %}
+        <span class="px-2 py-1 bg-blue-500 text-white">{{ num }}</span>
+        {% else %}
+        <a href="?category={{ category }}&page={{ num }}" class="px-2 py-1 bg-transparent text-gray-700 hover:bg-blue-300">{{ num }}</a>
+        {% endif %}
+        {% endfor %}
+
+        {% if gardens.has_next %}
+        <a href="?category={{ category }}&page={{ gardens.next_page_number }}" class="px-2 py-1 bg-transparent text-gray-700 hover:bg-blue-300">다음</a>
+        {% endif %}
+    </div>
+    {% endif %}
 {% endblock content %}

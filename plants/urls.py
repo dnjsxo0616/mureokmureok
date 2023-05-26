@@ -11,4 +11,7 @@ urlpatterns = [
     path('<int:plant_pk>/update/', views.update, name = 'update'),
     path('<int:plant_pk>/delete/', views.delete, name = 'delete'),
     path('<int:plant_pk>/', views.detail, name='detail'),
+    path('<int:plant_pk>/likes/', views.likes, name='likes'),
+
+    path('recommendation/', views.recommendation, name='recommendation'),
 ]

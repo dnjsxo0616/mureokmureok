@@ -25,7 +25,8 @@ class Community(models.Model):
     need_expert = models.BooleanField(default=False)
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_community')
     category = models.CharField(max_length=20)
-    
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.title
 
@@ -33,7 +34,7 @@ class Community(models.Model):
 class Community_comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     community = models.ForeignKey(Community, blank=False, null=False, on_delete=models.CASCADE)
-    crated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now=True)
     content = models.CharField(max_length=600)
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_community_comment')

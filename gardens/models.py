@@ -11,7 +11,8 @@ class Garden(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=500)
     content = CKEditor5Field('Content', config_name='extends')
-    like_user = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_gradens')
+    ex_content = models.TextField(default='Default value')
+    like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_gradens')
     # 지도 위도 경도
     latitude = models.FloatField()
     longitude = models.FloatField()
