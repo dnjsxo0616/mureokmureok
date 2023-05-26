@@ -4,6 +4,20 @@
 
 {% block content %}
 <h1>plants detail</h1>
+<p>----------------------------------</p>
+
+
+<form class='like-forms' data-plant-id='{{ plant.pk }}'>
+  {% csrf_token %}
+  {% if request.user in plant.like_users.all %}
+    <input type="submit" value="좋아요 취소" id="like-{{ plant.pk }}">
+  {% else %}
+    <input type="submit" value="좋아요" id="like-{{ plant.pk }}">
+  {% endif %}
+</form>
+
+
+<p>----------------------------------</p>
 
 <p>{{plant.title}}</p>
 
@@ -141,3 +155,36 @@
 <a href="{% url 'plants:delete' plant.pk %}">삭제</a>
 
 {% endblock content %}
+
+{% block script %}
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    const forms = document.querySelectorAll('.like-forms')
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+
+    forms.forEach((form) => {
+      form.addEventListener('submit', function (event) {
+        event.preventDefault()
+        const plantId = event.target.dataset.plantId
+        axios({
+          method: 'post',
+          url: `/plants/${plantId}/likes/`,
+          headers: {'X-CSRFTOKEN': csrftoken},
+        })
+          .then((response) => {
+            const isLiked = response.data.is_liked
+            const likeBtn = document.querySelector(`#like-${plantId}`)
+            if (isLiked === true) {
+              likeBtn.value = '좋아요 취소'
+            } else {
+              likeBtn.value = '좋아요'
+            }
+          })
+          .catch((error) => {
+            console.log(error.response)
+          })
+      })
+    })
+  </script>
+{% endblock script %}
+
