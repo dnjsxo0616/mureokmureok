@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/garden_index.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/assets/owl.carousel.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/assets/owl.theme.default.min.css">
+{% endblock head %}
+
+
+{% block content %}
+    {% comment %} 캐로젤 {% endcomment %}
+    <div class="slider-1">
+        <div class="owl-carousel owl-theme">
+            <div class="item" style="background-image:url({% static 'img/carousel_1.jpg' %});">
+                <div class="txt-box">
+                    <h1><b>공기정화 식물로 싱그러운 생활</b></h1>
+                    <h2>공기정화와 인테리어를 한 번에</h2>
+                    <div>
+                        내용1
+                    </div>
+                </div>
+            </div>
+            <div class="item" style="background-image:url({% static 'img/carousel_2.jpg' %});">
+                <div class="txt-box">
+                    <h1><b>큰 제목2</b></h1>
+                    <h2>중간 제목2</h2>
+                    <div>
+                        내용2
+                    </div>
+                </div>
+            </div>
+            <div class="item" style="background-image:url({% static 'img/carousel_3.jpg' %});">
+                <div class="txt-box">
+                    <h1><b>큰 제목3</b></h1>
+                    <h2>중간 제목3</h2>
+                    <div>
+                        내용3
+                    </div>
+                </div>
+            </div>
+            <div class="item" style="background-image:url({% static 'img/carousel_4.jpg' %});">
+                <div class="txt-box">
+                    <h1><b>큰 제목4</b></h1>
+                    <h2>중간 제목4</h2>
+                    <div>
+                        내용4
+                    </div>
+                </div>
+            </div>
+            <div class="item" style="background-image:url({% static 'img/carousel_5.jpg' %});">
+                <div class="txt-box">
+                    <h1><b>큰 제목5</b></h1>
+                    <h2>중간 제목5</h2>
+                    <div>
+                        내용5
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="flex border-b-2 rounded-lg">
+      <div class='category-box px-2'>
+        <a href="{% url 'gardens:listing' %}?category=전체">
+          <span>전체</span>
+        </a>
+      </div>
+      <div class='category-box px-2'>
+        <a href="{% url 'gardens:listing' %}?category=전시회">
+          <span>전시회</span>
+        </a>
+      </div>
+      <div class='category-box px-2'>
+        <a href="{% url 'gardens:listing' %}?category=식물원">
+          <span>식물원</span>
+        </a>
+      </div>
+      <div class='category-box px-2'>
+        <a href="{% url 'gardens:listing' %}?category=정원센터">
+          <span>정원센터</span>
+        </a>
+      </div>
+      <div class='category-box px-2'>
+        <a href="{% url 'gardens:listing' %}?category=이벤트">
+          <span>이벤트</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4 py-2">
+      {% for garden in page_obj %}
+        <a href="{% url 'gardens:detail' garden.pk %}">
+          <div class="flex items-center justify-center border-2 rounded-lg" style="width: 400px; height: 400px; margin: 50px;">
+            <div class="text-center">
+              {{ garden.pk }}
+              <img src="{{ garden.image.url }}" alt="Garden Image" style="max-width: 300px; max-height: 300px;">
+            </div>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+    
+    
+    
+{% if page_obj.has_other_pages %}
+  <div class="flex justify-center mt-4">
+    {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}" class="px-2 py-1 bg-transparent text-gray-700 hover:bg-blue-300">이전</a>
+    {% endif %}
+    
+    {% for num in page_obj.paginator.page_range %}
+      {% if page_obj.number == num %}
+        <span class="px-2 py-1 bg-blue-500 text-white">{{ num }}</span>
+      {% else %}
+        <a href="?page={{ num }}" class="px-2 py-1 bg-transparent text-gray-700 hover:bg-blue-300">{{ num }}</a>
+      {% endif %}
+    {% endfor %}
+    
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}" class="px-2 py-1 bg-transparent text-gray-700 hover:bg-blue-300">다음</a>
+    {% endif %}
+  </div>
+{% endif %}
+
+
+{% comment %} <div>
+  <div class="grid grid-cols-2 gap-4">
+    {% for garden in gardens %}
+      <a href="{% url 'gardens:detail' garden.pk %}">
+        <div class="flex justify-around">
+          <div>{{ garden.pk }}</div>
+        </div>
+      </a>
+    {% endfor %}
+  </div> {% endcomment %}
+
+{% endblock content %}
+
+{% block script %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.min.js"></script>
+    <script src="{% static 'js/homeCarousel.js' %}"></script>
+{% endblock script %}
