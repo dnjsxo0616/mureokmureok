@@ -59,7 +59,7 @@ class CommunityForm(forms.ModelForm):
         ),
         choices = (('실내 식물','실내 식물'), ('실외 식물', '실외 식물'),
                     ('실내 식물 종자', '실내 식물 종자'), ('실외 식물 종자', '실외 식물 종자'),
-                     
+                     ('전문가 Q&A','전문가 Q&A'), ('운영자 Q&A', '운영자 Q&A'),
         ), 
         required=True,
     )
