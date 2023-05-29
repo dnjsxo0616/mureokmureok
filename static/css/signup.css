@@ -1,0 +1,12 @@
+.signup-image_wrapper {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.signup-image_wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
