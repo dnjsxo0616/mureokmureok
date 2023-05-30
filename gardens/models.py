@@ -14,9 +14,9 @@ class Garden(models.Model):
     ex_content = models.TextField(default='Default value')
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_gradens')
     # 지도 위도 경도
-    latitude = models.FloatField()
-    longitude = models.FloatField()
-
+    # latitude = models.FloatField()
+    # longitude = models.FloatField()
+    address = models.TextField()
     category_Choices = (
         ('전체', '전체'),
         ('식물원', '식물원'),
@@ -56,7 +56,7 @@ class Comment(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     def garden_images_path(instance, filename):
-        return f'gardens/{instance.title}/{filename}'
+        return f'gardens/{instance.garden.title}/{filename}'
     image = ProcessedImageField(
         upload_to=garden_images_path, 
         processors=[ResizeToFit(800, 800)], 
