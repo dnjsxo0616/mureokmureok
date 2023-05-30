@@ -1,21 +1,47 @@
 {% extends 'base.html' %}
 {% load static %}
+
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/signup.css' %}">
+{% endblock head %}
+
+
 {% block content %}
-<div class="container-fluid">
-    <div class="container" style="width: 500px;">
-      <h1 class="fw-bold text-center">회원정보 수정</h1>
-      <form action="{% url 'accounts:update' %}" method="POST" class="form-text" enctype="multipart/form-data">
-        {% csrf_token %}
-        {% for field in form %}
-        <div class="mb-3">
-            <label for="{{ field.label }}">{{ field.label }}</label>
-            {{ field }}
-        </div>
-        {% endfor %}
-        <input type="submit" class="button--color rounded w-100 mt-5 mb-3 fs-3" value="정보수정">
-        
-        <a href="{% url 'accounts:change_password' %}" class="btn button--color rounded fs-3 w-100">비밀번호 변경</a>
-      </form>
-    </div>
-</div>
+<main class="bg-gray-100 h-screen flex">
+  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+      <div class="rounded-xl bg-white shadow-sm mx-auto p-8 mt-16 w-full">
+        <h1 class="text-center mb-8 text-[20px]"><b>회원정보 수정</b></h1>
+          <form action="{% url 'accounts:update' %}" method="POST" class="form-text" enctype = 'multipart/form-data'>
+            {% csrf_token %}
+            <div class="flex flex-col gap-3 mb-5">
+              <div class="text-[14px]">{{ form.email.label }}</div>
+              <div>{{ form.email }}</div>
+            </div>
+            <div class="flex flex-col gap-3 mb-8">
+              <div class="text-[14px]">{{ form.image.label }} <span class="text-[12px] text-gray-400">(Optional)</span></div>
+              <div class="flex items-center gap-5">
+                <div class="signup-image_wrapper border border-gray-400">
+                  {% if user.image %}
+                      <img id="preview" src="{{ user.image.url }}" alt="">
+                  {% else %}
+                      <img id="preview" src="{% static 'img/no_profile.jpg' %}" alt="">
+                  {% endif %}
+                </div>
+                <div>{{ form.image }}</div>
+              </div>
+            </div>
+            <input type="submit" class="bg-[#1EB564] text-white rounded-md text-center w-full p-2 font-semibold cursor-pointer" value="회원정보 수정">
+          </form>
+          <a href="{% url 'accounts:change_password' %}">
+            <p class="text-center mt-5 text-[14px] text-[#1EB564]">비밀번호 수정</p>
+          </a>
+      </div>
+  </div>
+</main>
 {% endblock content %}
+
+
+{% block script %}
+<script src="{% static 'js/updatePreview.js' %}"></script>
+{% endblock script %}

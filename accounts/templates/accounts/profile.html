@@ -15,14 +15,17 @@
   <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 relative z-30">
     <div class="flex gap-10 absolute top-[-40px]">
       <div class="profile-image_wrapper rounded-full border border-[#1EB564]">
-        <img src="{{person.image.url}}" alt="profile">
+        {% if person.image %}
+          <img src="{{ person.image.url }}" alt="profile">
+        {% else %}
+          <img src="{% static 'img/no_profile.jpg' %}" alt="">
+        {% endif %}
       </div>
       <div class="flex flex-col">
         <div class="flex items-center gap-5">
           {% comment %} <div>{{ user_title.name }}</div> {% endcomment %}
           <div class="bg-white text-[#1EB564] p-1 px-2 rounded-md"><b>🌱뉴비</b></div>
-          {% comment %} <div class="text-white"><b>포인트: {{ user_profile.points }}</b></div> {% endcomment %}
-          <div><b>포인트: 3P</b></div>
+          <div><b>포인트: {{ person.user_profile.points }}P</b></div>
         </div>
         <div class="mt-4">
           <div class="flex items-center justify-between info-form">
@@ -40,6 +43,7 @@
                 {% endif %} 
             </div>
 
+            {% if request.user == person %}
             <div class="relative">
               {% comment %} 수정 및 탈퇴 메뉴버튼 {% endcomment %}
               <div>
@@ -60,9 +64,10 @@
                 <a href="{% url 'accounts:logout' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="log-menu-item-3">로그아웃</a>
               </div>
             </div>
+            {% endif %} 
           </div>
           <h2 class="text-[14px] text-gray-400">{{ person.email }}</h2>
-          <div class="text-[16px] mt-1">팔로우 <b><span id="followers-count">{{person.followers.count}}</span></b> · 팔로잉 <b><span id="followings-count">{{person.followings.count}}</span></b></div>
+          <div class="text-[16px] mt-1"><span id="followers-count" class="cursor-pointer">팔로우 <b>{{person.followers.count}}</b></span> · <span id="followings-count" class="cursor-pointer">팔로잉 <b>{{person.followings.count}}</b></span></div>
         </div>
       </div>
     </div>
@@ -70,7 +75,7 @@
 
   {% comment %} 좋아요 아이템 및 작성 포스트 목록 {% endcomment %}
   <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 relative flex justify-end z-10">
-    <div class="items-form border rounded-2xl mt-28 p-5 flex flex-col">
+    <div class="items-form border rounded-2xl my-28 p-5 flex flex-col">
 
       {% comment %} 내가 키우는 식물들 {% endcomment %}
       <div class="flex items-center gap-3 mb-5">
@@ -118,16 +123,49 @@
       <div class="flex justify-between gap-12">
         <div class="w-6/12">
           {% comment %} 좋아요한 식물 {% endcomment %}
-          <div class="mb-10">
-            <h2 class="text-[20px]"><b>내가 좋아요한 '식물'</b></h2>
+          <div class="mb-5">
+            <div class="flex items-center gap-3 mb-5">
+              <h2 class="text-[20px]"><b>내가 좋아요한 '식물'</b></h2>
+              <span class="text-gray-400 text-[18px]"><b>{{ person.like_plants.all|length }}</b></span>
+            </div>
+            <div class="flex gap-5">
+              <div class="flex flex-col items-center gap-3">
+                <div class="border rounded-md favor-plants_wrapper">
+                  <img src="https://openimage.interpark.com/goods_image_big/7/1/1/8/10195487118c_l.jpg" alt="">
+                </div>
+                <p class="text-[14px]">유채꽃</p>
+              </div>
+            </div>
           </div>
           {% comment %} 좋아요한 식물원 {% endcomment %}
-          <div class="mb-10">
-            <h2 class="text-[20px]"><b>내가 좋아요한 '식물원'</b></h2>
+          <div class="mb-5">
+            <div class="flex items-center gap-3 mb-5">
+              <h2 class="text-[20px]"><b>내가 좋아요한 '식물원'</b></h2>
+              <span class="text-gray-400 text-[18px]"><b>{{ person.like_gradens.all|length }}</b></span>
+            </div>
+            <div class="flex gap-5">
+              <div class="flex flex-col items-center gap-3">
+                <div class="border rounded-md favor-plants_wrapper">
+                  <img src="https://openimage.interpark.com/goods_image_big/7/1/1/8/10195487118c_l.jpg" alt="">
+                </div>
+                <p class="text-[14px]">유채꽃</p>
+              </div>
+            </div>
           </div>
           {% comment %} 찜한 상품 {% endcomment %}
           <div>
-            <h2 class="text-[20px]"><b>내가 찜한 '상품'</b></h2>
+            <div class="flex items-center gap-3 mb-5">
+              <h2 class="text-[20px]"><b>내가 찜한 '상품'</b></h2>
+              <span class="text-gray-400 text-[18px]"><b>{{ person.like_supply.all|length }}</b></span>
+            </div>
+            <div class="flex gap-5">
+              <div class="flex flex-col items-center gap-3">
+                <div class="border rounded-md favor-plants_wrapper">
+                  <img src="https://openimage.interpark.com/goods_image_big/7/1/1/8/10195487118c_l.jpg" alt="">
+                </div>
+                <p class="text-[14px]">유채꽃</p>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -135,151 +173,42 @@
         <div class="w-6/12">
           <div class="flex items-center gap-3 mb-5">
             <h2 class="text-[20px]"><b>My Posts</b></h2>
-            <span class="text-gray-400 text-[18px]"><b>5</b></span>
+            <span class="text-gray-400 text-[18px]"><b>{{ person.community_set.all|length }}</b></span>
           </div>
 
-          <div class="posts-container">
-
-            <div class="flex gap-5 border rounded-lg p-2 mb-5">
-              <div class="border rounded-md post-image_wrapper">
-                <img src="https://m.itsomemall.com/data/goods/180/2018/10/82594_tmp_5c8d06e6d2c26fa5e7a44b606d55e9048473view.jpg" alt="">
-              </div>
-              <div class="flex flex-col justify-between w-full">
-                <div>
-                  <p class="text-[12px] text-gray-400">커뮤니티</p>
-                  <h3>오늘 산 유채꽃 공유해요~</h3>
+          <div class="posts-container pe-3">
+            {% for community in person.community_set.all %}
+            <a href="{% url 'communities:detail' community.pk %}">
+              <div class="flex gap-5 border rounded-lg p-2 mb-5">
+                <div class="border rounded-md post-image_wrapper">
+                  <img src="{{ community.community_photo.url }}" alt="">
                 </div>
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-4">
-                    <div class="flex items-center gap-1">
-                      <span class="material-symbols-outlined text-[16px]">favorite</span>
-                      <p class="text-[12px]">12</p>
-                    </div>
-                    <div class="flex items-center gap-1">
-                      <span class="material-symbols-outlined text-[16px]">chat_bubble</span>
-                      <p class="text-[12px]">12</p>
-                    </div>
-                    <div class="flex items-center gap-1">
-                      <span class="material-symbols-outlined text-[16px]">visibility</span>
-                      <p class="text-[12px]">12</p>
-                    </div>
+                <div class="flex flex-col justify-between w-full">
+                  <div>
+                    <p class="text-[12px] text-gray-400">커뮤니티</p>
+                    <h3>{{ community.title }}</h3>
                   </div>
-                  <p class="text-[12px] text-gray-400">2023-05-26</p>
-                </div>
-              </div>
-            </div>
-            <div class="flex gap-5 border rounded-lg p-2 mb-5">
-              <div class="border rounded-md post-image_wrapper">
-                <img src="https://m.itsomemall.com/data/goods/180/2018/10/82594_tmp_5c8d06e6d2c26fa5e7a44b606d55e9048473view.jpg" alt="">
-              </div>
-              <div class="flex flex-col justify-between w-full">
-                <div>
-                  <p class="text-[12px] text-gray-400">커뮤니티</p>
-                  <h3>오늘 산 유채꽃 공유해요~</h3>
-                </div>
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-4">
-                    <div class="flex items-center gap-1">
-                      <span class="material-symbols-outlined text-[16px]">favorite</span>
-                      <p class="text-[12px]">12</p>
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                      <div class="flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[16px]">favorite</span>
+                        <p class="text-[12px]">{{ person.like_communities.all|length }}</p>
+                      </div>
+                      <div class="flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[16px]">chat_bubble</span>
+                        <p class="text-[12px]">{{ community.community_comment_set.all|length }}</p>
+                      </div>
+                      <div class="flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[16px]">visibility</span>
+                        <p class="text-[12px]">{{ community.hits }}</p>
+                      </div>
                     </div>
-                    <div class="flex items-center gap-1">
-                      <span class="material-symbols-outlined text-[16px]">chat_bubble</span>
-                      <p class="text-[12px]">12</p>
-                    </div>
-                    <div class="flex items-center gap-1">
-                      <span class="material-symbols-outlined text-[16px]">visibility</span>
-                      <p class="text-[12px]">12</p>
-                    </div>
+                    <p class="text-[12px] text-gray-400">{{ community.created_at|date:'Y-m-d' }}</p>
                   </div>
-                  <p class="text-[12px] text-gray-400">2023-05-26</p>
                 </div>
               </div>
-            </div>
-            <div class="flex gap-5 border rounded-lg p-2 mb-5">
-              <div class="border rounded-md post-image_wrapper">
-                <img src="https://m.itsomemall.com/data/goods/180/2018/10/82594_tmp_5c8d06e6d2c26fa5e7a44b606d55e9048473view.jpg" alt="">
-              </div>
-              <div class="flex flex-col justify-between w-full">
-                <div>
-                  <p class="text-[12px] text-gray-400">커뮤니티</p>
-                  <h3>오늘 산 유채꽃 공유해요~</h3>
-                </div>
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-4">
-                    <div class="flex items-center gap-1">
-                      <span class="material-symbols-outlined text-[16px]">favorite</span>
-                      <p class="text-[12px]">12</p>
-                    </div>
-                    <div class="flex items-center gap-1">
-                      <span class="material-symbols-outlined text-[16px]">chat_bubble</span>
-                      <p class="text-[12px]">12</p>
-                    </div>
-                    <div class="flex items-center gap-1">
-                      <span class="material-symbols-outlined text-[16px]">visibility</span>
-                      <p class="text-[12px]">12</p>
-                    </div>
-                  </div>
-                  <p class="text-[12px] text-gray-400">2023-05-26</p>
-                </div>
-              </div>
-            </div>
-            <div class="flex gap-5 border rounded-lg p-2 mb-5">
-              <div class="border rounded-md post-image_wrapper">
-                <img src="https://m.itsomemall.com/data/goods/180/2018/10/82594_tmp_5c8d06e6d2c26fa5e7a44b606d55e9048473view.jpg" alt="">
-              </div>
-              <div class="flex flex-col justify-between w-full">
-                <div>
-                  <p class="text-[12px] text-gray-400">커뮤니티</p>
-                  <h3>오늘 산 유채꽃 공유해요~</h3>
-                </div>
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-4">
-                    <div class="flex items-center gap-1">
-                      <span class="material-symbols-outlined text-[16px]">favorite</span>
-                      <p class="text-[12px]">12</p>
-                    </div>
-                    <div class="flex items-center gap-1">
-                      <span class="material-symbols-outlined text-[16px]">chat_bubble</span>
-                      <p class="text-[12px]">12</p>
-                    </div>
-                    <div class="flex items-center gap-1">
-                      <span class="material-symbols-outlined text-[16px]">visibility</span>
-                      <p class="text-[12px]">12</p>
-                    </div>
-                  </div>
-                  <p class="text-[12px] text-gray-400">2023-05-26</p>
-                </div>
-              </div>
-            </div>
-            <div class="flex gap-5 border rounded-lg p-2 mb-5">
-              <div class="border rounded-md post-image_wrapper">
-                <img src="https://m.itsomemall.com/data/goods/180/2018/10/82594_tmp_5c8d06e6d2c26fa5e7a44b606d55e9048473view.jpg" alt="">
-              </div>
-              <div class="flex flex-col justify-between w-full">
-                <div>
-                  <p class="text-[12px] text-gray-400">커뮤니티</p>
-                  <h3>오늘 산 유채꽃 공유해요~</h3>
-                </div>
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-4">
-                    <div class="flex items-center gap-1">
-                      <span class="material-symbols-outlined text-[16px]">favorite</span>
-                      <p class="text-[12px]">12</p>
-                    </div>
-                    <div class="flex items-center gap-1">
-                      <span class="material-symbols-outlined text-[16px]">chat_bubble</span>
-                      <p class="text-[12px]">12</p>
-                    </div>
-                    <div class="flex items-center gap-1">
-                      <span class="material-symbols-outlined text-[16px]">visibility</span>
-                      <p class="text-[12px]">12</p>
-                    </div>
-                  </div>
-                  <p class="text-[12px] text-gray-400">2023-05-26</p>
-                </div>
-              </div>
-            </div>
+            </a>
+            {% endfor %}
 
           </div>
         </div>
@@ -288,45 +217,23 @@
   </div>
 </main>
 
-<div class="container">
-    <div class="row">
-    <div class="d-flex flex-column flex-md-row-reverse">
 
-        <h5>내가 쓴 커뮤니티 글</h5>
-        <table class='table'>
-          <thead>
-            <tr>
-              <th>제목</th>
-              <th>커뮤니티 글</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for community in communities %}
-              
-                <td>{{community.title}}</td>
-                <td>{{community.content}}</td>
-            {% endfor %}
-          </tbody>
-      </table>
-  
-
-      {% comment %} community_likes {% endcomment %}
-      <h5>좋아요한 커뮤니티 글</h5>
-
-        {% for community in person.like_communities.all  %}
-        <div class='card--border card--border--gray'>
-          <a href="{% url 'communities:detail' communitiy.pk %}">
-            <img src="{{ communities.image.url}}" class='card--border__image rounded' alt="{{ community.title }}의 이미지">  
-            <div class='card--name--box'>
-              <strong class='card--name'>{{ community.title }}</strong>
+  {% comment %} 팔로우 modal {% endcomment %}
+  <div class="relative z-30 modal-overlay" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="followers-modal">
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+    <div class="fixed inset-0 z-10 overflow-y-auto">
+      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+        <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+          <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+            <div class="sm:flex sm:items-start">
+              <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">팔로우</h3>
+                <div class="mt-2 mb-4">
+                  <p class="text-sm text-gray-500">Are you sure you want to deactivate your account? All of your data will be permanently removed. This action cannot be undone.</p>
+                </div>
+              </div>
             </div>
-            <div class='card--tag--border'>
-              <p>조회수 {{ community.hits }}</p>
-              <p>리뷰 {{ community.comment_set.count }}</p>
-            </div>
-            </a>  
           </div>
-          {% endfor %}
         </div>
       </div>
     </div>
@@ -337,6 +244,6 @@
 
 {% block script %}
 <script src="{% static 'js/profileEditDropdown.js' %}"></script>
+<script src="{% static 'js/profileFollowerModal.js' %}"></script>
 <script src="{% static 'js/accounts_profile_follow.js' %}"></script>
-
 {% endblock script %}

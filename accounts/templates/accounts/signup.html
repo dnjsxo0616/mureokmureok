@@ -1,20 +1,63 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block content %}
-<div class="container-fluid">
-    <div class="container" style="width: 500px;">
-      <h1 class="text-center fw-bold">간단한 회원가입</h1>
-        <form action="{% url 'accounts:signup' %}" method="POST" class="form-text" enctype = 'multipart/form-data'>
-          {% csrf_token %}
-          {% for field in form %}
-          <div class="mb-3">
-            <label for="{{ field.label }}">{{ field.label }}</label>
-            {{ field }}
-          </div>
-          {% endfor %}
-          <input type="submit" class="button--color rounded w-100 mt-3 fs-3" value="회원가입">
-        </form>
-    </div>
-</div>
 
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/signup.css' %}">
+{% endblock head %}
+
+
+{% block content %}
+<main class="bg-gray-100 h-screen flex">
+  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+      <div class="rounded-xl bg-white shadow-sm mx-auto p-8 mt-16 w-full">
+        <div class="mb-5">
+          <h1 class="text-center text-[20px] mb-3"><b>회원가입</b></h1>
+          <p class="text-center text-[14px]">이미 회원이신가요? <a href="{% url 'accounts:login' %}" class="text-[#1EB564]"><b>로그인</b></a></p>
+        </div>
+          <form action="{% url 'accounts:signup' %}" method="POST" class="form-text" enctype = 'multipart/form-data'>
+            {% csrf_token %}
+            <div class="flex flex-col gap-1 mb-5">
+              <div class="text-[14px]">{{ form.username.label }}</div>
+              <div>{{ form.username }}</div>
+            </div>
+            <div class="flex flex-col gap-1 mb-5">
+              <div class="text-[14px]">{{ form.password1.label }}</div>
+              <div>{{ form.password1 }}</div>
+            </div>
+            <div class="flex flex-col gap-1 mb-5">
+              <div class="text-[14px]">{{ form.password2.label }}</div>
+              <div>{{ form.password2 }}</div>
+            </div>
+            <div class="flex flex-col gap-1 mb-5">
+              <div class="text-[14px]">{{ form.email.label }}</div>
+              <div>{{ form.email }}</div>
+            </div>
+            <div class="flex flex-col gap-1 mb-8">
+              <div class="text-[14px]">{{ form.image.label }} <span class="text-[12px] text-gray-400">(Optional)</span></div>
+              <div class="flex items-center gap-5">
+                <div class="signup-image_wrapper border border-gray-400">
+                  {% if form.image.url %}
+                      <img id="preview" src="{{ form.image.url }}" alt="">
+                  {% else %}
+                      <img id="preview" src="{% static 'img/no_profile.jpg' %}" alt="">
+                  {% endif %}
+                </div>
+                <div>{{ form.image }}</div>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1 mb-8">
+              <div class="text-[14px]">{{ form.birthday.label }}</div>
+              <div>{{ form.birthday }}</div>
+            </div>
+            <input type="submit" class="bg-[#1EB564] text-white rounded-md text-center w-full p-2 font-semibold cursor-pointer" value="회원가입">
+          </form>
+      </div>
+  </div>
+</main>
 {% endblock content %}
+
+
+{% block script %}
+<script src="{% static 'js/signupPreview.js' %}"></script>
+{% endblock script %}

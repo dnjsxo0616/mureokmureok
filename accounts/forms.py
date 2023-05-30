@@ -31,7 +31,7 @@ class CustomUserCreationForm(UserCreationForm):
         label='사용자 ID',
         widget=forms.TextInput(
             attrs={
-                'class': 'form-control',
+                'class': 'border rounded-md p-2 ps-3 w-full h-8 focus:outline-none focus:ring-1 focus:ring-[#1EB564]',
                 'id': '사용자 ID',
             }
         )
@@ -40,7 +40,7 @@ class CustomUserCreationForm(UserCreationForm):
         label='비밀번호',
         widget=forms.PasswordInput(
             attrs={
-                'class': 'form-control',
+                'class': 'border rounded-md p-2 ps-3 w-full h-8 focus:outline-none focus:ring-1 focus:ring-[#1EB564]',
                 'id': '비밀번호',
             }
         )
@@ -49,7 +49,7 @@ class CustomUserCreationForm(UserCreationForm):
         label='비밀번호 확인',
         widget=forms.PasswordInput(
             attrs={
-                'class': 'form-control',
+                'class': 'border rounded-md p-2 ps-3 w-full h-8 focus:outline-none focus:ring-1 focus:ring-[#1EB564]',
                 'id': '비밀번호 확인',
             }
         )
@@ -58,7 +58,7 @@ class CustomUserCreationForm(UserCreationForm):
         label='이메일',
         widget=forms.EmailInput(
             attrs={
-                'class': 'form-control',
+                'class': 'border rounded-md p-2 ps-3 w-full h-8 focus:outline-none focus:ring-1 focus:ring-[#1EB564]',
                 'id': '이메일',
             }
         )
@@ -67,12 +67,20 @@ class CustomUserCreationForm(UserCreationForm):
         label='프로필 이미지',
         widget=forms.ClearableFileInput(
             attrs={
-                'class': 'form-control',
+                'class': 'border rounded-md w-full focus:outline-none focus:ring-1 focus:ring-[#1EB564] text-[14px]',
             },
         ),
         required=False,
     )
-    birthday = forms.DateTimeField(widget=NumberInput(attrs={'type': 'date'}), label="날짜")
+    birthday = forms.DateTimeField(
+        label="날짜",
+        widget=NumberInput(
+            attrs={
+                'class': 'border rounded-md p-2 ps-3 w-full h-8 focus:outline-none focus:ring-1 focus:ring-[#1EB564]',
+                'type': 'date',
+            },
+        ),
+    )
 
     class Meta(UserCreationForm.Meta):
         model = get_user_model()
@@ -86,7 +94,7 @@ class CustomUserChangeForm(UserChangeForm):
         label='이메일',
         widget=forms.EmailInput(
             attrs={
-                'class': 'form-control',
+                'class': 'border rounded-md p-2 ps-3 w-full h-8 focus:outline-none focus:ring-1 focus:ring-[#1EB564]',
                 'id' : '이메일',
             }
         )
@@ -96,8 +104,9 @@ class CustomUserChangeForm(UserChangeForm):
         label='프로필 이미지',
         widget=forms.ClearableFileInput(
             attrs={
-                'class': 'form-control',
+                'class': 'border rounded-md w-full focus:outline-none focus:ring-1 focus:ring-[#1EB564] text-[14px]',
                 'id' : '프로필 이미지',
+                'id': 'image',
             },
         ),
         required=False,
@@ -115,7 +124,7 @@ class CustomPasswordChangeForm(PasswordChangeForm):
         label='기존 비밀번호',
         widget=forms.PasswordInput(
             attrs={
-                'class': 'form-control',
+                'class': 'border rounded-md p-2 ps-3 w-full h-8 focus:outline-none focus:ring-1 focus:ring-[#1EB564]',
                 'id' : '기존 비밀번호',
             },
         ),
@@ -124,7 +133,7 @@ class CustomPasswordChangeForm(PasswordChangeForm):
         label='새 비밀번호',
         widget=forms.PasswordInput(
             attrs={
-                'class': 'form-control',
+                'class': 'border rounded-md p-2 ps-3 w-full h-8 focus:outline-none focus:ring-1 focus:ring-[#1EB564]',
                 'id' : '새 비밀번호',
             },
         ),
@@ -133,7 +142,7 @@ class CustomPasswordChangeForm(PasswordChangeForm):
         label='새 비밀번호 확인',
         widget=forms.PasswordInput(
             attrs={
-                'class': 'form-control',
+                'class': 'border rounded-md p-2 ps-3 w-full h-8 focus:outline-none focus:ring-1 focus:ring-[#1EB564]',
                 'id' : '새 비밀번호 확인',
             },
         ),
