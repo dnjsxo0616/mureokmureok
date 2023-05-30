@@ -56,10 +56,10 @@
                             <a href="#" class="text-gray-400 hover:text-black px-2 py-2 text-sm font-medium">공지사항</a>
                             <a href="{% url 'plants:index' %}" class="text-gray-400 hover:text-black px-2 py-2 text-sm font-medium">식물</a>
                             <a href="{% url 'gardens:index' %}" class="text-gray-400 hover:text-black px-2 py-2 text-sm font-medium">식물원</a>
-                            <a href="#" class="text-gray-400 hover:text-black px-2 py-2 text-sm font-medium">식물추천</a>
                             <a href="{% url 'communities:index' %}" class="text-gray-400 hover:text-black px-2 py-2 text-sm font-medium">커뮤니티</a>
                             <a href="#" class="text-gray-400 hover:text-black px-2 py-2 text-sm font-medium">미니게임</a>
                             <a href="#" class="text-gray-400 hover:text-black px-2 py-2 text-sm font-medium">쇼핑</a>
+                            <a href="#" class="text-gray-400 hover:text-black px-2 py-2 text-sm font-medium">My Plants</a>
                         </div>
                     </div>
                 </div>
@@ -100,8 +100,21 @@
                         </div>
             
                         {% comment %} 프로필 드롭다운 {% endcomment %}
-                        <div class="absolute right-0 z-10 mt-2 w-32 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1" id="profile-dropdown" style="display: none;">
-                            <a href="{% url 'accounts:profile' user.username %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-0">프로필</a>
+                        <div class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1" id="profile-dropdown" style="display: none;">
+                            <div class="flex items-center gap-5 px-4 py-3 border-0 border-b-[1px]">
+                                <div class="rounded-full w-12 h-12 overflow-hidden">
+                                    {% if user.image %}
+                                    <img src="{{ user.image.url }}" alt="">
+                                    {% else %}
+                                    <img src="{% static 'img/no_profile.jpg' %}" alt="">
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    <p>{{ user.username }}</p>
+                                    <p class="text-[12px] text-gray-500">{{ user.email }}</p>
+                                </div>
+                            </div>
+                            <a href="{% url 'accounts:profile' user.username %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-0">내 프로필</a>
                             <a href="{% url 'accounts:update' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-1">회원정보 수정</a>
                             <a href="{% url 'accounts:logout' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-2">로그아웃</a>
                         </div>
@@ -126,10 +139,10 @@
                 <a href="#" class="text-gray-400 hover:text-black block rounded-md px-3 py-2 text-base font-medium">공지사항</a>
                 <a href="#" class="text-gray-400 hover:text-black block rounded-md px-3 py-2 text-base font-medium">식물</a>
                 <a href="#" class="text-gray-400 hover:text-black block rounded-md px-3 py-2 text-base font-medium">식물원</a>
-                <a href="#" class="text-gray-400 hover:text-black block rounded-md px-3 py-2 text-base font-medium">식물추천</a>
                 <a href="#" class="text-gray-400 hover:text-black block rounded-md px-3 py-2 text-base font-medium">커뮤니티</a>
                 <a href="#" class="text-gray-400 hover:text-black block rounded-md px-3 py-2 text-base font-medium">미니게임</a>
                 <a href="#" class="text-gray-400 hover:text-black block rounded-md px-3 py-2 text-base font-medium">쇼핑</a>
+                <a href="#" class="text-gray-400 hover:text-black block rounded-md px-3 py-2 text-base font-medium">My Plants</a>
             </div>
         </div>
     </nav>
