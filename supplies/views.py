@@ -3,22 +3,29 @@ from .models import Supply
 from .forms import SupplyForm
 from taggit.models import Tag
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.core.paginator import Paginator
 
 # Create your views here.
 
 
 
-def supply_index(request):
+def index(request):
     supplies = Supply.objects.all()[::-1]
+    paginator = Paginator(supplies, 10)  
+    page_number = request.GET.get('page')  
+    page_obj = paginator.get_page(page_number)
+
     content = {
         'supplies': supplies,
+        'page_obj': page_obj,
     }
     return render(request, 'supplies/index.html', content)
 
 
 
 @login_required
-def supply_create(request):
+def create(request):
     if request.method == 'POST':
         tags = request.POST.get('tags').split(',')
         form = SupplyForm(request.POST, request.FILES)
@@ -28,7 +35,7 @@ def supply_create(request):
             supply.save()
             for tag in tags:
                 supply.tags.add(tag.strip())
-            return redirect('supplies:supply_detail', supply.pk)
+            return redirect('supplies:detail', supply.pk)
     else:
         form = SupplyForm()
     context = {
@@ -38,16 +45,10 @@ def supply_create(request):
 
 
 
-def supply_detail(request, supply_pk):
+def detail(request, supply_pk):
     supply = Supply.objects.get(pk=supply_pk)
     tags = supply.tags.all()
     supplies = Supply.objects.all().order_by('like')
-
-    session_key = 'supply_{}_hits'.format(supply_pk)
-    if not request.session.get(session_key):
-        supply.hits += 1
-        supply.save()
-        request.session[session_key] = True
 
     context ={
         'supply' : supply,
@@ -58,7 +59,7 @@ def supply_detail(request, supply_pk):
 
 
 
-def supply_delete(request, supply_pk):
+def delete(request, supply_pk):
     supply = Supply.objects.get(pk=supply_pk)
     if request.user == supply.user:
         supply.delete()
@@ -66,7 +67,7 @@ def supply_delete(request, supply_pk):
 
 
 
-def supply_update(request):
+def update(request):
     supply = Supply.objects.get(pk=supply_pk)
     if request.method == 'POST':
         form = SupplyForm(request.POST, request.FILES, instance=supply)
@@ -83,6 +84,8 @@ def supply_update(request):
         'form' : form,
     }
     return render(request,'supplies/update.html',context)
+
+
 
 def likes(request, supply_pk):
     supply = Supply.objects.get(pk=supply_pk)
@@ -102,15 +105,14 @@ def likes(request, supply_pk):
 
 
 
+def filter_supplies(request, category):
+    supplies = Supply.objects.filter(category=category)[::-1]
+    paginator = Paginator(supplies, 12)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
-
-
-
-
-
-
-def filter_supplies(request):
-    selected_tags = request.GET.getlist('tags')
-    supplies = Supply.objects.filter(tags__in=selected_tags)
-    context = {'supplies': supplies, 'selected_tags': selected_tags}
-    return render(request, 'filter_supplies.html', context)
+    content ={
+        'supplies':supplies,
+        'page_obj': page_obj, 
+    }
+    return render(request, 'supplies/index.html', content)

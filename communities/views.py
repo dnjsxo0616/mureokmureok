@@ -14,7 +14,7 @@ from django.core.paginator import Paginator
 def index(request):
     communities = Community.objects.all()[::-1]
     need_experts = Community.objects.filter(need_expert=True)[::-1]
-    paginator = Paginator(communities, 8)  
+    paginator = Paginator(communities, 10)
     page_number = request.GET.get('page')  
     page_obj = paginator.get_page(page_number)
 
@@ -199,7 +199,7 @@ def community_comment_likes(request,product_pk, community_comment_pk):
 def filter_communities(request, category):
     communities = Community.objects.filter(category=category)[::-1]
     need_experts = Community.objects.filter(category=category).filter(need_expert=True)[::-1]
-    paginator = Paginator(communities, 4)
+    paginator = Paginator(communities, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
