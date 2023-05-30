@@ -65,10 +65,12 @@
                 </div>
                 
                 <!-- 검색창 -->
+                <form class="search_hidden" action="{% url 'search' %}" role="search">
                 <div class="bg-gray-100 rounded-full ps-3 flex items-center">
                     <span class="material-symbols-outlined text-gray-400">search</span>
                     <input type="search" name="search" class="ps-1 pe-3 h-8 w-48 text-sm bg-transparent rounded-full focus:outline-none" placeholder="검색어를 입력해주세요.">
                 </div>
+                </form>
 
                 <div class="absolute inset-y-0 right-0 flex items-center gap-2 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                     
