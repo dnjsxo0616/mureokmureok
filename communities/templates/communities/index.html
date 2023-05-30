@@ -74,30 +74,48 @@
 
     <div class="flex flex-col mt-5">
       <div class="flex flex-row font-bold bg-gray-200 p-4 rounded-lg">
-        <div class="flex-grow ml-5">제목</div>
+        <div class="flex-grow ml-5 text-center">제목</div>
         <div class="w-1/6">좋아요</div>
         <div class="w-1/6">조회수</div>
         <div class="w-1/6">게시일</div>
       </div>
-      {% for community in communities %}
+      {% for community in page_obj %}
       <a href="{% url 'communities:detail' community.pk %}" class="mb-4">
         <div class="flex flex-row items-center p-4 rounded-lg">
-          <div class="flex-grow">{{ community.title }} ({{ community.community_comment_set.count }})</div>
+          <div class="flex-grow">
+            <div class="flex items-center"> <!-- 이미지와 타이틀을 수평으로 배치하기 위한 div -->
+              <img src="{{ community.community_photo.url }}" alt="Community Photo" class="community-image_wrapper ml-5">
+              <h4 class="ml-5">{{ community.title }}</h4>
+              <p>({{ community.community_comment_set.count }})</p> <!-- 셋 카운트 표시 -->
+            </div>     
+          </div>
           <div class="w-1/6">{{ community.like_users.count }}</div>
           <div class="w-1/6">{{ community.hits }}</div>
           <div class="w-1/6">{{ community.created_at|date:"Y-m-d" }}</div>
         </div>
       </a>
       <br>
-      {% endfor %}
-    </div>
+    {% endfor %}
 
-
-
-
-
-
-
+{% if page_obj.has_other_pages %}
+  <div class="flex justify-center mt-4">
+    {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}" class="px-2 py-1 bg-transparent text-gray-700 hover:bg-blue-300">이전</a>
+    {% endif %}
+    
+    {% for num in page_obj.paginator.page_range %}
+      {% if page_obj.number == num %}
+        <span class="px-2 py-1 bg-blue-500 text-white">{{ num }}</span>
+      {% else %}
+        <a href="?page={{ num }}" class="px-2 py-1 bg-transparent text-gray-700 hover:bg-blue-300">{{ num }}</a>
+      {% endif %}
+    {% endfor %}
+    
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}" class="px-2 py-1 bg-transparent text-gray-700 hover:bg-blue-300">다음</a>
+    {% endif %}
+  </div>
+{% endif %}
 
 
 

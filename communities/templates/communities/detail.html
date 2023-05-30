@@ -150,7 +150,11 @@
 
           {% comment %} 댓글 수정 및 삭제 부분{% endcomment %}
           {% if request.user == community_comment.user %}
-          <a href="{% url 'communities:community_comment_update' community.pk community_comment.pk %}">수정쓰</a>
+          <form method="POST" action="{% url 'communities:community_comment_update' community.pk community_comment.pk %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn">수정하기</button>
+          </form>
           <a href="#" onclick="deleteComment(event, {{ community.pk }}, {{ community_comment.pk }})">삭제하기</a>
           {% endif %}
         </div>
