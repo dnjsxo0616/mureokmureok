@@ -3,54 +3,86 @@
 
 {% block head %}
 <script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+  .comment-section {
+    margin-top: 20px;
+  }
+  
+  .comment-section form {
+    margin-bottom: 10px;
+  }
+  
+  .comment-section p {
+    margin-right: 10px;
+  }
+  
+  .comment-section form button[type="submit"] {
+    margin-left: 10px;
+  }
+  </style>
 {% endblock head %}
 
 {% block content %}
 <div class="py-3 px-10">
   <div class="flex items-start justify-center">
     <div class="w-1/2 flex items-center justify-center">
-      <img src="{{ garden.image.url }}" alt="Garden Image" style="max-width: 300px;">
+      <a href="{{garden.site_link}}">
+        <img src="{{ garden.image.url }}" alt="Garden Image" style="max-width: 300px;">
+      </a>
     </div>
     <div class="w-1/2">
-      <div class="flex justify-center border-2 rounded-lg" style="width: 50%;">
-        <div class="flex flex-col text-center divide-y" >
+      <div class="flex justify-center border-2 border-lime-800 rounded-lg" style="width: 50%;">
+        <div class="flex flex-col text-center divide-y divide-lime-500" >
           <div class="mt-1">번호: {{ garden.pk }}</div>
           <div class="mt-1">이름: {{ garden.title }}</div>
+
+          <form class='sidebar-interest' action="{% if user.is_anonymous %}{% url 'accounts:login' %}{% else %}{% url 'gardens:like_garden' garden.pk %}{% endif %}" method="POST">
+            {% csrf_token %}
+            <button class='option-btn' type='submit'>
+              {% if request.user in garden.like_users.all %}
+                <div>관심상품 취소</div>
+              {% else %}
+                <div>관심상품</div>
+              {% endif %}
+            </button>
+          </form>
+
         </div>
       </div>
     </div>
   </div>
-  <div class="my-5"></div>
+
+  <hr class="my-6 border-lime-600">
+
   <div class="flex justify-center">
-    <div>내용: {{ garden.content|safe }}</div>
+    <div> {{ garden.content|safe }}</div>
   </div>
+  
+  <hr class="my-6 border-lime-600">
+  
+  <div class="comment-section">
+  <h2>댓글 작성</h2>
+  <form id="commentForm" method="POST" action="{% url 'gardens:comment' garden_pk=garden.pk %}">
+    {% csrf_token %}
+    {{ comment_form.as_p }}
+    <button type="submit">작성</button>
+  </form>
 </div>
 
-  {% comment %} 댓글 {% endcomment %}
-  {% for comment in comments %}
-    <p>{{ comment.content }}</p>
-  {% endfor %}
-  
-  {% comment %} 삭제기능 {% endcomment %}
-  {% for comment in comments %}
+<hr>
+{% comment %} 댓글 {% endcomment %}
+{% for comment in comments %}
   <p>{{ comment.content }}</p>
   {% if request.user == comment.user %}
-      <form method="POST" action="{% url 'comment_delete' product_pk=product.pk comment_pk=comment.pk %}">
-        {% csrf_token %}
-        <button type="submit">삭제</button>
-      </form>
-    {% endif %}
+    <form method="POST" action="{% url 'gardens:comment_delete' garden_pk=garden.pk comment_pk=comment.pk %}">
+      {% csrf_token %}
+      <button type="submit">삭제</button>
+    </form>
+  {% endif %}
   {% endfor %}
   
   
-  <form class='sidebar-interest' action="{% if user.is_anonymous %}{% url 'accounts:login' %}{% else %}{% url 'gardens:like_garden' garden.pk %}{% endif %}" method="POST">
-    {% csrf_token %}
-  <button class='option-btn' type='submit'>
-    {% if request.user in garden.like_users.all %}
-      <div>관심상품 취소</div>
-    {% else %}
-      <div>관심상품</div>
-    {% endif %}
-  </button>
-</form>
+  
+</div>
 {% endblock content %}

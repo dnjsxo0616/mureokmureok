@@ -3,9 +3,9 @@
 {% block content %}
 <div class='container w-50'>
 
-  <form action="{% url 'gardens:comment' garden.pk%}" method="POST" enctype="multipart/form-data">
+  <form action="{% url 'gardens:detail' garden.pk %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ comment_form.as_p }}  {# form을 comment_form으로 변경 #}
     <button class='btn btn-primary w-100 mb-3' type='submit'>작성</button>
   </form>
 

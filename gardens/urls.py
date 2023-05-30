@@ -12,6 +12,6 @@ urlpatterns = [
     path('listing/', views.listing, name='listing'),
     path('<int:garden_pk>/', views.detail, name='detail'),
     path('<int:garden_pk>/comment/', views.comment, name='comment'),
-    path('<int:product_pk>/comments/<int:comment_pk>/delete/', views.comment_delete, name='comment_delete'),
+    path('<int:garden_pk>/comments/<int:comment_pk>/delete/', views.comment_delete, name='comment_delete'),
     path('location/', views.location, name='location')
 ]
