@@ -14,7 +14,7 @@ from django.core.paginator import Paginator
 def index(request):
     communities = Community.objects.all()[::-1]
     need_experts = Community.objects.filter(need_expert=True)[::-1]
-    paginator = Paginator(communities, 10)  
+    paginator = Paginator(communities, 10)
     page_number = request.GET.get('page')  
     page_obj = paginator.get_page(page_number)
 

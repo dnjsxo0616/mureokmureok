@@ -1,168 +1,150 @@
 {% extends "base.html" %}
 {% load static %}
 
+
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/communities_index.css' %}">
 {% endblock head %}
-{% block content  %}
 
 
-<div class="flex items-center">
-  <div class="hidden md:block">
-    <div class="ml-10 flex items-baseline space-x-4 mt-5">
-      <a href="#" class="text-gray-300 hover:text-gray-500 rounded-md px-3 py-2 text-sm font-medium" onclick="changeContent('board')">
-        <li id="btn_board" class="btn" onclick="changeTextColor(this)">게시판</li>
-      </a>
-      <a href="#" class="text-gray-300 hover:text-gray-500 rounded-md px-3 py-2 text-sm font-medium" onclick="changeContent('qa')">
-        <li id="btn_qa" class="btn" onclick="changeTextColor(this)">Q&A</li>
-      </a>
-    </div>
-  </div>
-</div>
-
-      <div id="content_board">
-        <div class="flex items-center space-x-4">
-          <div class="ml-10 flex items-baseline space-x-4">
-            <a href="{% url 'communities:index' %}" class="text-gray-300 hover:text-gray-500 rounded-md px-3 py-2 text-sm font-medium {% if request.path == index_url %}btn_active{% endif %}" aria-current="page">
-              <li class="btn" onclick="changeTextColor(this)">
-                전체 보기
-              </li>
-            </a>
-            <a href="{% url 'communities:filter_communities' '실내 식물' %}" class="text-gray-300 hover:text-gray-500 rounded-md px-3 py-2 text-sm font-medium {% if '/실내식물/' in request.path %}btn_active{% endif %}">
-              <li class="btn" onclick="changeTextColor(this)">
-                실내식물
-              </li>
-            </a>
-            <a href="{% url 'communities:filter_communities' '실외 식물' %}" class="text-gray-300 hover:text-gray-500 rounded-md px-3 py-2 text-sm font-medium {% if '/실외식물/' in request.path %}btn_active{% endif %}"> 
-              <li class="btn" onclick="changeTextColor(this)">
-                실외식물
-              </li>
-            </a>
-            <a href="{% url 'communities:filter_communities' '실내 식물 종자' %}" class="text-gray-300 hover:text-gray-500 rounded-md px-3 py-2 text-sm font-medium {% if '/실내 식물 종자/' in request.path %}btn_active{% endif %}">
-              <li class="btn" onclick="changeTextColor(this)">
-                실내 식물 종자
-              </li>
-            </a>
-            <a href="{% url 'communities:filter_communities' '실외 식물 종자' %}" class="text-gray-300 hover:text-gray-500 rounded-md px-3 py-2 text-sm font-medium {% if '/실외 식물 종자/' in request.path %}btn_active{% endif %}">
-              <li class="btn" onclick="changeTextColor(this)">
-                실외 식물 종자
-              </li>
-            </a>
-          </div>
-        </div>
+{% block content %}
+<main>
+  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center border-0 border-b-[1px] border-gray-400 pt-8 pb-3">
+      <div class="flex items-center gap-10">
+        <a href="#" class="text-gray-400 hover:text-black text-[20px] font-medium" onclick="changeContent('board')">
+          <li id="btn_board" class="btn" onclick="changeTextColor(this)">게시판</li>
+        </a>
+        <a href="#" class="text-gray-400 hover:text-black text-[20px] font-medium" onclick="changeContent('qa')">
+          <li id="btn_qa" class="btn" onclick="changeTextColor(this)">Q&A</li>
+        </a>
       </div>
-
-    <div id="content_qa" class="hidden">
-      <div class="flex items-center space-x-4">
-        <div class="ml-10 flex items-baseline space-x-4">
-          <a href="{% url 'communities:filter_communities' '전문가 Q&A' %}" class="text-gray-300 hover:text-gray-500 rounded-md px-3 py-2 text-sm font-medium {% if '/실내식물/' in request.path %}btn_active{% endif %}">
-            <li class="btn" onclick="changeTextColor(this)">
-              전문가 Q&A
-            </li>
-          </a>
-          <a href="{% url 'communities:filter_communities' '운영자 Q&A' %}" class="text-gray-300 hover:text-gray-500 rounded-md px-3 py-2 text-sm font-medium {% if '/실외식물/' in request.path %}btn_active{% endif %}"> 
-            <li class="btn" onclick="changeTextColor(this)">
-              운영자 Q&A
-            </li>
-          </a>
-        </div>
-      </div>
+      
+      {% comment %} {% if request.user.is_superuser %} {% endcomment %}
+      <a href="{% url 'communities:create' %}" class="text-[14px] border rounded-lg p-1 px-2 text-center hover:bg-gray-100">글 작성</a>
+      {% comment %} {% endif %} {% endcomment %}
     </div>
 
+    <div class="flex items-center gap-10 py-3 mb-5 sticky top-[65px] bg-white" id="content_board">
+      <a href="{% url 'communities:index' %}" class="text-gray-400 hover:text-black {% if request.path == index_url %}btn_active{% endif %}" aria-current="page">
+        <li class="btn" onclick="changeTextColor(this)">전체 보기</li>
+      </a>
+      <a href="{% url 'communities:filter_communities' '실내 식물' %}" class="text-gray-400 hover:text-black {% if '/실내식물/' in request.path %}btn_active{% endif %}">
+        <li class="btn" onclick="changeTextColor(this)">실내식물</li>
+      </a>
+      <a href="{% url 'communities:filter_communities' '실외 식물' %}" class="text-gray-400 hover:text-black {% if '/실외식물/' in request.path %}btn_active{% endif %}"> 
+        <li class="btn" onclick="changeTextColor(this)">실외식물</li>
+      </a>
+      <a href="{% url 'communities:filter_communities' '실내 식물 종자' %}" class="text-gray-400 hover:text-black {% if '/실내 식물 종자/' in request.path %}btn_active{% endif %}">
+        <li class="btn" onclick="changeTextColor(this)">실내 식물 종자</li>
+      </a>
+      <a href="{% url 'communities:filter_communities' '실외 식물 종자' %}" class="text-gray-400 hover:text-black {% if '/실외 식물 종자/' in request.path %}btn_active{% endif %}">
+        <li class="btn" onclick="changeTextColor(this)">실외 식물 종자</li>
+      </a>
+    </div>
+    
+    <div class="hidden flex items-center gap-10 py-3 mb-5 sticky top-[65px] bg-white" id="content_qa">
+      <a href="{% url 'communities:filter_communities' '전문가 Q&A' %}" class="text-gray-400 hover:text-black {% if '/실내식물/' in request.path %}btn_active{% endif %}">
+        <li class="btn" onclick="changeTextColor(this)">전문가 Q&A</li>
+      </a>
+      <a href="{% url 'communities:filter_communities' '운영자 Q&A' %}" class="text-gray-400 hover:text-black {% if '/실외식물/' in request.path %}btn_active{% endif %}"> 
+        <li class="btn" onclick="changeTextColor(this)">운영자 Q&A</li>
+      </a>
+    </div>
 
+    {% comment %} 표시항목 {% endcomment %}
+    <div class="flex p-3 py-2 text-[14px] text-white sticky top-[110px] bg-[#1EB564] rounded-lg">
+      <div class="w-1/12 text-center">이미지</div>
+      <div class="w-1/12 grow text-center">제목 및 내용</div>
+      <div class="w-1/12 text-center">작성자</div>
+      <div class="w-1/12 text-center">좋아요</div>
+      <div class="w-1/12 text-center">댓글</div>
+      <div class="w-1/12 text-center">조회수</div>
+      <div class="w-1/12 text-center">게시일</div>
+    </div>
 
-
-    <div class="flex flex-col mt-5">
-      <div class="flex flex-row font-bold bg-gray-200 p-4 rounded-lg">
-        <div class="flex-grow ml-5 text-center">제목</div>
-        <div class="w-1/6">좋아요</div>
-        <div class="w-1/6">조회수</div>
-        <div class="w-1/6">게시일</div>
-      </div>
+    {% comment %} 게시물 {% endcomment %}
+    <div class="flex flex-col mb-10">
       {% for community in page_obj %}
-      <a href="{% url 'communities:detail' community.pk %}" class="mb-4">
-        <div class="flex flex-row items-center p-4 rounded-lg">
-          <div class="flex-grow">
-            <div class="flex items-center"> <!-- 이미지와 타이틀을 수평으로 배치하기 위한 div -->
-              <img src="{{ community.community_photo.url }}" alt="Community Photo" class="community-image_wrapper ml-5">
-              <h4 class="ml-5">{{ community.title }}</h4>
-              <p>({{ community.community_comment_set.count }})</p> <!-- 셋 카운트 표시 -->
-            </div>     
+      <a href="{% url 'communities:detail' community.pk %}">
+        <div class="flex items-center bg-white p-3 border-0 border-b-[1px] border-gray-300 hover:bg-gray-100">
+          <div class="w-1/12 rounded-md overflow-hidden h-24 border">
+            <img src="{{ community.community_photo.url }}" alt="Community Photo" class="object-cover w-full h-full">
           </div>
-          <div class="w-1/6">{{ community.like_users.count }}</div>
-          <div class="w-1/6">{{ community.hits }}</div>
-          <div class="w-1/6">{{ community.created_at|date:"Y-m-d" }}</div>
+          <div class="w-1/12 grow px-10">
+            <div class="text-[12px] text-gray-700 border border-[1px] border-gray-400 w-fit rounded-md p-[2px] px-[4px] mb-2 shadow-sm">{{ community.category }}</div>
+            <h4 class="text-[18px] truncate mb-1">{{ community.title }}</h4>
+            <p class="text-[14px] text-gray-400 truncate">{{ community.content }}</p>
+          </div>
+          <div class="w-1/12 text-center flex flex-col items-center gap-2">
+            <div class="rounded-full w-8 h-8 overflow-hidden border border-[0.5px] border-gray-700">
+              {% if community.user.image %}
+              <img src="{{ community.user.image.url }}" alt="">
+              {% else %}
+              <img src="{% static 'img/no_profile.jpg' %}" alt="">
+              {% endif %}
+            </div>
+            <p class="text-[14px] text-gray-600">{{ community.user }}</p>
+          </div>
+          <div class="w-1/12 text-center text-[14px]">{{ community.like_users.count }}</div>
+          <div class="w-1/12 text-center text-[14px]">{{ community.community_comment_set.count }}</div>
+          <div class="w-1/12 text-center text-[14px]">{{ community.hits }}</div>
+          <div class="w-1/12 text-center text-[12px] text-gray-500">{{ community.created_at|date:"Y-m-d" }}</div>
         </div>
       </a>
-      <br>
-    {% endfor %}
-
-{% if page_obj.has_other_pages %}
-  <div class="flex justify-center mt-4">
-    {% if page_obj.has_previous %}
-      <a href="?page={{ page_obj.previous_page_number }}" class="px-2 py-1 bg-transparent text-gray-700 hover:bg-blue-300">이전</a>
-    {% endif %}
-    
-    {% for num in page_obj.paginator.page_range %}
-      {% if page_obj.number == num %}
-        <span class="px-2 py-1 bg-blue-500 text-white">{{ num }}</span>
-      {% else %}
-        <a href="?page={{ num }}" class="px-2 py-1 bg-transparent text-gray-700 hover:bg-blue-300">{{ num }}</a>
-      {% endif %}
-    {% endfor %}
-    
-    {% if page_obj.has_next %}
-      <a href="?page={{ page_obj.next_page_number }}" class="px-2 py-1 bg-transparent text-gray-700 hover:bg-blue-300">다음</a>
-    {% endif %}
-  </div>
-{% endif %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    {% if request.user.is_superuser %}
-    <div class='mt-3 mb-5'> 
-      <a href="{% url 'communities:create' %}">글 작성하기</a>
+      {% endfor %}
     </div>
-    {% endif %}
-
-
-    <!-- <p class='title--content--2 mt-5'>전문가 자문 요청 글</p>
-    <div class='owl-carousel owl-theme new_owl-carousel' >
-      {% for community in need_experts %}
-      <div class='card--border card--border--gray'>
-        <a href="{% url 'communities:detail' community.pk %}">
-          <div class="img--container">
-            <img src="{{community.community_photo.url}}" class='rounded' alt="img">  
-            {% if community.need_expert %}   
-            <p class="blink">New</p>
-            {% endif %}
-          </div>
-          <div class='card--name--box'>
-            <strong class='card--name'>{{community.name}}</strong>
-          </div>
-          <div class='card--tag--border pb-1'>
-            <p><i class="bi bi-heart-fill card--rating__color me-2"></i>{{community.like_users.count}}</p>
-            <p>댓글 {{community.community_comment_set.count}}</p>
-          </div>  
-        </a>  
+    
+    {% comment %} 페이지네이션 {% endcomment %}
+    {% if page_obj.has_other_pages %}
+      <div class="flex justify-center items-center mt-5 pb-10">
+        {% if page_obj.has_previous %}
+          <a href="?page={{ page_obj.previous_page_number }}" class="w-8 h-8 p-1 text-center bg-transparent rounded-full text-gray-400 hover:text-black">
+            <span class="material-symbols-outlined flex items-center justify-center">arrow_back_ios</span>
+          </a>
+        {% endif %}
+        
+        {% for num in page_obj.paginator.page_range %}
+          {% if page_obj.number == num %}
+            <span class="w-8 h-8 p-1 text-center rounded-full bg-[#1EB564] text-white">{{ num }}</span>
+          {% else %}
+            <a href="?page={{ num }}" class="w-8 h-8 p-1 text-center bg-transparent rounded-full text-gray-700 hover:bg-[#cfcfcf]">{{ num }}</a>
+          {% endif %}
+        {% endfor %}
+        
+        {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}" class="w-8 h-8 p-1 text-center bg-transparent rounded-full text-gray-400 hover:text-black">
+            <span class="material-symbols-outlined flex items-center justify-center">arrow_forward_ios</span>
+          </a>
+        {% endif %}
       </div>
-      {% endfor %} -->
-
-
+    {% endif %}
+  </main>
+  
+  <!-- <p class='title--content--2 mt-5'>전문가 자문 요청 글</p>
+  <div class='owl-carousel owl-theme new_owl-carousel' >
+    {% for community in need_experts %}
+    <div class='card--border card--border--gray'>
+      <a href="{% url 'communities:detail' community.pk %}">
+        <div class="img--container">
+          <img src="{{community.community_photo.url}}" class='rounded' alt="img">  
+          {% if community.need_expert %}   
+          <p class="blink">New</p>
+          {% endif %}
+        </div>
+        <div class='card--name--box'>
+          <strong class='card--name'>{{community.name}}</strong>
+        </div>
+        <div class='card--tag--border pb-1'>
+          <p><i class="bi bi-heart-fill card--rating__color me-2"></i>{{community.like_users.count}}</p>
+          <p>댓글 {{community.community_comment_set.count}}</p>
+        </div>  
+      </a>  
+    </div>
+    {% endfor %} -->
 {% endblock content %}
+
+
 {% block script %}
     <script src="{% static 'js/communities_index.js' %}"></script>
 {% endblock script %}
