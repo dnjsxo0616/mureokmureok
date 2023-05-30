@@ -50,7 +50,7 @@ class Garden(models.Model):
 
 class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    comment = models.ForeignKey(Garden, on_delete=models.CASCADE, related_name='comments')
+    garden = models.ForeignKey(Garden, on_delete=models.CASCADE, related_name='comments')
     content = models.TextField(null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

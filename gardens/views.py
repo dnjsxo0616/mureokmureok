@@ -45,27 +45,32 @@ def delete(request,garden_pk):
     return redirect('gardens:index')
 
 
-def comment(request,garden_pk):
+def comment(request, garden_pk):
     garden = Garden.objects.get(pk=garden_pk)
-    comment_form = CommentForm(request.POST,request.FILES)
 
-    if comment_form.is_valid():
-        comment = comment_form.save(commit=False)
-        comment.garden = garden
-        comment.user = request.user
-        comment.save()
-        return redirect('gardens:detail', garden_pk)
+    if request.method == 'POST':
+        comment_form = CommentForm(request.POST, request.FILES)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.garden = garden
+            comment.user = request.user
+            comment.save()
+            return redirect('gardens:detail', garden_pk)
+    else:
+        comment_form = CommentForm()
+
     context = {
         'garden': garden,
         'comment_form': comment_form,
     }
-    return render(request, 'gardens/comment.html', context)
+    return render(request, 'gardens/detail.html', context)
 
-def comment_delete(request, product_pk, comment_pk):
+def comment_delete(request, garden_pk, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
     if request.user == comment.user:
         comment.delete()
-    return redirect('products:detail', product_pk)
+    return redirect('gardens:detail', garden_pk)
+
 
 
 def update(request, garden_pk):
@@ -120,14 +125,21 @@ def detail(request, garden_pk):
     garden = Garden.objects.get(pk=garden_pk)
     comments = garden.comments.all()
 
-    comment_comment_form = []
-    for comment in comments:
-        comment_form = CommentForm(instance=comment)
-        comment_comment_form.append((comment, comment_form))
+    if request.method == 'POST':
+        comment_form = CommentForm(request.POST, request.FILES)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.garden = garden
+            comment.user = request.user
+            comment.save()
+            return redirect('gardens:detail', garden_pk)
+    else:
+        comment_form = CommentForm()
 
     context = {
         'garden': garden,
-        'comment_comment_form': comment_comment_form,
+        'comments': comments,
+        'comment_form': comment_form,
     }
     return render(request, 'gardens/detail.html', context)
 
