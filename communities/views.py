@@ -5,7 +5,8 @@ from django.db.models import Count
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from accounts.models import User, User_title, User_profile
-
+from django.contrib import messages
+from django.core.paginator import Paginator
 
 
 
@@ -13,10 +14,14 @@ from accounts.models import User, User_title, User_profile
 def index(request):
     communities = Community.objects.all()[::-1]
     need_experts = Community.objects.filter(need_expert=True)[::-1]
+    paginator = Paginator(communities, 4)  
+    page_number = request.GET.get('page')  
+    page_obj = paginator.get_page(page_number)
 
     content = {
         'communities': communities,
         'need_experts': need_experts,
+        'page_obj': page_obj,
     }
     return render(request, 'communities/index.html', content)
 
@@ -141,7 +146,7 @@ def community_comment_create(request, community_pk):
 
 
 @login_required
-def community_comment_update(request, communityt_pk, community_comment_pk):
+def community_comment_update(request, community_pk, community_comment_pk):
     community_comment = Community_comment.objects.get(pk=community_comment_pk)
     if request.user == community_comment.user:
         if request.method == 'POST':
@@ -194,8 +199,13 @@ def community_comment_likes(request,product_pk, community_comment_pk):
 def filter_communities(request, category):
     communities = Community.objects.filter(category=category)[::-1]
     need_experts = Community.objects.filter(category=category).filter(need_expert=True)[::-1]
+    paginator = Paginator(communities, 4)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     content ={
         'communities':communities,
         'need_experts':need_experts,
+        'page_obj': page_obj, 
     }
     return render(request, 'communities/index.html', content)
