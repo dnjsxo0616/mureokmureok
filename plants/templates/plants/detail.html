@@ -1,48 +1,205 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block head %}
+  <style>
 
+
+
+  </style>
+{% endblock head %}
 
 
 {% block content %}
-<h1>plants detail</h1>
-<p>----------------------------------</p>
+<div class="mx-auto px-8 pt-8 pb-8">
+  <div class="flex">
+    <section class="w-1/2">
+      {% with plant_images=plant.plant_images.all %}
+      <img src="{{ plant_images.0.image.url }}" alt="Plant Image 1" class="w-[400px] h-[400px] object-contain">
+      {% comment %} <img src="{{ plant_images.1.image.url }}" alt="Plant Image 2"> {% endcomment %}
+    {% endwith %}
+    </section>
+
+    <section class="ml-10 w-1/2">
+
+      <div class="flex m-3">
+        <span class="font-bold text-2xl">{{plant.title}}</span>
+        <form class='like-forms ml-3' data-plant-id='{{ plant.pk }}'>
+          {% csrf_token %}
+          {% if request.user in plant.like_users.all %}
+            <input type="submit" value="좋아요 취소" id="like-{{ plant.pk }}">
+          {% else %}
+            <input type="submit" value="좋아요" id="like-{{ plant.pk }}">
+          {% endif %}
+        </form>
+      </div>
+
+      <ul class="mb-3 flex">
+        {% for tag in plant.tags.all %}
+          <li class="rounded-md bg-gray-200 p-4 py-2 m-3">{{ tag }}</li>
+        {% endfor %}
+      </ul>
+
+      <div>
+        <span>알레르기 여부</span>
+        <ul>
+          {% for category in category_list  %}
+            <li>{{ category }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="m-3">{{ plant.content}}</div>
+
+      {% comment %} 표 {% endcomment %}
+      <div class="border-b border-t border-gray-200 m-3">
+        <table class="border-collapse">
+          <tr>
+            <td class="border-b border-gray-200 py-2 px-4 text-left">
+              <ul>
+                {% for watering in watering_list  %}
+                  {% if watering == '주1~2회' %}
+                    <li class="font-bold">{{ watering }}</li>
+                    <p>흙 표면부터 3cm까지 마르면, 듬뿍 주세요</p>
+                  {% elif watering == '월1~2회'%}
+                    <li class="font-bold">{{ watering }}</li>
+                    <p>통통한 몸통이 살짝 쭈글해지면 듬뿍 주세요</p>
+                  {% elif watering == '월1회이하'%}
+                    <li class="font-bold">{{ watering }}</li>
+                    <p>단단한 몸통이 말랑해지면 듬뿍 주세요</p>
+                  {% endif %}
+                  
+                {% endfor %}
+              </ul>
+            </td>
+            <td class="border-b border-l border-gray-200 py-2 px-4 text-left">
+              <ul>
+                {% for sunlight in sunlight_list  %}
+                  {% if sunlight == '양지' %}
+                    <li class="font-bold">{{ sunlight }}</li>
+                    <p>하루 6시간 이상 밝은 햇빛이 필요해요</p>
+                  {% elif sunlight == '반양지'%}
+                    <li class="font-bold">{{ sunlight }}</li>
+                    <p>하루 2~3시간 정도의 밝은 햇빛이 필요해요</p>
+                  {% elif sunlight == '음지'%}
+                    <li class="font-bold">{{ sunlight }}</li>
+                    <p>하루  2시간 이하 정도의 은은한 햇빛이 필요해요</p>
+                  {% elif sunlight == '반음지'%}
+                    <li class="font-bold">{{ sunlight }}</li>
+                    <p>반그늘로 아침나절 또는 오후 3~4시간 정도의 은은한 햇빛이 필요해요</p>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td class="border-r border-gray-200 py-2 px-4 text-left">
+              <ul>
+                {% for humidity in humidity_list  %}
+                  {% if humidity == '40% 이하' %}
+                    <li class="font-bold">{{humidity}}</li>
+                    <p>주변 공기를 건조하게 관리해주세요</p>
+                  {% elif humidity == '40~70%' %}
+                    <li class="font-bold">{{humidity}}</li>
+                    <p>주변 공기가 건조해지지 않도록 관리해주세요</p>
+                  {% endif %}
+                  <li class="font-bold">{{ humidity }}</li>
+                {% endfor %}
+              </ul>
+            </td>
+            <td class="py-2 px-4 text-left">
+              <ul>
+                {% for temperature in temperature_list  %}
+                  {% if temperature == '21~25도' %}
+                  <p class="font-bold">잘 자라는 온도</p>
+                  <li>{{ temperature }}에서 잘 자라요</li>
+                  {% elif temperature == '16~27도' %}
+                    <p class="font-bold">잘 자라는 온도</p>
+                    <li>{{ temperature }}에서 잘 자라요</li>
+                  {% elif temperature == '21~25도' %}
+                    <p class="font-bold">잘 자라는 온도</p>
+                    <li>{{ temperature }}에서 잘 자라요</li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </section>
+  </div>
+</div>
 
 
-<form class='like-forms' data-plant-id='{{ plant.pk }}'>
-  {% csrf_token %}
-  {% if request.user in plant.like_users.all %}
-    <input type="submit" value="좋아요 취소" id="like-{{ plant.pk }}">
-  {% else %}
-    <input type="submit" value="좋아요" id="like-{{ plant.pk }}">
-  {% endif %}
-</form>
+<section>
+  <div class="text-center font-bold text-3xl">자세히 알아보기</div>
+  <div class="flex justify-center mt-5 border-b">
+    <ul class="flex text-gray-500 text-2xl pb-3">
+      <li class="mr-12 tab">물(물주기 등)</li>
+      <li class="mr-12 tab">빛</li>
+      <li class="mr-12 tab">습도</li>
+      <li class="tab">온도</li>
+    </ul>
+  </div>
+
+  <div class="detail">
+    <div class="content">
+      <div class="flex">
+        <section class="w-1/2">
+          <img src="{% static 'img/물 그림.png' %}" alt="" class="w-[400px] h-[400px] object-contain">
+        </section>
+      
+        <section class="ml-10 w-1/2">
+          <div>{{ watering }}</div>
+        </section>
+      </div>
+      <section>
+        <div>물주기에 어려움이 있나요?</div>
+      </section>
+    </div>
+    <div class="content">
+      <div class="flex">
+        <section class="w-1/2">
+          <img src="{% static 'img/빛 그림.png' %}" alt="" class="w-[400px] h-[400px] object-contain">
+        </section>
+        
+        <section class="ml-10 w-1/2">
+
+        </section>
+
+      </div>
+    </div>
+    <div class="content">
+      <div class="flex">
+        <section class="w-1/2">
+          <img src="{% static 'img/습도 그림.png' %}" alt="" class="w-[400px] h-[400px] object-contain">
+        </section>
+    
+        <section class="ml-10 w-1/2">
+
+        </section>
+      </div>
+      <section>
+        <div습도 관리에 어려움이 있나요?</div>
+      </section>
+    </div>
+    <div class="content">
+      <div class="flex">
+        <section class="w-1/2">
+          <img src="{% static 'img/온도 그림.png' %}" alt="" class="w-[400px] h-[400px] object-contain">
+        </section>
+    
+        <section class="ml-10 w-1/2">
+          <div></div>
+        </section>
+      </div>
+      <section>
+        <div>온도 관리에 어려움이 있나요?</div>
+      </section>
+    </div>
+  </div>
+</section>
 
 
-<p>----------------------------------</p>
 
-<p>{{plant.title}}</p>
-
-<ul>
-  {% for category in category_list  %}
-    <li>{{ category }}</li>
-  {% endfor %}
-</ul>
-<p>----------------------------------</p>
-
-<ul>
-  {% for preferences in preferences_list  %}
-    <li>{{ preferences }}</li>
-  {% endfor %}
-</ul>
-
-<p>----------------------------------</p>
-
-<ul>
-  {% for allergy in allergy_list  %}
-    <li>{{ allergy }}</li>
-  {% endfor %}
-</ul>
-
-<p>----------------------------------</p>
 
 <ul>
   {% for flowering in flowering_list  %}
@@ -57,102 +214,35 @@
     <li>{{ season }}</li>
   {% endfor %}
 </ul>
-<p>----------------------------------</p>
 
-<ul>
-  {% for watering in watering_list  %}
-    {% if watering == '주1~2회' %}
-      <li>{{ watering }}</li>
-      <p>흙 표면부터 3cm까지 마르면, 듬뿍 주세요</p>
-    {% elif watering == '월1~2회'%}
-      <li>{{ watering }}</li>
-      <p>통통한 몸통이 살짝 쭈글해지면 듬뿍 주세요</p>
-    {% elif watering == '월1회이하'%}
-    <li>{{ watering }}</li>
-    <p>단단한 몸통이 말랑해지면 듬뿍 주세요</p>
-    {% endif %}
-    
-  {% endfor %}
-</ul>
 
-<p>----------------------------------</p>
+{% comment %} <h2>Images</h2> {% endcomment %}
+{% comment %} {% for image in plant.plant_images.all %}
+  <img class="mb-5" src="{{ image.image.url }}" alt="Plant Image">
+{% endfor %} {% endcomment %}
 
-<ul>
-  {% for sunlight in sunlight_list  %}
-    {% if sunlight == '양지' %}
-      <li>{{ sunlight }}</li>
-      <p>하루 6시간 이상 밝은 햇빛이 필요해요</p>
-    {% elif sunlight == '반양지'%}
-      <li>{{ sunlight }}</li>
-      <p>하루 2~3시간 정도의 밝은 햇빛이 필요해요</p>
-    {% elif sunlight == '음지'%}
-      <li>{{ sunlight }}</li>
-      <p>하루  2시간 이하 정도의 은은한 햇빛이 필요해요</p>
-    {% elif sunlight == '반음지'%}
-      <li>{{ sunlight }}</li>
-      <p>반그늘로 아침나절 또는 오후 3~4시간 정도의 은은한 햇빛이 필요해요</p>
-    {% endif %}
-  {% endfor %}
-</ul>
+{% comment %} {% with plant_images=plant.plant_images.all %}
+  <img src="{{ plant_images.0.image.url }}" alt="Plant Image 1">
+  <img src="{{ plant_images.1.image.url }}" alt="Plant Image 2">
+{% endwith %} {% endcomment %}
 
-<p>----------------------------------</p>
+{% comment %} {% for image in plant.plant_images.all %}
+  {% if forloop.counter0 == 0 %}
+    <img src="{{ image.image.url }}" alt="Plant Image 1">
+  {% elif forloop.counter0 == 1 %}
+    <img src="{{ image.image.url }}" alt="Plant Image 2">
+  {% elif forloop.counter0 == 2 %}
+    <img src="{{ image.image.url }}" alt="Plant Image 3">
+  {% else %}
+    <img src="{{ image.image.url }}" alt="Plant Image">
+  {% endif %}
+{% endfor %} {% endcomment %}
 
-<ul>
-  {% for humidity in humidity_list  %}
-    {% if humidity == '40% 이하' %}
-      <li>{{humidity}}</li>
-      <p>주변 공기를 건조하게 관리해주세요</p>
-    {% elif humidity == '40~70%' %}
-      <li>{{humidity}}</li>
-      <p>주변 공기가 건조해지지 않도록 관리해주세요</p>
-    {% endif %}
-    <li>{{ humidity }}</li>
-  {% endfor %}
-</ul>
 
-<p>----------------------------------</p>
-
-<ul>
-  {% for temperature in temperature_list  %}
-    {% if temperature == '21~25도' %}
-    <p>잘 자라는 온도</p>
-    <li>{{ temperature }}에서 잘 자라요</li>
-    {% elif temperature == '16~27도' %}
-      <p>잘 자라는 온도</p>
-      <li>{{ temperature }}에서 잘 자라요</li>
-    {% elif temperature == '21~25도' %}
-      <p>잘 자라는 온도</p>
-      <li>{{ temperature }}에서 잘 자라요</li>
-    {% endif %}
-  {% endfor %}
-</ul>
-
-<p>----------------------------------</p>
-
-<ul>
-  {% for birthflower in birthflower_list  %}
-    <li>{{ birthflower }}</li>
-  {% endfor %}
-</ul>
-
-<p>----------------------------------</p>
-
-<h2>Images</h2>
-{% for image in plant.plant_images.all %}
-  <img src="{{ image.image.url }}" alt="Plant Image">
-{% endfor %}
-
-<p>----------------------------------</p>
-
-<h2>Tags</h2>
-<ul>
-  {% for tag in plant.tags.all %}
-    <li>{{ tag }}</li>
-  {% endfor %}
-</ul>
-
+{% comment %} {% if user.is_superuser %} {% endcomment %}
 <a href="{% url 'plants:update' plant.pk %}">수정</a>
 <a href="{% url 'plants:delete' plant.pk %}">삭제</a>
+{% comment %} {% endif %} {% endcomment %}
 
 {% endblock content %}
 
@@ -185,6 +275,35 @@
           })
       })
     })
+
+  // 탭 요소들을 선택합니다.
+  const tabs = document.querySelectorAll('.tab');
+
+  // 탭 클릭 이벤트를 처리하는 함수입니다.
+  function handleTabClick() {
+    // 모든 탭에 active 클래스를 제거합니다.
+    tabs.forEach(tab => tab.classList.remove('active'));
+
+    // 클릭한 탭에 active 클래스를 추가합니다.
+    this.classList.add('active');
+
+    // 클릭한 탭의 인덱스를 가져옵니다.
+    const tabIndex = Array.from(tabs).indexOf(this);
+
+    // 모든 컨텐츠를 숨깁니다.
+    const contents = document.querySelectorAll('.content');
+    contents.forEach(content => content.style.display = 'none');
+
+    // 클릭한 탭에 해당하는 컨텐츠를 보여줍니다.
+    contents[tabIndex].style.display = 'block';
+  }
+
+  // 각 탭에 클릭 이벤트를 등록합니다.
+  tabs.forEach(tab => tab.addEventListener('click', handleTabClick));
+
+  // 초기에 첫 번째 탭을 선택 상태로 만듭니다.
+  tabs[0].click();
   </script>
+
 {% endblock script %}
 
