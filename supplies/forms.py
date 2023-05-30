@@ -45,7 +45,15 @@ class SupplyForm(forms.ModelForm):
                 'id': 'category',
                 'placeholder': '분류',
             }
-        )
+        ),
+        choices = (
+            ('화분', '화분'),
+            ('비료', '비료'),
+            ('영양제', '영양제'),
+            ('데코레이션', '데코레이션'),
+            ('물뿌리개', '물뿌리개'),
+        ),
+        required=True,
     )
 
     price = forms.IntegerField(
@@ -79,4 +87,4 @@ class SupplyForm(forms.ModelForm):
     #     )
     # )
 
-
+    

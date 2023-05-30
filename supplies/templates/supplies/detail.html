@@ -7,7 +7,7 @@
 {% endblock style %}
 
 {% block content  %}
-디테일
+
 {% comment %}  본문 부분 {% endcomment %}
 
 
@@ -33,7 +33,7 @@
 {% comment %}  본문 제목(조회수) 및 본문 좋아요 부분 {% endcomment %}
 <div>
     <div class='title--box'>
-      <p class='title--font title--style m-0'>{{ supply.title }}</p>
+      <p class='title--font title--style m-0'>{{ supply.supply_name }}</p>
     </div>
     <form class="like-form" data-supply-id="{{ supply.pk }}">
       {% csrf_token %}
@@ -58,17 +58,12 @@
 
 
   {% comment %}  본문 내용 부분 {% endcomment %}
-  <div class='ms-3'>
-    <p class='fs-5 mb-3'>{{ supply.content }}</p>
+  <div class='ms-3 flex flex-col items-center justify-center'>
+    <p class='fs-5 mb-3'>{{ supply.content|safe }}</p>
+    <img src="{{ supply.Thumbnail.url }}" alt="이미지없음">
   </div>
 
 
-
-  {% comment %}  본문 내용 수정 및 삭제 부분 {% endcomment %}
-    <div>
-        <a href="{% url 'supplies:supply_update' supply.pk %}">수정쓰</a>
-        <a href="{% url 'supplies:supply_delete' supply.pk %}">삭제쓰</a>
-    </div>
 
 
 {% endblock content %}
