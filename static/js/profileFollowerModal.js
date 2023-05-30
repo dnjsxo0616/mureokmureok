@@ -1,18 +1,48 @@
-const modal = document.getElementById("followers-modal")
-const btnModal = document.getElementById("followers-count")
-btnModal.addEventListener("click", e => {
-    modal.style.display = "flex"
+const followersModal = document.getElementById("followers-modal")
+const followersBtnModal = document.getElementById("followers-count")
+const followersBackground = document.getElementById("followers-bg")
+followersBtnModal.addEventListener("click", e => {
+    followersModal.style.display = "flex"
 })
 
-modal.addEventListener("click", e => {
+followersModal.addEventListener("click", e => {
     const evTarget = e.target
     if(evTarget.classList.contains("modal-overlay")) {
-        modal.style.display = "none"
+        followersModal.style.display = "none"
     }
 })
 
+followersBackground.addEventListener("click", () => {
+    followersModal.style.display = "none"
+})
+
 window.addEventListener("keyup", e => {
-    if(modal.style.display === "flex" && e.key === "Escape") {
-        modal.style.display = "none"
+    if(followersModal.style.display === "flex" && e.key === "Escape") {
+        followersModal.style.display = "none"
+    }
+})
+
+
+const followingsModal = document.getElementById("followings-modal")
+const followingsBtnModal = document.getElementById("followings-count")
+const followingsBackground = document.getElementById("followings-bg")
+followingsBtnModal.addEventListener("click", e => {
+    followingsModal.style.display = "flex"
+})
+
+followingsModal.addEventListener("click", e => {
+    const evTarget = e.target
+    if(evTarget.classList.contains("modal-overlay")) {
+        followingsModal.style.display = "none"
+    }
+})
+
+followingsBackground.addEventListener("click", () => {
+    followingsModal.style.display = "none"
+})
+
+window.addEventListener("keyup", e => {
+    if(followingsModal.style.display === "flex" && e.key === "Escape") {
+        followingsModal.style.display = "none"
     }
 })

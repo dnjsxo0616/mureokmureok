@@ -13,7 +13,7 @@
     <img src="{% static 'img/profile_banner.jpg' %}" alt="">
   </div>
   <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 relative z-30">
-    <div class="flex gap-10 absolute top-[-40px]">
+    <div class="flex absolute top-[-40px] gap-10 w-full">
       <div class="profile-image_wrapper rounded-full border border-[#1EB564]">
         {% if person.image %}
           <img src="{{ person.image.url }}" alt="profile">
@@ -21,26 +21,26 @@
           <img src="{% static 'img/no_profile.jpg' %}" alt="">
         {% endif %}
       </div>
-      <div class="flex flex-col">
+      <div class="info-form">
         <div class="flex items-center gap-5">
           {% comment %} <div>{{ user_title.name }}</div> {% endcomment %}
           <div class="bg-white text-[#1EB564] p-1 px-2 rounded-md"><b>🌱뉴비</b></div>
           <div><b>포인트: {{ person.user_profile.points }}P</b></div>
         </div>
-        <div class="mt-4">
-          <div class="flex items-center justify-between info-form">
+        <div class="mt-4 w-full">
+          <div class="flex items-center justify-between w-full">
             <div class="flex gap-5 items-center">
               <h1 class="text-[22px]"><b>{{ person.username }}</b></h1>
               {% if request.user != person %}
-                  <form id="follow-form" data-user-id="{{ person.pk }}" class="rounded-md bg-[#1EB564] text-white text-[14px] p-1 px-2 me-5">
-                    {% csrf_token %}
-                    {% if request.user in person.followers.all %}
-                      <input type="submit" value="언팔로우" class="cursor-pointer">
-                    {% else %}
-                      <input type="submit" value="팔로우" class="cursor-pointer">
-                    {% endif %}
-                  </form>
-                {% endif %} 
+              <form id="follow-form" data-user-id="{{ person.pk }}" class="rounded-md bg-[#1EB564] text-white text-[14px] p-1 px-2 me-5">
+                {% csrf_token %}
+                {% if request.user in person.followers.all %}
+                  <input type="submit" value="언팔로우" class="cursor-pointer">
+                {% else %}
+                  <input type="submit" value="팔로우" class="cursor-pointer">
+                {% endif %}
+              </form>
+              {% endif %}
             </div>
 
             {% if request.user == person %}
@@ -67,7 +67,7 @@
             {% endif %} 
           </div>
           <h2 class="text-[14px] text-gray-400">{{ person.email }}</h2>
-          <div class="text-[16px] mt-1"><span id="followers-count" class="cursor-pointer">팔로우 <b>{{person.followers.count}}</b></span> · <span id="followings-count" class="cursor-pointer">팔로잉 <b>{{person.followings.count}}</b></span></div>
+          <div class="text-[16px] mt-1">팔로우 <b><span id="followers-count" class="cursor-pointer">{{ person.followers.count }}</span></b> · 팔로잉 <b><span id="followings-count" class="cursor-pointer">{{ person.followings.count }}</span></b></div>
         </div>
       </div>
     </div>
@@ -76,50 +76,6 @@
   {% comment %} 좋아요 아이템 및 작성 포스트 목록 {% endcomment %}
   <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 relative flex justify-end z-10">
     <div class="items-form border rounded-2xl my-28 p-5 flex flex-col">
-
-      {% comment %} 내가 키우는 식물들 {% endcomment %}
-      <div class="flex items-center gap-3 mb-5">
-        <h2 class="text-[20px]"><b>My Plants</b></h2>
-        <span class="text-gray-400 text-[18px]"><b>5</b></span>
-        <a href="#" class="border rounded-md flex items-center justify-center p-1 hover:bg-gray-100">
-          <span class="material-symbols-outlined">add</span>
-        </a>
-      </div>
-      <div class="flex rounded-lg bg-gray-100 p-3 gap-8 mb-8">
-        <a href="#">
-          <div class="flex flex-col items-center gap-3">
-            <div class="border rounded-md plants-image_wrapper">
-              <img src="https://cdn.011st.com/11dims/resize/600x600/quality/75/11src/product/1483938250/B.jpg?145000000" alt="">
-            </div>
-            <p class="text-[14px]">유채꽃</p>
-          </div>
-        </a>
-        <a href="#">
-          <div class="flex flex-col items-center gap-3">
-            <div class="border rounded-md plants-image_wrapper">
-              <img src="https://static.hubzum.zumst.com/hubzum/2021/08/18/13/f8ee62528d6e4572b7115d3c70fe0f0b_780x733.jpg" alt="">
-            </div>
-            <p class="text-[14px]">스투키</p>
-          </div>
-        </a>
-        <a href="#">
-          <div class="flex flex-col items-center gap-3">
-            <div class="border rounded-md plants-image_wrapper">
-              <img src="https://huga.s3.ap-northeast-2.amazonaws.com/plantImages/1591179384681%E1%84%83%E1%85%B5%E1%84%89%E1%85%B5%E1%84%83%E1%85%B5%E1%84%8B%E1%85%A1%20%E1%84%8B%E1%85%A2%E1%84%91%E1%85%B3%E1%86%AF1%20.jpg" alt="">
-            </div>
-            <p class="text-[14px]">디시디아</p>
-          </div>
-        </a>
-        <a href="#">
-          <div class="flex flex-col items-center gap-3">
-            <div class="border rounded-md plants-image_wrapper">
-              <img src="https://openimage.interpark.com/goods_image_big/7/1/1/8/10195487118c_l.jpg" alt="">
-            </div>
-            <p class="text-[14px]">이끼</p>
-          </div>
-        </a>
-      </div>
-
       <div class="flex justify-between gap-12">
         <div class="w-6/12">
           {% comment %} 좋아요한 식물 {% endcomment %}
@@ -128,14 +84,24 @@
               <h2 class="text-[20px]"><b>내가 좋아요한 '식물'</b></h2>
               <span class="text-gray-400 text-[18px]"><b>{{ person.like_plants.all|length }}</b></span>
             </div>
-            <div class="flex gap-5">
-              <div class="flex flex-col items-center gap-3">
-                <div class="border rounded-md favor-plants_wrapper">
-                  <img src="https://openimage.interpark.com/goods_image_big/7/1/1/8/10195487118c_l.jpg" alt="">
-                </div>
-                <p class="text-[14px]">유채꽃</p>
+            {% if person.like_plants.all %}
+            <div class="slider-container">
+              <div class="inner-slider flex gap-5">
+                {% for plant in person.like_plants.all %}
+                <a href="#">
+                  <div class="flex flex-col items-center gap-3">
+                    <div class="border rounded-md favor-plants_wrapper">
+                      <img src="https://openimage.interpark.com/goods_image_big/7/1/1/8/10195487118c_l.jpg" alt="">
+                    </div>
+                    <p class="text-[14px]">{{ plant.title }}</p>
+                  </div>
+                </a>
+                {% endfor %}
               </div>
             </div>
+            {% else %}
+            <div class="bg-gray-100 rounded-xl w-full h-28 flex items-center justify-center text-gray-400">좋아요한 식물이 없어요.</div>
+            {% endif %}
           </div>
           {% comment %} 좋아요한 식물원 {% endcomment %}
           <div class="mb-5">
@@ -143,14 +109,24 @@
               <h2 class="text-[20px]"><b>내가 좋아요한 '식물원'</b></h2>
               <span class="text-gray-400 text-[18px]"><b>{{ person.like_gradens.all|length }}</b></span>
             </div>
-            <div class="flex gap-5">
-              <div class="flex flex-col items-center gap-3">
-                <div class="border rounded-md favor-plants_wrapper">
-                  <img src="https://openimage.interpark.com/goods_image_big/7/1/1/8/10195487118c_l.jpg" alt="">
-                </div>
-                <p class="text-[14px]">유채꽃</p>
+            {% if person.like_gradens.all %}
+            <div class="slider-container">
+              <div class="inner-slider flex gap-5">
+                {% for garden in person.like_gradens.all %}
+                <a href="#">
+                  <div class="flex flex-col items-center gap-3">
+                    <div class="border rounded-md favor-plants_wrapper">
+                      <img src="https://openimage.interpark.com/goods_image_big/7/1/1/8/10195487118c_l.jpg" alt="">
+                    </div>
+                    <p class="text-[14px]">{{ garden.title }}</p>
+                  </div>
+                </a>
+                {% endfor %}
               </div>
             </div>
+            {% else %}
+            <div class="bg-gray-100 rounded-xl w-full h-28 flex items-center justify-center text-gray-400">좋아요한 식물원이 없어요.</div>
+            {% endif %}
           </div>
           {% comment %} 찜한 상품 {% endcomment %}
           <div>
@@ -158,14 +134,24 @@
               <h2 class="text-[20px]"><b>내가 찜한 '상품'</b></h2>
               <span class="text-gray-400 text-[18px]"><b>{{ person.like_supply.all|length }}</b></span>
             </div>
-            <div class="flex gap-5">
-              <div class="flex flex-col items-center gap-3">
-                <div class="border rounded-md favor-plants_wrapper">
-                  <img src="https://openimage.interpark.com/goods_image_big/7/1/1/8/10195487118c_l.jpg" alt="">
-                </div>
-                <p class="text-[14px]">유채꽃</p>
+            {% if person.like_supply.all %}
+            <div class="slider-container">
+              <div class="inner-slider flex gap-5">
+                {% for supply in person.like_supply.all %}
+                <a href="#">
+                  <div class="flex flex-col items-center gap-3">
+                    <div class="border rounded-md favor-plants_wrapper">
+                      <img src="https://openimage.interpark.com/goods_image_big/7/1/1/8/10195487118c_l.jpg" alt="">
+                    </div>
+                    <p class="text-[14px]">{{ supply.supply_name }}</p>
+                  </div>
+                </a>
+                {% endfor %}
               </div>
             </div>
+            {% else %}
+            <div class="bg-gray-100 rounded-xl w-full h-28 flex items-center justify-center text-gray-400">찜한 상품이 없어요.</div>
+            {% endif %}
           </div>
         </div>
 
@@ -176,6 +162,7 @@
             <span class="text-gray-400 text-[18px]"><b>{{ person.community_set.all|length }}</b></span>
           </div>
 
+          {% if person.community_set.all %}
           <div class="posts-container pe-3">
             {% for community in person.community_set.all %}
             <a href="{% url 'communities:detail' community.pk %}">
@@ -209,8 +196,10 @@
               </div>
             </a>
             {% endfor %}
-
           </div>
+          {% else %}
+          <div class="posts-container pe-3 bg-gray-100 rounded-xl flex items-center justify-center text-gray-400">작성한 포스트가 없어요.</div>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -218,32 +207,73 @@
 </main>
 
 
-  {% comment %} 팔로우 modal {% endcomment %}
-  <div class="relative z-30 modal-overlay" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="followers-modal">
-    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
-    <div class="fixed inset-0 z-10 overflow-y-auto">
-      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-        <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-          <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-            <div class="sm:flex sm:items-start">
-              <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">팔로우</h3>
-                <div class="mt-2 mb-4">
-                  <p class="text-sm text-gray-500">Are you sure you want to deactivate your account? All of your data will be permanently removed. This action cannot be undone.</p>
+{% comment %} 팔로우 modal {% endcomment %}
+<div class="relative z-30 modal-overlay" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="followers-modal">
+  <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" id="followers-bg"></div>
+  <div class="fixed top-1/2 start-1/2 -translate-x-1/2 -translate-y-1/2 transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+    <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+      <div class="sm:flex sm:items-start w-full">
+        <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
+          <h3 class="text-base font-semibold leading-6 text-gray-900 mb-3" id="modal-title">팔로우 <span class="text-gray-500">{{ person.followers.all|length }}</span></h3>
+          <div class="mt-2 mb-4 w-full h-64 overflow-auto">
+            {% for follower in person.followers.all %}
+            <a href="{% url 'accounts:profile' follower.username %}">
+              <div class="flex gap-5 items-center w-full bg-gray-100 rounded-lg p-2 mb-3">
+                <div class="overflow-hidden w-8 h-8 rounded-full">
+                  {% if follower.image %}
+                  <img src="{{ follower.image.url }}" alt="">
+                  {% else %}
+                  <img src="{% static 'img/no_profile.jpg' %}" alt="">
+                  {% endif %}
                 </div>
+                <p class="text-[14px]">{{ follower.username }}</p>
               </div>
-            </div>
+            </a>
+            {% endfor %}
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
+
+
+{% comment %} 팔로잉 modal {% endcomment %}
+<div class="relative z-30 modal-overlay" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="followings-modal">
+  <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" id="followings-bg"></div>
+  <div class="fixed top-1/2 start-1/2 -translate-x-1/2 -translate-y-1/2 transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+    <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+      <div class="sm:flex sm:items-start w-full">
+        <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
+          <h3 class="text-base font-semibold leading-6 text-gray-900 mb-3" id="modal-title">팔로잉 <span class="text-gray-500">{{ person.followings.all|length }}</span></h3>
+          <div class="mt-2 mb-4 w-full h-64 overflow-auto">
+            {% for following in person.followings.all %}
+            <a href="{% url 'accounts:profile' following.username %}">
+              <div class="flex gap-5 items-center w-full bg-gray-100 rounded-lg p-2 mb-3">
+                <div class="overflow-hidden w-8 h-8 rounded-full">
+                  {% if following.image %}
+                  <img src="{{ following.image.url }}" alt="">
+                  {% else %}
+                  <img src="{% static 'img/no_profile.jpg' %}" alt="">
+                  {% endif %}
+                </div>
+                <p class="text-[14px]">{{ following.username }}</p>
+              </div>
+            </a>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endblock content %}
 
 
 {% block script %}
 <script src="{% static 'js/profileEditDropdown.js' %}"></script>
+<script src="{% static 'js/profileCarousel.js' %}"></script>
 <script src="{% static 'js/profileFollowerModal.js' %}"></script>
 <script src="{% static 'js/accounts_profile_follow.js' %}"></script>
 {% endblock script %}
