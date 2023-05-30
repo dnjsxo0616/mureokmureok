@@ -4,7 +4,7 @@ from .forms import PlantForm, PlantImageForm
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.db.models import Count
-
+from django.contrib.auth.decorators import user_passes_test
 # Create your views here.
 def index(request):
     plants = Plant.objects.all()
@@ -13,6 +13,7 @@ def index(request):
     }
     return render(request, 'plants/index.html', context)
 
+# @user_passes_test(lambda u: u.is_superuser)
 @login_required
 def create(request):
     if request.method == 'POST':
@@ -39,7 +40,7 @@ def create(request):
     }
     return render(request, 'plants/create.html', context)
 
-
+# @user_passes_test(lambda u: u.is_superuser)
 def update(request, plant_pk):
     plant = Plant.objects.get(pk=plant_pk)
     if request.method == 'POST':
@@ -56,7 +57,7 @@ def update(request, plant_pk):
     }
     return render(request, 'plants/update.html', context)
 
-
+# @user_passes_test(lambda u: u.is_superuser)
 def delete(request, plant_pk):
     plant = Plant.objects.get(pk=plant_pk)
     if request.user == plant.user:
@@ -80,28 +81,30 @@ def detail(request, plant_pk):
             return []
         
     category_list = extract_list(plant.category)
-    preferences_list = extract_list(plant.preferences)
-    allergy_list = extract_list(plant.allergy)
+    # preferences_list = extract_list(plant.preferences)
+    # allergy_list = extract_list(plant.allergy)
     flowering_list = extract_list(plant.flowering)
     season_list = extract_list(plant.season)
     watering_list = extract_list(plant.watering)
     sunlight_list = extract_list(plant.sunlight)
     humidity_list = extract_list(plant.humidity)
     temperature_list = extract_list(plant.temperature)
-    birthflower_list = extract_list(plant.birthflower)
+    # birthflower_list = extract_list(plant.birthflower)
+    allergy = plant.allergy
 
     context = {
         'plant': plant,
         'category_list': category_list,
-        'preferences_list': preferences_list,
-        'allergy_list': allergy_list,
+        # 'preferences_list': preferences_list,
+        # 'allergy_list': allergy_list,
         'flowering_list': flowering_list,
         'season_list': season_list,
         'watering_list': watering_list,
         'sunlight_list': sunlight_list,
         'humidity_list': humidity_list,
         'temperature_list': temperature_list,
-        'birthflower_list': birthflower_list,
+        # 'birthflower_list': birthflower_list,
+        'allergy': allergy,
     }
     return render(request, 'plants/detail.html', context)
 

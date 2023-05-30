@@ -3,13 +3,13 @@
 
 
 {% block content %}
-<div class="mx-auto px-8 pt-8 pb-8 h-screen">
-  <div class="font-bold text-5xl text-left mb-3">
+<div class="mx-auto px-8 pt-8 pb-8">
+  <div class="font-bold text-3xl mb-3">
     <p class="mb-3">찾으시는 식물이</p>
     <p class="mb-3">맞나요?</p>
     <p class="text-lg font-bold">검색어 : {{query}}</p>
   </div>
-  <div>
+  <div class="mb-5">
     <form action="{% url 'plants:search' %}" method="GET">
       <input class="border-b-2 border-[#1EB564] outline-none cursor-blink w-full" type="text" name="searched" placeholder="검색어" oninput="toggleSearchButton(this)">
       {% comment %} <button type="submit" class="underline underline-offset-8" ></button> {% endcomment %}
@@ -21,7 +21,7 @@
         <div class="bg-white rounded-lg p-4">
           <p class="font-bold">{{ plant.title }}</p>
           {% if plant.plant_images.all %}
-              <img src="{{ plant.plant_images.first.image.url }}" alt="{{ plant.title }}" class="w-full h-auto mt-4">
+            <a href="{% url 'plants:detail' plant.pk %}"><img src="{{ plant.plant_images.first.image.url }}" alt="{{ plant.title }}" class="w-full h-auto mt-4 object-contain"></a>
           {% endif %}
         </div>
       {% endfor %}

@@ -107,7 +107,11 @@
 </section>  
 
 <section class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 h-screen flex flex-col justify-center relative">
-  <p><a href="{% url 'plants:create' %}">생성하기</a></p>
+
+  {% comment %} {% if user.is_superuser %} {% endcomment %}
+    <p><a href="{% url 'plants:create' %}">생성하기</a></p>
+  {% comment %} {% endif %} {% endcomment %}
+
 
   {% for plant in plants %}
     <a href="{% url 'plants:detail' plant.pk %}">{{plant.title}}</a>

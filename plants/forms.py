@@ -11,49 +11,62 @@ class PlantImageForm(forms.ModelForm):
         }
 
 class PlantForm(forms.ModelForm):
-    PREFERENCES_CHOICES = [
-    ('좋음', '좋음'),
-    ('보통', '보통'),
-    ('별로', '별로'),
-    ]
 
-    preferences = forms.MultipleChoiceField(
-        label = '선호도',
-        widget = forms.CheckboxSelectMultiple(attrs={
-            'class': 'form-control',
-            'id': 'category',
-            'placeholder': '분류',
-        }),
-        choices = PREFERENCES_CHOICES,
-    )
 
+    # Allergy_CHOICES = [
+    #     ('알러지1', '알러지1'), ('알러지2', '알러지2'),
+    # ]
+
+    # allergy = forms.MultipleChoiceField(
+    #     label = '알레르기',
+    #     widget = forms.CheckboxSelectMultiple(attrs={
+    #         'class': 'form-control',
+    #         'id': 'category',
+    #         'placeholder': '분류',
+    #     }),
+    #     choices = Allergy_CHOICES,
+    # )
     Allergy_CHOICES = [
-        ('알러지1', '알러지1'), ('알러지2', '알러지2'),
+        ('yes', '꽃가루 알러지 있음'),
+        ('no', '꽃가루 알러지 없음'),
     ]
 
-    allergy = forms.MultipleChoiceField(
-        label = '알레르기',
-        widget = forms.CheckboxSelectMultiple(attrs={
+    allergy = forms.ChoiceField(
+        label='알레르기',
+        widget=forms.RadioSelect(attrs={
             'class': 'form-control',
             'id': 'category',
             'placeholder': '분류',
         }),
-        choices = Allergy_CHOICES,
+        choices=Allergy_CHOICES,
     )
 
-    FLOWERING_CHOICE = [
-        ('10일', '10일'), ('15일', '15일'), ('20일', '20일'), ('없음', '없음'),
-    ]
+    # FLOWERING_CHOICE = [
+    #     ('10일', '10일'), ('15일', '15일'), ('20일', '20일'), ('없음', '없음'),
+    # ]
 
-    flowering = forms.MultipleChoiceField(
-        label = '개화시기',
-        widget = forms.CheckboxSelectMultiple(attrs={
+    # flowering = forms.MultipleChoiceField(
+    #     label = '개화시기',
+    #     widget = forms.CheckboxSelectMultiple(attrs={
+    #         'class': 'form-control',
+    #         'id': 'category',
+    #         'placeholder': '분류',
+    #     }),
+    #     choices = FLOWERING_CHOICE,
+    # )
+
+    FLOWERING_CHOICE = [(str(i), str(i)) for i in range(1, 31)]
+
+    flowering = forms.ChoiceField(
+        label='개화시기',
+        widget=forms.Select(attrs={
             'class': 'form-control',
             'id': 'category',
             'placeholder': '분류',
         }),
-        choices = FLOWERING_CHOICE,
+        choices=FLOWERING_CHOICE,
     )
+
 
 
     SEASON_CHOICE = [
@@ -141,21 +154,7 @@ class PlantForm(forms.ModelForm):
         choices= TEMPERATURE_CHOICE,
     )
 
-    BIRTHFLOWER_CHOICE = [
-        ('1월', '1월'), ('2월', '2월'), ('3월', '3월'), ('4월', '4월'), ('5월', '5월'), ('6월', '6월'), ('7월', '7월'), ('8월', '8월'), ('9월', '9월'), ('10월', '10월'), ('11월', '11월'), ('12월', '12월'), ('없음', '없음'),  
-    ]
-
-    birthflower = forms.MultipleChoiceField(
-        label = '탄생화',
-        widget = forms.CheckboxSelectMultiple(attrs={
-            'class': 'form-control',
-            'id': 'category',
-            'placeholder': '분류',
-        }),
-        choices= BIRTHFLOWER_CHOICE,
-    )
-
     images = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
     class Meta:
         model = Plant
-        fields = ('title', 'content', 'preferences', 'allergy', 'flowering', 'season', 'category', 'watering', 'sunlight', 'humidity', 'temperature', 'meaning', 'birthflower', 'images', 'tags',)
+        fields = ('title', 'content', 'allergy', 'flowering', 'season', 'category', 'watering', 'sunlight', 'humidity', 'temperature',  'images', 'tags',)
