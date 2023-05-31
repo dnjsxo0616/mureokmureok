@@ -25,7 +25,8 @@ class Garden(models.Model):
         ('이벤트', '이벤트')
     )
     category = models.CharField(max_length=20, choices=category_Choices)
-
+    def search(cls, query):
+        return cls.objects.filter(models.Q(title__icontains=query) | models.Q(address__icontains=query))
     def garden_images_path(instance, filename):
         return f'gardens/{instance.title}/{filename}'
     image = ProcessedImageField(

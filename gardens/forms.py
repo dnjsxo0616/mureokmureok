@@ -13,7 +13,7 @@ class GardenForm(forms.ModelForm):
     # category = forms.CharField(label='카테고리')
     image = forms.ImageField(label='이미지')
     site_link = forms.URLField(label='사이트 링크')
-
+    query = forms.CharField(label='검색어', max_length=100)
     class Meta:
         model = Garden
         fields = ('title', 'content', 'ex_content', 'address', 'category', 'image', 'site_link')
