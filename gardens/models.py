@@ -26,14 +26,6 @@ class Garden(models.Model):
     )
     category = models.CharField(max_length=20, choices=category_Choices)
 
-    # tag_Choices = (
-    #     ('연인', '연인'),
-    #     ('가족', '가족'),
-    #     ('개인', '개인'),
-    #     ('친구', '친구')
-    # )
-    # tag = models.CharField(max_length=100, choices=tag_Choices)
-
     def garden_images_path(instance, filename):
         return f'gardens/{instance.title}/{filename}'
     image = ProcessedImageField(
