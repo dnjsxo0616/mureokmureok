@@ -7,7 +7,7 @@ from django.http import JsonResponse
 from accounts.models import User, User_title, User_profile
 from django.contrib import messages
 from django.core.paginator import Paginator
-
+from django.db.models import Q
 
 
 
@@ -199,7 +199,7 @@ def community_comment_likes(request,product_pk, community_comment_pk):
 def filter_communities(request, category):
     communities = Community.objects.filter(category=category)[::-1]
     need_experts = Community.objects.filter(category=category).filter(need_expert=True)[::-1]
-    paginator = Paginator(communities, 10)
+    paginator = Paginator(communities, 3)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -209,3 +209,22 @@ def filter_communities(request, category):
         'page_obj': page_obj, 
     }
     return render(request, 'communities/index.html', content)
+
+
+def search(request):
+    query = request.GET.get('q', '')
+    search_communities = Community.objects.all()
+    if query:
+        search_communities = search_communities.filter(
+            Q(title__icontains=query) |
+            Q(user__username__icontains=query)
+        )
+    paginator = Paginator(search_communities, 3)  # 한 페이지에 3개의 검색 결과 표시
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    context = {
+        'page_obj': page_obj,
+        'query': query,
+    }
+    return render(request, 'communities/index.html', context)

@@ -4,7 +4,7 @@ from .forms import GardenForm, CommentForm
 from .models import Garden, Comment
 from django.contrib import messages
 from django.core.paginator import Paginator
-import requests
+# import requests
 
 
 def searchAddressToCoordinate(address):

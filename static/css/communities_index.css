@@ -14,3 +14,8 @@ body, ul, li, p, h1, h2, h3, h4 {
     height: 90px;
     overflow: hidden;
 }
+
+.highlight {
+    background-color: yellow;
+    color: black;
+}

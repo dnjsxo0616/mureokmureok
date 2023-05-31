@@ -7,47 +7,76 @@
 
 {% block content  %}
 
-<div class="flex flex-col mt-5">
-    <div class="flex flex-row font-bold bg-gray-200 p-4 rounded-lg">
-      <div class="flex-grow ml-5 text-center">공지사항</div>
-      <div class="w-1/6">조회수</div>
-      <div class="w-1/6">게시일</div>
+    {% comment %} 표시항목 {% endcomment %}
+    <h1>공지사항</h1>
+    <div class="flex p-3 py-2 text-[14px] text-white sticky top-[110px] bg-[#1EB564] rounded-lg">
+      <div class="w-1/12 text-center">이미지</div>
+      <div class="w-1/12 grow text-center">제목 및 내용</div>
+      <div class="w-1/12 text-center">작성자</div>
+      <div class="w-1/12 text-center">공란</div>
+      <div class="w-1/12 text-center">공란</div>
+      <div class="w-1/12 text-center">조회수</div>
+      <div class="w-1/12 text-center">게시일</div>
     </div>
-    {% for notice in page_obj %}
-    <a href="{% url 'notices:detail' notice.pk %}" class="mb-4">
-      <div class="flex flex-row items-center p-4 rounded-lg">
-        <div class="flex-grow">
-          <div class="flex items-center"> <!-- 이미지와 타이틀을 수평으로 배치하기 위한 div -->
-            <img src="{{ notice.Thumbnail.url }}" alt="notice Photo" class="notice-image_wrapper ml-5">
-            <h4 class="ml-5">{{ notice.title }}</h4>
-          </div>     
-        </div>
-        <div class="w-1/6">{{ notice.hits }}</div>
-        <div class="w-1/6">{{ notice.created_at|date:"Y-m-d" }}</div>
-      </div>
-    </a>
-    <br>
-  {% endfor %}
 
-{% if page_obj.has_other_pages %}
-<div class="flex justify-center mt-4">
-  {% if page_obj.has_previous %}
-    <a href="?page={{ page_obj.previous_page_number }}" class="px-2 py-1 bg-transparent text-gray-700 hover:bg-blue-300">이전</a>
-  {% endif %}
-  
-  {% for num in page_obj.paginator.page_range %}
-    {% if page_obj.number == num %}
-      <span class="px-2 py-1 bg-blue-500 text-white">{{ num }}</span>
-    {% else %}
-      <a href="?page={{ num }}" class="px-2 py-1 bg-transparent text-gray-700 hover:bg-blue-300">{{ num }}</a>
+    {% comment %} 게시물 {% endcomment %}
+    <div class="flex flex-col mb-10 mt-10">
+      {% for notice in page_obj %}
+      <a href="{% url 'notices:detail' notice.pk %}">
+        <div class="flex items-center bg-white p-3 border-0 border-b-[1px] border-gray-300 hover:bg-gray-100">
+          <div class="w-1/12 rounded-md overflow-hidden h-24 border">
+            <img src="{{ notice.thumbnail.url }}" alt="notice Photo" class="object-cover w-full h-full">
+          </div>
+          <div class="w-1/12 grow px-10">
+            <div class="text-[12px] text-gray-700 border border-[1px] border-gray-400 w-fit rounded-md p-[2px] px-[4px] mb-2 shadow-sm">공지사항</div>
+            <h4 class="text-[18px] truncate mb-1">{{ notice.title }}</h4>
+            <p class="text-[14px] text-gray-400 truncate">{{ notice.content|safe }}</p>
+          </div>
+          <div class="w-1/12 text-center flex flex-col items-center gap-2">
+            <div class="rounded-full w-8 h-8 overflow-hidden border border-[0.5px] border-gray-700">
+              {% if notice.user.image %}
+              <img src="{{ notice.user.image.url }}" alt="">
+              {% else %}
+              <img src="{% static 'img/no_profile.jpg' %}" alt="">
+              {% endif %}
+            </div>
+            <p class="text-[14px] text-gray-600">{{ notice.user }}</p>
+          </div>
+          <div class="w-1/12 text-center text-[14px]">공란</div>
+          <div class="w-1/12 text-center text-[14px]">공란</div>
+          <div class="w-1/12 text-center text-[14px]">{{ notice.hits }}</div>
+          <div class="w-1/12 text-center text-[12px] text-gray-500">{{ notice.created_at|date:"Y-m-d" }}</div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+
+
+
+{% comment %} 페이지네이션 {% endcomment %}
+    {% if page_obj.has_other_pages %}
+      <div class="flex justify-center items-center mt-5 pb-10">
+        {% if page_obj.has_previous %}
+          <a href="?page={{ page_obj.previous_page_number }}" class="w-8 h-8 p-1 text-center bg-transparent rounded-full text-gray-400 hover:text-black">
+            <span class="material-symbols-outlined flex items-center justify-center">arrow_back_ios</span>
+          </a>
+        {% endif %}
+        
+        {% for num in page_obj.paginator.page_range %}
+          {% if page_obj.number == num %}
+            <span class="w-8 h-8 p-1 text-center rounded-full bg-[#1EB564] text-white">{{ num }}</span>
+          {% else %}
+            <a href="?page={{ num }}" class="w-8 h-8 p-1 text-center bg-transparent rounded-full text-gray-700 hover:bg-[#cfcfcf]">{{ num }}</a>
+          {% endif %}
+        {% endfor %}
+        
+        {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}" class="w-8 h-8 p-1 text-center bg-transparent rounded-full text-gray-400 hover:text-black">
+            <span class="material-symbols-outlined flex items-center justify-center">arrow_forward_ios</span>
+          </a>
+        {% endif %}
+      </div>
     {% endif %}
-  {% endfor %}
-  
-  {% if page_obj.has_next %}
-    <a href="?page={{ page_obj.next_page_number }}" class="px-2 py-1 bg-transparent text-gray-700 hover:bg-blue-300">다음</a>
-  {% endif %}
-</div>
-{% endif %}
 
 
 {% endblock content %}
