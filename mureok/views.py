@@ -26,7 +26,6 @@ def search(request):
         search_gardens = Garden.objects.filter(
             Q(title__icontains=query) |
             Q(category__icontains=query) 
-            # | Q(address__icontains=query)
         )
   
         search_plants = Plant.objects.filter(
