@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'plants',
     'supplies',
     'notices',
+    'sales',
     'django_extensions',
     'imagekit',
     'taggit',
