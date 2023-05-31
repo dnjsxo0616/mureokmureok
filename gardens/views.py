@@ -4,7 +4,7 @@ from .forms import GardenForm, CommentForm
 from .models import Garden, Comment
 from django.contrib import messages
 from django.core.paginator import Paginator
-# import requests
+import requests
 
 
 def searchAddressToCoordinate(address):
@@ -192,3 +192,14 @@ def show_map(request, garden_id):
         'longitude': longitude
     }
     return render(request, 'gardens/map.html', context)
+
+
+def search(request):
+    query = request.GET.get('query')
+    gardens = Garden.objects.filter(title__icontains=query)  
+    
+    context = {
+        'query': query,
+        'gardens': gardens,
+    }
+    return render(request, 'gardens/search.html', context)

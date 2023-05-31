@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- gardens/search.html -->
+{% if query %}
+  <h2>검색 결과: "{{ query }}"</h2>
+{% endif %}
+
+{% for garden in gardens %}
+  <h3>{{ garden.title }}</h3>
+  <p>{{ garden.address }}</p>
+  <!-- Garden 객체의 다른 필드들을 표시하거나 필요한 내용을 추가로 표시 -->
+{% empty %}
+  <p>검색 결과가 없습니다.</p>
+{% endfor %}
+
+
+{% endblock content %}
