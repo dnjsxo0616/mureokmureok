@@ -25,31 +25,47 @@
       {% comment %} {% endif %} {% endcomment %}
     </div>
 
-    <div class="flex items-center gap-10 py-3 mb-5 sticky top-[65px] bg-white" id="content_board">
-      <a href="{% url 'communities:index' %}" class="text-gray-400 hover:text-black {% if request.path == index_url %}btn_active{% endif %}" aria-current="page">
-        <li class="btn" onclick="changeTextColor(this)">전체 보기</li>
-      </a>
-      <a href="{% url 'communities:filter_communities' '실내 식물' %}" class="text-gray-400 hover:text-black {% if '/실내식물/' in request.path %}btn_active{% endif %}">
-        <li class="btn" onclick="changeTextColor(this)">실내식물</li>
-      </a>
-      <a href="{% url 'communities:filter_communities' '실외 식물' %}" class="text-gray-400 hover:text-black {% if '/실외식물/' in request.path %}btn_active{% endif %}"> 
-        <li class="btn" onclick="changeTextColor(this)">실외식물</li>
-      </a>
-      <a href="{% url 'communities:filter_communities' '실내 식물 종자' %}" class="text-gray-400 hover:text-black {% if '/실내 식물 종자/' in request.path %}btn_active{% endif %}">
-        <li class="btn" onclick="changeTextColor(this)">실내 식물 종자</li>
-      </a>
-      <a href="{% url 'communities:filter_communities' '실외 식물 종자' %}" class="text-gray-400 hover:text-black {% if '/실외 식물 종자/' in request.path %}btn_active{% endif %}">
-        <li class="btn" onclick="changeTextColor(this)">실외 식물 종자</li>
-      </a>
+    <div class="flex items-center justify-between py-3 mb-5 sticky top-[65px] bg-white" id="content_board">
+      <div style="display: flex; gap: 15px;">
+        <a href="{% url 'communities:index' %}" class="text-gray-400 hover:text-black {% if request.path == index_url %}btn_active{% endif %}" aria-current="page">
+          <li class="btn" onclick="changeTextColor(this)">전체 보기</li>
+        </a>
+        <a href="{% url 'communities:filter_communities' '실내 식물' %}" class="text-gray-400 hover:text-black {% if '/실내식물/' in request.path %}btn_active{% endif %}">
+          <li class="btn" onclick="changeTextColor(this)">실내식물</li>
+        </a>
+        <a href="{% url 'communities:filter_communities' '실외 식물' %}" class="text-gray-400 hover:text-black {% if '/실외식물/' in request.path %}btn_active{% endif %}"> 
+          <li class="btn" onclick="changeTextColor(this)">실외식물</li>
+        </a>
+        <a href="{% url 'communities:filter_communities' '실내 식물 종자' %}" class="text-gray-400 hover:text-black {% if '/실내 식물 종자/' in request.path %}btn_active{% endif %}">
+          <li class="btn" onclick="changeTextColor(this)">실내 식물 종자</li>
+        </a>
+        <a href="{% url 'communities:filter_communities' '실외 식물 종자' %}" class="text-gray-400 hover:text-black {% if '/실외 식물 종자/' in request.path %}btn_active{% endif %}">
+          <li class="btn" onclick="changeTextColor(this)">실외 식물 종자</li>
+        </a>
+      </div>
+      <form class="search_hidden" action="{% url 'communities:search' %}" role="search">
+        <div class="bg-gray-100 rounded-full ps-3 flex items-center">
+          <span class="material-symbols-outlined text-gray-400">search</span>
+          <input type="search" name="q" class="ps-1 pe-3 h-8 w-60 text-sm bg-transparent rounded-full focus:outline-none" placeholder="제목, 작성자로 검색해보세요!">
+        </div>
+      </form>
     </div>
     
-    <div class="hidden flex items-center gap-10 py-3 mb-5 sticky top-[65px] bg-white" id="content_qa">
-      <a href="{% url 'communities:filter_communities' '전문가 Q&A' %}" class="text-gray-400 hover:text-black {% if '/실내식물/' in request.path %}btn_active{% endif %}">
-        <li class="btn" onclick="changeTextColor(this)">전문가 Q&A</li>
-      </a>
-      <a href="{% url 'communities:filter_communities' '운영자 Q&A' %}" class="text-gray-400 hover:text-black {% if '/실외식물/' in request.path %}btn_active{% endif %}"> 
-        <li class="btn" onclick="changeTextColor(this)">운영자 Q&A</li>
-      </a>
+    <div class="hidden flex items-center justify-between gap-10 py-3 mb-5 sticky top-[65px] bg-white" id="content_qa">
+      <div style="display: flex; gap: 15px;">
+        <a href="{% url 'communities:filter_communities' '전문가 Q&A' %}" class="text-gray-400 hover:text-black {% if '/실내식물/' in request.path %}btn_active{% endif %}">
+          <li class="btn" onclick="changeTextColor(this)">전문가 Q&A</li>
+        </a>
+        <a href="{% url 'communities:filter_communities' '운영자 Q&A' %}" class="text-gray-400 hover:text-black {% if '/실외식물/' in request.path %}btn_active{% endif %}"> 
+          <li class="btn" onclick="changeTextColor(this)">운영자 Q&A</li>
+        </a>
+      </div>
+      <form class="search_hidden" action="{% url 'communities:search' %}" role="search">
+        <div class="bg-gray-100 rounded-full ps-3 flex items-center">
+          <span class="material-symbols-outlined text-gray-400">search</span>
+          <input type="search" name="q" class="ps-1 pe-3 h-8 w-60 text-sm bg-transparent rounded-full focus:outline-none" placeholder="제목, 작성자로 검색해보세요!">
+        </div>
+      </form>
     </div>
 
     {% comment %} 표시항목 {% endcomment %}
@@ -94,9 +110,37 @@
       </a>
       {% endfor %}
     </div>
-    
-    {% comment %} 페이지네이션 {% endcomment %}
+
+
+
+    {% comment %} 검색 쿼리 추가 페이지네이션 {% endcomment %}
     {% if page_obj.has_other_pages %}
+      <div class="flex justify-center items-center mt-5 pb-10">
+        {% if page_obj.has_previous %}
+          <a href="?q={{ query }}&page={{ page_obj.previous_page_number }}" class="w-8 h-8 p-1 text-center bg-transparent rounded-full text-gray-400 hover:text-black">
+            <span class="material-symbols-outlined flex items-center justify-center">arrow_back_ios</span>
+          </a>
+        {% endif %}
+        
+        {% for num in page_obj.paginator.page_range %}
+          {% if page_obj.number == num %}
+            <span class="w-8 h-8 p-1 text-center rounded-full bg-[#1EB564] text-white">{{ num }}</span>
+          {% else %}
+            <a href="?q={{ query }}&page={{ num }}" class="w-8 h-8 p-1 text-center bg-transparent rounded-full text-gray-700 hover:bg-[#cfcfcf]">{{ num }}</a>
+          {% endif %}
+        {% endfor %}
+        
+        {% if page_obj.has_next %}
+          <a href="?q={{ query }}&page={{ page_obj.next_page_number }}" class="w-8 h-8 p-1 text-center bg-transparent rounded-full text-gray-400 hover:text-black">
+            <span class="material-symbols-outlined flex items-center justify-center">arrow_forward_ios</span>
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    
+    {% comment %} 구형 페이지네이션 {% endcomment %}
+    <!-- {% if page_obj.has_other_pages %}
       <div class="flex justify-center items-center mt-5 pb-10">
         {% if page_obj.has_previous %}
           <a href="?page={{ page_obj.previous_page_number }}" class="w-8 h-8 p-1 text-center bg-transparent rounded-full text-gray-400 hover:text-black">
@@ -118,7 +162,7 @@
           </a>
         {% endif %}
       </div>
-    {% endif %}
+    {% endif %} -->
   </main>
   
   <!-- <p class='title--content--2 mt-5'>전문가 자문 요청 글</p>

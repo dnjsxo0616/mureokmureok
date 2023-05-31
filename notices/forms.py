@@ -6,8 +6,8 @@ class NoticeForm(forms.ModelForm):
     content = forms.CharField(widget=CKEditorWidget())
 
     class Meta:
-        model = Community
-        fields = ('title', 'content', 'Thumbnail',)
+        model = Notice
+        fields = ('title', 'content', 'thumbnail',)
 
     title = forms.CharField(
         label='게시글 제목',
@@ -21,7 +21,7 @@ class NoticeForm(forms.ModelForm):
     )
 
 
-    Thumbnail = forms.ImageField(
+    thumbnail = forms.ImageField(
         label='사진 첨부',
         widget=forms.ClearableFileInput(
             attrs={

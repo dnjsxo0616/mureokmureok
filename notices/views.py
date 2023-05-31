@@ -2,13 +2,14 @@ from django.shortcuts import render, redirect
 from .models import Notice
 from .forms import NoticeForm
 from django.db.models import Count
+from django.contrib import messages
 from django.core.paginator import Paginator
 from accounts.models import User, User_title, User_profile
-
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     notices = Notice.objects.all()[::-1]
-    paginator = Paginator(notices, 10)  
+    paginator = Paginator(notices, 3)  
     page_number = request.GET.get('page')  
     page_obj = paginator.get_page(page_number)
 
