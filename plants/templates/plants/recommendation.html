@@ -3,8 +3,31 @@
 
 
 {% block content %}
-<h1></h1>
 
+<div class="mx-auto px-[200px] pt-10 pb-10">
+  <div class="font-bold text-3xl text-left leading-relaxed mb-3 border-b border-green-500 pb-3">
+    <p>인기있는 식물들을</p>
+    <p>모아봤어요.</p>
+  </div>
+  <div>
+    {% if recommended_plants %}
+      <div class="grid grid-cols-4 gap-4">
+        {% for plant in recommended_plants %}
+          <div class="bg-white rounded-lg p-4">
+            <div class="flex">
+              <p class="font-bold">{{plant.title}}</p>
+              <p class="ml-auto">좋아요: {{ plant.like_users.count }}</p>
+            </div>
+            <a href="{% url 'plants:detail' plant.pk %}"><img src="{{ plant.plant_images.first.image.url }}" alt="{{ plant.title }}" width="300" class="w-full h-auto mt-4 object-contain"></a>
+          </div>
+        {% endfor %}
+      </div>
+  </div>
+    {% else %}
+      <p>검색 결과가 없습니다.</p>
+    {% endif %}
+  </div>
+</div>
 {% endblock content %}
 
 {% block script %}

@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="mx-auto px-[200px] pt-10 pb-10">
-  <div class="">
+  <div>
     <div class="font-bold text-3xl text-left leading-relaxed">
       <p>어떤 종류의</p>식물을 찾고 있나요?
     </div>
@@ -25,7 +25,14 @@
       </ul>
     </div>
   </div>
-  <div class="ml-6">
+
+  <div class="mb-5 mt-5">
+    <form action="{% url 'plants:search' %}" method="GET">
+      <input class="border-b-2 border-[#1EB564] outline-none cursor-blink w-full" type="text" name="searched" placeholder="검색어" oninput="toggleSearchButton(this)">
+    </form>
+  </div>
+
+  <div>
     {% if filtered_plants %}
       <div class="grid grid-cols-4 gap-4">
         {% for plant in filtered_plants %}

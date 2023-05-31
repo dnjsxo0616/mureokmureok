@@ -107,6 +107,15 @@
 </section>  
 
 <section class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 h-screen flex flex-col justify-center relative">
+  <div class="font-bold text-6xl flex justify-center leading-relaxed">
+    <div>
+      <div>인기 있는 식물이 궁금하다면</div>
+      <div><a class="text-green-500" href="{% url 'plants:recommendation' %}">보러가기</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 h-screen flex flex-col justify-center relative">
 
   {% comment %} {% if user.is_superuser %} {% endcomment %}
     <p><a href="{% url 'plants:create' %}">생성하기</a></p>

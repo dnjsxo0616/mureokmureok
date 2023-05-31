@@ -125,10 +125,11 @@ def likes(request, plant_pk):
     return JsonResponse(context)
 
 
+
 def recommendation(request):
-    plant_likes = Plant.objects.annotate(num_likes = Count('likes')).order_by('-num_likes')
+    recommended_plants = Plant.objects.annotate(like_count=Count('like_users')).order_by('-like_count')  # 좋아요 순으로 정렬
     context = {
-        'plant_likes':plant_likes,
+        'recommended_plants': recommended_plants
     }
     return render(request, 'plants/recommendation.html', context)
 
