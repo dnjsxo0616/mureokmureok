@@ -113,7 +113,7 @@ class PlantForm(forms.ModelForm):
     )
 
     SUNLIGHT_CHOICE = [
-        ('양지', '양지'), ('음지', '음지'), ('반양지', '반양지'), ('반음지', '반음지'),
+        ('양지', '양지'), ('반양지', '반양지'), ('반음지', '반음지'),
     ]
 
     sunlight = forms.MultipleChoiceField(
@@ -127,7 +127,7 @@ class PlantForm(forms.ModelForm):
     )
 
     HUMIDITY_CHOICE = [
-        ('40% 이하', '40% 이하'), ('40~70%', '40~70%'), ('70~90%', '70~90%'),
+        ('40%이하', '40%이하'), ('40~70%', '40~70%'), ('70~90%', '70~90%'),
     ]
 
     humidity = forms.MultipleChoiceField(

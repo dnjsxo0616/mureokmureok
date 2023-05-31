@@ -10,20 +10,20 @@
 
 
 {% block content %}
-<div class="mx-auto px-8 pt-8 pb-8">
+<div class="mx-auto px-[200px] pt-10 pb-10">
   <div class="flex">
-    <section class="w-1/2">
+    <section class="w-1/3 ml-[30px]">
       {% with plant_images=plant.plant_images.all %}
       <img src="{{ plant_images.0.image.url }}" alt="Plant Image 1" class="w-[400px] h-[400px] object-contain">
       {% comment %} <img src="{{ plant_images.1.image.url }}" alt="Plant Image 2"> {% endcomment %}
     {% endwith %}
     </section>
 
-    <section class="ml-10 w-1/2">
+    <section class="ml-10 w-2/3">
 
       <div class="flex m-3">
         <span class="font-bold text-2xl">{{plant.title}}</span>
-        <form class='like-forms ml-3' data-plant-id='{{ plant.pk }}'>
+        <form class='like-forms m-3' data-plant-id='{{ plant.pk }}'>
           {% csrf_token %}
           {% if request.user in plant.like_users.all %}
             <input type="submit" value="좋아요 취소" id="like-{{ plant.pk }}">
@@ -31,6 +31,19 @@
             <input type="submit" value="좋아요" id="like-{{ plant.pk }}">
           {% endif %}
         </form>
+        <div class="ml-auto">
+          <ul class="bg-green-500 text-white rounded-lg p-1 mb-3 ">
+            {% for category in category_list  %}
+              <li>{{ category }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      
+      <div class="ml-3">
+        {% if allergy == 'yes' %}
+          <p  class="text-red-500 font-bold">꽃가루 알레르기 : 주의 </p>
+        {% endif %}
       </div>
 
       <ul class="mb-3 flex">
@@ -39,14 +52,6 @@
         {% endfor %}
       </ul>
 
-      <div>
-        <span>알레르기 여부</span>
-        <ul>
-          {% for category in category_list  %}
-            <li>{{ category }}</li>
-          {% endfor %}
-        </ul>
-      </div>
       <div class="m-3">{{ plant.content}}</div>
 
       {% comment %} 표 {% endcomment %}
@@ -94,14 +99,13 @@
             <td class="border-r border-gray-200 py-2 px-4 text-left">
               <ul>
                 {% for humidity in humidity_list  %}
-                  {% if humidity == '40% 이하' %}
+                  {% if humidity == '40%이하' %}
                     <li class="font-bold">{{humidity}}</li>
                     <p>주변 공기를 건조하게 관리해주세요</p>
                   {% elif humidity == '40~70%' %}
                     <li class="font-bold">{{humidity}}</li>
                     <p>주변 공기가 건조해지지 않도록 관리해주세요</p>
                   {% endif %}
-                  <li class="font-bold">{{ humidity }}</li>
                 {% endfor %}
               </ul>
             </td>
@@ -126,95 +130,207 @@
       </div>
     </section>
   </div>
-</div>
-
-
-<section>
-  <div class="text-center font-bold text-3xl">자세히 알아보기</div>
-  <div class="flex justify-center mt-5 border-b">
-    <ul class="flex text-gray-500 text-2xl pb-3">
-      <li class="mr-12 tab">물(물주기 등)</li>
-      <li class="mr-12 tab">빛</li>
-      <li class="mr-12 tab">습도</li>
-      <li class="tab">온도</li>
-    </ul>
-  </div>
-
-  <div class="detail">
-    <div class="content">
-      <div class="flex">
-        <section class="w-1/2">
-          <img src="{% static 'img/물 그림.png' %}" alt="" class="w-[400px] h-[400px] object-contain">
-        </section>
-      
-        <section class="ml-10 w-1/2">
-          <div>{{ watering }}</div>
-        </section>
-      </div>
-      <section>
-        <div>물주기에 어려움이 있나요?</div>
-      </section>
+  
+  
+  <section class="mt-[100px]">
+    <div class="text-center font-bold text-3xl">자세히 알아보기</div>
+    <div class="flex justify-center mt-5 border-b">
+      <ul class="flex text-gray-500 text-2xl pb-3">
+        <li class="mr-12 tab">물</li>
+        <li class="mr-12 tab">빛</li>
+        <li class="mr-12 tab">습도</li>
+        <li class="tab">온도</li>
+      </ul>
     </div>
-    <div class="content">
-      <div class="flex">
-        <section class="w-1/2">
-          <img src="{% static 'img/빛 그림.png' %}" alt="" class="w-[400px] h-[400px] object-contain">
-        </section>
+  
+    <div class="detail">
+      <div class="content">
+        <div class="flex">
+          <section class="w-1/3">
+            <img src="{% static 'img/물 그림.png' %}" alt="" class="w-[400px] h-[400px] object-contain">
+          </section>
         
-        <section class="ml-10 w-1/2">
-
+          <section class="ml-10 w-2/3">
+            <div class="mt-5 mb-5 border-b pb-5">
+              {% for watering in watering_list  %}
+                <div class="font-bold mb-3 text-center">{{ watering }}</div>
+                <div>
+                  {% if watering == '주1~2회' %}
+                    <p>{{ plant.title }}은 과습에 약해요. 화분 위에서 3~5cm정도까지 흙이 보송하게 말랐을 때 물을 주세요. 물을 주실 때는 화분 밑으로 물이 빠져나올 때까지 충분히 주셔야 흙 전체에 충분히 물이 흡수될 수 있답니다. 또한 물받침에 물이 고여있지 않도록 해주셔야 뿌리 과습을 예방할 수 있답니다.</p>
+                    {% elif watering == '월1회이하'%}
+                    <p>{{ plant.title }}은 수분을 저장하는 능력이 아주 뛰어나 물이 많이 필요하지 않아요. 흙이 다 마르기 전에 물을 주면 몸통이 물러버릴 수 있으니 꼭 흙이 마른 것을 확인한 후에 물을 주셔야해요. 물을 주실 때는 몸통에 직접 닿지 않게 주셔야 무름을 방지할 수 있답니다. 너무 차갑지 않은 온도의 물을 듬뿍 주세요. 물을 준 후에는 받침대에 고인 물을 바로 버리고, 통풍이 잘 되는 곳에 두세요.</p>
+                    {% elif watering == '월1~2회' %}
+                    <p>{{ plant.title }}은 수분을 유지하는 능력이 뛰어나 물 주는 시기를 조금 놓쳐도 잘 견디는 식물이에요. 토양이 완전히 마르기 전에 물을 주시면 뿌리 호흡이 불량해져 과습의 피해를 입을 수 있어 화분 받침대에 물이 계속 고여 뿌리가 습해지지 않게 주의해주세요. 물을 주실 때는 몸통에 직접 닿지 않게 주셔야 무름을 방지할 수 있답니다.</p>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            </div>
+            <div>
+              <div class="font-bold mb-3 text-center">계절에 따른 물주기</div>
+              <div>
+                <div class="mb-5">
+                  <span class="font-bold">여름</span>
+                  <p>성장이 빨라지는 봄~여름에는 흙 마름도 빨라져 물 주는 횟수를 늘려주시는 게 좋아요. 흙이 다 말랐는지, {{ plant.title }}의 몸통이 말랑해지지는 않았는지 더 자주 살펴주세요. 물을 주실 때는 너무 차갑지 않은 온도의 물을 주시는 게 좋아요. </p>
+                </div>
+                <div>
+                  <span class="font-bold">겨울</span>
+                  <p>날씨가 추워지는 늦가을~겨울에는 성장속도가 느려져 흙 마름도 더뎌진답니다. 따라서 물 주는 횟수도 줄여주시는 게 좋아요. 화분 속 흙이 대부분 다 말랐을 때 물을 주세요. 겨울철에는 날씨가 가장 따뜻한 낮에 미지근한 물을 주는 게 좋아요.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+        <section>
+          <div class="font-bold mb-3 text-center mt-[50px] text-lg">물주기에 어려움이 있나요?</div>
+          <div><p>제품
+          </p></div>
         </section>
-
       </div>
-    </div>
-    <div class="content">
-      <div class="flex">
-        <section class="w-1/2">
-          <img src="{% static 'img/습도 그림.png' %}" alt="" class="w-[400px] h-[400px] object-contain">
-        </section>
+      
+      <div class="content">
+        <div class="flex">
+          <section class="w-1/3">
+            <img src="{% static 'img/빛 그림.png' %}" alt="" class="w-[400px] h-[400px] object-contain">
+          </section>
+
+          <section class="ml-10 w-2/3">
+            <div class="mt-5 mb-5 border-b pb-5">
+              {% for sunlight in sunlight_list %}
+                <div class="font-bold mb-3 text-center">{{ sunlight }}</div>
+                <div>
+                  {% if sunlight == '양지' %}
+                    <p>{{ plant.title }}은 은 밝은 빛을 좋아하는 식물이에요. 가장 밝은 빛이 오래 머무는 곳에서 키워주세요.</p>
+                  {% elif sunlight == '반양지'%}
+                    <p>{{ plant.title }}은 직접적인 강한 빛이 드는 곳 보다는 은은한 간접적인 빛이 드는 공간이 적합해요. 레몬빛의 무늬가 많을수록 은은한 간접광을 오랫동안 받을 수 있도록 해주면 더 건강하게 잘 자란답니다.</p>
+                  {% elif sunlight == '반음지'%}
+                    <p>{{ plant.title }}은 그늘진 곳에서도 잘 자라 실내 형광등으로도 잘 살 수 있어요. 오히려 직접적인 강한 빛은 금전수의 잎을 타게할 수 있으니 강한 빛은 피해주시는 게 좋아요.</p>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            </div>
+            <div>
+              <div class="font-bold mb-3 text-center">빛에 따른 변화</div>
+              <div>
+                <div class="mb-5">
+                  <span class="font-bold">빛이 너무 강하면</span>
+                  {% for sunlight in sunlight_list %}
+                    <div>
+                      {% if sunlight == '양지' %}
+                        <p>직접적인 강한 햇빛 아래에서는 잎에 갈색 반점이 생기거나 잎 끝이 탈 수 있으니 한낮에는 커튼이나 블라인드로 약간의 차광을 해주시는 게 좋아요.</p>
+                      {% elif sunlight == '반양지'%}
+                        <p>너무 강한 빛을 지속적으로 받게 되면 잎 끝이 타 들어갈 수 있어요. 따라서 한여름철의 강한 햇빛이 들어오는 공간이라면 커튼이나 블라인드 등으로 빛을 가려주시는 게 좋아요.</p>
+                      {% elif sunlight == '반음지'%}
+                        <p>한낮의 강한 직접적인 햇빛을 받으면 잎이 타고 말라 버릴 수 있어 한낮에는 커튼이나 블라인드로 차광을 해주시는 게 좋아요. 또한 너무 강한 빛 아래에서는 무늬가 옅어져 잎 색이 바랠 수 있어요.</p>
+                      {% endif %}
+                    </div>
+                  {% endfor %}
+                </div>
+                <div>
+                  <span class="font-bold">빛이 너무 약하면</span>
+                  {% for sunlight in sunlight_list %}
+                    <div>
+                      {% if sunlight == '양지' %}
+                        <p>빛이 너무 약하면 잎의 무늬가 연해지고 꽃이 피지 않을 수 있어요. 밝은 빛을 받을 수 있는 공간으로 옮겨주시는 것이 좋아요. </p>
+                      {% elif sunlight == '반양지'%}
+                        <p>빛이 너무 약하면 잎의 무늬가 옅어지고 잎이 갈색으로 변할 수 있어요. 또한 새 잎이 잘 나지 않고, 줄기가 길어져 풍성한 느낌이 줄어들 수 있어요. </p>
+                      {% elif sunlight == '반음지'%}
+                        <p>빛이 많이 부족할 경우 성장이 아주 느려질 수 있어요. 빛이 아예 없으면 성장이 매우 느려지고 흙이 잘 마르지 않아 과습의 피해를 입을 수 있어 실내등이라도 쐴 수 있도록 해주는 게 좋아요.</p>
+                      {% endif %}
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
     
-        <section class="ml-10 w-1/2">
-
+      <div class="content">
+        <div class="flex">
+          <section class="w-1/3">
+            <img src="{% static 'img/습도 그림.png' %}" alt="" class="w-[400px] h-[400px] object-contain">
+          </section>
+          
+          <section class="ml-10 w-2/3">
+            <div class="mt-5 mb-5 border-b pb-5">
+              {% for humidity in humidity_list  %}
+                <div class="font-bold mb-3 text-center">{{ humidity }}</div>
+                <div>
+                  {% if humidity == '40%이하'%}
+                    <p>{{ plant.title }}은 은 밝은 빛을 좋아하는 식물이에요. 가장 밝은 빛이 오래 머무는 곳에서 키워주세요.</p>
+                  {% elif humidity == '40~70%'%}
+                    <p>{{ plant.title }}은 직접적인 강한 빛이 드는 곳 보다는 은은한 간접적인 빛이 드는 공간이 적합해요. 레몬빛의 무늬가 많을수록 은은한 간접광을 오랫동안 받을 수 있도록 해주면 더 건강하게 잘 자란답니다.</p>
+                  {% elif humidity == '70~90%'%}
+                    <p>{{ plant.title }}은 그늘진 곳에서도 잘 자라 실내 형광등으로도 잘 살 수 있어요. 오히려 직접적인 강한 빛은 금전수의 잎을 타게할 수 있으니 강한 빛은 피해주시는 게 좋아요.</p>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            </div>
+            <div>
+              <div class="font-bold mb-3 text-center">습도에 따른 변화</div>
+              <div>
+                <div class="mb-5">
+                  <span class="font-bold">습도가 낮으면</span>
+                  <p>습도가 낮아 건조해지면 잎 끝이 마르고 잎이 쪼글쪼글해지는 증상이 나타나요. 또한 습도가 너무 낮은 환경이 지속되면 식물이 뿌리로부터 물을 잘 끌어올릴 수 없게 되어 잎 끝이 마르거나 잎이 떨어질 수 있어요. 따라서 주변 공간의 습도가 너무 낮다면(40% 이하) 분무기를 이용해 식물 주변의 습도를 높여주시거나 가습기를 사용해주시는 게 좋아요. 가습기와 서큘레이터를 함께 이용하면 한 곳의 습도만 높아지는 것을 방지할 수 있답니다. </p>
+                </div>
+                <div>
+                  <span class="font-bold">습도가 높으면</span>
+                  <p>잎이 무거워 처지는 느낌이 들고, 잎이 무를 수 있어요. 습도가 높게 지속되면서 공기를 순환시켜주지 않으면 병충해가 생기기 쉬운 환경이 만들어져요. 따라서 환기를 자주 해주시거나 가습기와 서큘레이터를 함께 이용해 공기를 순환시켜 주는 게 좋아요.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+        <section>
+          <div class="font-bold mb-3 text-center mt-[50px] text-lg">습도 관리에 어려움이 있나요?</div>
         </section>
       </div>
-      <section>
-        <div습도 관리에 어려움이 있나요?</div>
-      </section>
-    </div>
-    <div class="content">
-      <div class="flex">
-        <section class="w-1/2">
-          <img src="{% static 'img/온도 그림.png' %}" alt="" class="w-[400px] h-[400px] object-contain">
-        </section>
-    
-        <section class="ml-10 w-1/2">
-          <div></div>
+
+      <div class="content">
+        <div class="flex">
+          <section class="w-1/3">
+       
+            <img src="{% static 'img/온도 그림.png' %}" alt="" class="w-[400px] h-[400px] object-contain">
+          </section>
+          
+          <section class="ml-10 w-2/3">
+            <div class="mt-5 mb-5 border-b pb-5">
+              {% for temperature in temperature_list  %}
+                <div class="font-bold mb-3 text-center">{{ temperature }}</div>
+                <div>
+                  {% if temperature == '18~28도'%}
+                    <p>{{ plant.title }}은 은 밝은 빛을 좋아하는 식물이에요. 가장 밝은 빛이 오래 머무는 곳에서 키워주세요.</p>
+                  {% elif temperature == '16~27도'%}
+                    <p>{{ plant.title }}은 직접적인 강한 빛이 드는 곳 보다는 은은한 간접적인 빛이 드는 공간이 적합해요. 레몬빛의 무늬가 많을수록 은은한 간접광을 오랫동안 받을 수 있도록 해주면 더 건강하게 잘 자란답니다.</p>
+                  {% elif temperature == '21~25도'%}
+                    <p>{{ plant.title }}은 그늘진 곳에서도 잘 자라 실내 형광등으로도 잘 살 수 있어요. 오히려 직접적인 강한 빛은 금전수의 잎을 타게할 수 있으니 강한 빛은 피해주시는 게 좋아요.</p>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            </div>
+            <div>
+              <div class="font-bold mb-3 text-center text-lg">온도에 따른 변화</div>
+              <div>
+                <div class="mb-5">
+                  <span class="font-bold">온도가 낮으면</span>
+                  <p>온도가 낮아지는 늦가을~겨울에는 추위를 피해 따뜻한 실내에서 키워주시는 것이 좋아요. 찬바람이 드나드는 곳도 피해주세요. 특히 10℃ 이하의 온도에서는 냉해를 입어 몸통이 얼어 물러버릴 수 있어요. </p>
+                </div>
+                <div>
+                  <span class="font-bold">온도가 높으면</span>
+                  <p>30도가 넘는 여름철 한낮에 직접적인 강한 햇빛이 들어오는 공간에서는 화분 속 흙의 온도도 함께 올라가 뿌리가 상할 수 있으니 주의해주세요.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+        <section>
+          <div class="font-bold mb-3 text-center mt-[50px] text-lg">온도 관리에 어려움이 있나요?</div>
         </section>
       </div>
-      <section>
-        <div>온도 관리에 어려움이 있나요?</div>
-      </section>
+
     </div>
-  </div>
-</section>
-
-
-
-
-<ul>
-  {% for flowering in flowering_list  %}
-    <li>{{ flowering }}</li>
-  {% endfor %}
-</ul>
-
-<p>----------------------------------</p>
-
-<ul>
-  {% for season in season_list  %}
-    <li>{{ season }}</li>
-  {% endfor %}
-</ul>
-
+  </section>
+</div>
 
 {% comment %} <h2>Images</h2> {% endcomment %}
 {% comment %} {% for image in plant.plant_images.all %}

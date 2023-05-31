@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-from imagekit.models import ProcessedImageField
+from imagekit.models import ProcessedImageField, ImageSpecField
 from imagekit.processors import ResizeToFit
 from django.utils import timezone
 from datetime import timedelta,datetime
