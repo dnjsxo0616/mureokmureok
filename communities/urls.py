@@ -6,6 +6,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('category/<str:category>/', views.filter_communities, name='filter_communities'),
     path('create/',views.create, name='create'),
+    path('search/', views.search, name='search'),
     path('<int:community_pk>/',views.detail, name='detail'),
     path('<int:community_pk>/update/',views.update,name='update'),
     path('<int:community_pk>/delete/',views.delete,name='delete'),

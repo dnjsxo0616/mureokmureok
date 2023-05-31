@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block style %}{% endblock style %}
+
+
+{% block content  %}
+<main>
+    <h1>공지사항</h1>
+    <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+    {% comment %}  본문 제목(조회수) 및 본문 좋아요 부분 {% endcomment %}
+        <div class="flex items-center justify-end">
+        <p class="text-xl">{{ notice.title }}</p>
+        <div class="ml-auto">
+            <p>{{ notice.user.username }} 업데이트: {{ notice.updated_at|date:"Y-m-d" }}</p>
+            <p id="like-count" class="ms-3">조회수{{ notice.hits }}</p>
+        </div>
+        </div>
+
+        {% comment %}  본문 내용 부분 {% endcomment %}
+        <div class="flex justify-center">
+            <div class="ms-3">
+            <p class="fs-5 mb-3 flex justify-center">{{ notice.content }}</p>
+            <div>
+                <img src="{{ notice.thumbnail.url }}" alt="이미지없음">
+            </div>
+            </div>
+        </div>
+
+
+    </div>
+</main>
+{% endblock content %}
+
+{% block script %}
+{% endblock script %}
