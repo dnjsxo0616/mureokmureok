@@ -1,23 +1,23 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block head %}
-  <style>
 
-
-
-  </style>
 {% endblock head %}
 
 
 {% block content %}
 <div class="mx-auto px-[200px] pt-10 pb-10">
   <div class="flex">
-    <section class="w-1/3 ml-[30px]">
+    <section class="w-1/3 ml-[30px]">   
+      
       {% with plant_images=plant.plant_images.all %}
-      <img src="{{ plant_images.0.image.url }}" alt="Plant Image 1" class="w-[400px] h-[400px] object-contain">
-      {% comment %} <img src="{{ plant_images.1.image.url }}" alt="Plant Image 2"> {% endcomment %}
-    {% endwith %}
+        <img src="{{ plant_images.0.image.url }}" alt="Plant Image 1" class="w-[400px] h-[400px] object-contain">
+        {% comment %} <img src="{{ plant_images.1.image.url }}" alt="Plant Image 2" class="w-[400px] h-[400px] object-contain">
+        <img src="{{ plant_images.2.image.url }}" alt="Plant Image 3" class="w-[400px] h-[400px] object-contain"> {% endcomment %}
+      {% endwith %}
     </section>
+
+
 
     <section class="ml-10 w-2/3">
 
@@ -43,6 +43,7 @@
       <div class="ml-3">
         {% if allergy == 'yes' %}
           <p  class="text-red-500 font-bold">꽃가루 알레르기 : 주의 </p>
+          {% comment %} <span class="material-symbols-outlined">thumb_up</span> {% endcomment %}
         {% endif %}
       </div>
 
