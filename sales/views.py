@@ -1,50 +1,55 @@
-# from django.shortcuts import render, redirect
-# from .models import Product, Purchase, Cart
-# from .forms import ProductForm, PurchaseForm
-# from django.contrib.auth.decorators import login_required
-# from django.contrib import messages
-# from django.core.paginator import Paginator
-# from accounts.models import User, User_title, User_profile
-# from django.db.models import Count, Q
-# from django.http import JsonResponse
+from django.shortcuts import render, redirect
+from .models import Product, Purchase, Cart
+from .forms import ProductForm
+# from .forms import PurchaseForm
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.core.paginator import Paginator
+from accounts.models import User, User_title, User_profile
+from django.db.models import Count, Q
+from django.http import JsonResponse
+from decimal import Decimal
 
+def index(request):
+    # 베스트 프로덕트(리뷰순)
+    products = Product.objects.all()
 
-# def index(request):
-#     products = Product.objects.all()
-#     context = {
-#         'products': products, 
-#     }
-#     return render(request, 'sales/index.html', context)
+    context = {
+        'products': products,
+    }
 
-
-
-# @login_required
-# def create(request):
-#     if request.method == 'POST':
-#         form = ProductForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             product = form.save(commit=False)
-#             product.user = request.user
-#             product.save()
-#             return redirect('sales:detail', product.pk)
-#     else:
-#         form = ProductForm()
-#     context = {
-#         'form' : form,
-#     }
-#     return render(request, 'sales/create.html', context)
+    return render(request, 'sales/index.html', context)
 
 
 
-# def detail(request, product_pk):
-#     product = Product.objects.get(pk=product_pk)
-#     products = Product.objects.all().order_by('like')
+@login_required
+def create(request):
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.user = request.user
+            product.save()
+            return redirect('sales:index')
+    else:
+        form = ProductForm()
+    
+    context = {
+        'form' : form,
+    }
+    return render(request, 'sales/create.html', context)
 
-#     context ={
-#         'product' : product,
-#         'products': products,
-#     }
-#     return render(request,'sales/detail.html', context)
+
+
+def detail(request, product_pk):
+    product = Product.objects.get(pk=product_pk)
+    # products = Product.objects.all().order_by('like')
+
+    context ={
+        'product' : product,
+        # 'products': products,
+    }
+    return render(request,'sales/detail.html', context)
 
 
 
@@ -87,6 +92,54 @@
 #     return render(request, 'sales/purchase_list.html', context)
 
 
+
+def add_to_cart(request, product_pk):
+    product = Product.objects.get(pk=product_pk)
+    quantity = int(request.POST.get('quantity', 1))
+    cart = request.session.get('cart', {})
+
+    if product_pk in cart:
+        cart[product_pk]['quantity'] += quantity
+    else:
+        cart[product_pk] = {'quantity': quantity, 'price': str(product.price)}
+
+    request.session['cart'] = cart
+
+    return redirect('sales:view_cart')
+
+
+def view_cart(request):
+    cart = request.session.get('cart', {})
+    cart_items = []
+    cart_total = 0
+
+    for product_pk, product_info in cart.items():
+        product = Product.objects.get(pk=product_pk)
+        total_price = Decimal(product_info['quantity']) * product.price
+        cart_total += total_price
+        cart_items.append({
+            'product': product,
+            'quantity': product_info['quantity'],
+            'total_price': total_price,
+        })
+
+    context = {
+        'cart_items': cart_items,
+        'cart_total': cart_total,
+    }
+    return render(request, 'sales/cart.html', context)
+
+
+def remove_from_cart(request, product_pk):
+    cart = request.session.get('cart', {})
+    product_pk = str(product_pk)
+
+    if product_pk in cart:
+        del cart[product_pk]
+        request.session['cart'] = cart
+
+    return redirect('sales:view_cart')
+
 # def cart(request, pk):
 #     user = User.objects.get(pk=pk)
 #     cart = Cart.objects.filter(user=user)
@@ -97,6 +150,8 @@
 #         'cart': cart
 #     }
 #     return render(request, 'sales/cart.html', context)
+
+
 
 
 

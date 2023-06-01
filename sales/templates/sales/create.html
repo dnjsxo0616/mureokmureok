@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block head %}{% endblock head %}
+
+{% block content %}
+<h1>create</h1>
+
+<form action="{% url 'sales:create' %}" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <input type="submit">
+</form>
+
+
+{% endblock content %}
+
+
+{% block script %}{% endblock script %}
