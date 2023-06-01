@@ -6,22 +6,8 @@
 
 {% block content %}
 
-
-{% comment %} <div class="container">
-  <div class="d-flex column">
-    <!-- 제품 사진 -->
-    <div class="img-area">
-      <img class="detail_img" src="{{ product.photo.url }}" alt="">
-    </div>
-    <!-- 제품 정보 -->
-    <div class="infoarea">
-      <h2>{{ product.title }}</h2> {% endcomment %}
-      {% comment %} <span> <img class="img_line img-margin"
-          src="https://img.echosting.cafe24.com/design/skin/admin/ko_KR/ico_product_stock.gif" alt="재고보유"></span> {% endcomment %}
-      <!-- 테이블 형식 (품번, 원산지, 제조사) -->
-
   <main class="mx-auto px-[200px] pt-10 pb-10">
-    <div class="flex">
+    <div class="flex mb-[50px]">
       <section class="w-1/3">
         <img class="detail_img" src="{{ product.photo.url }}" alt="">
       </section>
@@ -50,215 +36,51 @@
         </div>
       </section>
     </div>
+
+    <review class="">
+      <section>
+        <div  class="flex justify-end">
+          <button id="createReviewButton" class="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">리뷰 생성</button>
+        </div>
+        <div id="reviewModal" class="hidden fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
+          <div class="bg-white rounded-lg p-6 w-96">
+            <form class="" action="{% url 'sales:create_review' product.pk %}" method="POST">
+              {% csrf_token %}
+              <div class="mb-4">
+                <label for="title" class="block text-gray-700 text-sm font-bold mb-2">제목:</label>
+                <input type="text" id="title" name="title" class="w-full border rounded-lg px-3 py-2">
+              </div>
+              <div class="mb-4">
+                <label for="content" class="block text-gray-700 text-sm font-bold mb-2">내용:</label>
+                <textarea id="content" name="content" class="w-full border rounded-lg px-3 py-2"></textarea>
+              </div>
+              <input type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              <button id="closeModalButton" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">닫기</button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </review>
+
   </main>
 
-
-
-
-
+  {% endblock content %}
   
-        
-{% comment %} 
-  <!-- 상품사용후기(리뷰) -->
-  <div class="review-area">
-    <div class="review-title">
-      <h3 class="review-font">상품사용후기</h3>
-      <p>상품의 사용후기를 적어주세요</p>
-    </div>
-    <div class="review-tabel">
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">번호</th>
-            <th scope="col">제목</th>
-            <th scope="col">작성자</th>
-            <th scope="col">작성일</th>
-            <th scope="col">별점</th>
-            <th scope="col">좋아요</th>
-            <!--
-              추가
-            좋아요
-            조회수?
-            -->
-            
-          </tr>
-        </thead>
-        <tbody>
-          {% for review in reviews %}
-          <tr class='review'>
-              <th scope="row">{{review.pk}}</th>
-              <td>{{ review.title }}</td>
-              <td > <a class="detail-username-link" href="{% url 'accounts:profile' review.user %} "style="color:teal; border-bottom:1px solid teal">{{ review.user }}</a></td> 
-              <td>{{ review.created_at}}</td>
-              <td>
-                {% if review.rating == 1 %}
-                  ⭐☆☆☆☆
-                {% elif review.rating == 2 %}
-                  ⭐⭐☆☆☆
-                {% elif review.rating == 3 %}
-                  ⭐⭐⭐☆☆
-                {% elif review.rating == 4 %}
-                  ⭐⭐⭐⭐☆
-                {% elif review.rating == 5 %}
-                  ⭐⭐⭐⭐⭐
-                {% else %}
-                  ☆☆☆☆☆
-                {% endif %}
-              </td>
-              <td>
-                <!-- 좋아요 버튼 -->
-                <form action="{% url 'reviews:like_review' product.pk review.pk %}" method="POST">
-                  {% csrf_token %}
-                  {% if request.user in review.like_users.all %}
-                    
-                    <button type="submit"><svg style="color: red" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-suit-heart-fill" viewBox="0 0 16 16"> <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z" fill="red"></path> </svg></button>
-                  {% else %}
-                    
-                    <button type="submit"><svg style="color: white" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-suit-heart-fill" viewBox="0 0 16 16"> <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z" fill="white"></path> </svg></button>
-                  {% endif %}
-                </form>
-                <span class="like-count">{{ review.like_users.count }}</span>
-                
-              </td> 
-          </tr>
-      
-          <!-- 내용 display: none-->
-          <tr class='review-content' style="display: none;">
-
-              <td colspan="6">
-                  <h5></h5>
-                  <p class="border border-primary">{{ review.content }}</p>
-                  
-                  <span class="like-count">{{ comment.like_users.all.count }}</span>
-                  
-                  <hr>
-                  <!-- 댓글 -->
-                  {% for comment in review.comment_set.all %}
-                  
-                  <!-- 댓글 작성자 -->
-                  <div class="comment-user">
-                    {{ comment.user.username }} 
-                  </div>
-
-                  <!-- 댓글내용 -->
-                  <div class='comment-content' style="display: none;">
-
-                      <p>{{ comment.content }}</p>
-                      <p>
-                        <form action="{% url 'reviews:like_comment' product.pk review.pk comment.pk %}" method="POST">
-                          {% csrf_token %}
-                          {% if request.user in comment.like_users.all %}
-                              
-                              <button type="submit"><svg style="color: red" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-suit-heart-fill" viewBox="0 0 16 16"> <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z" fill="red"></path> </svg></button>
-                          {% else %}
-                              
-                              <button type="submit"><svg style="color: white" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-suit-heart-fill" viewBox="0 0 16 16"> <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z" fill="white"></path> </svg></button>
-                          {% endif %}
-                      </form>
-                      </p>
-                      <p>
-                        <span class="like-count">{{ comment.like_users.all.count }}</span>
-                      </p>
-                  </div>
-                  
-                  {% empty %} 
-                  <div class='comment-content' style="display: none;">
-                      ⚠️ 댓글이 없습니다.
-                  </div>
-                  {% endfor %}
-                  <hr>
-                  <!-- 댓글 작성 폼 -->
-                  <div class='comment-form' style="display: none;">
-                      <form method="post" action="{% url 'reviews:comment_create' product_pk=product.pk review_pk=review.pk %}">
-                          {% csrf_token %}
-                          <div class="form-group">
-                              <label for="comment_content"> <h5>🙂 댓글 작성</h5></label>
-                              <textarea class="form-control" id="comment_content" rows="3" name="content"></textarea>
-                          </div>
-                          <button type="submit" class="btn btn-primary">댓글 등록</button>
-                      </form>
-                  </div>
-              </td>
-          </tr>
-          {% endfor %}
-      </tbody>
-      </table>
-      <!-- 글쓰기 링크 -->
-      <div class="d-flex justify-content-end">
-        <button type="button" class="btn btn-outline-secondary">
-          <a  href="{% url 'reviews:create_review' product.pk %}">리뷰 작성하기</a>
-        </button>
-      </div>  
-      
-    </div>
-  </div>
-  
-</div> {% endcomment %}
-
-
-<!--자바 스크립트-->
-
-<script>
-  // 각각의 review row와 review-content를 찾아냄
-  const reviewRows = document.querySelectorAll('.review');
-  const reviewContents = document.querySelectorAll('.review-content');
-
-  // 미리 리뷰 컨텐츠를 감춤
-  reviewContents.forEach(content => {
-    content.style.display = 'none';
-  });
-
-  // 각각의 review row에 click 이벤트를 추가
-  // 누르면 없애!
-  reviewRows.forEach(row => {
-    row.addEventListener('click', () => {
-
-      // 리뷰 내용
-      const contentRow = row.nextElementSibling;
-
-      // 해당 review-content row를 보여주거나 감춤
-      if (contentRow.style.display === 'none') {
-        contentRow.style.display = 'table-row';
-      } else {
-        contentRow.style.display = 'none';
-      }
-
-      // 댓글폼, 댓글 내용
-      const commentForm = contentRow.querySelector('.comment-form');
-      const commentContents = contentRow.querySelectorAll('.comment-content');
-
-      // 댓글 작성 폼을 보여주거나 감춤
-      if (commentForm.style.display === 'none') {
-        commentForm.style.display = 'block';
-      } else {
-        commentForm.style.display = 'none';
-      }
-
-      // 각 댓글 내용을 보여주거나 감춤
-      commentContents.forEach(commentContent => {
-        if (commentContent.style.display === 'none') {
-          commentContent.style.display = 'block';
-        } else {
-          commentContent.style.display = 'none';
-        }
+  {% block script %}
+    <script>
+      const createReviewButton = document.getElementById('createReviewButton');
+      const reviewModal = document.getElementById('reviewModal');
+      const closeModalButton = document.getElementById('closeModalButton');
+    
+      createReviewButton.addEventListener('click', () => {
+        reviewModal.classList.remove('hidden');
       });
-    });
-  });
+      
+      closeModalButton.addEventListener('click', () => {
+        reviewModal.classList.add('hidden');
+      });
+    </script>
 
-  
-</script>
-
-
-
-
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-  integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-  crossorigin="anonymous"></script>
-{% endblock content %}
-
-
+{% endblock script %}
 
     

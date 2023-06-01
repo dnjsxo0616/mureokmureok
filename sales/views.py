@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Product, Purchase, Cart
-from .forms import ProductForm
+from .forms import ProductForm, ReviewForm
 # from .forms import PurchaseForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -139,6 +139,24 @@ def remove_from_cart(request, product_pk):
         request.session['cart'] = cart
 
     return redirect('sales:view_cart')
+
+@login_required 
+def create_review(request, product_pk):
+    product = Product.objects.get(pk = product_pk)
+    form = ReviewForm(request.POST)
+    if request.method == 'POST':
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.user = request.user
+            review.product = product
+            review.save()
+            return redirect('sales:detail', product_pk)
+    context = {
+        'product':product,
+        'form':form,
+    }
+    return render(request, 'sales/detail.html', context)
+
 
 # def cart(request, pk):
 #     user = User.objects.get(pk=pk)

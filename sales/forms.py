@@ -1,5 +1,5 @@
 from django import forms
-from .models import Product
+from .models import Product, Review
 
 class ProductForm(forms.ModelForm):
 
@@ -20,3 +20,29 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ('title', 'content', 'category', 'price', 'photo',)
+
+
+class ReviewForm(forms.ModelForm):
+    title = forms.CharField(
+        label = '',
+        widget=forms.TextInput(
+            attrs= {
+                'class':'form-input',
+                'placeholder' : '제목을 입력해주세요.',
+            }
+        ),
+
+    )
+    content = forms.CharField(
+        label = '',
+        widget=forms.TextInput(
+            attrs= {
+                'class':'form-input',
+                'placeholder' : '내용을 입력해주세요.',
+            }
+        ),
+    )
+
+    class Meta:
+        model = Review
+        fields = ('title', 'content',)
