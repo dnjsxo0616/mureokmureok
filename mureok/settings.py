@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'taggit',
     'django_ckeditor_5',
     'ckeditor',
+    'channels',
+    'alarms',
     'taggit_templatetags2',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -82,6 +84,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'mureok.wsgi.application'
+ASGI_APPLICATION = 'mureok.asgi.application'
 
 
 # Database
@@ -312,6 +315,15 @@ CKEDITOR_5_CONFIGS = {
         },
         "alignment": {
             "options": [ 'left', 'right', 'center' ]
+        },
+    },
+}
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 8000)],
         },
     },
 }
