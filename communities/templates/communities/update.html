@@ -1,8 +1,75 @@
 {% extends "base.html" %}
-{% block content %}
-<form action="{% url 'communities:update' community.pk %}" method='POST'  enctype="multipart/form-data">
-  {% csrf_token %}
-  {{form.as_p}}
-  <button type="submit" class='button--color w-100 rounded'>수정</button> 
-</form>
-{% endblock content %}  
+{% load static %}
+
+
+{% block style %}{% endblock style %}
+
+
+{% block content  %}
+<main class="bg-gray-50">
+  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+    <div class="py-10 px-24">
+      <a href="{% url 'communities:detail' community.pk %}" class="text-[14px] text-gray-500 hover:text-black"><p class="mb-3">게시물로 돌아가기</p></a>
+      <h1 class="text-[25px] font-semibold mb-10">커뮤니티 게시글 수정</h1>
+      <form action="{% url 'communities:update' community.pk %}" method = 'POST' enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.media }}
+
+        {% comment %} 제목 {% endcomment %}
+        <div class="flex gap-3 items-center mb-8 w-full">
+          <div class="mb-2 w-2/12">{{ form.title.label }} <span class="text-red-600 text-[20px]">*</span></div>
+          <div>{{ form.title }}</div>
+        </div>
+
+        {% comment %} 카테고리 초이스 {% endcomment %}
+        <div class="flex gap-3 items-center mb-8 w-full">
+          <div class="mb-2 w-2/12">{{ form.category.label }} <span class="text-red-600 text-[20px]">*</span></div>
+          <div>{{ form.category }}</div>
+        </div>
+
+        {% comment %} 썸네일 사진 {% endcomment %}
+        <div class="flex gap-3 mb-8 w-full">
+          <div class="mb-2 w-2/12">{{ form.photo.label }} <span class="text-red-600 text-[20px]">*</span></div>
+          <div>
+            {% if community.photo %}
+              <div class="w-96 h-60 overflow-hidden border border-gray-300 mb-5">
+                <img id="preview" src="{{ community.photo.url }}" alt="" class="w-full h-full object-cover">
+              </div>
+            {% else %}
+              <div class="w-96 h-60 border-dashed overflow-hidden border border-gray-300 mb-5">
+                <img id="preview" src="{% static 'img/no_image.jpg' %}" alt="" class="w-full h-full object-cover">
+              </div>
+            {% endif %}
+            <div>{{ form.photo }}</div>
+          </div>
+        </div>
+
+        {% comment %} 전문가 조언 필요 유무 {% endcomment %}
+        <div class="flex items-center gap-3 mb-8 w-full">
+          <div class="w-2/12">
+            <div>{{ form.need_expert.label }}</div>
+            <div class="text-[12px] text-gray-400">(Optional)</div>
+          </div>
+          <div>{{ form.need_expert }}</div>
+        </div>
+
+        {% comment %} 본문 작성 {% endcomment %}
+        <div class="flex gap-3 mb-8 w-full">
+          <div class="w-2/12">{{ form.content.label }} <span class="text-red-600 text-[20px]">*</span></div>
+          <div>{{ form.content }}</div>
+        </div>
+
+        {% comment %} 수정버튼 {% endcomment %}
+        <div class="flex justify-end w-full">
+          <button type="submit" class='rounded-md bg-[#1EB564] text-white p-2 px-4 hover:bg-[#148D4C]'>수정하기</button> 
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+{% endblock content %}
+
+
+{% block script %}
+<script src="{% static 'js/communityCreatePreview.js' %}"></script>
+{% endblock script %}

@@ -11,7 +11,7 @@ from .models import User_profile, User_title
 
 def login(request):
     if request.user.is_authenticated:
-        return redirect('communities:index')
+        return redirect('home')
 
     if request.method == 'POST':
         form = CustomAuthenticationForm(request, request.POST)
@@ -23,7 +23,7 @@ def login(request):
                 # 이전 페이지의 URL 정보를 삭제합니다.
                 del request.session['prev_url']
                 return redirect(prev_url)
-            return redirect('communities:index')
+            return redirect('home')
     else:
         form = CustomAuthenticationForm()
     request.session['prev_url'] = request.META.get('HTTP_REFERER')
@@ -46,13 +46,13 @@ def logout(request):
         del request.session['prev_url']
         return redirect(prev_url)
         
-    return redirect('communities:index')
+    return redirect('home')
 
 
 
 def signup(request):
     if request.user.is_authenticated:
-        return redirect('communities:index')
+        return redirect('home')
 
 
     if request.method == 'POST':
@@ -78,7 +78,7 @@ def signup(request):
             if prev_url:
                 del request.session['prev_url']
                 return redirect(prev_url)
-            return redirect('communities:index')
+            return redirect('home')
     else:
         form = CustomUserCreationForm()
     request.session['prev_url'] = request.META.get('HTTP_REFERER')
@@ -93,7 +93,7 @@ def signup(request):
 def delete(request):
     request.user.delete()
     auth_logout(request)
-    return redirect('communities:index')
+    return redirect('home')
 
 
 
@@ -120,7 +120,7 @@ def change_password(request):
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)
-            return redirect('communities:index')
+            return redirect('accounts:profile', request.user)
     else:
         form = CustomPasswordChangeForm(request.user)
     context = {
