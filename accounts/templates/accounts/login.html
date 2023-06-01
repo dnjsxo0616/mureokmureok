@@ -8,7 +8,10 @@
 <main class="bg-gray-100 h-screen flex">
   <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
     <div class="rounded-xl bg-white shadow-sm mx-auto p-8 mt-16 w-96">
-      <h2 class="text-[22px] text-center mb-5"><b>로그인</b></h2>
+      <div class="mb-5">
+        <h1 class="text-[22px] text-center mb-3"><b>로그인</b></h1>
+        <p class="text-center text-[14px]">아직 회원이 아니신가요? <a href="{% url 'accounts:signup' %}" class="text-[#1EB564]"><b>회원가입</b></a></p>
+      </div>
       <form action="{% url 'accounts:login' %}" method="POST">
           {% csrf_token %}
           <div class="flex flex-col gap-3 mb-5">

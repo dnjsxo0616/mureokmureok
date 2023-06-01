@@ -1,29 +1,31 @@
-const forms = document.querySelectorAll(".like-form")
-const csrftokenLike = document.querySelector("[name=csrfmiddlewaretoken]").value
+const communityLikeForms = document.querySelectorAll(".community-like_forms");
+const communityCsrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
 
-forms.forEach((form) => {
+communityLikeForms.forEach((form) => {
   form.addEventListener('submit', function(e) {
     e.preventDefault()
     const communityId = e.target.dataset.communityId
     axios({
       method: 'post',
-      url: `/communities/${communityId}/community_likes/`,
-      headers: { "X-CSRFToken": csrftokenLike},
+      url: `/communities/${communityId}/likes/`,
+      headers: { "X-CSRFToken": communityCsrfToken},
     }).then((response) => {
-      const isLiked = response.data.is_liked
-      const likeBtn = form.querySelector(`#like-btn`)
+      const isLiked = response.data.is_liked;
+      const likeCount = response.data.like_count;
+      const likeBtn = document.getElementById('community-like-btn');
+      const likeCountTag = document.getElementById('community-like-count');
       if (isLiked){
-        likeBtn.className = 'heart-fill'
-      } else{
-        likeBtn.className = 'heart'
+        likeBtn.classList.add('text-red-600');
+        likeBtn.classList.remove('text-gray-500');
+        likeCountTag.innerText = likeCount;
+      } else {
+        likeBtn.classList.add('text-gray-500');
+        likeBtn.classList.remove('text-red-600');
+        likeCountTag.innerText = likeCount;
       }
-
-      const likeCountTag = form.querySelector('#like-count')
-      const likeCountData = response.data.like_count
-      likeCountTag.textContent = likeCountData
     })
     .catch((error) => {
-      console.log(error.response)
+      console.error(response.data);
     })
   })
 })

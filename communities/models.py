@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from imagekit.models import ImageSpecField
 from imagekit.processors import Thumbnail
+from django_ckeditor_5.fields import CKEditor5Field
 
 
 # Create your models here.
@@ -9,11 +10,10 @@ def community_img_path(instance, filename):
     return f'images/community/{instance.title}/{filename}'
 
 
-
 class Community(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
-    content = models.TextField()
+    content = CKEditor5Field('Content', config_name='extends')
     hits = models.PositiveIntegerField(default=0)
     photo = models.ImageField(upload_to=community_img_path)
     community_photo = ImageSpecField(
@@ -27,8 +27,12 @@ class Community(models.Model):
     category = models.CharField(max_length=20)
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now=True)
+
     def __str__(self):
         return self.title
+    
+    def count_likes_user(self):
+        return self.like_users.count()
 
 
 class Community_comment(models.Model):
@@ -38,3 +42,6 @@ class Community_comment(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     content = models.CharField(max_length=600)
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_community_comment')
+
+    def count_likes_user(self):
+        return self.like_users.count()

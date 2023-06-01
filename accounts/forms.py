@@ -105,8 +105,7 @@ class CustomUserChangeForm(UserChangeForm):
         widget=forms.ClearableFileInput(
             attrs={
                 'class': 'border rounded-md w-full focus:outline-none focus:ring-1 focus:ring-[#1EB564] text-[14px]',
-                'id' : '프로필 이미지',
-                'id': 'image',
+                'id' : 'id_image',
             },
         ),
         required=False,

@@ -10,7 +10,6 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 
 
-
 def index(request):
     communities = Community.objects.all()[::-1]
     need_experts = Community.objects.filter(need_expert=True)[::-1]
@@ -24,7 +23,6 @@ def index(request):
         'page_obj': page_obj,
     }
     return render(request, 'communities/index.html', content)
-
 
 
 @login_required
@@ -45,13 +43,11 @@ def create(request):
     return render(request, 'communities/create.html', context)
 
 
-
 def detail(request, community_pk):
     community = Community.objects.get(pk=community_pk)
     community_comment_form = Community_commentForm()
     community_comments = community.community_comment_set.all()
     communities = Community.objects.all().order_by('like_users')
-   
 
     session_key = 'community_{}_hits'.format(community_pk)
     if not request.session.get(session_key):
@@ -66,7 +62,6 @@ def detail(request, community_pk):
         'communities': communities,
     }
     return render(request,'communities/detail.html', context)
-
 
 
 @login_required
@@ -86,7 +81,6 @@ def update(request, community_pk):
     return render(request,'communities/update.html',context)
 
 
-
 @login_required
 def delete(request,community_pk):
     community = Community.objects.get(pk=community_pk)
@@ -95,11 +89,10 @@ def delete(request,community_pk):
     return redirect('communities:index')
 
 
-
 @login_required
 def community_likes(request, community_pk):
     community = Community.objects.get(pk=community_pk)
-    if community.like_users.filter(pk=request.user.pk).exists():
+    if request.user in community.like_users.all():
         community.like_users.remove(request.user)
         is_liked = False
     else:
@@ -110,7 +103,6 @@ def community_likes(request, community_pk):
         'like_count': community.like_users.count(),
     }
     return JsonResponse(context)
-
 
 
 from django.http import JsonResponse
@@ -125,7 +117,6 @@ def community_comment_create(request, community_pk):
         community_comment.user = request.user
         
 
-       
         if not Community_comment.objects.filter(user=request.user, community=community).exists():
             user_profile = User_profile.objects.get(user=request.user)
             user_profile.points += 1
@@ -142,7 +133,6 @@ def community_comment_create(request, community_pk):
         return JsonResponse({'success': True})
     else:
         return JsonResponse({'success': False, 'errors': community_comment_form.errors})
-
 
 
 @login_required
@@ -164,7 +154,6 @@ def community_comment_update(request, community_pk, community_comment_pk):
         return render(request, 'communities/detail.html', context)
 
 
-
 @login_required
 def community_comment_delete(request, community_pk, community_comment_pk):
     community_comment = Community_comment.objects.get(pk=community_comment_pk)
@@ -176,23 +165,21 @@ def community_comment_delete(request, community_pk, community_comment_pk):
         return JsonResponse({'status': 'error', 'message': '권한이 없습니다.'})
 
 
-
 @login_required
-def community_comment_likes(request,product_pk, community_comment_pk):
+def community_comment_likes(request, community_pk, community_comment_pk):
     community_comment = Community_comment.objects.get(pk=community_comment_pk)
-    if community_comment.like_users.filter(pk=request.user.pk).exists():
+    if request.user in community_comment.like_users.all():
         community_comment.like_users.remove(request.user)
-        c_is_like = False
+        is_like = False
     else:
         community_comment.like_users.add(request.user)
-        c_is_like = True
-    c_like_count = community_comment.like_users.count()
+        is_like = True
+    like_count = community_comment.like_users.count()
 
     context={
-        'c_is_like' :  c_is_like,
-        'c_like_count' : c_like_count,
+        'is_like': is_like,
+        'like_count': like_count,
     }
-
     return JsonResponse(context)
 
 

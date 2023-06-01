@@ -1,39 +1,31 @@
 from django import forms
 from .models import Community, Community_comment
-
+from ckeditor.widgets import CKEditorWidget
 
 
 class CommunityForm(forms.ModelForm):
+    content = forms.CharField(label='게시글 내용', widget=CKEditorWidget())
+
     class Meta:
         model = Community
         fields = ('title', 'content', 'photo', 'need_expert', 'category')
 
     title = forms.CharField(
-        label='게시글 제목',
+        label='제목',
         widget=forms.TextInput(
             attrs={
-                'class': 'form-control w-75',
+                'class':'w-96 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
                 'id': '게시글 제목',
                 'placeholder': '게시글 제목을 입력해주세요',
             }
         )
     )
 
-    content = forms.CharField(
-        label='게시글 내용',
-        widget=forms.Textarea(
-            attrs={
-                'class': 'form-control w-75',
-                'id' : 'content',
-            }
-        )
-    )
-
     photo = forms.ImageField(
-        label='사진 첨부',
+        label='썸네일 사진 첨부',
         widget=forms.ClearableFileInput(
             attrs={
-                'class': 'form-contol w-75',
+                'class': 'w-96 bg-white border rounded-md focus:outline-none focus:ring-1 focus:ring-[#1EB564] text-gray-400',
                 'id': 'photo',
             }
         )
@@ -43,7 +35,7 @@ class CommunityForm(forms.ModelForm):
         label='전문가 답변 필요 여부',
         widget=forms.CheckboxInput(
             attrs={
-                'class': 'form-check-input',
+                'class': 'w-4 h-4 bg-[#1EB564]',
                 'id': 'need_expert',
             }
         )
@@ -53,13 +45,11 @@ class CommunityForm(forms.ModelForm):
         label='카테고리',
         widget=forms.Select(
             attrs={
-                'placeholder': '카테고리 입력',
-                'class': 'form-select w-75',
+                'class': 'bg-white border-[1px] border-gray-300 p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
             }
         ),
         choices = (('실내 식물','실내 식물'), ('실외 식물', '실외 식물'),
-                    ('실내 식물 종자', '실내 식물 종자'), ('실외 식물 종자', '실외 식물 종자'),
-                     ('전문가 Q&A','전문가 Q&A'), ('운영자 Q&A', '운영자 Q&A'),
+                    ('실내 식물 종자', '실내 식물 종자'), ('실외 식물 종자', '실외 식물 종자'), ('전문가 Q&A','전문가 Q&A'), ('운영자 Q&A', '운영자 Q&A'),
         ), 
         required=True,
     )
@@ -73,8 +63,8 @@ class Community_commentForm(forms.ModelForm):
     content = forms.CharField(
         widget = forms.TextInput(
             attrs= {
-                'class' : 'form-control',
-                'placeholder' : '댓글을 입력해주세요!'
+                'class' : 'w-full py-2 bg-transparent border-0 border-gray-300 border-b-[1px] focus:outline-none focus:border-b-[#1EB564]',
+                'placeholder' : '댓글을 작성해주세요',
             }
         )
     )

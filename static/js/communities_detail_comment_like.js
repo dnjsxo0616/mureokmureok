@@ -1,34 +1,33 @@
-const community_comment_like_forms = document.querySelectorAll('.community_comment_like_forms')
-const c_csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value
-community_comment_like_forms.forEach(form => {
+const communityCommentLikeForms = document.querySelectorAll('.community_comment_like_forms');
+const commentCsrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+communityCommentLikeForms.forEach(form => {
   form.addEventListener('submit', function (event) {  
     event.preventDefault()
     const communityId = event.target.dataset.communityId;
     const commentId = event.target.dataset.commentId;
     axios({
       method: 'post',
-      url: `/communities/${communityId}/community_comments/${community_commentId}/community_comment_likes/`,
-      headers: {'X-CSRFToken': c_csrfToken},
+      url: `/communities/${communityId}/community_comments/${commentId}/community_comment_likes/`,
+      headers: {'X-CSRFToken': commentCsrfToken},
     })
     .then((response) => {
-      const isLiked = response.data.c_is_like
-      console.log(isLiked)
-      const likeBtn = document.querySelector(`#community_comment-like-btn-${community_commentId}`)
-      console.log(likeBtn)
-      if (isLiked){
-        likeBtn.className = "heart-fill"
-      } else {likeBtn.className = "heart"}
-      const likesCountData = response.data.c_like_count
-      console.log(likesCountData)  // 여기로 옮깁니다.
-      const likesCountTag = document.querySelector(`#c_likes_count_${community_commentId}`)
-      console.log(likesCountTag)
-      likesCountTag.textContent = likesCountData
-
-      // location.reload();
+      const isLiked = response.data.is_like;
+      const likeCount = response.data.like_count;
+      const likeBtn = document.getElementById(`comment-like-btn-${communityId}-${commentId}`)
+      const commentLikeCount = document.getElementById(`comment-like-count-${communityId}-${commentId}`)
+      if (isLiked) {
+        likeBtn.classList.add('text-red-600');
+        likeBtn.classList.remove('text-gray-500');
+        commentLikeCount.innerText = likeCount;
+      } else {
+        likeBtn.classList.add('text-gray-500');
+        likeBtn.classList.remove('text-red-600');
+        commentLikeCount.innerText = likeCount;
+      }
     })
-    // .catch((error) => {
-    //   console.error(response.data);
+    .catch((error) => {
+      console.error(response.data);
     });
   });
-// });
-
+});

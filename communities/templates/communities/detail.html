@@ -8,160 +8,245 @@
 {% block content  %}
 <main>
   <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-    {% if request.user == community.user %}
-                  <div class="dropdown text-end">
-                    <button class="btn dropdown pe-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      <i class="bi bi-three-dots-vertical"></i>
-                    </button>
-                    <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="{% url 'communities:update' community.pk %}"><i class="bi bi-pencil-square"></i> 수정하기</a></li>
-                      <li><a class="dropdown-item" onclick="return confirm('게시글을 삭제하시겠습니까?')" href="{% url 'communities:delete' community.pk %}">삭제하기</a></li>
-                    </ul>
-                  </div>
-    {% endif %}
     
-    
-    
-    {% comment %}  본문 제목(조회수) 및 본문 좋아요 부분 {% endcomment %}
-    <div class="flex items-center justify-end">
-      <p class="text-xl">[{{ community.category }}]{{ community.title }}</p>
-      <div class="ml-auto">
-        <p>칭호: {{ community.user.user_profile.title }} {{ community.user.username }} 업데이트: {{ community.updated_at|date:"Y-m-d" }}</p>
-        <p id="like-count" class="ms-3">좋아요 {{ community.like_users.count }} 조회수{{ community.hits }}</p>
-        <form class="like-form" data-community-id="{{ community.pk }}">
-          {% csrf_token %}
-          {% if request.user.is_authenticated %}
-            {% if request.user == community.user %}
-              <div class="heart-fill title--likescount p-0 m-0" disable></div>
-            {% else %}
-              {% if request.user in community.like_users.all %}
-                <button type='submit' class="heart-fill" id="like-btn"></button>
-              {% else %}
-                <button type='submit' class="heart" id="like-btn"></button>
-              {% endif %}
+    <div class="w-full">
+      <div class="flex justify-between mt-10 border-0 border-b-[1px] border-gray-400 pb-3">
+        <div>
+          <p class="text-[14px] text-gray-500 mb-8">
+            <a href="{% url 'communities:index' %}" class="hover:text-black">
+              <span>커뮤니티</span>
+            </a> > {{ community.title }}
+          </p>
+  
+          {% comment %} 타이틀 {% endcomment %}
+          <div class="flex items-center gap-3 mb-2">
+            <div class="text-[14px] border border-black rounded-lg p-1 px-2">{{ community.category }}</div>
+            <h1 class="text-[25px] font-semibold">{{ community.title }}</h1>
+          </div>
+  
+          {% comment %} 작성자 {% endcomment %}
+          <a href="{% url 'accounts:profile' community.user.username %}">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-full overflow-hidden border-[#1EB564] border-[1px]">
+                {% if community.user.image %}
+                <img src="{{ community.user.image.url }}" alt="" class="w-full h-full object-cover">
+                {% else %}
+                <img src="{% static 'img/no_profile.jpg' %}" alt="" class="w-full h-full object-cover">
+                {% endif %}
+              </div>
+              <div class="flex gap-3">
+                <p class="font-semibold text-[16px]">{{ community.user.username }}</p>
+                <p class="text-[14px]">🌱 {{ community.user.user_profile.title }}</p>
+              </div>
+              
+              {% comment %} 팔로우 버튼 {% endcomment %}
+            </div>
+          </a>
+        </div>
+  
+        <div class="flex flex-col items-end justify-end gap-5">
+          {% comment %} 작성일 {% endcomment %}
+          <p class="text-[14px] text-gray-500">{{ community.created_at|date:'Y-m-d' }}</p>
+  
+          {% comment %} 좋아요, 댓글, 조회수 {% endcomment %}
+          <div class="flex justify-end items-end gap-5 text-gray-500">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[16px] mt-[0.5px]">favorite</span>
+              <span id="community-like-count">{{ community.count_likes_user }}</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[16px] mt-[0.5px]">chat_bubble</span>
+              <span>{{ community_comments|length }}</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[16px] mt-[0.5px]">visibility</span>
+              <span>{{ community.hits }}</span>
+            </div>
+            
+            {% comment %} 수정 및 삭제 드롭다운 버튼 {% endcomment %}
+            {% if community.user == request.user %}
+            <div class="relative">
+              <div class="dropdown text-end">
+                <button type="button" class="rounded-md flex justify-center items-center bg-white hover:bg-gray-100" id="community-menu-button" aria-expanded="false" aria-haspopup="true">
+                  <span class="material-symbols-outlined text-[20px] text-black font-bold">more_vert</span>
+                </button>
+              </div>
+              
+              {% comment %} 게시글 수정 및 삭제 부분{% endcomment %}
+              <div class="absolute right-0 z-10 mt-2 w-36 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="community-menu-button" tabindex="-1" id="community-dropdown" style="display: none;">
+                <a class="block text-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" href="{% url 'communities:update' community.pk %}">
+                  수정하기
+                </a>
+                <form method="POST" action="{% url 'communities:delete' community.pk %}" class="block px-4 py-2 text-start text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" onclick="return confirm('게시글을 삭제하시겠습니까?')">
+                  {% csrf_token %}
+                  <input type="submit" value="삭제하기" class="cursor-pointer">
+                </form>
+              </div>
+            </div>
             {% endif %}
-          {% else %}
-            <a href="{% url 'accounts:login' %}" class="heart title--likescount btn m-0 p-0" id="like-btn"></a>
-          {% endif %}
-        </form>
+          </div>
+        </div>
       </div>
-    </div>
+
+      {% comment %} 전문가 필요 {% endcomment %}
+      {% comment %} <p class="flex justify-center">{{ community.need_expert }}</p> {% endcomment %}
+
+      <div class="flex gap-16">
+        <div class="sticky top-[100px] flex flex-col items-center gap-5 border border-gray-300 rounded-full h-fit mt-[50px] p-2">
+
+          {% comment %} 게시글 좋아요 {% endcomment %}
+          <form class="community-like_forms" data-community-id="{{ community.id }}">
+            {% csrf_token %}
+            {% if request.user in community.like_users.all %}
+            <div class="flex items-center w-fit p-3 rounded-full hover:bg-gray-100">
+              <button type="submit" class="flex items-center gap-1">
+                <span id="community-like-btn" class="material-symbols-outlined text-red-600 mt-[0.5px]">favorite</span>
+              </button>
+            </div>
+            {% else %}
+            <div class="flex items-center w-fit p-3 rounded-full hover:bg-gray-100">
+              <button type="submit" class="flex items-center gap-1">
+                <span id="community-like-btn" class="material-symbols-outlined text-gray-500 mt-[0.5px]">favorite</span>
+              </button>
+            </div>
+            {% endif %}
+          </form>
+
+          {% comment %} 공유하기 {% endcomment %}
+          <div class="flex items-center w-fit p-3 rounded-full hover:bg-gray-100">
+            <span class="material-symbols-outlined">share</span>
+          </div>
+
+          {% comment %} 댓글로 이동 {% endcomment %}
+          <a href="#comment">
+            <div class="flex items-center w-fit p-3 rounded-full hover:bg-gray-100">
+              <span class="material-symbols-outlined">chat</span>
+            </div>
+          </a>
+        </div>
+  
+        <div class="w-full">
+          {% comment %}  본문 내용 부분 {% endcomment %}
+          <div class="flex flex-col justify-center p-[50px] px-48 border-0 border-b-[1px] border-gray-400">
+            <div class="h-[600px] w-full overflow-hidden mb-16">
+              <img src="{{ community.photo.url }}" alt="" class="w-full h-full object-cover">
+            </div>
+            <p>{{ community.content|safe }}</p>
+          </div>
       
-      <hr>
-    
-    
-    
-      {% comment %}  본문 내용 부분 {% endcomment %}
-      <div class="flex justify-center">
-        <div class="ms-3">
-          <p class="fs-5 mb-3 flex justify-center">{{ community.content }}</p>
-          <p class="flex justify-center">{{ community.need_expert }}</p>
-          <div>
-            <img src="{{ community.photo.url }}" alt="이미지없음">
+      
+          {% comment %}  댓글 부분 {% endcomment %}
+          <div class="flex gap-3 items-center font-semibold text-[20px] pt-20 mb-5" id="comment">
+            <h3>댓글</h3>
+            <span class='text-gray-400'>{{ community_comments|length }}</span>
+          </div>
+      
+          {% comment %} 댓글 본문 작성 부분 {% endcomment %}
+          <div class="mb-10">
+            <form action="{% url 'communities:community_comment_create' community.pk %}" method="POST" class="flex items-center gap-3" id="Community_comment-Form">
+              {% csrf_token %}
+              <div class="w-11 h-10 rounded-full overflow-hidden border-[1px] border-[#1EB564]">
+                {% if user.image %}
+                <img src="{{ user.image.url }}" alt="" class="w-full h-full object-cover">
+                {% else %}
+                <img src="{% static 'img/no_profile.jpg' %}" alt="" class="w-full h-full object-cover">
+                {% endif %}
+              </div>
+              <div class="w-full">{{ community_comment_form.content }}</div>
+              <input type="submit" class="bg-[#1EB564] text-white p-[5px] px-3 rounded-lg cursor-pointer hover:bg-[#148D4C]" value="댓 글">
+            </form>
+          </div>
+          
+          {% comment %}  작성된 댓글 부분 {% endcomment %}
+          <div class="mb-16">
+            {% if community_comments %}
+      
+            {% for community_comment in community_comments|dictsortreversed:'created_at' %}
+            <div class="flex gap-3 mb-5">
+              <a href="{% url 'accounts:profile' community_comment.user.username %}" class="h-fit">
+                <div class="w-8 h-8 rounded-full overflow-hidden border-[1px] border-gray-400">
+                  {% if community_comment.user.image %}
+                  <img src="{{ community_comment.user.image.url }}" alt="" class="w-full h-full object-cover">
+                  {% else %}
+                  <img src="{% static 'img/no_profile.jpg' %}" alt="" class="w-full h-full object-cover">
+                  {% endif %}
+                </div>
+              </a>
+        
+              <div class="w-full">
+                <div class="flex justify-between items-center mb-2">
+                  <a href="{% url 'accounts:profile' community_comment.user.username %}">
+                    <p class="text-[16px] font-semibold {% if community.user == community_comment.user %}text-[#1EB564]{% endif %}">{{ community_comment.user.username }}</p>
+                  </a>
+        
+                  {% comment %} 댓글 수정 및 삭제 드롭다운 버튼 {% endcomment %}
+                  {% if request.user == community_comment.user %}
+                  <div class="relative">
+                    <button type="button" class="rounded-md flex justify-center items-center bg-white p-1 hover:bg-gray-100" id="comment-menu-button" aria-expanded="false" aria-haspopup="true">
+                      <span class="material-symbols-outlined text-[20px] text-black font-bold">more_vert</span>
+                    </button>
+                
+                    {% comment %} 댓글 수정 및 삭제 부분{% endcomment %}
+                    <div class="absolute right-0 z-10 mt-2 w-36 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="comment-menu-button" tabindex="-1" id="comment-dropdown" style="display: none;">
+                      <form method="POST" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" action="{% url 'communities:community_comment_update' community.pk community_comment.pk %}">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit">수정하기</button>
+                      </form>
+                      <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="deleteComment(event, {{ community.pk }}, {{ community_comment.pk }})">삭제하기</a>
+                    </div>
+                  </div>
+                  {% endif %}
+        
+                </div>
+                <div class="bg-gray-100 rounded-lg p-3">
+                  <p class="text-[14px] text-gray-500 mb-2">{{ community_comment.created_at|date:'Y-m-d' }}</p>
+      
+                  {% comment %} 댓글 내용 {% endcomment %}
+                  <p class="text-[16px] mb-5">{{ community_comment.content }}</p>
+      
+                  {% comment %} 댓글 좋아요 {% endcomment %}
+                  <form class="community_comment_like_forms" data-community-id="{{ community.id }}" data-comment-id="{{ community_comment.id }}">
+                    {% csrf_token %}
+                    {% if request.user in community_comment.like_users.all %}
+                    <div class="flex items-center w-fit p-[0.5px] px-[4px] rounded-md hover:bg-white">
+                      <button type="submit" class="flex items-center gap-1">
+                        <span id="comment-like-btn-{{ community.id }}-{{ community_comment.id }}" class="material-symbols-outlined text-[16px] font-bold text-red-600 mt-[0.5px]">favorite</span>
+                        <span class="text-[14px] text-gray-600" id="comment-like-count-{{ community.id }}-{{ community_comment.id }}">{{ community_comment.count_likes_user }}</span>
+                      </button>
+                    </div>
+                    {% else %}
+                    <div class="flex items-center w-fit p-[0.5px] px-[4px] rounded-md hover:bg-white">
+                      <button type="submit" class="flex items-center gap-1">
+                        <span id="comment-like-btn-{{ community.id }}-{{ community_comment.id }}" class="material-symbols-outlined text-[16px] font-bold text-gray-500 mt-[0.5px]">favorite</span>
+                        <span class="text-[14px] text-gray-600" id="comment-like-count-{{ community.id }}-{{ community_comment.id }}">{{ community_comment.count_likes_user }}</span>
+                      </button>
+                    </div>
+                    {% endif %}
+                  </form>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="w-full flex justify-center">
+              <p class="text-gray-500">작성된 댓글이 없어요</p>
+            </div>
+            {% endif %}
           </div>
         </div>
       </div>
-    
-    
-    
-    
-    
-    
-    {% comment %}  댓글 부분 {% endcomment %}
-    
-    <div class="community_comment_status">
-      <h3> 작성된 댓글  <span class='text--main'>{{ community_comments|length }}</span></h3>
     </div>
-      <div class="container mt-5">
-      <form id="Community_comment-Form" action="{% url 'communities:community_comment_create' community.pk %}" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {% csrf_token %}
-    
-        {% comment %} 댓글 본문 작성 부분 {% endcomment %}
-        <div class="comment-content--container">
-          {{ community_comment_form.content }}
-        </div>
-        <div class='col-span-1 lg:col-span-2 p-0'>
-          {% if request.user.is_authenticated %}
-          <div class="text-end">
-            <input type="submit" class="mt-5 btn fs-3" style="background-color: orange; width: 100px;" value="저장">
-          </div>
-          {% else %}
-            <a href="{% url 'accounts:login' %}"><input type="button" value="댓글 작성" class=''></a>
-          {% endif %}
-        </div>
-      </form>
-    </div>
-    
-    
-    
-        {% comment %}  작성된 댓글 부분 {% endcomment %}
-        
-        {% for community_comment in community_comments %}
-        <div class="container">
-          <div class="community_comment_info">
-            <div class="community_comment_info__left">
-              <div class="community_comment_user__container">
-                {% if community_comment.user.image %}
-                <img class="community_comment_image" src="{{ community_comment.user.image.url }}" alt="{{ community_comment.user.username }}의 프로필 이미지">
-                {% else %}
-                <img class="community_comment_image" src="{% static 'image/solo.png' %}" alt="유저 프로필 사진 없음">
-                {% endif %}
-              </div>
-              <div>
-                <div>
-                  {{ community_comment.user.username }}
-                </div>
-                <div>
-                  <span class="text--sub">{{ community_comment.updated_at|date:"Y-m-d" }}</span>
-                </div>
-              </div>
-            </div>
-            <div class="community_comment__info__right">
-              <p>{{ community_comment.content }}</p>
-    
-    
-              {% comment %} 댓글 좋아요 부분{% endcomment %}
-              <p id='c_likes_count_{{community_comment.pk}}' class=''> {{community_comment.like_users.count}} </p>
-              <form class="community_comment_like_forms" id="community_comment-like-form-{{ community_comment.pk }}" data-community_comment-id="{{ community_comment.pk }}"  data-community-id="{{ community_comment.pk }}">
-                {% csrf_token %}
-                {% if request.user == community_comment.user %}
-                  <div class="">
-                    <span>{{ community_comment.like_user.count }}</span>
-                  </div>
-                    
-                {% else %}
-                    {% if request.user in comment.like_users.all %}
-                    <button type='submit' class="heart-fill title--likescount btn m-0 p-0  fs-5" id="community_comment-like-btn-{{community_comment.pk}}"></button>
-                    {% else %}
-                    <button type='submit' class="heart title--likescount btn m-0 p-0 fs-5" id="community_comment-like-btn-{{community_comment.pk}}"></button>
-                    {% endif %}
-                {% endif %}
-              </form>
-    
-    
-    
-              {% comment %} 댓글 수정 및 삭제 부분{% endcomment %}
-              {% if request.user == community_comment.user %}
-              <form method="POST" action="{% url 'communities:community_comment_update' community.pk community_comment.pk %}">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn">수정하기</button>
-              </form>
-              <a href="#" onclick="deleteComment(event, {{ community.pk }}, {{ community_comment.pk }})">삭제하기</a>
-              {% endif %}
-            </div>
-          </div>
-    
-        </div>
-    {% endfor %}
   </div>
 </main>
 {% endblock content %}
 
 
 {% block script %}
-    <script src="{% static 'js/communities_detail_like.js' %}"></script>
-    <script src="{% static 'js/communities_detail_comment_like.js' %}"></script>
-    <script src="{% static 'js/communities_detail_comment_create.js' %}"></script>
-    <script src="{% static 'js/communities_detail_comment_delete.js' %}"></script>
+<script src="{% static 'js/communities_detail_like.js' %}"></script>
+<script src="{% static 'js/communityDropdown.js' %}"></script>
+<script src="{% static 'js/commentDropdown.js' %}"></script>
+<script src="{% static 'js/communities_detail_comment_like.js' %}"></script>
+<script src="{% static 'js/communities_detail_comment_create.js' %}"></script>
+<script src="{% static 'js/communities_detail_comment_delete.js' %}"></script>
 {% endblock script %}

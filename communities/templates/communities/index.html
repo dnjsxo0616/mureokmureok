@@ -26,7 +26,7 @@
     </div>
 
     <div class="flex items-center justify-between py-3 mb-5 sticky top-[65px] bg-white" id="content_board">
-      <div style="display: flex; gap: 15px;">
+      <div class="flex items-center gap-10 pb-3">
         <a href="{% url 'communities:index' %}" class="text-gray-400 hover:text-black {% if request.path == index_url %}btn_active{% endif %}" aria-current="page">
           <li class="btn" onclick="changeTextColor(this)">전체 보기</li>
         </a>
@@ -43,16 +43,16 @@
           <li class="btn" onclick="changeTextColor(this)">실외 식물 종자</li>
         </a>
       </div>
-      <form class="search_hidden" action="{% url 'communities:search' %}" role="search">
-        <div class="bg-gray-100 rounded-full ps-3 flex items-center">
+      <form action="{% url 'communities:search' %}" role="search">
+        <div class="border-0 border-b border-gray-300 flex items-center">
+          <input type="search" name="q" class="ps-1 pe-3 h-8 w-60 text-sm bg-transparent focus:outline-none" placeholder="제목, 작성자를 검색해보세요">
           <span class="material-symbols-outlined text-gray-400">search</span>
-          <input type="search" name="q" class="ps-1 pe-3 h-8 w-60 text-sm bg-transparent rounded-full focus:outline-none" placeholder="제목, 작성자로 검색해보세요!">
         </div>
       </form>
     </div>
     
     <div class="hidden flex items-center justify-between gap-10 py-3 mb-5 sticky top-[65px] bg-white" id="content_qa">
-      <div style="display: flex; gap: 15px;">
+      <div class="flex items-center gap-10 pb-3">
         <a href="{% url 'communities:filter_communities' '전문가 Q&A' %}" class="text-gray-400 hover:text-black {% if '/실내식물/' in request.path %}btn_active{% endif %}">
           <li class="btn" onclick="changeTextColor(this)">전문가 Q&A</li>
         </a>
@@ -60,16 +60,16 @@
           <li class="btn" onclick="changeTextColor(this)">운영자 Q&A</li>
         </a>
       </div>
-      <form class="search_hidden" action="{% url 'communities:search' %}" role="search">
-        <div class="bg-gray-100 rounded-full ps-3 flex items-center">
+      <form action="{% url 'communities:search' %}" role="search">
+        <div class="border-0 border-b border-gray-300 flex items-center">
+          <input type="search" name="q" class="ps-1 pe-3 h-8 w-60 text-sm bg-transparent focus:outline-none" placeholder="제목, 작성자를 검색해보세요">
           <span class="material-symbols-outlined text-gray-400">search</span>
-          <input type="search" name="q" class="ps-1 pe-3 h-8 w-60 text-sm bg-transparent rounded-full focus:outline-none" placeholder="제목, 작성자로 검색해보세요!">
         </div>
       </form>
     </div>
 
     {% comment %} 표시항목 {% endcomment %}
-    <div class="flex p-3 py-2 text-[14px] text-white sticky top-[110px] bg-[#1EB564] rounded-lg">
+    <div class="flex p-3 py-2 text-[14px] sticky top-[110px] bg-gray-50 border-0 border-b border-t">
       <div class="w-1/12 text-center">이미지</div>
       <div class="w-1/12 grow text-center">제목 및 내용</div>
       <div class="w-1/12 text-center">작성자</div>
@@ -83,14 +83,13 @@
     <div class="flex flex-col mb-10">
       {% for community in page_obj %}
       <a href="{% url 'communities:detail' community.pk %}">
-        <div class="flex items-center bg-white p-3 border-0 border-b-[1px] border-gray-300 hover:bg-gray-100">
+        <div class="flex items-center p-3 border-0 border-b-[1px] border-gray-300 hover:bg-gray-100">
           <div class="w-1/12 rounded-md overflow-hidden h-24 border">
             <img src="{{ community.community_photo.url }}" alt="Community Photo" class="object-cover w-full h-full">
           </div>
           <div class="w-1/12 grow px-10">
             <div class="text-[12px] text-gray-700 border border-[1px] border-gray-400 w-fit rounded-md p-[2px] px-[4px] mb-2 shadow-sm">{{ community.category }}</div>
-            <h4 class="text-[18px] truncate mb-1">{{ community.title }}</h4>
-            <p class="text-[14px] text-gray-400 truncate">{{ community.content }}</p>
+            <h4 class="text-[18px] truncate">{{ community.title }}</h4>
           </div>
           <div class="w-1/12 text-center flex flex-col items-center gap-2">
             <div class="rounded-full w-8 h-8 overflow-hidden border border-[0.5px] border-gray-700">
@@ -112,7 +111,6 @@
     </div>
 
 
-
     {% comment %} 검색 쿼리 추가 페이지네이션 {% endcomment %}
     {% if page_obj.has_other_pages %}
       <div class="flex justify-center items-center mt-5 pb-10">
@@ -124,9 +122,9 @@
         
         {% for num in page_obj.paginator.page_range %}
           {% if page_obj.number == num %}
-            <span class="w-8 h-8 p-1 text-center rounded-full bg-[#1EB564] text-white">{{ num }}</span>
+            <span class="w-8 h-8 p-1 text-center text-[#1EB564] font-semibold">{{ num }}</span>
           {% else %}
-            <a href="?q={{ query }}&page={{ num }}" class="w-8 h-8 p-1 text-center bg-transparent rounded-full text-gray-700 hover:bg-[#cfcfcf]">{{ num }}</a>
+            <a href="?q={{ query }}&page={{ num }}" class="w-8 h-8 p-1 text-center bg-transparent rounded-full text-gray-700 hover:bg-gray-100">{{ num }}</a>
           {% endif %}
         {% endfor %}
         
