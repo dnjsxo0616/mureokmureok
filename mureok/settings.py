@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'supplies',
     'notices',
     'sales',
+    'django.contrib.humanize',
     'django_extensions',
     'imagekit',
     'taggit',

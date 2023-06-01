@@ -34,7 +34,7 @@ class PlantForm(forms.ModelForm):
     allergy = forms.ChoiceField(
         label='알레르기',
         widget=forms.RadioSelect(attrs={
-            'class': 'form-control',
+            'class': 'form-input',
             'id': 'category',
             'placeholder': '분류',
         }),
@@ -60,7 +60,7 @@ class PlantForm(forms.ModelForm):
     flowering = forms.ChoiceField(
         label='개화시기',
         widget=forms.Select(attrs={
-            'class': 'form-control',
+            'class': 'form-input',
             'id': 'category',
             'placeholder': '분류',
         }),
@@ -76,7 +76,7 @@ class PlantForm(forms.ModelForm):
     season = forms.MultipleChoiceField(
         label = '계절',
         widget = forms.CheckboxSelectMultiple(attrs={
-            'class': 'form-control',
+            'class': 'form-input',
             'id': 'category',
             'placeholder': '분류',
         }),
@@ -91,7 +91,7 @@ class PlantForm(forms.ModelForm):
     category = forms.MultipleChoiceField(
         label = '카테고리',
         widget = forms.CheckboxSelectMultiple(attrs={
-            'class': 'form-control',
+            'class': 'form-input',
             'id': 'category',
             'placeholder': '분류',
         }),
@@ -105,7 +105,7 @@ class PlantForm(forms.ModelForm):
     watering = forms.MultipleChoiceField(
         label = '물 주기',
         widget= forms.CheckboxSelectMultiple(attrs={
-            'class': 'form-control',
+            'class': 'form-input',
             'id': 'category',
             'placeholder': '분류',
         }),
@@ -119,7 +119,7 @@ class PlantForm(forms.ModelForm):
     sunlight = forms.MultipleChoiceField(
         label = '일조량',
         widget= forms.CheckboxSelectMultiple(attrs={
-            'class': 'form-control',
+            'class': 'form-input',
             'id': 'category',
             'placeholder': '분류',
         }),
@@ -133,7 +133,7 @@ class PlantForm(forms.ModelForm):
     humidity = forms.MultipleChoiceField(
         label = '습도',
         widget= forms.CheckboxSelectMultiple(attrs={
-            'class': 'form-control',
+            'class': 'form-input',
             'id': 'category',
             'placeholder': '분류',
         }),
@@ -147,7 +147,7 @@ class PlantForm(forms.ModelForm):
     temperature = forms.MultipleChoiceField(
         label = '온도',
         widget = forms.CheckboxSelectMultiple(attrs={
-            'class': 'form-control',
+            'class': 'form-input',
             'id': 'category',
             'placeholder': '분류',
         }),
