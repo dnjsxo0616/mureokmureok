@@ -81,13 +81,42 @@
                     </button>
 
                     <!-- 알림 -->
-                    <button type="button" class="p-1 text-gray-400 hover:text-black">
-                        <span class="sr-only">View notifications</span>
-                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-                            </svg>
-                    </button>
-                    
+                    <div class="relative ml-2">
+
+                        <button type="button" class="p-1 text-gray-400 hover:text-black" id="alarm-button"  aria-expanded="false" aria-haspopup="true">
+                            <span class="sr-only">View notifications</span>
+                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+                                </svg>
+                            <span class="badge" id="alarm-badge">0</span>
+                        </button>
+                        
+                        
+                        <div class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="alarm-button" tabindex="-1" id="alarm-dropdown" style="display: none;">
+                            <div class="flex items-center gap-5 px-4 py-3 border-0 border-b-[1px]">
+                                <div class="rounded-full w-12 h-12 overflow-hidden">
+
+                                </div>
+
+                            </div>
+                            <ul id="alarm-dropdown">
+                                {% for i in alarms %}
+                                <li class='alarm-dropdown-item'>{{ i.message }}</li>
+                                <hr class="alarm-dropdown-divider">
+                                {% endfor %}
+                                
+                                
+                            </ul>   
+                        </div>
+
+                    </div>
+
+
+
+
+
+
+
                     <div class="relative ml-2">
                         <!-- 프로필 사진 -->
                         <div>
@@ -102,7 +131,7 @@
                         </div>
             
                         {% comment %} 프로필 드롭다운 {% endcomment %}
-                        <div class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1" id="profile-dropdown" style="display: none;">
+                        <div class="absolute right-0 z-50 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1" id="profile-dropdown" style="display: none;">
                             <div class="flex items-center gap-5 px-4 py-3 border-0 border-b-[1px]">
                                 <div class="rounded-full w-12 h-12 overflow-hidden">
                                     {% if user.image %}
@@ -209,9 +238,13 @@
             </div>
         </div>
     </footer>
+    {{ room_name|json_script:"room-name" }}
 
-    {% block script %}{% endblock script %}
-    <script src="{% static 'js/baseProfileDropdown.js' %}"></script>
+    {% block script %}
+ 
+    {% endblock script %}
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="{% static 'js/baseProfileDropdown.js' %}"></script>
+    <script src="{% static 'js/baseAlarm.js' %}"></script>
 </body>
 </html>

@@ -1,15 +1,18 @@
-const button = document.getElementById("user-menu-button");
+const pro_button = document.getElementById("user-menu-button");
+const pro_dropdown = document.getElementById("profile-dropdown");
 
-button.addEventListener('click', () => {
-const dropdown = document.getElementById("profile-dropdown");
-dropdown.style.display = 'block';
+pro_button.addEventListener('click', () => {
+    pro_dropdown.style.display = 'block';
 });
 
-button.addEventListener('blur', () => {
-    const dropdown = document.getElementById("profile-dropdown");
-    
-    // 0.2초 뒤에 실행
+pro_button.addEventListener('blur', () => {
     setTimeout(() => {
-    dropdown.style.display = 'none';
+        pro_dropdown.style.display = 'none';
     }, 200);
+});
+
+pro_dropdown.addEventListener('click', (event) => {
+    if (event.target.tagName === 'A') {
+        pro_dropdown.style.display = 'none';
+    }
 });

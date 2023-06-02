@@ -1,10 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from accounts.forms import CustomAuthenticationForm
 from gardens.models import Garden
 from plants.models import Plant
 from supplies.models import Supply
 from accounts.models import User
 from django.db.models import Q
+from channels.layers import get_channel_layer
+import json
+from django.template import RequestContext
 
 def main(request):
     form = CustomAuthenticationForm
@@ -15,9 +18,22 @@ def main(request):
 
 
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'home.html', {
+        'room_name': "broadcast"
+    })
 
 
+from asgiref.sync import async_to_sync
+def test(request):
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        "alarm_broadcast",
+        {
+            'type': 'send_alarm',
+            'message': json.dumps("Alarm")
+        }
+    )
+    return HttpResponse("Done")
 
 
 def search(request):

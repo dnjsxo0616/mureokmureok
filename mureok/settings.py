@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'ckeditor',
     'channels',
     'alarms',
+    'django_celery_results',
+    'django_celery_beat',
     'taggit_templatetags2',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -78,6 +80,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'mureok.custom_context_processors.alarms'
             ],
         },
     },
@@ -128,7 +131,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -323,7 +326,17 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('127.0.0.1', 8000)],
+            "hosts": [('127.0.0.1', 6379)],
         },
     },
 }
+
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_RESULT_BACKEND = 'db+sqlite:///results.sqlite3'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SELERLIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Seoul'
+
+
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
