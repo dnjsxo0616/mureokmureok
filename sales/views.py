@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Product, Purchase, Cart
+from .models import Product, Purchase, Cart, Review
 from .forms import ProductForm, ReviewForm
 # from .forms import PurchaseForm
 from django.contrib.auth.decorators import login_required
@@ -51,6 +51,36 @@ def detail(request, product_pk):
     }
     return render(request,'sales/detail.html', context)
 
+
+def delete_review(request, product_pk, review_pk):
+    review = Review.objects.get(pk=review_pk)
+    review.delete()
+    return redirect('sales:detail', product_pk)
+
+
+
+@login_required
+def update_review(request, product_pk, review_pk):
+    product = Product.objects.get(pk=product_pk)
+    review = Review.objects.get(pk=review_pk)
+    
+    if request.user != review.user:
+        return redirect('sales:detail', product_pk)
+    
+    if request.method == 'POST':
+        form = ReviewForm(request.POST, instance=review)
+        if form.is_valid():
+            form.save()
+            return redirect('sales:detail', product_pk)
+    else:
+        form = ReviewForm(instance=review)
+    
+    context = {
+        'product': product,
+        'review': review,
+        'form': form,
+    }
+    return render(request, 'sales/detail.html', context)
 
 
 # def delete(request, product_pk):
@@ -115,6 +145,7 @@ def view_cart(request):
 
     for product_pk, product_info in cart.items():
         product = Product.objects.get(pk=product_pk)
+        
         total_price = Decimal(product_info['quantity']) * product.price
         cart_total += total_price
         cart_items.append({
@@ -190,3 +221,8 @@ def create_review(request, product_pk):
 #             cart = Cart.objects.filter(user=user, products__in=product)
 #             cart.delete()
 #             return redirect('shop:cart', user.pk)
+
+
+
+def payment(request):
+    return render(request, 'sales/payment.html')
