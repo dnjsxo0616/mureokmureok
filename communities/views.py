@@ -21,6 +21,7 @@ def index(request):
         'communities': communities,
         'need_experts': need_experts,
         'page_obj': page_obj,
+        'room_name': "broadcast"
     }
     return render(request, 'communities/index.html', content)
 
@@ -60,6 +61,7 @@ def detail(request, community_pk):
         'community_comment_form' : community_comment_form,
         'community_comments' : community_comments,
         'communities': communities,
+        'room_name': "broadcast"
     }
     return render(request,'communities/detail.html', context)
 
