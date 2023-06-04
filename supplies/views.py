@@ -19,6 +19,7 @@ def index(request):
     content = {
         'supplies': supplies,
         'page_obj': page_obj,
+        'room_name': "broadcast"
     }
     return render(request, 'supplies/index.html', content)
 
@@ -40,6 +41,7 @@ def create(request):
         form = SupplyForm()
     context = {
         'form' : form,
+        'room_name': "broadcast"
     }
     return render(request, 'supplies/create.html', context)
 
@@ -54,6 +56,7 @@ def detail(request, supply_pk):
         'supply' : supply,
         'tags': tags,
         'supplies': supplies,
+        'room_name': "broadcast"
     }
     return render(request,'supplies/detail.html', context)
 
@@ -82,6 +85,7 @@ def update(request):
     context = {
         'supply':supply,
         'form' : form,
+        'room_name': "broadcast"
     }
     return render(request,'supplies/update.html',context)
 
@@ -114,5 +118,6 @@ def filter_supplies(request, category):
     content ={
         'supplies':supplies,
         'page_obj': page_obj, 
+        'room_name': "broadcast"
     }
     return render(request, 'supplies/index.html', content)

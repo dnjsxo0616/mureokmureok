@@ -10,6 +10,7 @@ def index(request):
     plants = Plant.objects.all()
     context = {
         'plants':plants,
+        'room_name': "broadcast"
     }
     return render(request, 'plants/index.html', context)
 
@@ -37,6 +38,7 @@ def create(request):
     context = {
         'form':form,
         'imageForm':imageForm,
+        'room_name': "broadcast"
     }
     return render(request, 'plants/create.html', context)
 
@@ -54,6 +56,7 @@ def update(request, plant_pk):
         'form':form,
         'plant_pk':plant_pk,
         'plant':plant,
+        'room_name': "broadcast"
     }
     return render(request, 'plants/update.html', context)
 
@@ -129,7 +132,8 @@ def likes(request, plant_pk):
 def recommendation(request):
     recommended_plants = Plant.objects.annotate(like_count=Count('like_users')).order_by('-like_count')  # 좋아요 순으로 정렬
     context = {
-        'recommended_plants': recommended_plants
+        'recommended_plants': recommended_plants,
+        'room_name': "broadcast"
     }
     return render(request, 'plants/recommendation.html', context)
 
@@ -140,6 +144,7 @@ def search(request):
     context = {
         'plants':plants,
         'query':query,
+        'room_name': "broadcast"
     }
     return render(request, 'plants/search.html', context)
 
@@ -147,7 +152,8 @@ def search(request):
 def filter_plants(request, tag):
     filtered_plants = Plant.objects.filter(tags__name__in=[tag])
     context = {
-        'filtered_plants': filtered_plants
+        'filtered_plants': filtered_plants,
+        'room_name': "broadcast"
     }
     return render(request, 'plants/filter.html', context)
 

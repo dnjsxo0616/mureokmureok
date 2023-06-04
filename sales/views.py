@@ -16,6 +16,7 @@ def index(request):
 
     context = {
         'products': products,
+        'room_name': "broadcast"
     }
 
     return render(request, 'sales/index.html', context)
@@ -36,6 +37,7 @@ def create(request):
     
     context = {
         'form' : form,
+        'room_name': "broadcast"
     }
     return render(request, 'sales/create.html', context)
 
@@ -48,6 +50,7 @@ def detail(request, product_pk):
     context ={
         'product' : product,
         # 'products': products,
+        'room_name': "broadcast"
     }
     return render(request,'sales/detail.html', context)
 
@@ -79,6 +82,7 @@ def update_review(request, product_pk, review_pk):
         'product': product,
         'review': review,
         'form': form,
+        'room_name': "broadcast"
     }
     return render(request, 'sales/detail.html', context)
 
@@ -157,6 +161,7 @@ def cart(request):
     context = {
         'cart_items': cart_items,
         'cart_total': cart_total,
+        'room_name': "broadcast"
 
     }
     return render(request, 'sales/cart.html', context)
@@ -187,6 +192,7 @@ def create_review(request, product_pk):
     context = {
         'product':product,
         'form':form,
+        'room_name': "broadcast"
     }
     return render(request, 'sales/detail.html', context)
 
