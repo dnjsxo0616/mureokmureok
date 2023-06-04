@@ -40,13 +40,13 @@ class Purchase(models.Model):
 
 
 
-class Cart(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, )
-    products = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='cart_product', blank=True)
-    quantity = models.IntegerField(default=1)
+# class Cart(models.Model):
+#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, )
+#     products = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='cart_product', blank=True)
+#     quantity = models.IntegerField(default=1)
 
-    def __str__(self):
-        return '{} // {}'.format(self.user, self.products.name)
+#     def __str__(self):
+#         return '{} // {}'.format(self.user, self.products.title)
 
 
 class Review(models.Model):
