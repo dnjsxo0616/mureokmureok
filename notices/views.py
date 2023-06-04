@@ -16,6 +16,7 @@ def index(request):
     content = {
         'notices': notices,
         'page_obj': page_obj,
+        'room_name': "broadcast"
     }
     return render(request, 'notices/index.html', content)
 
@@ -34,6 +35,7 @@ def create(request):
         form = NoticeForm()
     context = {
         'form' : form,
+        'room_name': "broadcast"
     }
     return render(request, 'notices/create.html', context)
 
@@ -51,6 +53,7 @@ def detail(request, notice_pk):
 
     context ={
         'notice' : notice,
+        'room_name': "broadcast"
     }
     return render(request,'notices/detail.html', context)
 
@@ -70,6 +73,7 @@ def update(request, notice_pk):
     context = {
         'notice':notice,
         'form' : form,
+        'room_name': "broadcast"
     }
     return render(request,'notices/update.html',context)
 
