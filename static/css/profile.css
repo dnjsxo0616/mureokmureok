@@ -61,7 +61,6 @@
 
 .posts-container::-webkit-scrollbar {
     width: 8px;
-    height: 8px;
     border-radius: 4px;
     background-color: #e6e6e6;
 }

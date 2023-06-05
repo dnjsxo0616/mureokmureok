@@ -1,0 +1,4 @@
+#allergy, #season, #category, #watering, #sunlight, #humidity, #temperature {
+    display: flex;
+    gap: 3rem;
+}

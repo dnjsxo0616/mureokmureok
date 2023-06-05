@@ -28,7 +28,7 @@
     <div class="flex items-center justify-between py-3 mb-5 sticky top-[65px] bg-white" id="content_board">
       <div class="flex items-center gap-10 pb-3">
         <a href="{% url 'communities:index' %}" class="text-gray-400 hover:text-black {% if request.path == index_url %}btn_active{% endif %}" aria-current="page">
-          <li class="btn" onclick="changeTextColor(this)">전체 보기</li>
+          <li class="btn" onclick="changeTextColor(this)">전체</li>
         </a>
         <a href="{% url 'communities:filter_communities' '실내 식물' %}" class="text-gray-400 hover:text-black {% if '/실내식물/' in request.path %}btn_active{% endif %}">
           <li class="btn" onclick="changeTextColor(this)">실내식물</li>
@@ -104,7 +104,7 @@
           <div class="w-1/12 text-center text-[14px]">{{ community.like_users.count }}</div>
           <div class="w-1/12 text-center text-[14px]">{{ community.community_comment_set.count }}</div>
           <div class="w-1/12 text-center text-[14px]">{{ community.hits }}</div>
-          <div class="w-1/12 text-center text-[12px] text-gray-500">{{ community.created_at|date:"Y-m-d" }}</div>
+          <div class="w-1/12 text-center text-[12px] text-gray-500">{{ community.created_time }}</div>
         </div>
       </a>
       {% endfor %}
@@ -135,32 +135,6 @@
         {% endif %}
       </div>
     {% endif %}
-
-    
-    {% comment %} 구형 페이지네이션 {% endcomment %}
-    <!-- {% if page_obj.has_other_pages %}
-      <div class="flex justify-center items-center mt-5 pb-10">
-        {% if page_obj.has_previous %}
-          <a href="?page={{ page_obj.previous_page_number }}" class="w-8 h-8 p-1 text-center bg-transparent rounded-full text-gray-400 hover:text-black">
-            <span class="material-symbols-outlined flex items-center justify-center">arrow_back_ios</span>
-          </a>
-        {% endif %}
-        
-        {% for num in page_obj.paginator.page_range %}
-          {% if page_obj.number == num %}
-            <span class="w-8 h-8 p-1 text-center rounded-full bg-[#1EB564] text-white">{{ num }}</span>
-          {% else %}
-            <a href="?page={{ num }}" class="w-8 h-8 p-1 text-center bg-transparent rounded-full text-gray-700 hover:bg-[#cfcfcf]">{{ num }}</a>
-          {% endif %}
-        {% endfor %}
-        
-        {% if page_obj.has_next %}
-          <a href="?page={{ page_obj.next_page_number }}" class="w-8 h-8 p-1 text-center bg-transparent rounded-full text-gray-400 hover:text-black">
-            <span class="material-symbols-outlined flex items-center justify-center">arrow_forward_ios</span>
-          </a>
-        {% endif %}
-      </div>
-    {% endif %} -->
   </main>
   
   <!-- <p class='title--content--2 mt-5'>전문가 자문 요청 글</p>

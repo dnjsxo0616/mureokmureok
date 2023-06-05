@@ -2,6 +2,8 @@ from django.db import models
 from django.conf import settings
 from imagekit.models import ImageSpecField
 from imagekit.processors import Thumbnail
+from django.utils import timezone
+from datetime import timedelta,datetime
 from django_ckeditor_5.fields import CKEditor5Field
 
 
@@ -33,6 +35,25 @@ class Community(models.Model):
     
     def count_likes_user(self):
         return self.like_users.count()
+    
+    @property
+    def created_time(self):
+        if self.created_at is None:
+            return False
+
+        time = datetime.now(tz=timezone.utc) - self.created_at
+
+        if time < timedelta(minutes=1):
+            return '방금 전'
+        elif time < timedelta(hours=1):
+            return str(int(time.seconds / 60)) + '분 전'
+        elif time < timedelta(days=1):
+            return str(int(time.seconds / 3600)) + '시간 전'
+        elif time < timedelta(days=7):
+            time = datetime.now(tz=timezone.utc).date() - self.created_at.date()
+            return str(time.days) + '일 전'
+        else:
+            return False
 
 
 class Community_comment(models.Model):
@@ -45,3 +66,22 @@ class Community_comment(models.Model):
 
     def count_likes_user(self):
         return self.like_users.count()
+    
+    @property
+    def created_time(self):
+        if self.created_at is None:
+            return False
+
+        time = datetime.now(tz=timezone.utc) - self.created_at
+
+        if time < timedelta(minutes=1):
+            return '방금 전'
+        elif time < timedelta(hours=1):
+            return str(int(time.seconds / 60)) + '분 전'
+        elif time < timedelta(days=1):
+            return str(int(time.seconds / 3600)) + '시간 전'
+        elif time < timedelta(days=7):
+            time = datetime.now(tz=timezone.utc).date() - self.created_at.date()
+            return str(time.days) + '일 전'
+        else:
+            return False

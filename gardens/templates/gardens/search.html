@@ -1,18 +1,45 @@
 {% extends 'base.html' %}
+{% load static %}
+
+
+{% block head %}{% endblock head %}
+
 
 {% block content %}
-<!-- gardens/search.html -->
-{% if query %}
-  <h2>검색 결과: "{{ query }}"</h2>
-{% endif %}
+<main>
+  {% comment %} 배너 {% endcomment %}
+  <div class="w-full h-[350px] overflow-hidden relative mb-5">
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+      <p class="text-[20px] font-semibold text-white text-shadow-md"><span class="text-[35px]">👉</span> 어디 갈지 고민될 때, <span class="text-[#00FF76]">여기</span> 어때요?</p>
 
-{% for garden in gardens %}
-  <h3>{{ garden.title }}</h3>
-  <p>{{ garden.address }}</p>
-  <!-- Garden 객체의 다른 필드들을 표시하거나 필요한 내용을 추가로 표시 -->
-{% empty %}
-  <p>검색 결과가 없습니다.</p>
-{% endfor %}
+      {% comment %} 검색 {% endcomment %}
+      <form class="flex items-center justify-center mt-5 rounded-lg border-[1px] border-black bg-white p-1 ps-3 w-[500px]" action="{% url 'gardens:search' %}" method="GET">
+        {% csrf_token %}
+        <span class="material-symbols-outlined text-gray-400">search</span>
+        <input type="search" name="query" class="ps-1 pe-3 h-8 w-full bg-transparent rounded-lg focus:outline-none" placeholder="{{ query }}">
+        <button class="text-white bg-[#1EB564] w-20 hover:bg-[#148D4C] p-1 px-2 rounded-md" type="submit">검 색</button>
+      </form>
+    </div>
+    <div class='w-full h-[350px] bg-black/50 absolute'></div>
+    <img src="https://tgzzmmgvheix1905536.cdn.ntruss.com/2019/07/0aa98a7cf8414abf850bc5edc6d1332c" alt="" class="w-full h-full object-cover">
+  </div>
 
-
+  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+    <!-- gardens/search.html -->
+    {% if query %}
+      <h2>검색 결과: "{{ query }}"</h2>
+    {% endif %}
+    
+    {% for garden in gardens %}
+      <h3>{{ garden.title }}</h3>
+      <p>{{ garden.address }}</p>
+      <!-- Garden 객체의 다른 필드들을 표시하거나 필요한 내용을 추가로 표시 -->
+    {% empty %}
+      <p>검색 결과가 없습니다.</p>
+    {% endfor %}
+  </div>
+</main>
 {% endblock content %}
+
+
+{% block script %}{% endblock script %}

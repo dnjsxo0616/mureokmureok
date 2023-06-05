@@ -49,7 +49,7 @@ def update(request, plant_pk):
         form = PlantForm(request.POST, request.FILES, instance=plant)
         if form.is_valid():
             form.save()
-            return redirect('plants:index')
+            return redirect('plants:detail', plant_pk)
     else:
         form = PlantForm(instance=plant)
     context = {
