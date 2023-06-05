@@ -22,7 +22,7 @@ class Plant(models.Model):
     # meaning = models.CharField(max_length=20)
     # birthflower = models.CharField(max_length=20)
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_plants')
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
 
 
 class PlantImage(models.Model):

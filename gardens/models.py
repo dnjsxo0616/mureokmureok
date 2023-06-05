@@ -6,23 +6,22 @@ from django.utils import timezone
 from datetime import timedelta,datetime
 from django_ckeditor_5.fields import CKEditor5Field
 
+
 # Create your models here.
 class Garden(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=500)
     content = CKEditor5Field('Content', config_name='extends')
     ex_content = models.TextField(default='Default value')
-    like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_gradens')
-    # 지도 위도 경도
-    # latitude = models.FloatField()
-    # longitude = models.FloatField()
+    like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_gardens')
+    hits = models.PositiveIntegerField(default=0)
     address = models.TextField()
     category_Choices = (
         ('전체', '전체'),
         ('식물원', '식물원'),
         ('전시회', '전시회'),
-        ('정원 센터', '정원 센터'),
-        ('이벤트', '이벤트')
+        ('정원센터', '정원센터'),
+        ('축제', '축제')
     )
     category = models.CharField(max_length=20, choices=category_Choices)
     def search(cls, query):
@@ -59,6 +58,9 @@ class Comment(models.Model):
 
     @property
     def created_time(self):
+        if self.created_at is None:
+            return False
+
         time = datetime.now(tz=timezone.utc) - self.created_at
 
         if time < timedelta(minutes=1):
@@ -71,4 +73,4 @@ class Comment(models.Model):
             time = datetime.now(tz=timezone.utc).date() - self.created_at.date()
             return str(time.days) + '일 전'
         else:
-            return self.strftime('%Y-%m-%d')
+            return False

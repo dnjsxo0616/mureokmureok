@@ -1,5 +1,6 @@
 from django import forms
 from .models import Plant, PlantImage
+from taggit.forms import TagField, TagWidget
 
 
 class PlantImageForm(forms.ModelForm):
@@ -11,7 +12,26 @@ class PlantImageForm(forms.ModelForm):
         }
 
 class PlantForm(forms.ModelForm):
-
+    title = forms.CharField(
+        label='이름',
+        widget=forms.TextInput(
+            attrs={
+                'class':'w-96 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
+                'id': 'title',
+                'placeholder': '식물 이름을 입력해주세요',
+            }
+        )
+    )
+    content = forms.CharField(
+        label='설명',
+        widget=forms.Textarea(
+            attrs={
+                'class':'w-full h-44 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
+                'id': '설명글',
+                'placeholder': '설명글을 입력해주세요',
+            }
+        ),
+    )
 
     # Allergy_CHOICES = [
     #     ('알러지1', '알러지1'), ('알러지2', '알러지2'),
@@ -26,6 +46,7 @@ class PlantForm(forms.ModelForm):
     #     }),
     #     choices = Allergy_CHOICES,
     # )
+
     Allergy_CHOICES = [
         ('yes', '꽃가루 알러지 있음'),
         ('no', '꽃가루 알러지 없음'),
@@ -33,11 +54,11 @@ class PlantForm(forms.ModelForm):
 
     allergy = forms.ChoiceField(
         label='알레르기',
-        widget=forms.RadioSelect(attrs={
-            'class': 'form-input',
-            'id': 'category',
-            'placeholder': '분류',
-        }),
+        widget=forms.RadioSelect(
+            attrs={
+                'id': 'allergy',
+            }
+        ),
         choices=Allergy_CHOICES,
     )
 
@@ -60,29 +81,23 @@ class PlantForm(forms.ModelForm):
     flowering = forms.ChoiceField(
         label='개화시기',
         widget=forms.Select(attrs={
-            'class': 'form-input',
-            'id': 'category',
-            'placeholder': '분류',
+            'class': 'bg-white border-[1px] border-gray-300 p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
+            'id': 'blossom',
         }),
         choices=FLOWERING_CHOICE,
     )
 
-
-
     SEASON_CHOICE = [
-        ('겨울', '겨울'), ('봄', '봄'), ('여름', '여름'), ('가을', '가을'),
+        ('사계절', '사계절'), ('봄', '봄'), ('여름', '여름'), ('가을', '가을'), ('겨울', '겨울'),
     ]
 
     season = forms.MultipleChoiceField(
         label = '계절',
         widget = forms.CheckboxSelectMultiple(attrs={
-            'class': 'form-input',
-            'id': 'category',
-            'placeholder': '분류',
+            'id': 'season',
         }),
         choices = SEASON_CHOICE,
     )
-
 
     CATEGORY_CHOICE = [
         ('실내식물', '실내식물'), ('실외식물', '실외식물'),
@@ -91,9 +106,7 @@ class PlantForm(forms.ModelForm):
     category = forms.MultipleChoiceField(
         label = '카테고리',
         widget = forms.CheckboxSelectMultiple(attrs={
-            'class': 'form-input',
             'id': 'category',
-            'placeholder': '분류',
         }),
         choices= CATEGORY_CHOICE,
     )
@@ -105,9 +118,7 @@ class PlantForm(forms.ModelForm):
     watering = forms.MultipleChoiceField(
         label = '물 주기',
         widget= forms.CheckboxSelectMultiple(attrs={
-            'class': 'form-input',
-            'id': 'category',
-            'placeholder': '분류',
+            'id': 'watering',
         }),
         choices=WATERING_CHOICE,
     )
@@ -119,9 +130,7 @@ class PlantForm(forms.ModelForm):
     sunlight = forms.MultipleChoiceField(
         label = '일조량',
         widget= forms.CheckboxSelectMultiple(attrs={
-            'class': 'form-input',
-            'id': 'category',
-            'placeholder': '분류',
+            'id': 'sunlight',
         }),
         choices=SUNLIGHT_CHOICE,
     )
@@ -133,9 +142,7 @@ class PlantForm(forms.ModelForm):
     humidity = forms.MultipleChoiceField(
         label = '습도',
         widget= forms.CheckboxSelectMultiple(attrs={
-            'class': 'form-input',
-            'id': 'category',
-            'placeholder': '분류',
+            'id': 'humidity',
         }),
         choices=HUMIDITY_CHOICE,
     )
@@ -147,14 +154,30 @@ class PlantForm(forms.ModelForm):
     temperature = forms.MultipleChoiceField(
         label = '온도',
         widget = forms.CheckboxSelectMultiple(attrs={
-            'class': 'form-input',
-            'id': 'category',
-            'placeholder': '분류',
+            'id': 'temperature',
         }),
         choices= TEMPERATURE_CHOICE,
     )
 
-    images = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
+    images = forms.FileField(
+        label = '이미지',
+        widget=forms.ClearableFileInput(
+            attrs={
+                'class': 'w-96 bg-white border rounded-md focus:outline-none focus:ring-1 focus:ring-[#1EB564] text-gray-400',
+                'multiple': True
+            }
+        )
+    )
+
+    tags = forms.CharField(
+        label='태그',
+        widget=TagWidget(
+            attrs={
+                'class': 'w-96 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
+                'placeholder': '태그는 콤마(,)로 구분하여 작성해주세요',
+            }
+        )
+    )
     class Meta:
         model = Plant
         fields = ('title', 'content', 'allergy', 'flowering', 'season', 'category', 'watering', 'sunlight', 'humidity', 'temperature',  'images', 'tags',)

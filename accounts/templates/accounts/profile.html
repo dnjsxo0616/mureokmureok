@@ -107,16 +107,16 @@
           <div class="mb-5">
             <div class="flex items-center gap-3 mb-5">
               <h2 class="text-[20px]"><b>내가 좋아요한 '식물원'</b></h2>
-              <span class="text-gray-400 text-[18px]"><b>{{ person.like_gradens.all|length }}</b></span>
+              <span class="text-gray-400 text-[18px]"><b>{{ person.like_gardens.all|length }}</b></span>
             </div>
-            {% if person.like_gradens.all %}
+            {% if person.like_gardens.all %}
             <div class="slider-container">
               <div class="inner-slider flex gap-5">
-                {% for garden in person.like_gradens.all %}
-                <a href="#">
+                {% for garden in person.like_gardens.all %}
+                <a href="{% url 'gardens:detail' garden.pk %}">
                   <div class="flex flex-col items-center gap-3">
                     <div class="border rounded-md favor-plants_wrapper">
-                      <img src="https://openimage.interpark.com/goods_image_big/7/1/1/8/10195487118c_l.jpg" alt="">
+                      <img src="{{ garden.image.url }}" alt="">
                     </div>
                     <p class="text-[14px]">{{ garden.title }}</p>
                   </div>
@@ -164,22 +164,22 @@
 
           {% if person.community_set.all %}
           <div class="posts-container pe-3">
-            {% for community in person.community_set.all %}
+            {% for community in person.community_set.all|dictsortreversed:'created_at' %}
             <a href="{% url 'communities:detail' community.pk %}">
-              <div class="flex gap-5 border rounded-lg p-2 mb-5">
+              <div class="flex gap-5 border rounded-lg p-2 mb-5 hover:bg-gray-100">
                 <div class="border rounded-md post-image_wrapper">
                   <img src="{{ community.community_photo.url }}" alt="">
                 </div>
                 <div class="flex flex-col justify-between w-full">
                   <div>
-                    <p class="text-[12px] text-gray-400">커뮤니티</p>
+                    <p class="text-[12px] text-gray-500 bg-white border p-[0.5px] px-[2px] rounded-md shadow-sm w-fit mb-1">{{ community.category }}</p>
                     <h3>{{ community.title }}</h3>
                   </div>
                   <div class="flex items-center justify-between">
                     <div class="flex items-center gap-4">
                       <div class="flex items-center gap-1">
                         <span class="material-symbols-outlined text-[16px]">favorite</span>
-                        <p class="text-[12px]">{{ person.like_communities.all|length }}</p>
+                        <p class="text-[12px]">{{ community.like_users.all|length }}</p>
                       </div>
                       <div class="flex items-center gap-1">
                         <span class="material-symbols-outlined text-[16px]">chat_bubble</span>
@@ -190,7 +190,7 @@
                         <p class="text-[12px]">{{ community.hits }}</p>
                       </div>
                     </div>
-                    <p class="text-[12px] text-gray-400">{{ community.created_at|date:'Y-m-d' }}</p>
+                    <p class="text-[12px] text-gray-400">{{ community.created_time }}</p>
                   </div>
                 </div>
               </div>
@@ -275,5 +275,5 @@
 <script src="{% static 'js/profileEditDropdown.js' %}"></script>
 <script src="{% static 'js/profileCarousel.js' %}"></script>
 <script src="{% static 'js/profileFollowerModal.js' %}"></script>
-<script src="{% static 'js/accounts_profile_follow.js' %}"></script>
+<script src="{% static 'js/profileFollow.js' %}"></script>
 {% endblock script %}

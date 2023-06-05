@@ -42,13 +42,13 @@ INSTALLED_APPS = [
     'django_extensions',
     'imagekit',
     'taggit',
+    'taggit_templatetags2',
     'django_ckeditor_5',
     'ckeditor',
     'channels',
     'alarms',
     'django_celery_results',
     'django_celery_beat',
-    'taggit_templatetags2',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -131,7 +131,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = False
+USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)

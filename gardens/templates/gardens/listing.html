@@ -1,79 +1,119 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block head %}
-<script src="https://cdn.tailwindcss.com"></script>
-{% endblock head %}
+
+{% block head %}{% endblock head %}
+
 
 {% block content %}
-    <div class="flex p-2">
-        <div class='category-box px-2'>
-          <a href="{% url 'gardens:listing' %}?category=전체">
-            <span>전체</span>
-          </a>
-        </div>
-        <div class='category-box px-2'>
-          <a href="{% url 'gardens:listing' %}?category=전시회">
-            <span>전시회</span>
-          </a>
-        </div>
-        <div class='category-box px-2'>
-          <a href="{% url 'gardens:listing' %}?category=식물원">
-            <span>식물원</span>
-          </a>
-        </div>
-        <div class='category-box px-2'>
-          <a href="{% url 'gardens:listing' %}?category=정원 센터">
-            <span>정원센터</span>
-          </a>
-        </div>
-        <div class='category-box px-2'>
-          <a href="{% url 'gardens:listing' %}?category=이벤트">
-            <span>이벤트</span>
-          </a>
-        </div>
-    </div>
+<main>
+  {% comment %} 배너 {% endcomment %}
+  <div class="w-full h-[350px] overflow-hidden relative mb-5">
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+      <p class="text-[20px] font-semibold text-white text-shadow-md"><span class="text-[35px]">👉</span> 어디 갈지 고민될 때, <span class="text-[#00FF76]">{% if category == '전체' %}여기{% else %}{{ category }}{% endif %}</span> 어때요?</p>
 
-    <div class="grid grid-cols-2 gap-6 py-2">
-      {% for garden in gardens %}
-        <div class="flex items-center justify-center">
-          <a href="{% url 'gardens:detail' garden.pk %}">
-            <div class="border-2 border-lime-800 rounded-lg" style="width: 400px; height: 400px; margin: 50px;">
-              <div class="flex flex-col items-center justify-center" style="height: 100%;">
-                <img src="{{ garden.image.url }}" alt="Garden Image" class="rounded-lg" style="max-width: 300px; max-height: 300px;">
+      {% comment %} 검색 {% endcomment %}
+      <form class="flex items-center justify-center mt-5 rounded-lg border-[1px] border-black bg-white p-1 ps-3 w-[500px]" action="{% url 'gardens:search' %}" method="GET">
+        {% csrf_token %}
+        <span class="material-symbols-outlined text-gray-400">search</span>
+        <input type="search" name="query" class="ps-1 pe-3 h-8 w-full bg-transparent rounded-lg focus:outline-none" placeholder="식물원 및 축제 이름을 입력해주세요">
+        <button class="text-white bg-[#1EB564] w-20 hover:bg-[#148D4C] p-1 px-2 rounded-md" type="submit">검 색</button>
+      </form>
+    </div>
+    <div class='w-full h-[350px] bg-black/50 absolute'></div>
+    <img src="https://tgzzmmgvheix1905536.cdn.ntruss.com/2019/07/0aa98a7cf8414abf850bc5edc6d1332c" alt="" class="w-full h-full object-cover">
+  </div>
+
+  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+    <div class="flex justify-center gap-10 border-0 border-b-[1px] border-gray-400 bg-white py-3 mb-5 sticky top-[60px] z-10">
+      <div class='text-gray-400 hover:text-black'>
+        <a href="{% url 'gardens:listing' %}?category=전체">
+          <span class="{% if category == '전체' %}text-black font-semibold{% endif %}">전체</span>
+        </a>
+      </div>
+      <div class='text-gray-400 hover:text-black'>
+        <a href="{% url 'gardens:listing' %}?category=전시회">
+          <span class="{% if category == '전시회' %}text-black font-semibold{% endif %}">전시회</span>
+        </a>
+      </div>
+      <div class='text-gray-400 hover:text-black'>
+        <a href="{% url 'gardens:listing' %}?category=식물원">
+          <span class="{% if category == '식물원' %}text-black font-semibold{% endif %}">식물원</span>
+        </a>
+      </div>
+      <div class='text-gray-400 hover:text-black'>
+        <a href="{% url 'gardens:listing' %}?category=정원센터">
+          <span class="{% if category == '정원센터' %}text-black font-semibold{% endif %}">정원센터</span>
+        </a>
+      </div>
+      <div class='text-gray-400 hover:text-black'>
+        <a href="{% url 'gardens:listing' %}?category=축제">
+          <span class="{% if category == '축제' %}text-black font-semibold{% endif %}">축제</span>
+        </a>
+      </div>
+    </div>
+  
+    <div class="grid grid-cols-2 gap-10 mb-8">
+      {% for garden in page_obj %}
+      <a href="{% url 'gardens:detail' garden.pk %}">
+        <div class="h-60 border rounded-xl p-5 flex gap-5 hover:-translate-y-1.5 transform transition hover:shadow-lg">
+          <div class="w-full h-full overflow-hidden rounded-md border">
+            <img src="{{ garden.image.url }}" alt="Garden Image" class="w-full h-full object-cover">
+          </div>
+          <div class="w-full flex flex-col justify-between">
+            <div>
+              <div class="text-[12px] text-gray-700 border border-[1px] border-gray-400 w-fit rounded-md p-[2px] px-[4px] mb-2 shadow-sm">{{ garden.category }}</div>
+              <h1 class="text-[20px] font-semibold">{{ garden.title }}</h1>
+              <p class="text-[14px] text-gray-500">{{ garden.address }}</p>
+            </div>
+            <p>{{ garden.ex_content }}</p>
+            <div class="flex items-end gap-5 text-gray-500">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-[16px] mt-[0.5px]">favorite</span>
+                <span id="garden-like-count">{{ garden.like_users.all|length }}</span>
               </div>
-              <div class="text-center">
-                {{ garden.title }}
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-[16px] mt-[0.5px]">chat_bubble</span>
+                <span>{{ garden.comments.all|length }}</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-[16px] mt-[0.5px]">visibility</span>
+                <span>{{ garden.hits }}</span>
               </div>
             </div>
-          </a>
+          </div>
         </div>
+      </a>
       {% endfor %}
     </div>
-    
-
-    {% if gardens.has_other_pages %}
-    <div class="flex justify-center mt-4">
-        {% if gardens.has_previous %}
-        <a href="?category={{ category }}&page={{ gardens.previous_page_number }}" class="px-2 py-1 bg-transparent text-gray-700 hover:bg-blue-300">이전</a>
+  
+    {% comment %} 검색 쿼리 추가 페이지네이션 {% endcomment %}
+    {% if page_obj.has_other_pages %}
+      <div class="flex justify-center items-center mt-8 pb-16">
+        {% if page_obj.has_previous %}
+          <a href="?category={{ category }}&page={{ page_obj.previous_page_number }}" class="w-8 h-8 p-1 text-center bg-transparent rounded-full text-gray-400 hover:text-black">
+            <span class="material-symbols-outlined flex items-center justify-center">arrow_back_ios</span>
+          </a>
         {% endif %}
-
-        {% for num in gardens.paginator.page_range %}
-        {% if gardens.number == num %}
-        <span class="px-2 py-1 bg-blue-500 text-white">{{ num }}</span>
-        {% else %}
-        <a href="?category={{ category }}&page={{ num }}" class="px-2 py-1 bg-transparent text-gray-700 hover:bg-blue-300">{{ num }}</a>
-        {% endif %}
+        
+        {% for num in page_obj.paginator.page_range %}
+          {% if page_obj.number == num %}
+            <span class="w-8 h-8 p-1 text-center text-[#1EB564] font-semibold">{{ num }}</span>
+          {% else %}
+            <a href="?category={{ category }}&page={{ num }}" class="w-8 h-8 p-1 text-center bg-transparent rounded-full text-gray-700 hover:bg-gray-100">{{ num }}</a>
+          {% endif %}
         {% endfor %}
-
-        {% if gardens.has_next %}
-        <a href="?category={{ category }}&page={{ gardens.next_page_number }}" class="px-2 py-1 bg-transparent text-gray-700 hover:bg-blue-300">다음</a>
+        
+        {% if page_obj.has_next %}
+          <a href="?category={{ category }}&page={{ page_obj.next_page_number }}" class="w-8 h-8 p-1 text-center bg-transparent rounded-full text-gray-400 hover:text-black">
+            <span class="material-symbols-outlined flex items-center justify-center">arrow_forward_ios</span>
+          </a>
         {% endif %}
-    </div>
+      </div>
     {% endif %}
+  </div>
+</main>
 {% endblock content %}
-{% block script %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.min.js"></script>
-    <script src="{% static 'js/homeCarousel.js' %}"></script>
-{% endblock script %}
+
+
+{% block script %}{% endblock script %}

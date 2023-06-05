@@ -1,108 +1,260 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 
+
 {% block head %}
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-  .comment-section {
-    margin-top: 20px;
-  }
-
-  .comment-section form {
-    margin-bottom: 10px;
-  }
-
-  .comment-section p {
-    margin-right: 10px;
-  }
-
-  .comment-section form button[type="submit"] {
-    margin-left: 10px;
-  }
-
-  #map {
-    width: 100%;
-    height: 400px;
-    margin-top: 20px;
-  }
-</style>
+<link rel="stylesheet" href="{% static 'css/gardens_detail.css' %}">
 {% endblock head %}
 
-{% block content %}
-<div class="py-3 px-10">
-  <div class="flex items-start justify-center">
-    <div class="w-1/2 flex items-center justify-center">
-      <a href="{{ garden.site_link }}">
-        <img src="{{ garden.image.url }}" alt="Garden Image" style="max-width: 300px;">
-      </a>
-    </div>
-    <div class="w-1/2">
-      <div class="flex justify-center border-2 border-lime-800 rounded-lg" style="width: 50%;">
-        <div class="flex flex-col text-center divide-y divide-lime-500">
-          <div class="mt-1">번호: {{ garden.pk }}</div>
-          <div class="mt-1">이름: {{ garden.title }}</div>
-          <div>  
-            {% comment %} <div id="map"></div> {% endcomment %}
-          <script>
-            function showMap() {
-              var gardenPk = "{{ garden.pk }}";
-              window.location.href = "/gardens/map/" + gardenPk + "/";
-            }
-          </script>
-          
-          <button onclick="showMap()">지도 보기</button>
-        </div>
-          
 
-          <form class='sidebar-interest' action="{% if user.is_anonymous %}{% url 'accounts:login' %}{% else %}{% url 'gardens:like_garden' garden.pk %}{% endif %}" method="POST">
-            {% csrf_token %}
-            <button class='option-btn' type='submit'>
-              {% if request.user in garden.like_users.all %}
-                <div>관심상품 취소</div>
-              {% else %}
-                <div>관심상품</div>
+{% block content %}
+<main>
+  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+    
+    <div class="w-full">
+      <p class="text-[14px] text-gray-500 mb-8 mt-10">
+        <a href="{% url 'gardens:index' %}" class="hover:text-black">
+          <span>식물원</span>
+        </a> > {{ garden.title }}
+      </p>
+
+      <section class="flex gap-10 pb-8">
+        <div class="w-full h-96 overflow-hidden rounded-xl border">
+          <img src="{{ garden.image.url }}" alt="" class="w-full h-full object-cover">
+        </div>
+
+        <div class="w-full h-96">
+          <div class="flex justify-between border-0 border-b-[1px] border-gray-400 pb-3 mb-5">
+
+            {% comment %} 타이틀 {% endcomment %}
+            <div class="flex items-center gap-3">
+              <div class="text-[14px] border border-black rounded-lg p-1 px-2">{{ garden.category }}</div>
+              <h1 id="garden-title" class="text-[25px] font-semibold">{{ garden.title }}</h1>
+            </div>
+            
+            {% comment %} 좋아요, 댓글, 조회수 {% endcomment %}
+            <div class="flex justify-end items-end gap-5 text-gray-500">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-[16px] mt-[0.5px]">favorite</span>
+                <span id="garden-like-count">{{ garden.like_users.all|length }}</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-[16px] mt-[0.5px]">chat_bubble</span>
+                <span>{{ comments|length }}</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-[16px] mt-[0.5px]">visibility</span>
+                <span>{{ garden.hits }}</span>
+              </div>
+              
+              {% comment %} 수정 및 삭제 드롭다운 버튼 {% endcomment %}
+              {% if garden.user == request.user %}
+              <div class="relative">
+                <div class="dropdown text-end">
+                  <button type="button" class="rounded-md flex justify-center items-center bg-white hover:bg-gray-100" id="garden-menu-button" aria-expanded="false" aria-haspopup="true">
+                    <span class="material-symbols-outlined text-[20px] text-black font-bold">more_vert</span>
+                  </button>
+                </div>
+                
+                {% comment %} 게시글 수정 및 삭제 부분{% endcomment %}
+                <div class="absolute right-0 z-10 mt-2 w-36 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="garden-menu-button" tabindex="-1" id="garden-dropdown" style="display: none;">
+                  <a class="block text-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" href="{% url 'gardens:update' garden.pk %}">
+                    수정하기
+                  </a>
+                  <form method="POST" action="{% url 'gardens:delete' garden.pk %}" class="block px-4 py-2 text-start text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" onclick="return confirm('식물원 게시물을 삭제하시겠습니까?')">
+                    {% csrf_token %}
+                    <input type="submit" value="삭제하기" class="cursor-pointer">
+                  </form>
+                </div>
+              </div>
               {% endif %}
-            </button>
+            </div>
+          </div>
+
+          <div class="h-full">
+            {% comment %} 위치 {% endcomment %}
+            <div class="flex mb-3">
+              <p class="w-2/12 font-semibold">위치</p>
+              <p id="garden-address">{{ garden.address }}</p>
+            </div>
+
+            {% comment %} 소개글 {% endcomment %}
+            <div class="flex mb-3">
+              <p class="w-2/12 font-semibold">소개글</p>
+              <p>{{ garden.ex_content }}</p>
+            </div>
+
+            {% comment %} 사이트 링크 {% endcomment %}
+            <div class="flex mb-6">
+              <p class="w-2/12 font-semibold">사이트</p>
+              <p class="underline underline-offset-1 text-gray-500 hover:text-black">{{ garden.site_link|urlize }}</p>
+            </div>
+
+            <div id="map" class="w-full h-48 border rounded-xl">
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      {% comment %} 세부정보 {% endcomment %}
+      <section>
+        <div class="border-0 border-b-[1px] border-gray-400 py-3 text-[18px] text-center">세부정보</div>
+        <div class="flex gap-16">
+          <div class="sticky top-[100px] flex flex-col items-center gap-5 border border-gray-300 rounded-full h-fit mt-[50px] p-2">
+
+            {% comment %} 게시글 좋아요 {% endcomment %}
+            <form class="garden-like_forms" data-garden-id="{{ garden.id }}">
+              {% csrf_token %}
+              {% if request.user in garden.like_users.all %}
+              <div class="flex items-center w-fit p-3 rounded-full hover:bg-gray-100">
+                <button type="submit" class="flex items-center gap-1">
+                  <span id="garden-like-btn" class="material-symbols-outlined text-red-600 mt-[0.5px]">favorite</span>
+                </button>
+              </div>
+              {% else %}
+              <div class="flex items-center w-fit p-3 rounded-full hover:bg-gray-100">
+                <button type="submit" class="flex items-center gap-1">
+                  <span id="garden-like-btn" class="material-symbols-outlined text-gray-500 mt-[0.5px]">favorite</span>
+                </button>
+              </div>
+              {% endif %}
+            </form>
+  
+            {% comment %} 공유하기 {% endcomment %}
+            <div class="flex items-center w-fit p-3 rounded-full hover:bg-gray-100">
+              <span class="material-symbols-outlined">share</span>
+            </div>
+  
+            {% comment %} 댓글로 이동 {% endcomment %}
+            <a href="#comment">
+              <div class="flex items-center w-fit p-3 rounded-full hover:bg-gray-100">
+                <span class="material-symbols-outlined">chat</span>
+              </div>
+            </a>
+          </div>
+
+          {% comment %} 본문 내용 부분 {% endcomment %}
+          <div class="w-full">
+            {% comment %}  본문 내용 부분 {% endcomment %}
+            <div class="p-[50px] px-48 border-0 border-b-[1px] border-gray-400">
+              <p>{{ garden.content|safe }}</p>
+            </div>
+
+            {% comment %}  후기 부분 {% endcomment %}
+            <div class="flex items-center justify-between pt-20 mb-5" id="comment">
+              <div class="flex gap-3 items-center font-semibold text-[20px] ">
+                <h3>후기</h3>
+                <span class='text-gray-400'>{{ comments|length }}</span>
+              </div>
+
+              {% comment %} 후기 본문 작성 부분 {% endcomment %}
+              <div id="comment-create-btn" class="cursor-pointer border p-1 px-2 rounded-md text-[14px] hover:bg-gray-100">후기작성</div>
+            </div>
+
+            {% comment %}  작성된 후기 부분 {% endcomment %}
+            <div class="mb-16">
+              {% if comments %}
+        
+              {% for comment in comments|dictsortreversed:'created_at' %}
+              <div class="flex gap-3 mb-5">
+                <a href="{% url 'accounts:profile' comment.user.username %}" class="h-fit">
+                  <div class="w-8 h-8 rounded-full overflow-hidden border-[1px] border-gray-400">
+                    {% if comment.user.image %}
+                    <img src="{{ comment.user.image.url }}" alt="" class="w-full h-full object-cover">
+                    {% else %}
+                    <img src="{% static 'img/no_profile.jpg' %}" alt="" class="w-full h-full object-cover">
+                    {% endif %}
+                  </div>
+                </a>
+          
+                <div class="w-full">
+                  <div class="flex justify-between items-center mb-2">
+                    <a href="{% url 'accounts:profile' comment.user.username %}">
+                      <p class="text-[16px] font-semibold">{{ comment.user.username }}</p>
+                    </a>
+          
+                    {% comment %} 후기 수정 및 삭제 드롭다운 버튼 {% endcomment %}
+                    {% if request.user == comment.user %}
+                    <div class="relative">
+                      <button type="button" class="rounded-md flex justify-center items-center bg-white p-1 hover:bg-gray-100" id="comment-menu-button" aria-expanded="false" aria-haspopup="true">
+                        <span class="material-symbols-outlined text-[20px] text-black font-bold">more_vert</span>
+                      </button>
+                  
+                      {% comment %} 후기 수정 및 삭제 부분{% endcomment %}
+                      <div class="absolute right-0 z-10 mt-2 w-36 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="comment-menu-button" tabindex="-1" id="comment-dropdown" style="display: none;">
+                        <form method="POST" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" action="{% url 'gardens:comment_update' garden.pk comment.pk %}">
+                          {% csrf_token %}
+                          <button type="submit" class="w-full text-start">수정하기</button>
+                        </form>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="deleteComment(event, {{ garden.pk }}, {{ comment.pk }})">삭제하기</a>
+                      </div>
+                    </div>
+                    {% endif %}
+          
+                  </div>
+                  <div class="bg-gray-100 rounded-lg p-3">
+                    <p class="text-[14px] text-gray-500 mb-2">{{ comment.created_time }}</p>
+        
+                    {% comment %} 후기 내용 {% endcomment %}
+                    <p class="text-[16px] mb-5">{{ comment.content }}</p>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+              {% else %}
+              <div class="w-full flex justify-center">
+                <p class="text-gray-500">작성된 후기가 없어요</p>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+{% comment %} 후기생성 modal {% endcomment %}
+<div class="relative z-30 modal-overlay hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="comment-create-modal">
+  <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" id="comment-bg"></div>
+  <div class="fixed top-1/2 start-1/2 -translate-x-1/2 -translate-y-1/2 transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+    <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+      <div class="sm:flex sm:items-start w-full">
+        <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
+          <h3 class="text-base font-semibold leading-6 text-gray-900 mb-8" id="modal-title">후기작성</h3>
+          <form action="{% url 'gardens:comment' garden.pk %}" method="POST" id="garden_comment-Form">
+            {% csrf_token %}
+            {% comment %} 내용작성 {% endcomment %}
+            <div class="flex flex-col gap-2 mb-5">
+              <p>{{ comment_form.content.label }}</p>
+              <p>{{ comment_form.content }}</p>
+            </div>
+            {% comment %} 사진첨부 {% endcomment %}
+            <div class="flex flex-col gap-2 mb-5">
+              <p>{{ comment_form.image.label }}</p>
+              <p>{{ comment_form.image }}</p>
+            </div>
+            <div class="flex justify-end">
+              <input type="submit" class="bg-[#1EB564] text-white p-[5px] px-3 rounded-lg cursor-pointer hover:bg-[#148D4C]" value="작 성">
+            </div>
           </form>
         </div>
       </div>
     </div>
   </div>
-
-  <hr class="my-6 border-lime-600">
-
-  <div class="flex justify-center">
-    <div>{{ garden.content|safe }}</div>
-  </div>
-
-  <hr class="my-6 border-lime-600">
-
-  <div class="comment-section">
-    <h2>댓글</h2>
-    <form id="commentForm" method="POST" action="{% url 'gardens:comment' garden_pk=garden.pk %}" enctype="multipart/form-data">
-      {% csrf_token %}
-      {{ comment_form.as_p }}
-      <button type="submit">작성</button>
-    </form>
-  </div>
-
-  <hr>
-
-  {% comment %} 댓글 {% endcomment %}
-  {% for comment in comments %}
-  <div class="comment" style="border-bottom: 1px solid gray; padding-bottom: 10px; margin-bottom: 10px;">
-    <p>{{ comment.content }}</p>
-    {% if comment.image %}
-      <img src="{{ comment.image.url }}" alt="Comment Image" style="max-width: 300px;">
-    {% endif %}
-    {% if request.user == comment.user %}
-      <form method="POST" action="{% url 'gardens:comment_delete' garden_pk=garden.pk comment_pk=comment.pk %}">
-        {% csrf_token %}
-        <button type="submit">삭제</button>
-      </form>
-    {% endif %}
-  </div>
-{% endfor %}
-
+</div>
 {% endblock content %}
 
+
+{% block script %}
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f2deebbf98d47812fc7cab3ab4174ee6&libraries=services"></script>
+<script src="{% static 'js/gardenDropdown.js' %}"></script>
+<script src="{% static 'js/gardenLike.js' %}"></script>
+<script src="{% static 'js/gardenMap.js' %}"></script>
+<script src="{% static 'js/gardenCommentDropdown.js' %}"></script>
+<script src="{% static 'js/gardenCommentLike.js' %}"></script>
+<script src="{% static 'js/gardenCommentCreateModal.js' %}"></script>
+<script src="{% static 'js/gardenCommentCreate.js' %}"></script>
+<script src="{% static 'js/gardenCommentDelete.js' %}"></script>
+{% endblock script %}
