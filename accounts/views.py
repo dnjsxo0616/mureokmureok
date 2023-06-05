@@ -29,6 +29,7 @@ def login(request):
     request.session['prev_url'] = request.META.get('HTTP_REFERER')
     context = {
         'form': form,
+        'room_name': "broadcast"
     }
     return render(request, 'accounts/login.html', context)
 
@@ -84,6 +85,7 @@ def signup(request):
     request.session['prev_url'] = request.META.get('HTTP_REFERER')
     context = {
         'form': form,
+        'room_name': "broadcast"
     }
     return render(request, 'accounts/signup.html', context)
 
@@ -108,6 +110,7 @@ def update(request):
         form = CustomUserChangeForm(instance=request.user)
     context = {
         'form': form,
+        'room_name': "broadcast"
     }
     return render(request, 'accounts/update.html', context)
 
@@ -125,6 +128,7 @@ def change_password(request):
         form = CustomPasswordChangeForm(request.user)
     context = {
         'form': form,
+        'room_name': "broadcast"
     }
     return render(request, 'accounts/change_password.html', context)
 
@@ -140,6 +144,7 @@ def profile(request, username):
 
     context = {
         'person': person,
+        'room_name': "broadcast"
     }
     return render(request, 'accounts/profile.html', context)
 

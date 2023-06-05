@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Product, Purchase, Cart, Review
+from .models import Product, Purchase, Review
 from .forms import ProductForm, ReviewForm
 # from .forms import PurchaseForm
 from django.contrib.auth.decorators import login_required
@@ -16,6 +16,7 @@ def index(request):
 
     context = {
         'products': products,
+        'room_name': "broadcast"
     }
 
     return render(request, 'sales/index.html', context)
@@ -36,6 +37,7 @@ def create(request):
     
     context = {
         'form' : form,
+        'room_name': "broadcast"
     }
     return render(request, 'sales/create.html', context)
 
@@ -48,6 +50,7 @@ def detail(request, product_pk):
     context ={
         'product' : product,
         # 'products': products,
+        'room_name': "broadcast"
     }
     return render(request,'sales/detail.html', context)
 
@@ -79,6 +82,7 @@ def update_review(request, product_pk, review_pk):
         'product': product,
         'review': review,
         'form': form,
+        'room_name': "broadcast"
     }
     return render(request, 'sales/detail.html', context)
 
@@ -135,10 +139,10 @@ def add_to_cart(request, product_pk):
 
     request.session['cart'] = cart
 
-    return redirect('sales:view_cart')
+    return redirect('sales:cart')
 
 
-def view_cart(request):
+def cart(request):
     cart = request.session.get('cart', {})
     cart_items = []
     cart_total = 0
@@ -157,6 +161,8 @@ def view_cart(request):
     context = {
         'cart_items': cart_items,
         'cart_total': cart_total,
+        'room_name': "broadcast"
+
     }
     return render(request, 'sales/cart.html', context)
 
@@ -169,7 +175,8 @@ def remove_from_cart(request, product_pk):
         del cart[product_pk]
         request.session['cart'] = cart
 
-    return redirect('sales:view_cart')
+
+    return redirect('sales:cart')
 
 @login_required 
 def create_review(request, product_pk):
@@ -185,6 +192,7 @@ def create_review(request, product_pk):
     context = {
         'product':product,
         'form':form,
+        'room_name': "broadcast"
     }
     return render(request, 'sales/detail.html', context)
 

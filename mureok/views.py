@@ -13,6 +13,7 @@ def main(request):
     form = CustomAuthenticationForm
     context = {
         'form': form,
+        'room_name': "broadcast"
     }
     return render(request, 'main.html', context)
 

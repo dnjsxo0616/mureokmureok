@@ -49,6 +49,7 @@ def index(request):
     
     content = {
         'page_obj': page_obj,
+        'room_name': "broadcast"
     }
     return render(request, 'gardens/index.html', content)
 
@@ -68,6 +69,7 @@ def create(request):
         form = GardenForm()
     context = {
         'form': form,
+        'room_name': "broadcast"
     }
     return render(request, 'gardens/create.html', context)
 
@@ -147,6 +149,7 @@ def update(request, garden_pk):
     context = {
         'garden' : garden,
         'form': form,
+        'room_name': "broadcast"
     }
     return render(request, 'gardens/update.html', context)
 
@@ -182,6 +185,7 @@ def listing(request):
     context = {
         'category': category,
         'page_obj': page_obj,
+        'room_name': "broadcast"
     }
     return render(request, 'gardens/listing.html', context)
 
@@ -216,6 +220,7 @@ def detail(request, garden_pk):
         'comment_form': comment_form,
         'latitude': latitude,
         'longitude': longitude,
+        'room_name': "broadcast"
     }
     return render(request, 'gardens/detail.html', context)
 
@@ -226,7 +231,8 @@ def show_map(request, garden_id):
     latitude, longitude = searchAddressToCoordinate(address)
     context = {
         'latitude': latitude,
-        'longitude': longitude
+        'longitude': longitude,
+        'room_name': "broadcast"
     }
     return render(request, 'gardens/map.html', context)
 
@@ -238,5 +244,6 @@ def search(request):
     context = {
         'query': query,
         'gardens': gardens,
+        'room_name': "broadcast"
     }
     return render(request, 'gardens/search.html', context)
