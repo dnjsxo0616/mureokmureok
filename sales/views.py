@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Product, Purchase, Review
+from .models import Product, Review
 from .forms import ProductForm, ReviewForm
 # from .forms import PurchaseForm
 from django.contrib.auth.decorators import login_required
@@ -131,7 +131,6 @@ def add_to_cart(request, product_pk):
     product = Product.objects.get(pk=product_pk)
     quantity = int(request.POST.get('quantity', 1))
     cart = request.session.get('cart', {})
-
     if product_pk in cart:
         cart[product_pk]['quantity'] += quantity
     else:
@@ -144,6 +143,7 @@ def add_to_cart(request, product_pk):
 
 def cart(request):
     cart = request.session.get('cart', {})
+    print(cart)
     cart_items = []
     cart_total = 0
 
@@ -234,3 +234,5 @@ def create_review(request, product_pk):
 
 def payment(request):
     return render(request, 'sales/payment.html')
+
+

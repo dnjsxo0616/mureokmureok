@@ -1,17 +1,59 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block head %}{% endblock head %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/plants_create.css' %}">
+{% endblock head %}
+
 
 {% block content %}
-<h1>create</h1>
+<main class="bg-gray-50">
+  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+    <div class="py-10 px-24">
+      <h1 class="text-[25px] font-semibold mb-10">상품 등록</h1>
+      <form action="{% url 'sales:create' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+      
+        {% comment %} 이름 {% endcomment %}
+        <div class="flex gap-3 items-center mb-8 w-full">
+          <div class="mb-2 w-2/12">상품명<span class="text-red-600 text-[20px]">*</span></div>
+          <div>{{ form.title }}</div>
+        </div>
 
-<form action="{% url 'sales:create' %}" method="POST" enctype="multipart/form-data">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <input type="submit">
-</form>
+        {% comment %} 설명 {% endcomment %}
+        <div class="flex gap-3 mb-8 w-full">
+          <div class="mb-2 w-2/12">설명 <span class="text-red-600 text-[20px]">*</span></div>
+          <div class="grow">{{ form.content }}</div>
+        </div>
+
+        {% comment %} 카테고리 {% endcomment %}
+        <div class="flex gap-3 mb-8 w-full">
+          <div class="mb-2 w-2/12">{{ form.category.label }} <span class="text-red-600 text-[20px]">*</span></div>
+          <div>{{ form.category }}</div>
+        </div>
 
 
+        {% comment %} 태그 {% endcomment %}
+        <div class="flex gap-3 mb-8 w-full">
+          <div class="mb-2 w-2/12">가격 <span class="text-red-600 text-[20px]">*</span></div>
+          <div>{{ form.price }}</div>
+        </div>
+
+        {% comment %} 이미지 {% endcomment %}
+        <div class="flex gap-3 mb-8 w-full">
+          <div class="mb-2 w-2/12">이미지 <span class="text-red-600 text-[20px]">*</span></div>
+          <div>{{ form.photo }}</div>
+        </div>
+
+        {% comment %} 생성버튼 {% endcomment %}
+        <div class="flex justify-end w-full">
+          <button type="submit" class='rounded-md bg-[#1EB564] text-white p-2 px-4 hover:bg-[#148D4C]'>등록하기</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
 {% endblock content %}
 
 
