@@ -25,6 +25,8 @@ class Plant(models.Model):
     tags = TaggableManager(blank=True)
     # price = models.IntegerField()
 
+    def __str__(self):
+        return self.title
 
 class PlantImage(models.Model):
     def default_image():

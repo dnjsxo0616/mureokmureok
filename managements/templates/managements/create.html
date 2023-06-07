@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block head %}
+
+{% endblock head %}
+
+
+{% block content %}
+<form action="{% url 'managements:create' %}" method = 'POST' enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.media }}
+    {% for field in form %}
+    <div class="mb-3">
+      {{ field.label_tag}}
+      {{ field }}
+    </div>
+    {% endfor %}
+    <button type="submit" class='d'>등록</button> 
+  </form>
+{% endblock content %}
+
+
+{% block script %}
+
+{% endblock script %}
