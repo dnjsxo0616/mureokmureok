@@ -1,155 +1,323 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block style %}
-  <style>
 
-  </style>
-{% endblock style %}
+{% block head %}
+<title>식물</title>
+<link rel="stylesheet" href="{% static 'css/plants_index.css' %}">
+{% endblock head %}
+
 
 {% block content %}
-<section class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 h-screen flex flex-col justify-center relative">
-  <div class="font-bold text-6xl flex justify-center leading-relaxed">
-    <div class="text-left">
-      <span id="firstSpan">나는</span>
-      <span>
-        <form action="{% url 'plants:search' %}" method="GET">
-          <input class="border-b-2 border-[#1EB564] outline-none cursor-blink text-green-500" type="text" name="searched" placeholder="검색어" oninput="toggleSearchButton(this)">
-          <p class="m-0">를 잘 키우는 방법<span id="secondParagraph">이</span>
-          </p>
-          <p id="thirdParagraph" class="m-0">궁금하다.</p>
-          <button id="searchButton" type="submit" style="display: none;" class="underline underline-offset-8" >보러가기</button>
-        </form>
-      </span>
-    </div>
-  </div>
-</section>
-
-{% comment %} <div class="font-blod text-6xl">
-  <div class="title-wrap aos-init aos-animate" data-aos="fade-up" data-aos-duration="800">
-    <div class="text-slide">
-      <p class="select-text">
-        <span>어떤 식물</span>
-      </p>
-    </div>
-    <em class="prefix">을</em>
-    <p class="default-text">찾고 있나요?</p>
-  </div>
-  <div class="filter-wrap aos-init aos-animate" data-aos="fade-up" data-aos-duration="900">
-    <div class="depth-slide swiper-initialized swiper-horizontal swiper-backface-hidden">
-      <div class="swiper-wrapper" id="swiper-wrapper-57d58b4e4e26b08c" aria-live="polite" style="transition-duration: 0ms; transform: translate3d(0px, 0px, 0px);">
-        <div class="swiper-slide depth-1 swiper-slide-active" role="group" aria-label="1 / 3" style="width: 496px;">
-          <ul class="filter-item-box">
-            <li class="filter-item" filtertype="firstfilter" data="62abf69202b4dd10c1280adf" style="pointer-events: auto;">잎을 감상하는</li>
-            <li class="filter-item" filtertype="firstfilter" data="62abf69902b4dd10c1280ae6" style="pointer-events: auto;">꽃을 감상하는</li>
-            <li class="filter-item" filtertype="firstfilter" data="62abf69e02b4dd10c1280aeb" style="pointer-events: auto;">열매를 감상하는</li>
-            <li class="filter-item" filtertype="firstfilter" data="62abf6ab02b4dd10c1280af4" style="pointer-events: auto;">다육/선인장</li>
-          </ul>
-        </div>
-        <div class="swiper-slide depth-2 swiper-slide-next" role="group" aria-label="2 / 3" style="width: 496px;">
-          <ul class="filter-item-box">
-            <li class="btn-prev">이전</li>
-            <li class="filter-item" filtertype="secondfilter" data="62abf74402b4dd10c1280c2c">잎모양</li>
-            <li class="filter-item" filtertype="secondfilter" data="62abf74b02b4dd10c1280c33">초보자용</li>
-            <li class="filter-item" filtertype="secondfilter" data="62abf74f02b4dd10c1280c3b">선물하기 좋은</li>
-            <li class="filter-item" filtertype="secondfilter" data="62abf75402b4dd10c1280c44">공기정화</li>
-            <li class="filter-item" filtertype="secondfilter" data="62abf75902b4dd10c1280c4e">빛이 적어도 되는</li>
-            <li class="filter-item" filtertype="secondfilter" data="62abf76402b4dd10c1280c65">향기나는</li>
-            <li class="filter-item" filtertype="secondfilter" data="62abf76002b4dd10c1280c59">반려동물 안전한</li>
-            <li class="filter-item" filtertype="secondfilter" data="62abf76702b4dd10c1280c72">목대있는</li>
-            <li class="filter-item" filtertype="secondfilter" data="62abf76d02b4dd10c1280c80">흙이 필요없는</li>
-            <li class="filter-item" filtertype="secondfilter" data="62abf77202b4dd10c1280c8f">덩굴로 자라는</li>
-          </ul>
-        </div>
-        <div class="swiper-slide depth-3" role="group" aria-label="3 / 3" style="width: 496px;">
-          <ul class="filter-item-box">
-            <li class="btn-prev">이전</li>
-          </ul>
-        </div>
+<main class="relative">
+  {% if page_obj.number < 2 %}
+  {% comment %} 식물검색 {% endcomment %}
+  <section class="bg-gray-100 h-screen relative" id="search">
+    {% comment %} 식물이미지 롤링 부분 {% endcomment %}
+    <div class="wrap pt-10">
+      <div class="rolling-list">
+        <ul>
+          <li>
+            <div class="w-36 h-36 overflow-hidden rounded-lg m-5">
+              <img src="https://m.bonarteflower.com/web/product/big/201808/5a1633fbe339ffe8d33b80e88da81d87.jpg" alt="" class="w-full h-full object-cover">
+            </div>
+          </li>
+          <li>
+            <div class="w-36 h-36 overflow-hidden rounded-lg m-5">
+              <img src="https://www.f-mans.com/data/goods/1/2022/11/90_temp_16672843952850view.jpg" alt="" class="w-full h-full object-cover">
+            </div>
+          </li>
+          <li>
+            <div class="w-36 h-36 overflow-hidden rounded-lg m-5">
+              <img src="https://upload.wikimedia.org/wikipedia/ko/thumb/e/e2/%EC%84%9C%EC%9A%B8%EC%8B%9C%EC%A7%80%EC%8B%9D%EA%B3%B5%EC%9C%A0115.JPG/640px-%EC%84%9C%EC%9A%B8%EC%8B%9C%EC%A7%80%EC%8B%9D%EA%B3%B5%EC%9C%A0115.JPG" alt="" class="w-full h-full object-cover">
+            </div>
+          </li>
+          <li>
+            <div class="w-36 h-36 overflow-hidden rounded-lg m-5">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Mount_Hakodate_Shiga_Pref06n.jpg/1200px-Mount_Hakodate_Shiga_Pref06n.jpg" alt="" class="w-full h-full object-cover">
+            </div>
+          </li>
+          <li>
+            <div class="w-36 h-36 overflow-hidden rounded-lg m-5">
+              <img src="https://post-phinf.pstatic.net/MjAyMTA4MjNfMTUg/MDAxNjI5NjkxMjgzMjEw.cTiY_DLyuAaP--tz95_OoXNlyLIvV15gUTAwH0CNrAUg.PDs0Dj494TpcjNZBWUFdcd9gyrMDWRtvjEtAuc4SFsIg.JPEG/tip250t016393.jpg?type=w1200" alt="" class="w-full h-full object-cover">
+            </div>
+          </li>
+          <li>
+            <div class="w-36 h-36 overflow-hidden rounded-lg m-5">
+              <img src="https://ai.esmplus.com/detox5/1037/1037_10.jpg" alt="" class="w-full h-full object-cover">
+            </div>
+          </li>
+          <li>
+            <div class="w-36 h-36 overflow-hidden rounded-lg m-5">
+              <img src="https://picturethisai.com/image-handle/website_cmsname/image/1080/153406529523941388.jpeg?x-oss-process=image/format,webp/quality,q_60&v=1.0" alt="" class="w-full h-full object-cover">
+            </div>
+          </li>
+          <li>
+            <div class="w-36 h-36 overflow-hidden rounded-lg m-5">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Rhododendron_mucronulatum4.jpg/1200px-Rhododendron_mucronulatum4.jpg" alt="" class="w-full h-full object-cover">
+            </div>
+          </li>
+          <li>
+            <div class="w-36 h-36 overflow-hidden rounded-lg m-5">
+              <img src="https://kukka-2-media-123.s3.amazonaws.com/media/contents/event_template/391fbba8-73aa-4cad-8516-42e898ef36e1.jpg" alt="" class="w-full h-full object-cover">
+            </div>
+          </li>
+          <li>
+            <div class="w-36 h-36 overflow-hidden rounded-lg m-5">
+              <img src="https://mblogthumb-phinf.pstatic.net/MjAxOTEwMzFfMTEw/MDAxNTcyNDY3MjM4MTE4.2_Pfg6svmfkiLJDxRiDV0JNtCBYWEc9LKHxfYPemPakg.JSEnDQRDq1HhfSlNCN7ZfBWusDlOsOXiqknG5WDjWnog.JPEG.professionaldog/%EB%B0%94%EC%A7%88%ED%8A%B8%EB%A6%AC.jpg?type=w800" alt="" class="w-full h-full object-cover">
+            </div>
+          </li>
+          <li>
+            <div class="w-36 h-36 overflow-hidden rounded-lg m-5">
+              <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/20883/product/image_1669963455403_750.jpeg" alt="" class="w-full h-full object-cover">
+            </div>
+          </li>
+          <li>
+            <div class="w-36 h-36 overflow-hidden rounded-lg m-5">
+              <img src="https://sitem.ssgcdn.com/37/58/95/item/1000410955837_i1_750.jpg" alt="" class="w-full h-full object-cover">
+            </div>
+          </li>
+          <li>
+            <div class="w-36 h-36 overflow-hidden rounded-lg m-5">
+              <img src="https://t1.daumcdn.net/cfile/tistory/9989D14D5EF8ECD606" alt="" class="w-full h-full object-cover">
+            </div>
+          </li>
+        </ul>
       </div>
-      <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
     </div>
-  </div>
-</div> {% endcomment %}
-<section class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 h-screen flex flex-col justify-center relative">
-  <div class="font-bold text-5xl text-center">
-    <div >
+
+    <div class="flex gap-10 absolute top-1/2 start-1/2 -translate-x-[55%] -translate-y-1/2">
+      <img src="{% static 'img/emoji.png' %}" alt="" class="w-24 h-24">
+      
+      <div class="flex flex-col chat-bubble">
+        <p class=" text-[20px] text-[#1EB564] font-semibold">식 물</p>
+        <form action="{% url 'plants:search' %}" method="GET" class="font-bold text-[45px] leading-relaxed">
+          <span id="firstSpan">나는</span>
+          <input class="w-96 border-b-2 border-[#1EB564] outline-none cursor-blink text-[#1EB564] bg-transparent" type="text" name="searched" placeholder="식물" oninput="toggleSearchButton(this)">
+          <span>에<br>대한 정보<span id="secondParagraph">가</span>
+          </span>
+          <span id="thirdParagraph" class="m-0">궁금해요</span>
+          <button id="searchButton" type="submit" class="text-[#1EB564] hidden" >보러가기</button>
+        </form>
+      </div>
+    </div>
+  </section>
+  
+  {% comment %} <div class="font-blod text-6xl">
+    <div class="title-wrap aos-init aos-animate" data-aos="fade-up" data-aos-duration="800">
       <div class="text-slide">
         <p class="select-text">
-          <span>어떤 식물</span>을 찾고 있나요?
+          <span>어떤 식물</span>
         </p>
       </div>
+      <em class="prefix">을</em>
+      <p class="default-text">찾고 있나요?</p>
     </div>
-    <div id="tag-selection">
-      <ul class="flex justify-center text-3xl mt-8">
-        <li class="rounded-full py-2 px-4 m-2 bg-white border border-gray-500 text-gray-500 cursor-pointer transition-colors duration-300 ease-in-out hover:bg-green-500 hover:text-white"  style="pointer-events: auto;">
-          <a href="{% url 'plants:filter_plants' '잎을 감상하는' %}">잎을 감상하는</a>
-        </li>
-        <li class="rounded-full py-2 px-4 m-2 bg-white border border-gray-500 text-gray-500 cursor-pointer transition-colors duration-300 ease-in-out hover:bg-green-500 hover:text-white"  style="pointer-events: auto;">
-          <a href="{% url 'plants:filter_plants' '꽃을 감상하는' %}">꽃을 감상하는</a>
-        </li>
-        <li class="rounded-full py-2 px-4 m-2 bg-white border border-gray-500 text-gray-500 cursor-pointer transition-colors duration-300 ease-in-out hover:bg-green-500 hover:text-white"  style="pointer-events: auto;">
-          <a href="{% url 'plants:filter_plants' '열매를 감상하는' %}">열매를 감상하는</a>
-        </li>
-        <li class="rounded-full py-2 px-4 m-2 bg-white border border-gray-500 text-gray-500 cursor-pointer transition-colors duration-300 ease-in-out hover:bg-green-500 hover:text-white"  style="pointer-events: auto;">
-          <a href="{% url 'plants:filter_plants' '열매를 감상하는' %}">다육/선인장</a>
-        </li>
-      </ul>
+    <div class="filter-wrap aos-init aos-animate" data-aos="fade-up" data-aos-duration="900">
+      <div class="depth-slide swiper-initialized swiper-horizontal swiper-backface-hidden">
+        <div class="swiper-wrapper" id="swiper-wrapper-57d58b4e4e26b08c" aria-live="polite" style="transition-duration: 0ms; transform: translate3d(0px, 0px, 0px);">
+          <div class="swiper-slide depth-1 swiper-slide-active" role="group" aria-label="1 / 3" style="width: 496px;">
+            <ul class="filter-item-box">
+              <li class="filter-item" filtertype="firstfilter" data="62abf69202b4dd10c1280adf" style="pointer-events: auto;">잎을 감상하는</li>
+              <li class="filter-item" filtertype="firstfilter" data="62abf69902b4dd10c1280ae6" style="pointer-events: auto;">꽃을 감상하는</li>
+              <li class="filter-item" filtertype="firstfilter" data="62abf69e02b4dd10c1280aeb" style="pointer-events: auto;">열매를 감상하는</li>
+              <li class="filter-item" filtertype="firstfilter" data="62abf6ab02b4dd10c1280af4" style="pointer-events: auto;">다육/선인장</li>
+            </ul>
+          </div>
+          <div class="swiper-slide depth-2 swiper-slide-next" role="group" aria-label="2 / 3" style="width: 496px;">
+            <ul class="filter-item-box">
+              <li class="btn-prev">이전</li>
+              <li class="filter-item" filtertype="secondfilter" data="62abf74402b4dd10c1280c2c">잎모양</li>
+              <li class="filter-item" filtertype="secondfilter" data="62abf74b02b4dd10c1280c33">초보자용</li>
+              <li class="filter-item" filtertype="secondfilter" data="62abf74f02b4dd10c1280c3b">선물하기 좋은</li>
+              <li class="filter-item" filtertype="secondfilter" data="62abf75402b4dd10c1280c44">공기정화</li>
+              <li class="filter-item" filtertype="secondfilter" data="62abf75902b4dd10c1280c4e">빛이 적어도 되는</li>
+              <li class="filter-item" filtertype="secondfilter" data="62abf76402b4dd10c1280c65">향기나는</li>
+              <li class="filter-item" filtertype="secondfilter" data="62abf76002b4dd10c1280c59">반려동물 안전한</li>
+              <li class="filter-item" filtertype="secondfilter" data="62abf76702b4dd10c1280c72">목대있는</li>
+              <li class="filter-item" filtertype="secondfilter" data="62abf76d02b4dd10c1280c80">흙이 필요없는</li>
+              <li class="filter-item" filtertype="secondfilter" data="62abf77202b4dd10c1280c8f">덩굴로 자라는</li>
+            </ul>
+          </div>
+          <div class="swiper-slide depth-3" role="group" aria-label="3 / 3" style="width: 496px;">
+            <ul class="filter-item-box">
+              <li class="btn-prev">이전</li>
+            </ul>
+          </div>
+        </div>
+        <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+      </div>
     </div>
-    {% comment %} <div class="filter-selection" style="display: none;">
-      <ul class="flex justify-center text-3xl mt-8">
-        <li class="btn-prev">이전</li>
-        <li class="filter-item">잎모양</li>
-        <li class="filter-item">초보자용</li>
-        <li class="filter-item">선물하기 좋은</li>
-      </ul>
-    </div> {% endcomment %}
+  </div> {% endcomment %}
+
+
+  {% comment %} 태그검색 {% endcomment %}
+  <section class="h-screen relative" id="tag">
+    <div class="absolute w-full top-1/2 start-1/2 -translate-x-1/2 -translate-y-1/2">
+      <h2 class="text-[45px] font-semibold text-center mb-10">'# 태그'를 통해 찾아보세요</h2>
+      
+      <div>
+        <ul class="flex gap-16 justify-center text-[25px]">
+          <a href="{% url 'plants:filter_plants' '잎을 감상하는' %}">
+            <li class="w-fit rounded-full py-2 px-4 bg-white border border-gray-500 text-gray-500 cursor-pointer transition-colors duration-300 ease-in-out hover:bg-green-500 hover:text-white">
+              #잎을 감상하는
+            </li>
+          </a>
+          <a href="{% url 'plants:filter_plants' '꽃을 감상하는' %}">
+            <li class="w-fit rounded-full py-2 px-4 bg-white border border-gray-500 text-gray-500 cursor-pointer transition-colors duration-300 ease-in-out hover:bg-green-500 hover:text-white">
+              #꽃을 감상하는
+            </li>
+          </a>
+          <a href="{% url 'plants:filter_plants' '열매를 감상하는' %}">
+            <li class="w-fit rounded-full py-2 px-4 bg-white border border-gray-500 text-gray-500 cursor-pointer transition-colors duration-300 ease-in-out hover:bg-green-500 hover:text-white">
+              #열매를 감상하는
+            </li>
+          </a>
+          <a href="{% url 'plants:filter_plants' '열매를 감상하는' %}">
+            <li class="w-fit rounded-full py-2 px-4 bg-white border border-gray-500 text-gray-500 cursor-pointer transition-colors duration-300 ease-in-out hover:bg-green-500 hover:text-white">
+              #다육/선인장
+            </li>
+          </a>
+        </ul>
+      </div>
+      
+      {% comment %} <div class="filter-selection" style="display: none;">
+        <ul class="flex justify-center text-3xl mt-8">
+          <li class="btn-prev">이전</li>
+          <li class="filter-item">잎모양</li>
+          <li class="filter-item">초보자용</li>
+          <li class="filter-item">선물하기 좋은</li>
+        </ul>
+      </div> {% endcomment %}
+      
+    </div>
+  </section>  
+  
+  {% comment %} 인기있는 식물 {% endcomment %}
+  <section class="bg-gray-100 h-screen relative mb-10" id="favor">
+    <div class="flex gap-10 absolute top-1/2 start-1/2 -translate-x-[55%] -translate-y-1/2">
+      <img src="{% static 'img/돋보기.png' %}" alt="" class="w-30 h-24">
+
+      <div class="font-bold text-[45px] text-end">
+        <div>인기있는 식물이 궁금하다면?</div>
+        <div><a class="text-[#1EB564]" href="{% url 'plants:recommendation' %}">보러가기</a></div>
+      </div>
+    </div>
+  </section>
+
+  {% comment %} 페이지 스크롤 스파이 {% endcomment %}
+  <div class="flex gap-3 fixed top-1/2 end-32 -translate-y-1/2">
+    <div class="flex flex-col gap-10 text-end h-full">
+      <a href="#search" class="scrollspy-item text-gray-400">
+        <div>검색</div>
+      </a>
+      <a href="#tag" class="scrollspy-item text-gray-400">
+        <div>태그</div>
+      </a>
+      <a href="#favor" class="scrollspy-item text-gray-400">
+        <div>인기순위</div>
+      </a>
+      <a href="#list" class="scrollspy-item text-gray-400">
+        <div>식물목록</div>
+      </a>
+    </div>
+    <div class="border border-start border-gray-400 h-full">
+      <br><br><br><br><br><br><br><br><br>
+    </div>
   </div>
-</section>  
+  {% endif %}
+  
+  {% comment %} 식물목록 {% endcomment %}
+  <section id="list">
+    <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+      <div class="w-full">
+        {% comment %} 카테고리 {% endcomment %}
+        <div class="flex items-center justify-between border-0 border-b-[1px] border-gray-400 bg-white py-3 my-5 sticky top-[60px] z-10">
+          <div class="flex gap-10">
+            <div class='text-gray-400 hover:text-black'>
+              <a href="{% url 'gardens:listing' %}?category=전체">
+                <span class="{% if category == '전체' %}text-black font-semibold{% endif %}">전체</span>
+              </a>
+            </div>
+            <div class='text-gray-400 hover:text-black'>
+              <a href="{% url 'gardens:listing' %}?category=전시회">
+                <span class="{% if category == '전시회' %}text-black font-semibold{% endif %}">실내식물</span>
+              </a>
+            </div>
+            <div class='text-gray-400 hover:text-black'>
+              <a href="{% url 'gardens:listing' %}?category=식물원">
+                <span class="{% if category == '식물원' %}text-black font-semibold{% endif %}">식외식물</span>
+              </a>
+            </div>
+          </div>
 
-<section class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 h-screen flex flex-col justify-center relative">
-  <div class="font-bold text-6xl flex justify-center leading-relaxed">
-    <div>
-      <div>인기 있는 식물이 궁금하다면</div>
-      <div><a class="text-green-500" href="{% url 'plants:recommendation' %}">보러가기</a></div>
+          {% comment %} 검색 {% endcomment %}
+          <form action="{% url 'plants:search' %}" method="GET" role="search">
+            <div class="border-0 border-b border-gray-300 flex items-center">
+              <input type="search" name="searched" class="ps-1 pe-3 h-8 w-60 text-sm bg-transparent focus:outline-none" placeholder="식물을 검색해보세요">
+              <span class="material-symbols-outlined text-gray-400">search</span>
+            </div>
+          </form>
+        </div>
+
+        {% comment %} 식물목록 카드 {% endcomment %}
+        <div class="grid grid-cols-4 gap-8 mb-10">
+        {% for plant in page_obj %}
+        <a href="{% url 'plants:detail' plant.pk %}">
+          <div class="w-full mb-5 flex gap-5">
+            <div class="flex flex-col gap-3">
+              <div class="rounded-xl border overflow-hidden relative">
+                <img src="{{ plant.plant_images.first.image.url }}" alt="" class="w-full h-full object-cover duration-200 ease-linear hover:scale-105">
+
+                <div class="text-[12px] text-white w-fit rounded-md p-1 px-2 shadow-lg absolute top-2 left-2 {% if plant.category == "['실내식물']" %}bg-[#439A3C]{% elif plant.category == "['실외식물']" %}bg-[#9D9441]{% elif plant.category == "['실내식물', '실외식물']" %}bg-[#35493D]{% endif %}">{% if plant.category == "['실내식물']" %}실내{% elif plant.category == "['실외식물']" %}실외{% elif plant.category == "['실내식물', '실외식물']" %}실내, 실외{% endif %}</div>
+              </div>
+              <div class="flex items-center justify-between px-2">
+                <h3 class="text-[16px] font-semibold">{{ plant.title }}</h3>
+                
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-[16px] mt-[0.5px]">favorite</span>
+                  <span id="garden-like-count">{{ plant.like_users.all|length }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+        {% endfor %}
+        </div>
+
+        {% comment %} 페이지네이션 {% endcomment %}
+        {% if page_obj.has_other_pages %}
+        <div class="flex justify-center items-center mt-8 pb-16">
+          {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" class="w-8 h-8 p-1 text-center bg-transparent rounded-full text-gray-400 hover:text-black">
+              <span class="material-symbols-outlined flex items-center justify-center">arrow_back_ios</span>
+            </a>
+          {% endif %}
+          
+          {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+              <span class="w-8 h-8 p-1 text-center text-[#1EB564] font-semibold">{{ num }}</span>
+            {% else %}
+              <a href="?page={{ num }}" class="w-8 h-8 p-1 text-center bg-transparent rounded-full text-gray-700 hover:bg-gray-100">{{ num }}</a>
+            {% endif %}
+          {% endfor %}
+          
+          {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="w-8 h-8 p-1 text-center bg-transparent rounded-full text-gray-400 hover:text-black">
+              <span class="material-symbols-outlined flex items-center justify-center">arrow_forward_ios</span>
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+      </div>
     </div>
-  </div>
-</section>
-
-<section class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 h-screen flex flex-col justify-center relative">
-
-  {% comment %} {% if user.is_superuser %} {% endcomment %}
-    <p><a href="{% url 'plants:create' %}">생성하기</a></p>
-  {% comment %} {% endif %} {% endcomment %}
-
-
-  {% for plant in plants %}
-    <a href="{% url 'plants:detail' plant.pk %}">{{plant.title}}</a>
-    <img src="{{plant.image.url}}" alt="" width="300">
-    <p>-----------------------------------------------</p>
-  {% endfor %}
-  {% comment %} <a href="{% url 'plants:update' plant.pk%} ">수정</a> {% endcomment %}
-</section>
-
+  </section>
+</main>
 {% endblock content %}
 
+
 {% block script %}
-<script>
-  function toggleSearchButton(input) {
-    var firstSpan = document.getElementById("firstSpan")
-    var searchButton = document.getElementById("searchButton")
-    var secondParagraph = document.getElementById("secondParagraph")
-    var thirdParagraph = document.getElementById("thirdParagraph")
-    if (input.value.trim() !== "") {
-      firstSpan.style.display = "none"
-      secondParagraph.style.display = "none"
-      thirdParagraph.style.display = "none"
-      searchButton.style.display = "inline-block"
-    } else {
-      searchButton.style.display = "none"
-      secondParagraph.style.display = "inline"
-      thirdParagraph.style.display = "block"
-      firstSpan.style.display = "inline"
-    }
-  }
-</script>
+<script src="{% static 'js/plantsIndexSearch.js' %}"></script>
+<script src="{% static 'js/plantsIndexScrollspy.js' %}"></script>
+<script src="{% static 'js/plantsIndexRolling.js' %}"></script>
 {% endblock script %}

@@ -1,85 +1,91 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block head %}
 
+{% block head %}
+<title>공지사항</title>
+<link rel="stylesheet" href="{% static 'css/notices_index.css' %}">
 {% endblock head %}
 
+
 {% block content  %}
+<main>
+  {% comment %} 배너 {% endcomment %}
+  <div class="w-full h-[180px] overflow-hidden relative">
+    <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+      <div class="absolute flex items-center gap-10 top-1/2 -translate-y-1/2 z-10">
+        <img src="{% static 'img/확성기.png' %}" alt="" class="w-36 h-32">
+        <div>
+          <p class="text-[16px] text-gray-400 font-semibold mb-3">새로운 소식, 주의사항<br>꼭! 읽어주세요</p>
+          <h1 class="text-[25px] font-semibold">공지사항</h1>
+        </div>
+      </div>
+    </div>
+    <div class='w-full h-[180px] bg-gradient-to-b from-gray-200 absolute'></div>
+  </div>
+
+  {% comment %} 컨텐츠 {% endcomment %}
+  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+    <div class="flex justify-end pb-3">
+      {% comment %} {% if request.user.is_superuser %} {% endcomment %}
+      <a href="{% url 'notices:create' %}" class="text-[14px] border rounded-lg p-1 px-2 text-center hover:bg-gray-100">글 작성</a>
+      {% comment %} {% endif %} {% endcomment %}
+    </div>
 
     {% comment %} 표시항목 {% endcomment %}
-    <h1>공지사항</h1>
-    <div class="flex p-3 py-2 text-[14px] text-white sticky top-[110px] bg-[#1EB564] rounded-lg">
+    <div class="flex p-3 py-2 text-[14px] sticky top-[66px] bg-gray-50 border-0 border-b border-t">
       <div class="w-1/12 text-center">이미지</div>
       <div class="w-1/12 grow text-center">제목 및 내용</div>
-      <div class="w-1/12 text-center">작성자</div>
-      <div class="w-1/12 text-center">공란</div>
-      <div class="w-1/12 text-center">공란</div>
       <div class="w-1/12 text-center">조회수</div>
       <div class="w-1/12 text-center">게시일</div>
     </div>
 
     {% comment %} 게시물 {% endcomment %}
-    <div class="flex flex-col mb-10 mt-10">
+    <div class="flex flex-col mb-10">
       {% for notice in page_obj %}
       <a href="{% url 'notices:detail' notice.pk %}">
-        <div class="flex items-center bg-white p-3 border-0 border-b-[1px] border-gray-300 hover:bg-gray-100">
+        <div class="flex items-center p-3 border-0 border-b-[1px] border-gray-300 hover:bg-gray-100">
           <div class="w-1/12 rounded-md overflow-hidden h-24 border">
-            <img src="{{ notice.thumbnail.url }}" alt="notice Photo" class="object-cover w-full h-full">
+            <img src="{{ notice.thumbnail.url }}" alt="" class="object-cover w-full h-full">
           </div>
           <div class="w-1/12 grow px-10">
-            <div class="text-[12px] text-gray-700 border border-[1px] border-gray-400 w-fit rounded-md p-[2px] px-[4px] mb-2 shadow-sm">공지사항</div>
-            <h4 class="text-[18px] truncate mb-1">{{ notice.title }}</h4>
-            <p class="text-[14px] text-gray-400 truncate">{{ notice.content|safe }}</p>
+            <h4 class="text-[18px] truncate">{{ notice.title }}</h4>
           </div>
-          <div class="w-1/12 text-center flex flex-col items-center gap-2">
-            <div class="rounded-full w-8 h-8 overflow-hidden border border-[0.5px] border-gray-700">
-              {% if notice.user.image %}
-              <img src="{{ notice.user.image.url }}" alt="">
-              {% else %}
-              <img src="{% static 'img/no_profile.jpg' %}" alt="">
-              {% endif %}
-            </div>
-            <p class="text-[14px] text-gray-600">{{ notice.user }}</p>
-          </div>
-          <div class="w-1/12 text-center text-[14px]">공란</div>
-          <div class="w-1/12 text-center text-[14px]">공란</div>
           <div class="w-1/12 text-center text-[14px]">{{ notice.hits }}</div>
-          <div class="w-1/12 text-center text-[12px] text-gray-500">{{ notice.created_at|date:"Y-m-d" }}</div>
+          <div class="w-1/12 text-center text-[12px] text-gray-500">{{ notice.created_at|date:'Y-m-d' }}</div>
         </div>
       </a>
       {% endfor %}
     </div>
 
 
-
-{% comment %} 페이지네이션 {% endcomment %}
+    {% comment %} 검색 쿼리 추가 페이지네이션 {% endcomment %}
     {% if page_obj.has_other_pages %}
       <div class="flex justify-center items-center mt-5 pb-10">
         {% if page_obj.has_previous %}
-          <a href="?page={{ page_obj.previous_page_number }}" class="w-8 h-8 p-1 text-center bg-transparent rounded-full text-gray-400 hover:text-black">
+          <a href="?q={{ query }}&page={{ page_obj.previous_page_number }}" class="w-8 h-8 p-1 text-center bg-transparent rounded-full text-gray-400 hover:text-black">
             <span class="material-symbols-outlined flex items-center justify-center">arrow_back_ios</span>
           </a>
         {% endif %}
         
         {% for num in page_obj.paginator.page_range %}
           {% if page_obj.number == num %}
-            <span class="w-8 h-8 p-1 text-center rounded-full bg-[#1EB564] text-white">{{ num }}</span>
+            <span class="w-8 h-8 p-1 text-center text-[#1EB564] font-semibold">{{ num }}</span>
           {% else %}
-            <a href="?page={{ num }}" class="w-8 h-8 p-1 text-center bg-transparent rounded-full text-gray-700 hover:bg-[#cfcfcf]">{{ num }}</a>
+            <a href="?q={{ query }}&page={{ num }}" class="w-8 h-8 p-1 text-center bg-transparent rounded-full text-gray-700 hover:bg-gray-100">{{ num }}</a>
           {% endif %}
         {% endfor %}
         
         {% if page_obj.has_next %}
-          <a href="?page={{ page_obj.next_page_number }}" class="w-8 h-8 p-1 text-center bg-transparent rounded-full text-gray-400 hover:text-black">
+          <a href="?q={{ query }}&page={{ page_obj.next_page_number }}" class="w-8 h-8 p-1 text-center bg-transparent rounded-full text-gray-400 hover:text-black">
             <span class="material-symbols-outlined flex items-center justify-center">arrow_forward_ios</span>
           </a>
         {% endif %}
       </div>
     {% endif %}
-
-
+  </div>
+</main>
 {% endblock content %}
-{% block script %}
 
-{% endblock script %}
+
+{% block script %}{% endblock script %}
