@@ -1,219 +1,311 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block head %}
 
+
+{% block head %}
+<title>{{ plant.title }}</title>
 {% endblock head %}
 
 
 {% block content %}
-<div class="mx-auto px-[200px] pt-10 pb-10">
-  <div class="flex">
-    <section class="w-1/3 ml-[30px]">   
-      
-      {% with plant_images=plant.plant_images.all %}
-        <img src="{{ plant_images.0.image.url }}" alt="Plant Image 1" class="w-[400px] h-[400px] object-contain">
-        {% comment %} <img src="{{ plant_images.1.image.url }}" alt="Plant Image 2" class="w-[400px] h-[400px] object-contain">
-        <img src="{{ plant_images.2.image.url }}" alt="Plant Image 3" class="w-[400px] h-[400px] object-contain"> {% endcomment %}
-      {% endwith %}
-    </section>
+<main>
+  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+    
+    <section class="w-full mb-12">
+      <p class="text-[14px] text-gray-500 mt-10 mb-8">
+        <a href="{% url 'plants:index' %}" class="hover:text-black">
+          <span>식물</span>
+        </a> > {{ plant.title }}
+      </p>
 
+      <div class="flex gap-10 justify-between">
+        {% comment %} 식물사진 {% endcomment %}
+        {% with plant_images=plant.plant_images.all %}
+        <div class="w-1/2 h-96 border rounded-xl overflow-hidden">
+          <img src="{{ plant_images.0.image.url }}" alt="Plant Image 1" class="w-full h-full object-cover">
+        </div>
+        {% endwith %}
 
+        {% comment %} 식물 간략한 정보 {% endcomment %}
+        <div class="w-1/2 h-96">
+          <div class="flex justify-between mb-5">
+            <div class="flex gap-3">
+              {% comment %} 식물카테고리 {% endcomment %}
+              <div class="text-[14px] text-white w-fit h-fit rounded-md mt-1 p-[4px] px-[8px] shadow-sm {% if plant.category == "['실내식물']" %}bg-[#439A3C]{% elif plant.category == "['실외식물']" %}bg-[#9D9441]{% elif plant.category == "['실내식물', '실외식물']" %}bg-[#35493D]{% endif %}">{% if plant.category == "['실내식물']" %}실내{% elif plant.category == "['실외식물']" %}실외{% elif plant.category == "['실내식물', '실외식물']" %}실내, 실외{% endif %}</div>
 
-    <section class="ml-10 w-2/3">
+              {% comment %} 식물이름 {% endcomment %}
+              <div>
+                <h1 class="text-[25px] font-semibold">{{ plant.title }}</h1>
+                <h2 class="text-[14px] text-gray-500">{{ plant.title }}</h2>
+              </div>
+            </div>
 
-      <div class="flex m-3">
-        <span class="font-bold text-2xl">{{plant.title}}</span>
-        <form class='like-forms m-3' data-plant-id='{{ plant.pk }}'>
-          {% csrf_token %}
-          {% if request.user in plant.like_users.all %}
-            <input type="submit" value="좋아요 취소" id="like-{{ plant.pk }}">
-          {% else %}
-            <input type="submit" value="좋아요" id="like-{{ plant.pk }}">
-          {% endif %}
-        </form>
-        <div class="ml-auto">
-          <ul class="bg-green-500 text-white rounded-lg p-1 mb-3 ">
-            {% for category in category_list  %}
-              <li>{{ category }}</li>
+            <div class="flex gap-5">
+              {% comment %} 식물 좋아요 {% endcomment %}
+              <form class='like-forms' data-plant-id='{{ plant.pk }}'>
+                {% csrf_token %}
+                {% if request.user in plant.like_users.all %}
+                  <button type="submit" class="flex items-center justify-center gap-3 px-3 w-fit h-10 border rounded-md hover:bg-gray-100">
+                    <span class="material-symbols-outlined text-red-600" id="like-{{ plant.pk }}">favorite</span>
+                    <span id="plant-like-count">{{ plant.like_users.all|length }}</span>
+                  </button>
+                {% else %}
+                <button type="submit" class="flex items-center justify-center gap-3 px-3 w-fit h-10 border rounded-md hover:bg-gray-100">
+                  <span class="material-symbols-outlined text-gray-500" id="like-{{ plant.pk }}">favorite</span>
+                  <span id="plant-like-count">{{ plant.like_users.all|length }}</span>
+                </button>
+                {% endif %}
+              </form>
+
+              {% comment %} 식물 공유하기 {% endcomment %}
+              <a href="#">
+                <div class="flex items-center justify-center w-10 h-10 border rounded-md hover:bg-gray-100">
+                  <span class="material-symbols-outlined">share</span>
+                </div>
+              </a>
+
+              {% comment %} 수정 및 삭제 드롭다운 버튼 {% endcomment %}
+              {% if plant.user == request.user %}
+              <div class="relative mt-3">
+                <div class="dropdown text-end">
+                  <button type="button" class="rounded-md flex justify-center items-center bg-white hover:bg-gray-100" id="plant-menu-button" aria-expanded="false" aria-haspopup="true">
+                    <span class="material-symbols-outlined text-[20px] text-black font-bold">more_vert</span>
+                  </button>
+                </div>
+                
+                {% comment %} 게시글 수정 및 삭제 부분{% endcomment %}
+                <div class="absolute right-0 z-10 mt-2 w-36 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="plant-menu-button" tabindex="-1" id="plant-dropdown" style="display: none;">
+                  <a class="block text-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" href="{% url 'plants:update' plant.pk %}">
+                    수정하기
+                  </a>
+                  <form method="POST" action="{% url 'plants:delete' plant.pk %}" class="block px-4 py-2 text-start text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" onclick="return confirm('식물 게시물을 삭제하시겠습니까?')">
+                    {% csrf_token %}
+                    <input type="submit" value="삭제하기" class="cursor-pointer">
+                  </form>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+
+          {% comment %} 태그 {% endcomment %}
+          <ul class="flex items-center gap-3 mb-8">
+            {% for tag in plant.tags.all %}
+            <a href="{% url 'plants:filter_plants' tag %}">
+              <li class="flex items-center justify-center rounded-full border border-gray-400 px-3 py-1 text-[14px] hover:bg-gray-100"># {{ tag }}</li>
+            </a>
             {% endfor %}
           </ul>
+
+          {% comment %} 식물의 간략한 설명 {% endcomment %}
+          <p class="text-[14px] mb-5">{{ plant.content }}</p>
+
+          {% comment %} 알레르기 주의 {% endcomment %}
+          {% if allergy == 'yes' %}
+            <p class="text-red-500 font-bold">꽃가루 알레르기 : 주의</p>
+          {% endif %}
         </div>
       </div>
-      
-      <div class="ml-3">
-        {% if allergy == 'yes' %}
-          <p  class="text-red-500 font-bold">꽃가루 알레르기 : 주의 </p>
-          {% comment %} <span class="material-symbols-outlined">thumb_up</span> {% endcomment %}
-        {% endif %}
-      </div>
-
-      <ul class="mb-3 flex">
-        {% for tag in plant.tags.all %}
-          <li class="rounded-md bg-gray-200 p-4 py-2 m-3">{{ tag }}</li>
-        {% endfor %}
-      </ul>
-
-      <div class="m-3">{{ plant.content}}</div>
-
-      {% comment %} 표 {% endcomment %}
-      <div class="border-b border-t border-gray-200 m-3">
-        <table class="border-collapse">
-          <tr>
-            <td class="border-b border-gray-200 py-2 px-4 text-left">
-              <ul>
-                {% for watering in watering_list  %}
-                  {% if watering == '주1~2회' %}
-                    <li class="font-bold">{{ watering }}</li>
-                    <p>흙 표면부터 3cm까지 마르면, 듬뿍 주세요</p>
-                  {% elif watering == '월1~2회'%}
-                    <li class="font-bold">{{ watering }}</li>
-                    <p>통통한 몸통이 살짝 쭈글해지면 듬뿍 주세요</p>
-                  {% elif watering == '월1회이하'%}
-                    <li class="font-bold">{{ watering }}</li>
-                    <p>단단한 몸통이 말랑해지면 듬뿍 주세요</p>
-                  {% endif %}
-                  
-                {% endfor %}
-              </ul>
-            </td>
-            <td class="border-b border-l border-gray-200 py-2 px-4 text-left">
-              <ul>
-                {% for sunlight in sunlight_list  %}
-                  {% if sunlight == '양지' %}
-                    <li class="font-bold">{{ sunlight }}</li>
-                    <p>하루 6시간 이상 밝은 햇빛이 필요해요</p>
-                  {% elif sunlight == '반양지'%}
-                    <li class="font-bold">{{ sunlight }}</li>
-                    <p>하루 2~3시간 정도의 밝은 햇빛이 필요해요</p>
-                  {% elif sunlight == '음지'%}
-                    <li class="font-bold">{{ sunlight }}</li>
-                    <p>하루  2시간 이하 정도의 은은한 햇빛이 필요해요</p>
-                  {% elif sunlight == '반음지'%}
-                    <li class="font-bold">{{ sunlight }}</li>
-                    <p>반그늘로 아침나절 또는 오후 3~4시간 정도의 은은한 햇빛이 필요해요</p>
-                  {% endif %}
-                {% endfor %}
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td class="border-r border-gray-200 py-2 px-4 text-left">
-              <ul>
-                {% for humidity in humidity_list  %}
-                  {% if humidity == '40%이하' %}
-                    <li class="font-bold">{{humidity}}</li>
-                    <p>주변 공기를 건조하게 관리해주세요</p>
-                  {% elif humidity == '40~70%' %}
-                    <li class="font-bold">{{humidity}}</li>
-                    <p>주변 공기가 건조해지지 않도록 관리해주세요</p>
-                  {% endif %}
-                {% endfor %}
-              </ul>
-            </td>
-            <td class="py-2 px-4 text-left">
-              <ul>
-                {% for temperature in temperature_list  %}
-                  {% if temperature == '21~25도' %}
-                  <p class="font-bold">잘 자라는 온도</p>
-                  <li>{{ temperature }}에서 잘 자라요</li>
-                  {% elif temperature == '16~27도' %}
-                    <p class="font-bold">잘 자라는 온도</p>
-                    <li>{{ temperature }}에서 잘 자라요</li>
-                  {% elif temperature == '21~25도' %}
-                    <p class="font-bold">잘 자라는 온도</p>
-                    <li>{{ temperature }}에서 잘 자라요</li>
-                  {% endif %}
-                {% endfor %}
-              </ul>
-            </td>
-          </tr>
-        </table>
-      </div>
     </section>
-  </div>
-  
-  
-  <section class="mt-[100px]">
-    <div class="text-center font-bold text-3xl">자세히 알아보기</div>
-    <div class="flex justify-center mt-5 border-b">
-      <ul class="flex text-gray-500 text-2xl pb-3">
-        <li class="mr-12 tab">물</li>
-        <li class="mr-12 tab">빛</li>
-        <li class="mr-12 tab">습도</li>
-        <li class="tab">온도</li>
-      </ul>
-    </div>
-  
-    <div class="detail">
-      <div class="content">
-        <div class="flex">
-          <section class="w-1/3">
-            <img src="{% static 'img/물 그림.png' %}" alt="" class="w-[400px] h-[400px] object-contain">
-          </section>
-        
-          <section class="ml-10 w-2/3">
-            <div class="mt-5 mb-5 border-b pb-5">
-              {% for watering in watering_list  %}
-                <div class="font-bold mb-3 text-center">{{ watering }}</div>
-                <div>
-                  {% if watering == '주1~2회' %}
-                    <p>{{ plant.title }}은 과습에 약해요. 화분 위에서 3~5cm정도까지 흙이 보송하게 말랐을 때 물을 주세요. 물을 주실 때는 화분 밑으로 물이 빠져나올 때까지 충분히 주셔야 흙 전체에 충분히 물이 흡수될 수 있답니다. 또한 물받침에 물이 고여있지 않도록 해주셔야 뿌리 과습을 예방할 수 있답니다.</p>
-                    {% elif watering == '월1회이하'%}
-                    <p>{{ plant.title }}은 수분을 저장하는 능력이 아주 뛰어나 물이 많이 필요하지 않아요. 흙이 다 마르기 전에 물을 주면 몸통이 물러버릴 수 있으니 꼭 흙이 마른 것을 확인한 후에 물을 주셔야해요. 물을 주실 때는 몸통에 직접 닿지 않게 주셔야 무름을 방지할 수 있답니다. 너무 차갑지 않은 온도의 물을 듬뿍 주세요. 물을 준 후에는 받침대에 고인 물을 바로 버리고, 통풍이 잘 되는 곳에 두세요.</p>
-                    {% elif watering == '월1~2회' %}
-                    <p>{{ plant.title }}은 수분을 유지하는 능력이 뛰어나 물 주는 시기를 조금 놓쳐도 잘 견디는 식물이에요. 토양이 완전히 마르기 전에 물을 주시면 뿌리 호흡이 불량해져 과습의 피해를 입을 수 있어 화분 받침대에 물이 계속 고여 뿌리가 습해지지 않게 주의해주세요. 물을 주실 때는 몸통에 직접 닿지 않게 주셔야 무름을 방지할 수 있답니다.</p>
-                  {% endif %}
+
+
+    {% comment %} 물주기, 일조, 온도, 습도 {% endcomment %}
+    <section class="w-full mb-16">
+      <h2 class="text-center text-[25px] font-semibold mb-5">상세정보</h2>
+      <div class="w-full rounded-xl bg-gray-100 p-5">
+        <section class="flex gap-5 mb-16">
+          {% comment %} 메뉴탭 {% endcomment %}
+          <div class="flex flex-col gap-3 w-4/12">
+            {% comment %} 물주기탭 {% endcomment %}
+            <div class="tab cursor-pointer w-full h-fit flex items-center gap-5 bg-white border rounded-lg p-3 hover:-translate-y-1.5 transform transition hover:shadow-md">
+              <div class="flex flex-col items-center gap-3 px-2">
+                <div class="w-14 h-12 overflow-hidden">
+                  <img src="{% static 'img/water_pot.png' %}" alt="" class="w-full h-full object-cover">
                 </div>
-              {% endfor %}
-            </div>
-            <div>
-              <div class="font-bold mb-3 text-center">계절에 따른 물주기</div>
+                <h3><b>물주기</b></h3>
+              </div>
               <div>
-                <div class="mb-5">
-                  <span class="font-bold">여름</span>
-                  <p>성장이 빨라지는 봄~여름에는 흙 마름도 빨라져 물 주는 횟수를 늘려주시는 게 좋아요. 흙이 다 말랐는지, {{ plant.title }}의 몸통이 말랑해지지는 않았는지 더 자주 살펴주세요. 물을 주실 때는 너무 차갑지 않은 온도의 물을 주시는 게 좋아요. </p>
+                <ul class="flex flex-col gap-3 text-[14px]">
+                  {% for watering in watering_list  %}
+                    {% if watering == '주1~2회' %}
+                    <div>
+                      <li class="font-bold">{{ watering }}</li>
+                      <p>흙 표면부터 3cm까지 마르면, 듬뿍 주세요</p>
+                    </div>
+                    {% elif watering == '월1~2회'%}
+                    <div>
+                      <li class="font-bold">{{ watering }}</li>
+                      <p>통통한 몸통이 살짝 쭈글해지면 듬뿍 주세요</p>
+                    </div>
+                    {% elif watering == '월1회이하'%}
+                    <div>
+                      <li class="font-bold">{{ watering }}</li>
+                      <p>단단한 몸통이 말랑해지면 듬뿍 주세요</p>
+                    </div>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+  
+            {% comment %} 일조탭 {% endcomment %}
+            <div class="tab cursor-pointer w-full h-fit flex items-center gap-5 bg-white border rounded-lg p-3 hover:-translate-y-1.5 transform transition hover:shadow-md">
+              <div class="flex flex-col items-center gap-3 px-2">
+                <div class="w-12 h-12 overflow-hidden">
+                  <img src="{% static 'img/sun.png' %}" alt="" class="w-full h-full object-cover">
                 </div>
+                <h3><b>일조</b></h3>
+              </div>
+              <div>
+                <ul class="flex flex-col gap-3 text-[14px]">
+                  {% for sunlight in sunlight_list  %}
+                    {% if sunlight == '양지' %}
+                    <div>
+                      <li class="font-bold">{{ sunlight }}</li>
+                      <p>하루 6시간 이상 밝은 햇빛이 필요해요</p>
+                    </div>
+                    {% elif sunlight == '반양지'%}
+                    <div>
+                      <li class="font-bold">{{ sunlight }}</li>
+                      <p>하루 2~3시간 정도의 밝은 햇빛이 필요해요</p>
+                    </div>
+                    {% elif sunlight == '음지'%}
+                    <div>
+                      <li class="font-bold">{{ sunlight }}</li>
+                      <p>하루  2시간 이하 정도의 은은한 햇빛이 필요해요</p>
+                    </div>
+                    {% elif sunlight == '반음지'%}
+                    <div>
+                      <li class="font-bold">{{ sunlight }}</li>
+                      <p>반그늘로 아침나절 또는 오후 3~4시간 정도의 은은한 햇빛이 필요해요</p>
+                    </div>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+  
+            {% comment %} 습도탭 {% endcomment %}
+            <div class="tab cursor-pointer w-full h-fit flex items-center gap-5 bg-white border rounded-lg p-3 hover:-translate-y-1.5 transform transition hover:shadow-md">
+              <div class="flex flex-col items-center gap-3 px-2">
+                <div class="w-12 h-12 overflow-hidden">
+                  <img src="{% static 'img/humidity.png' %}" alt="" class="w-full h-full object-cover">
+                </div>
+                <h3><b>습도</b></h3>
+              </div>
+              <div>
+                <ul class="flex flex-col gap-3 text-[14px]">
+                  {% for humidity in humidity_list  %}
+                    {% if humidity == '40%이하' %}
+                    <div>
+                      <li class="font-bold">{{humidity}}</li>
+                      <p>주변 공기를 건조하게 관리해주세요</p>
+                    </div>
+                    {% elif humidity == '40~70%' %}
+                    <div>
+                      <li class="font-bold">{{humidity}}</li>
+                      <p>주변 공기가 건조해지지 않도록 관리해주세요</p>
+                    </div>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+  
+            {% comment %} 온도탭 {% endcomment %}
+            <div class="tab cursor-pointer w-full h-fit flex items-center gap-5 bg-white border rounded-lg p-3 hover:-translate-y-1.5 transform transition hover:shadow-md">
+              <div class="flex flex-col items-center gap-3 px-2">
+                <div class="w-12 h-12 overflow-hidden">
+                  <img src="{% static 'img/temperature.png' %}" alt="" class="w-full h-full object-cover">
+                </div>
+                <h3><b>온도</b></h3>
+              </div>
+              <div>
+                <ul class="flex flex-col gap-3 text-[14px]">
+                  {% for temperature in temperature_list  %}
+                    {% if temperature == '21~25도' %}
+                    <div>
+                      <p class="font-bold">잘 자라는 온도</p>
+                      <li>{{ temperature }}에서 잘 자라요</li>
+                    </div>
+                    {% elif temperature == '16~27도' %}
+                    <div>
+                      <p class="font-bold">잘 자라는 온도</p>
+                      <li>{{ temperature }}에서 잘 자라요</li>
+                    </div>
+                    {% elif temperature == '21~25도' %}
+                    <div>
+                      <p class="font-bold">잘 자라는 온도</p>
+                      <li>{{ temperature }}에서 잘 자라요</li>
+                    </div>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </div>
+  
+          {% comment %} 세부설명 {% endcomment %}
+          <div class="w-8/12 rounded-lg bg-white p-5">
+  
+            {% comment %} 물주기정보 {% endcomment %}
+            <div class="content">
+              <h3 class="text-[22px] font-semibold mb-8">물주기</h3>
+              <div class="flex flex-col gap-5 mb-5 border-b pb-5">
+                {% for watering in watering_list  %}
                 <div>
-                  <span class="font-bold">겨울</span>
-                  <p>날씨가 추워지는 늦가을~겨울에는 성장속도가 느려져 흙 마름도 더뎌진답니다. 따라서 물 주는 횟수도 줄여주시는 게 좋아요. 화분 속 흙이 대부분 다 말랐을 때 물을 주세요. 겨울철에는 날씨가 가장 따뜻한 낮에 미지근한 물을 주는 게 좋아요.</p>
+                  <div class="font-bold mb-3">{{ watering }}</div>
+                  <div>
+                    {% if watering == '주1~2회' %}
+                      <p>'{{ plant.title }}'은 과습에 약해요. 화분 위에서 3~5cm정도까지 흙이 보송하게 말랐을 때 물을 주세요. 물을 주실 때는 화분 밑으로 물이 빠져나올 때까지 충분히 주셔야 흙 전체에 충분히 물이 흡수될 수 있답니다. 또한 물받침에 물이 고여있지 않도록 해주셔야 뿌리 과습을 예방할 수 있답니다.</p>
+                      {% elif watering == '월1회이하'%}
+                      <p>'{{ plant.title }}'은 수분을 저장하는 능력이 아주 뛰어나 물이 많이 필요하지 않아요. 흙이 다 마르기 전에 물을 주면 몸통이 물러버릴 수 있으니 꼭 흙이 마른 것을 확인한 후에 물을 주셔야해요. 물을 주실 때는 몸통에 직접 닿지 않게 주셔야 무름을 방지할 수 있답니다. 너무 차갑지 않은 온도의 물을 듬뿍 주세요. 물을 준 후에는 받침대에 고인 물을 바로 버리고, 통풍이 잘 되는 곳에 두세요.</p>
+                      {% elif watering == '월1~2회' %}
+                      <p>'{{ plant.title }}'은 수분을 유지하는 능력이 뛰어나 물 주는 시기를 조금 놓쳐도 잘 견디는 식물이에요. 토양이 완전히 마르기 전에 물을 주시면 뿌리 호흡이 불량해져 과습의 피해를 입을 수 있어 화분 받침대에 물이 계속 고여 뿌리가 습해지지 않게 주의해주세요. 물을 주실 때는 몸통에 직접 닿지 않게 주셔야 무름을 방지할 수 있답니다.</p>
+                    {% endif %}
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+  
+              <div>
+                <div class="font-bold mb-8 text-lg">계절에 따른 물주기</div>
+                <div>
+                  <div class="mb-5">
+                    <p class="font-bold mb-3">여름</p>
+                    <p>성장이 빨라지는 봄~여름에는 흙 마름도 빨라져 물 주는 횟수를 늘려주시는 게 좋아요. 흙이 다 말랐는지, '{{ plant.title }}'의 몸통이 말랑해지지는 않았는지 더 자주 살펴주세요. 물을 주실 때는 너무 차갑지 않은 온도의 물을 주시는 게 좋아요. </p>
+                  </div>
+                  <div>
+                    <p class="font-bold mb-3">겨울</p>
+                    <p>날씨가 추워지는 늦가을~겨울에는 성장속도가 느려져 흙 마름도 더뎌진답니다. 따라서 물 주는 횟수도 줄여주시는 게 좋아요. 화분 속 흙이 대부분 다 말랐을 때 물을 주세요. 겨울철에는 날씨가 가장 따뜻한 낮에 미지근한 물을 주는 게 좋아요.</p>
+                  </div>
                 </div>
               </div>
             </div>
-          </section>
-        </div>
-        <section>
-          <div class="font-bold mb-3 text-center mt-[50px] text-lg">물주기에 어려움이 있나요?</div>
-          <div><p>제품
-          </p></div>
-        </section>
-      </div>
-      
-      <div class="content">
-        <div class="flex">
-          <section class="w-1/3">
-            <img src="{% static 'img/빛 그림.png' %}" alt="" class="w-[400px] h-[400px] object-contain">
-          </section>
-
-          <section class="ml-10 w-2/3">
-            <div class="mt-5 mb-5 border-b pb-5">
-              {% for sunlight in sunlight_list %}
-                <div class="font-bold mb-3 text-center">{{ sunlight }}</div>
+            
+            {% comment %} 일조정보 {% endcomment %}
+            <div class="content">
+              <h3 class="text-[22px] font-semibold mb-8">일조</h3>
+              <div class="flex flex-col gap-5 mb-5 border-b pb-5">
+                {% for sunlight in sunlight_list %}
                 <div>
-                  {% if sunlight == '양지' %}
-                    <p>{{ plant.title }}은 은 밝은 빛을 좋아하는 식물이에요. 가장 밝은 빛이 오래 머무는 곳에서 키워주세요.</p>
-                  {% elif sunlight == '반양지'%}
-                    <p>{{ plant.title }}은 직접적인 강한 빛이 드는 곳 보다는 은은한 간접적인 빛이 드는 공간이 적합해요. 레몬빛의 무늬가 많을수록 은은한 간접광을 오랫동안 받을 수 있도록 해주면 더 건강하게 잘 자란답니다.</p>
-                  {% elif sunlight == '반음지'%}
-                    <p>{{ plant.title }}은 그늘진 곳에서도 잘 자라 실내 형광등으로도 잘 살 수 있어요. 오히려 직접적인 강한 빛은 금전수의 잎을 타게할 수 있으니 강한 빛은 피해주시는 게 좋아요.</p>
-                  {% endif %}
+                  <div class="font-bold mb-3">{{ sunlight }}</div>
+                  <div>
+                    {% if sunlight == '양지' %}
+                      <p>'{{ plant.title }}'은 은 밝은 빛을 좋아하는 식물이에요. 가장 밝은 빛이 오래 머무는 곳에서 키워주세요.</p>
+                    {% elif sunlight == '반양지'%}
+                      <p>'{{ plant.title }}'은 직접적인 강한 빛이 드는 곳 보다는 은은한 간접적인 빛이 드는 공간이 적합해요. 레몬빛의 무늬가 많을수록 은은한 간접광을 오랫동안 받을 수 있도록 해주면 더 건강하게 잘 자란답니다.</p>
+                    {% elif sunlight == '반음지'%}
+                      <p>'{{ plant.title }}'은 그늘진 곳에서도 잘 자라 실내 형광등으로도 잘 살 수 있어요. 오히려 직접적인 강한 빛은 금전수의 잎을 타게할 수 있으니 강한 빛은 피해주시는 게 좋아요.</p>
+                    {% endif %}
+                  </div>
                 </div>
-              {% endfor %}
-            </div>
-            <div>
-              <div class="font-bold mb-3 text-center">빛에 따른 변화</div>
+                {% endfor %}
+              </div>
               <div>
+                <div class="font-bold mb-8 text-lg">빛에 따른 변화</div>
                 <div class="mb-5">
-                  <span class="font-bold">빛이 너무 강하면</span>
+                  <p class="font-bold mb-3">빛이 너무 강하면</p>
                   {% for sunlight in sunlight_list %}
                     <div>
                       {% if sunlight == '양지' %}
@@ -227,13 +319,13 @@
                   {% endfor %}
                 </div>
                 <div>
-                  <span class="font-bold">빛이 너무 약하면</span>
+                  <p class="font-bold mb-3">빛이 너무 약하면</p>
                   {% for sunlight in sunlight_list %}
                     <div>
                       {% if sunlight == '양지' %}
-                        <p>빛이 너무 약하면 잎의 무늬가 연해지고 꽃이 피지 않을 수 있어요. 밝은 빛을 받을 수 있는 공간으로 옮겨주시는 것이 좋아요. </p>
+                        <p>빛이 너무 약하면 잎의 무늬가 연해지고 꽃이 피지 않을 수 있어요. 밝은 빛을 받을 수 있는 공간으로 옮겨주시는 것이 좋아요.</p>
                       {% elif sunlight == '반양지'%}
-                        <p>빛이 너무 약하면 잎의 무늬가 옅어지고 잎이 갈색으로 변할 수 있어요. 또한 새 잎이 잘 나지 않고, 줄기가 길어져 풍성한 느낌이 줄어들 수 있어요. </p>
+                        <p>빛이 너무 약하면 잎의 무늬가 옅어지고 잎이 갈색으로 변할 수 있어요. 또한 새 잎이 잘 나지 않고, 줄기가 길어져 풍성한 느낌이 줄어들 수 있어요.</p>
                       {% elif sunlight == '반음지'%}
                         <p>빛이 많이 부족할 경우 성장이 아주 느려질 수 있어요. 빛이 아예 없으면 성장이 매우 느려지고 흙이 잘 마르지 않아 과습의 피해를 입을 수 있어 실내등이라도 쐴 수 있도록 해주는 게 좋아요.</p>
                       {% endif %}
@@ -242,185 +334,274 @@
                 </div>
               </div>
             </div>
-          </section>
-        </div>
-      </div>
-    
-      <div class="content">
-        <div class="flex">
-          <section class="w-1/3">
-            <img src="{% static 'img/습도 그림.png' %}" alt="" class="w-[400px] h-[400px] object-contain">
-          </section>
           
-          <section class="ml-10 w-2/3">
-            <div class="mt-5 mb-5 border-b pb-5">
-              {% for humidity in humidity_list  %}
-                <div class="font-bold mb-3 text-center">{{ humidity }}</div>
+            {% comment %} 습도정보 {% endcomment %}
+            <div class="content">
+              <h3 class="text-[22px] font-semibold mb-8">습도</h3>
+              <div class="flex flex-col gap-5 mb-5 border-b pb-5">
+                {% for humidity in humidity_list  %}
                 <div>
-                  {% if humidity == '40%이하'%}
-                    <p>{{ plant.title }}은 은 밝은 빛을 좋아하는 식물이에요. 가장 밝은 빛이 오래 머무는 곳에서 키워주세요.</p>
-                  {% elif humidity == '40~70%'%}
-                    <p>{{ plant.title }}은 직접적인 강한 빛이 드는 곳 보다는 은은한 간접적인 빛이 드는 공간이 적합해요. 레몬빛의 무늬가 많을수록 은은한 간접광을 오랫동안 받을 수 있도록 해주면 더 건강하게 잘 자란답니다.</p>
-                  {% elif humidity == '70~90%'%}
-                    <p>{{ plant.title }}은 그늘진 곳에서도 잘 자라 실내 형광등으로도 잘 살 수 있어요. 오히려 직접적인 강한 빛은 금전수의 잎을 타게할 수 있으니 강한 빛은 피해주시는 게 좋아요.</p>
-                  {% endif %}
+                  <div class="font-bold mb-3">{{ humidity }}</div>
+                  <div>
+                    {% if humidity == '40%이하'%}
+                      <p>'{{ plant.title }}'은 은 밝은 빛을 좋아하는 식물이에요. 가장 밝은 빛이 오래 머무는 곳에서 키워주세요.</p>
+                    {% elif humidity == '40~70%'%}
+                      <p>'{{ plant.title }}'은 직접적인 강한 빛이 드는 곳 보다는 은은한 간접적인 빛이 드는 공간이 적합해요. 레몬빛의 무늬가 많을수록 은은한 간접광을 오랫동안 받을 수 있도록 해주면 더 건강하게 잘 자란답니다.</p>
+                    {% elif humidity == '70~90%'%}
+                      <p>'{{ plant.title }}'은 그늘진 곳에서도 잘 자라 실내 형광등으로도 잘 살 수 있어요. 오히려 직접적인 강한 빛은 금전수의 잎을 타게할 수 있으니 강한 빛은 피해주시는 게 좋아요.</p>
+                    {% endif %}
+                  </div>
                 </div>
-              {% endfor %}
-            </div>
-            <div>
-              <div class="font-bold mb-3 text-center">습도에 따른 변화</div>
+                {% endfor %}
+              </div>
+  
               <div>
+                <div class="font-bold mb-8 text-lg">습도에 따른 변화</div>
                 <div class="mb-5">
-                  <span class="font-bold">습도가 낮으면</span>
+                  <p class="font-bold mb-3">습도가 낮으면</p>
                   <p>습도가 낮아 건조해지면 잎 끝이 마르고 잎이 쪼글쪼글해지는 증상이 나타나요. 또한 습도가 너무 낮은 환경이 지속되면 식물이 뿌리로부터 물을 잘 끌어올릴 수 없게 되어 잎 끝이 마르거나 잎이 떨어질 수 있어요. 따라서 주변 공간의 습도가 너무 낮다면(40% 이하) 분무기를 이용해 식물 주변의 습도를 높여주시거나 가습기를 사용해주시는 게 좋아요. 가습기와 서큘레이터를 함께 이용하면 한 곳의 습도만 높아지는 것을 방지할 수 있답니다. </p>
                 </div>
                 <div>
-                  <span class="font-bold">습도가 높으면</span>
+                  <p class="font-bold mb-3">습도가 높으면</p>
                   <p>잎이 무거워 처지는 느낌이 들고, 잎이 무를 수 있어요. 습도가 높게 지속되면서 공기를 순환시켜주지 않으면 병충해가 생기기 쉬운 환경이 만들어져요. 따라서 환기를 자주 해주시거나 가습기와 서큘레이터를 함께 이용해 공기를 순환시켜 주는 게 좋아요.</p>
                 </div>
               </div>
             </div>
-          </section>
-        </div>
-        <section>
-          <div class="font-bold mb-3 text-center mt-[50px] text-lg">습도 관리에 어려움이 있나요?</div>
-        </section>
-      </div>
-
-      <div class="content">
-        <div class="flex">
-          <section class="w-1/3">
-       
-            <img src="{% static 'img/온도 그림.png' %}" alt="" class="w-[400px] h-[400px] object-contain">
-          </section>
-          
-          <section class="ml-10 w-2/3">
-            <div class="mt-5 mb-5 border-b pb-5">
-              {% for temperature in temperature_list  %}
-                <div class="font-bold mb-3 text-center">{{ temperature }}</div>
+      
+            {% comment %} 온도정보 {% endcomment %}
+            <div class="content">
+              <h3 class="text-[22px] font-semibold mb-8">온도</h3>
+              <div class="flex flex-col gap-5 mb-5 border-b pb-5">
+                {% for temperature in temperature_list %}
                 <div>
-                  {% if temperature == '18~28도'%}
-                    <p>{{ plant.title }}은 은 밝은 빛을 좋아하는 식물이에요. 가장 밝은 빛이 오래 머무는 곳에서 키워주세요.</p>
-                  {% elif temperature == '16~27도'%}
-                    <p>{{ plant.title }}은 직접적인 강한 빛이 드는 곳 보다는 은은한 간접적인 빛이 드는 공간이 적합해요. 레몬빛의 무늬가 많을수록 은은한 간접광을 오랫동안 받을 수 있도록 해주면 더 건강하게 잘 자란답니다.</p>
-                  {% elif temperature == '21~25도'%}
-                    <p>{{ plant.title }}은 그늘진 곳에서도 잘 자라 실내 형광등으로도 잘 살 수 있어요. 오히려 직접적인 강한 빛은 금전수의 잎을 타게할 수 있으니 강한 빛은 피해주시는 게 좋아요.</p>
-                  {% endif %}
+                  <div class="font-bold mb-3">{{ temperature }}</div>
+                  <div>
+                    {% if temperature == '18~28도'%}
+                      <p>'{{ plant.title }}'은 은 밝은 빛을 좋아하는 식물이에요. 가장 밝은 빛이 오래 머무는 곳에서 키워주세요.</p>
+                    {% elif temperature == '16~27도'%}
+                      <p>'{{ plant.title }}'은 직접적인 강한 빛이 드는 곳 보다는 은은한 간접적인 빛이 드는 공간이 적합해요. 레몬빛의 무늬가 많을수록 은은한 간접광을 오랫동안 받을 수 있도록 해주면 더 건강하게 잘 자란답니다.</p>
+                    {% elif temperature == '21~25도'%}
+                      <p>'{{ plant.title }}'은 그늘진 곳에서도 잘 자라 실내 형광등으로도 잘 살 수 있어요. 오히려 직접적인 강한 빛은 금전수의 잎을 타게할 수 있으니 강한 빛은 피해주시는 게 좋아요.</p>
+                    {% endif %}
+                  </div>
                 </div>
-              {% endfor %}
-            </div>
-            <div>
-              <div class="font-bold mb-3 text-center text-lg">온도에 따른 변화</div>
+                {% endfor %}
+              </div>
+  
               <div>
+                <div class="font-bold mb-8 text-lg">온도에 따른 변화</div>
                 <div class="mb-5">
-                  <span class="font-bold">온도가 낮으면</span>
+                  <p class="font-bold mb-3">온도가 낮으면</p>
                   <p>온도가 낮아지는 늦가을~겨울에는 추위를 피해 따뜻한 실내에서 키워주시는 것이 좋아요. 찬바람이 드나드는 곳도 피해주세요. 특히 10℃ 이하의 온도에서는 냉해를 입어 몸통이 얼어 물러버릴 수 있어요. </p>
                 </div>
                 <div>
-                  <span class="font-bold">온도가 높으면</span>
+                  <p class="font-bold mb-3">온도가 높으면</p>
                   <p>30도가 넘는 여름철 한낮에 직접적인 강한 햇빛이 들어오는 공간에서는 화분 속 흙의 온도도 함께 올라가 뿌리가 상할 수 있으니 주의해주세요.</p>
                 </div>
               </div>
             </div>
-          </section>
-        </div>
-        <section>
-          <div class="font-bold mb-3 text-center mt-[50px] text-lg">온도 관리에 어려움이 있나요?</div>
+          </div>
         </section>
+
+        {% comment %} 관련 상품정보 {% endcomment %}
+        <section>
+          {% comment %} 물주기 관련 상품 {% endcomment %}
+          <div class="supply">
+            <div class="flex flex-col items-center mb-8">
+              <h2 class="text-[20px] font-semibold mb-3">물주기에 어려움이 있나요?</h2>
+              <p class="mb-3">식물을 키우는데 필요한 상품들이 여기 있어요.</p>
+              <a href="#">
+                  <span class="text-[16px] text-gray-500 hover:text-black">바로가기</span>
+              </a>
+            </div>
+            <div class="flex justify-between gap-10">
+              <a href="#" class="w-full">
+                <div class="flex flex-col gap-3 bg-white rounded-lg w-full h-72 p-3 hover:bg-gray-200">
+                  <div class="w-full h-48 rounded-md overflow-hidden">
+                    <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/20883/product/image_1588330718910_750.jpeg" alt="" class="w-full h-full object-cover">
+                  </div>
+                  <p class="text-[16px] font-semibold px-2">화분</p>
+                  <div class="flex justify-between px-2">
+                    <p class="text-[20px] font-semibold">6,000원</p>
+                    <div>좋아요버튼</div>
+                  </div>
+                </div>
+              </a>
+              <a href="#" class="w-full">
+                <div class="flex flex-col gap-3 bg-white rounded-lg w-full h-72 p-3 hover:bg-gray-200">
+                  <div class="w-full h-48 rounded-md overflow-hidden">
+                    <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/20883/product/image_1588330718910_750.jpeg" alt="" class="w-full h-full object-cover">
+                  </div>
+                  <p class="text-[16px] font-semibold px-2">화분</p>
+                  <div class="flex justify-between px-2">
+                    <p class="text-[20px] font-semibold">6,000원</p>
+                    <div>좋아요버튼</div>
+                  </div>
+                </div>
+              </a>
+              <a href="#" class="w-full">
+                <div class="flex flex-col gap-3 bg-white rounded-lg w-full h-72 p-3 hover:bg-gray-200">
+                  <div class="w-full h-48 rounded-md overflow-hidden">
+                    <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/20883/product/image_1588330718910_750.jpeg" alt="" class="w-full h-full object-cover">
+                  </div>
+                  <p class="text-[16px] font-semibold px-2">화분</p>
+                  <div class="flex justify-between px-2">
+                    <p class="text-[20px] font-semibold">6,000원</p>
+                    <div>좋아요버튼</div>
+                  </div>
+                </div>
+              </a>
+              <a href="#" class="w-full">
+                <div class="flex flex-col gap-3 bg-white rounded-lg w-full h-72 p-3 hover:bg-gray-200">
+                  <div class="w-full h-48 rounded-md overflow-hidden">
+                    <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/20883/product/image_1588330718910_750.jpeg" alt="" class="w-full h-full object-cover">
+                  </div>
+                  <p class="text-[16px] font-semibold px-2">화분</p>
+                  <div class="flex justify-between px-2">
+                    <p class="text-[20px] font-semibold">6,000원</p>
+                    <div>좋아요버튼</div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          {% comment %} 일조 관련 상품 없음 {% endcomment %}
+          <div class="supply"></div>
+
+          {% comment %} 습도 관련 상품 {% endcomment %}
+          <div class="supply">
+            <div class="flex flex-col items-center mb-8">
+              <h2 class="text-[20px] font-semibold mb-3">습도 관리에 어려움이 있나요?</h2>
+              <p class="mb-3">식물을 키우는데 필요한 상품들이 여기 있어요.</p>
+              <a href="#">
+                  <span class="text-[16px] text-gray-500 hover:text-black">바로가기</span>
+              </a>
+            </div>
+            <div class="flex justify-between gap-10">
+              <a href="#" class="w-full">
+                <div class="flex flex-col gap-3 bg-white rounded-lg w-full h-72 p-3 hover:bg-gray-200">
+                  <div class="w-full h-48 rounded-md overflow-hidden">
+                    <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/20883/product/image_1588330718910_750.jpeg" alt="" class="w-full h-full object-cover">
+                  </div>
+                  <p class="text-[16px] font-semibold px-2">화분</p>
+                  <div class="flex justify-between px-2">
+                    <p class="text-[20px] font-semibold">6,000원</p>
+                    <div>좋아요버튼</div>
+                  </div>
+                </div>
+              </a>
+              <a href="#" class="w-full">
+                <div class="flex flex-col gap-3 bg-white rounded-lg w-full h-72 p-3 hover:bg-gray-200">
+                  <div class="w-full h-48 rounded-md overflow-hidden">
+                    <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/20883/product/image_1588330718910_750.jpeg" alt="" class="w-full h-full object-cover">
+                  </div>
+                  <p class="text-[16px] font-semibold px-2">화분</p>
+                  <div class="flex justify-between px-2">
+                    <p class="text-[20px] font-semibold">6,000원</p>
+                    <div>좋아요버튼</div>
+                  </div>
+                </div>
+              </a>
+              <a href="#" class="w-full">
+                <div class="flex flex-col gap-3 bg-white rounded-lg w-full h-72 p-3 hover:bg-gray-200">
+                  <div class="w-full h-48 rounded-md overflow-hidden">
+                    <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/20883/product/image_1588330718910_750.jpeg" alt="" class="w-full h-full object-cover">
+                  </div>
+                  <p class="text-[16px] font-semibold px-2">화분</p>
+                  <div class="flex justify-between px-2">
+                    <p class="text-[20px] font-semibold">6,000원</p>
+                    <div>좋아요버튼</div>
+                  </div>
+                </div>
+              </a>
+              <a href="#" class="w-full">
+                <div class="flex flex-col gap-3 bg-white rounded-lg w-full h-72 p-3 hover:bg-gray-200">
+                  <div class="w-full h-48 rounded-md overflow-hidden">
+                    <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/20883/product/image_1588330718910_750.jpeg" alt="" class="w-full h-full object-cover">
+                  </div>
+                  <p class="text-[16px] font-semibold px-2">화분</p>
+                  <div class="flex justify-between px-2">
+                    <p class="text-[20px] font-semibold">6,000원</p>
+                    <div>좋아요버튼</div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          {% comment %} 온도 관련 상품 {% endcomment %}
+          <div class="supply">
+            <div class="flex flex-col items-center mb-8">
+              <h2 class="text-[20px] font-semibold mb-3">온도 관리에 어려움이 있나요?</h2>
+              <p class="mb-3">식물을 키우는데 필요한 상품들이 여기 있어요.</p>
+              <a href="#">
+                  <span class="text-[16px] text-gray-500 hover:text-black">바로가기</span>
+              </a>
+            </div>
+            <div class="flex justify-between gap-10">
+              <a href="#" class="w-full">
+                <div class="flex flex-col gap-3 bg-white rounded-lg w-full h-72 p-3 hover:bg-gray-200">
+                  <div class="w-full h-48 rounded-md overflow-hidden">
+                    <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/20883/product/image_1588330718910_750.jpeg" alt="" class="w-full h-full object-cover">
+                  </div>
+                  <p class="text-[16px] font-semibold px-2">화분</p>
+                  <div class="flex justify-between px-2">
+                    <p class="text-[20px] font-semibold">6,000원</p>
+                    <div>좋아요버튼</div>
+                  </div>
+                </div>
+              </a>
+              <a href="#" class="w-full">
+                <div class="flex flex-col gap-3 bg-white rounded-lg w-full h-72 p-3 hover:bg-gray-200">
+                  <div class="w-full h-48 rounded-md overflow-hidden">
+                    <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/20883/product/image_1588330718910_750.jpeg" alt="" class="w-full h-full object-cover">
+                  </div>
+                  <p class="text-[16px] font-semibold px-2">화분</p>
+                  <div class="flex justify-between px-2">
+                    <p class="text-[20px] font-semibold">6,000원</p>
+                    <div>좋아요버튼</div>
+                  </div>
+                </div>
+              </a>
+              <a href="#" class="w-full">
+                <div class="flex flex-col gap-3 bg-white rounded-lg w-full h-72 p-3 hover:bg-gray-200">
+                  <div class="w-full h-48 rounded-md overflow-hidden">
+                    <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/20883/product/image_1588330718910_750.jpeg" alt="" class="w-full h-full object-cover">
+                  </div>
+                  <p class="text-[16px] font-semibold px-2">화분</p>
+                  <div class="flex justify-between px-2">
+                    <p class="text-[20px] font-semibold">6,000원</p>
+                    <div>좋아요버튼</div>
+                  </div>
+                </div>
+              </a>
+              <a href="#" class="w-full">
+                <div class="flex flex-col gap-3 bg-white rounded-lg w-full h-72 p-3 hover:bg-gray-200">
+                  <div class="w-full h-48 rounded-md overflow-hidden">
+                    <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/20883/product/image_1588330718910_750.jpeg" alt="" class="w-full h-full object-cover">
+                  </div>
+                  <p class="text-[16px] font-semibold px-2">화분</p>
+                  <div class="flex justify-between px-2">
+                    <p class="text-[20px] font-semibold">6,000원</p>
+                    <div>좋아요버튼</div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </section>
+        
       </div>
-
-    </div>
-  </section>
-</div>
-
-{% comment %} <h2>Images</h2> {% endcomment %}
-{% comment %} {% for image in plant.plant_images.all %}
-  <img class="mb-5" src="{{ image.image.url }}" alt="Plant Image">
-{% endfor %} {% endcomment %}
-
-{% comment %} {% with plant_images=plant.plant_images.all %}
-  <img src="{{ plant_images.0.image.url }}" alt="Plant Image 1">
-  <img src="{{ plant_images.1.image.url }}" alt="Plant Image 2">
-{% endwith %} {% endcomment %}
-
-{% comment %} {% for image in plant.plant_images.all %}
-  {% if forloop.counter0 == 0 %}
-    <img src="{{ image.image.url }}" alt="Plant Image 1">
-  {% elif forloop.counter0 == 1 %}
-    <img src="{{ image.image.url }}" alt="Plant Image 2">
-  {% elif forloop.counter0 == 2 %}
-    <img src="{{ image.image.url }}" alt="Plant Image 3">
-  {% else %}
-    <img src="{{ image.image.url }}" alt="Plant Image">
-  {% endif %}
-{% endfor %} {% endcomment %}
-
-
-{% comment %} {% if user.is_superuser %} {% endcomment %}
-<a href="{% url 'plants:update' plant.pk %}">수정</a>
-<a href="{% url 'plants:delete' plant.pk %}">삭제</a>
-{% comment %} {% endif %} {% endcomment %}
-
+    </section>
+  </div>
+</main>
 {% endblock content %}
 
+
 {% block script %}
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script>
-    const forms = document.querySelectorAll('.like-forms')
-    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
-
-    forms.forEach((form) => {
-      form.addEventListener('submit', function (event) {
-        event.preventDefault()
-        const plantId = event.target.dataset.plantId
-        axios({
-          method: 'post',
-          url: `/plants/${plantId}/likes/`,
-          headers: {'X-CSRFTOKEN': csrftoken},
-        })
-          .then((response) => {
-            const isLiked = response.data.is_liked
-            const likeBtn = document.querySelector(`#like-${plantId}`)
-            if (isLiked === true) {
-              likeBtn.value = '좋아요 취소'
-            } else {
-              likeBtn.value = '좋아요'
-            }
-          })
-          .catch((error) => {
-            console.log(error.response)
-          })
-      })
-    })
-
-  // 탭 요소들을 선택합니다.
-  const tabs = document.querySelectorAll('.tab');
-
-  // 탭 클릭 이벤트를 처리하는 함수입니다.
-  function handleTabClick() {
-    // 모든 탭에 active 클래스를 제거합니다.
-    tabs.forEach(tab => tab.classList.remove('active'));
-
-    // 클릭한 탭에 active 클래스를 추가합니다.
-    this.classList.add('active');
-
-    // 클릭한 탭의 인덱스를 가져옵니다.
-    const tabIndex = Array.from(tabs).indexOf(this);
-
-    // 모든 컨텐츠를 숨깁니다.
-    const contents = document.querySelectorAll('.content');
-    contents.forEach(content => content.style.display = 'none');
-
-    // 클릭한 탭에 해당하는 컨텐츠를 보여줍니다.
-    contents[tabIndex].style.display = 'block';
-  }
-
-  // 각 탭에 클릭 이벤트를 등록합니다.
-  tabs.forEach(tab => tab.addEventListener('click', handleTabClick));
-
-  // 초기에 첫 번째 탭을 선택 상태로 만듭니다.
-  tabs[0].click();
-  </script>
-
+<script src="{% static 'js/plantLike.js' %}"></script>
+<script src="{% static 'js/plantCarousel.js' %}"></script>
+<script src="{% static 'js/plantDropdown.js' %}"></script>
+<script src="{% static 'js/plantTab.js' %}"></script>
 {% endblock script %}
-

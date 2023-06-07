@@ -1,0 +1,57 @@
+/* 검색 말풍선 */
+.chat-bubble {
+    position:relative;
+    margin-top: 30px;
+    padding: 1.5rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    background:white;
+    border-radius: 1rem;
+    box-shadow: 1px 1px 15px lightgray;
+}
+
+.chat-bubble::after {
+    border-top:30px solid white;
+    border-left: 30px solid transparent;
+    border-right: 0px solid transparent;
+    border-bottom: 0px solid transparent;
+    content:"";
+    position:absolute;
+    top:10px;
+    left:-15px;
+}
+
+
+/* 식물이미지 무한롤링 */
+.wrap { 
+    display: flex; 
+    overflow: hidden;
+}
+
+.wrap .rolling-list ul { 
+    display: flex;
+}
+
+.wrap .rolling-list ul li img {
+    opacity: 0.7;
+}
+
+.rolling-list.original {
+	animation: rollingleft1 33s linear infinite;
+}
+
+.rolling-list.clone {
+	animation: rollingleft2 33s linear infinite;
+}
+
+@keyframes rollingleft1 {
+	0% { transform: translateX(0); }
+	50% { transform: translateX(-100%); }
+	50.01% { transform: translateX(100%); }
+	100% { transform: translateX(0); }
+}
+
+@keyframes rollingleft2 {
+	0% { transition: translateX(0); }
+	100% { transform: translateX(-200%); }
+}

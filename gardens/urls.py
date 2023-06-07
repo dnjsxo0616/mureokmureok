@@ -15,6 +15,5 @@ urlpatterns = [
     path('<int:garden_pk>/comments/<int:comment_pk>/update/',views.comment_update, name='comment_update'),
     path('<int:garden_pk>/comments/<int:comment_pk>/delete/', views.comment_delete, name='comment_delete'),
     # path('location/', views.location, name='location')
-    path('map/<int:garden_id>/', views.show_map, name='show_map'),
     path('search/', views.search, name='search'),
 ]

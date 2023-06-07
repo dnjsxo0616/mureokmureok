@@ -3,6 +3,7 @@
 
 
 {% block head %}
+<title>회원정보 수정</title>
 <link rel="stylesheet" href="{% static 'css/signup.css' %}">
 {% endblock head %}
 
@@ -14,10 +15,13 @@
         <h1 class="text-center mb-8 text-[20px]"><b>회원정보 수정</b></h1>
           <form action="{% url 'accounts:update' %}" method="POST" class="form-text" enctype = 'multipart/form-data'>
             {% csrf_token %}
+            {% comment %} 이메일 수정 {% endcomment %}
             <div class="flex flex-col gap-3 mb-5">
               <div class="text-[14px]">{{ form.email.label }}</div>
               <div>{{ form.email }}</div>
             </div>
+
+            {% comment %} 프로필 사진 수정 {% endcomment %}
             <div class="flex flex-col gap-3 mb-8">
               <div class="text-[14px]">{{ form.image.label }} <span class="text-[12px] text-gray-400">(Optional)</span></div>
               <div class="flex items-center gap-5">
@@ -43,5 +47,5 @@
 
 
 {% block script %}
-<script src="{% static 'js/updatePreview.js' %}"></script>
+<script src="{% static 'js/profileUpdatePreview.js' %}"></script>
 {% endblock script %}
