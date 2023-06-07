@@ -24,6 +24,8 @@ class Plant(models.Model):
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_plants')
     tags = TaggableManager(blank=True)
 
+    def __str__(self):
+        return self.title
 
 class PlantImage(models.Model):
     def default_image():
