@@ -26,7 +26,7 @@ class PlantForm(forms.ModelForm):
         label='설명',
         widget=forms.Textarea(
             attrs={
-                'class':'w-full h-44 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
+                'class':'w-full h-60 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
                 'id': '설명글',
                 'placeholder': '설명글을 입력해주세요',
             }

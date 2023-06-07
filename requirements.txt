@@ -40,6 +40,7 @@ django-scheduler==0.10.1
 django-taggit==4.0.0
 django-taggit-templatetags2==1.6.1
 django-timezone-field==4.1.2
+djangorestframework==3.14.0
 executing==1.2.0
 greenlet==2.0.2
 hiredis==2.2.3

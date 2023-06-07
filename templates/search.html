@@ -1,10 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block link %}
+
+
+{% block head %}
+<title>검색</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/assets/owl.carousel.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/assets/owl.theme.default.min.css">
 <link rel="stylesheet" href="{% static 'css/search.css' %}">
-{% endblock link %}
+{% endblock head %}
+
 
 {% block content %}
 <p class='title--content--2 mt-0'>검색된 식물원</p>
@@ -72,8 +76,8 @@
         {% endfor %}
     </div>
 </div>
-
 {% endblock content %}
+
 
 {% block script %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

@@ -16,7 +16,6 @@ class Product(models.Model):
     content = CKEditor5Field('Content', config_name='extends')
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_products')
     category = models.CharField(max_length=20)
-    purchase_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='purchase_products', through='Purchase')
     price = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -27,26 +26,34 @@ class Product(models.Model):
 		format = 'JPEG',		   
 		options = {'quality': 90}) 
 
-
-class Purchase(models.Model):
+# 주문정보
+class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    title = models.CharField(max_length=80, verbose_name='상품명')
-    quantity = models.IntegerField(default=1)
-    price = models.PositiveIntegerField(verbose_name='결제금액')
-    purchase_date = models.DateTimeField(auto_now_add=True)
-    delivery_state = models.CharField(max_length=20)
+    order_date = models.DateTimeField(auto_now_add=True)
+    delivery_address = models.CharField(max_length=100)
+    payment_status = models.BooleanField(default=False)
 
+    def __str__(self):
+        return f"Order {self.id}"
 
+# 주문 상품 정보    
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    product_name = models.CharField(max_length=100)
+    quantity = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
 
+    def __str__(self):
+        return f"OrderItem {self.id}"
 
-# class Cart(models.Model):
-#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, )
-#     products = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='cart_product', blank=True)
+# class Purchase(models.Model):
+#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+#     title = models.CharField(max_length=80, verbose_name='상품명')
 #     quantity = models.IntegerField(default=1)
-
-#     def __str__(self):
-#         return '{} // {}'.format(self.user, self.products.title)
+#     price = models.PositiveIntegerField(verbose_name='결제금액')
+#     purchase_date = models.DateTimeField(auto_now_add=True)
+#     delivery_state = models.CharField(max_length=20)
 
 
 class Review(models.Model):
@@ -55,3 +62,11 @@ class Review(models.Model):
     title = models.CharField(max_length=20)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+# class Cart(models.Model):
+#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, )
+#     products = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='cart_product', blank=True)
+#     quantity = models.IntegerField(default=1)
+
+#     def __str__(self):
+#         return '{} // {}'.format(self.user, self.products.title)

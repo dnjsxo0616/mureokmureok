@@ -8,39 +8,6 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
 
-def searchAddressToCoordinate(address):
-    # 네이버 지도 API 요청 URL
-    url = 'https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode'
-
-    # 네이버 지도 API 호출에 필요한 클라이언트 ID와 클라이언트 시크릿 키
-    client_id = 'tzzd5t1bsm'
-    client_secret = 'WvHndRJHuYMd7vWbfrzUXdAHC7H7Ptqw7dWAhYzm'
-
-    # API 요청 파라미터 설정
-    params = {
-        'query': address,
-    }
-
-    # API 호출을 위한 헤더 설정
-    headers = {
-        'X-NCP-APIGW-API-KEY-ID': 'tzzd5t1bsm',
-        'X-NCP-APIGW-API-KEY': 'WvHndRJHuYMd7vWbfrzUXdAHC7H7Ptqw7dWAhYzm',
-    }
-
-    # API 호출 및 응답 처리
-    response = requests.get(url, headers=headers, params=params)
-    data = response.json()
-
-    # API 응답에서 위도와 경도 추출
-    if 'status' in data and data['status'] == 'OK' and 'addresses' in data and len(data['addresses']) > 0:
-        latitude = data['addresses'][0]['y']
-        longitude = data['addresses'][0]['x']
-        return latitude, longitude
-
-    # 위도와 경도를 찾을 수 없는 경우 None 반환
-    return None, None
-
-
 def index(request):
     gardens = Garden.objects.order_by('-created_at')
     paginator = Paginator(gardens, 8)  
@@ -211,30 +178,13 @@ def detail(request, garden_pk):
     else:
         comment_form = CommentForm()
 
-    address = garden.address  # 주소 정보 가져오기
-    latitude, longitude = searchAddressToCoordinate(address)  # 주소를 이용해 위도와 경도 검색
-
     context = {
         'garden': garden,
         'comments': comments,
         'comment_form': comment_form,
-        'latitude': latitude,
-        'longitude': longitude,
         'room_name': "broadcast"
     }
     return render(request, 'gardens/detail.html', context)
-
-
-def show_map(request, garden_id):
-    garden = Garden.objects.get(id=garden_id)
-    address = garden.address
-    latitude, longitude = searchAddressToCoordinate(address)
-    context = {
-        'latitude': latitude,
-        'longitude': longitude,
-        'room_name': "broadcast"
-    }
-    return render(request, 'gardens/map.html', context)
 
 
 def search(request):
