@@ -5,24 +5,27 @@
 
 <form method="post" action="{% url 'sales:create_order' %}">
   {% csrf_token %}
-  
   <!-- 장바구니 상품 정보 -->
-  {% for cart_item in cart_items %}
-    <input type="hidden" name="product[]" value="{{ cart_item.product.title }}">
-    <input type="hidden" name="quantity[]" value="{{ cart_item.quantity }}">
-  {% endfor %}
+  <div>주문자 : {{ request.user }}</div>
+  <div>
+    <label for="product_name">상품명</label>
+    <input type="text" id="product_name" name="product_name" value="{{cart_product}}" readonly>
+  </div>
   
-  <!-- 총 주문 가격 -->
-  <input type="hidden" name="total_price" value="{{ cart_total }}">
-  
-  
-  <!-- 주문자 정보 -->
-  <input type="hidden" name="customer" value="{{ request.user.id }}">
-  
+  <div>
+    <label for="quantity">수량</label>
+    <input type="text" id="quantity" name="quantity" value="{{cart_total_quantity}}" readonly>
+  </div>
+
+  <div>
+    <label for="price">금액</label>
+    <input type="text" id="price" name="price" value="{{cart_total }}" readonly>
+  </div>
+
   <!-- 배송 주소 입력 필드 -->
   <div class="form-group">
     <label for="id_delivery_address">배송 주소</label>
-    <input type="text" name="delivery_address" id="id_delivery_address" class="form-control" required>
+    <input type="text" name="delivery_address" id="id_delivery_address" required>
   </div>
   
   <!-- 주문하기 버튼 -->
