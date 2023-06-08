@@ -9,6 +9,47 @@
 
 {% block content %}
 
+<p>Plant Name: {{ management.plant.title }}</p>
+<p>Plant water: {{ management.plant.watering }}</p>
+<p>{{ management.plant.sunlight }}</p>
+<p>{{ management.plant.humidity }}</p>
+<p>{{ management.plant.temperature }}</p>
+<p>{{ management.plant.season }}</p>
+<p>{{ management.plant.flowering }}</p>
+<p>{{ management.plant.allergy }}</p>
+<p>{{ management.plant.content }}</p>
+
+
+<div class="grid grid-cols-7 gap-4 mt-5 mb-2">
+  <div class="col-span-1 text-center font-bold">Sun</div>
+  <div class="col-span-1 text-center font-bold">Mon</div>
+  <div class="col-span-1 text-center font-bold">Tue</div>
+  <div class="col-span-1 text-center font-bold">Wed</div>
+  <div class="col-span-1 text-center font-bold">Thu</div>
+  <div class="col-span-1 text-center font-bold">Fri</div>
+  <div class="col-span-1 text-center font-bold">Sat</div>
+</div>
+{% for weekData in calendarData %}
+  <div class="grid grid-cols-7 gap-4">
+    {% for date in weekData %}
+      <div class="col-span-1 border border-gray-300 mb-2 p-2 h-40">
+        {% if date %}
+          {{ date.day }}
+          <!-- 엔트리 데이터 표시 -->
+          {% for entry in entries %}
+            {% if entry.entrydate|date:"Y-m-d" == date|date:"Y-m-d" %}
+              <div class="text-xs mt-2">물주기: {{ entry.watering }}</div>
+              <div class="text-xs mt-2">햇빛주기: {{ entry.sunlight }}</div>
+              <div class="text-xs mt-2">습도: {{ entry.humidity }}</div>  
+              <div class="text-xs mt-2">온도: {{ entry.temperature }}</div>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+{% endfor %}
+
 
 
 
@@ -46,6 +87,12 @@
               <div class="mb-2 w-2/12">{{ calenderentry_form.temperature.label }} <span class="text-red-600 text-[20px]">*</span></div>
               <div>{{ calenderentry_form.temperature }}</div>
             </div>
+
+            {% comment %} 습도 {% endcomment %}
+            <div class="flex gap-3 mb-8 w-full">
+              <div class="mb-2 w-2/12">{{ calenderentry_form.entrydate.label }} <span class="text-red-600 text-[20px]">*</span></div>
+              <div>{{ calenderentry_form.entrydate }}</div>
+            </div>
         
             <div class="flex justify-end">
               <input type="submit" class="bg-[#1EB564] text-white p-[5px] px-3 rounded-lg cursor-pointer hover:bg-[#148D4C]" value="작 성">
@@ -58,19 +105,6 @@
   </div>
 </div>
 
-
-
-{% if calenderentrys %}
-{% for calenderentry in calenderentrys %}
-    {{ calenderentry.date }}
-    {{ calenderentry.watering }}
-    {{ calenderentry.sunlight }}
-    {{ calenderentry.humidity }}
-    {{ calenderentry.temperature }}
-
-{% endfor %}
-{% else %}
-{% endif %}
 
 
 {% endblock content %}

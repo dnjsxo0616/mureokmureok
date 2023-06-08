@@ -29,6 +29,6 @@ class CalenderEntry(models.Model):
     sunlight = models.CharField(max_length=20)
     humidity = models.CharField(max_length=20)
     temperature = models.CharField(max_length=20)
-
+    entrydate = models.DateField(null=True)
 
 
