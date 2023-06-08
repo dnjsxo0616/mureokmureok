@@ -14,5 +14,16 @@ urlpatterns = [
     path('<int:product_pk>/review/create/', views.create_review, name='create_review'),
     path('<int:product_pk>/review/<int:review_pk>/delete/', views.delete_review, name='delete_review'),
     path('<int:product_pk>/reviews/<int:review_pk>/update/', views.update_review, name='update_review'),
-    path('payment/', views.payment, name="payment"),
+
+    path('order_payment/<int:order_pk>/', views.order_payment, name="order_payment"),
+    path('delete_order/<int:order_pk>/', views.delete_order, name='delete_order'),
+
+
+    path('create_order/', views.create_order, name='create_order'),
+
+    path('order_complete', views.order_complete, name='order_complete'),
+    path('order/<str:order_number>/', views.order_detail, name='order_detail'),
+
+    path('order_list/', views.order_list, name='order_list'),
+
 ]

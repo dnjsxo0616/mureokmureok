@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>주문 세부 정보</h1>
+  <p>주문번호: {{ order.order_number }}</p>
+  <p>주문일시: {{ order.order_date }}</p>
+  <p>주문자 : {{ order.user }}</p>
+  <p>상품명 :{{ order.product_name}} </p>
+  <p>수량: {{ order.quantity }}</p>
+  <p>금액 :{{ order.price}} </p>
+  <p>주소  :{{ order.delivery_address }} </p>
+  <p>주문상태:
+    {% if order.payment_status %}
+      배송 시작!!
+    {% else %}
+      배송 준비중
+    {% endif %}
+  </p>
+{% endblock content %}
