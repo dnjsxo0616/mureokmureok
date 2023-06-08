@@ -132,17 +132,18 @@ def cart(request):
     cart = request.session.get('cart', {})
     cart_items = []
     cart_total = 0
-
+    print(cart)
     for product_pk, product_info in cart.items():
         product = Product.objects.get(pk=product_pk)
-        
-        total_price = Decimal(product_info['quantity']) * product.price
+        total_price = (product_info['quantity']) * product.price
         cart_total += total_price
+
         cart_items.append({
             'product': product,
             'quantity': product_info['quantity'],
             'total_price': total_price,
         })
+
     context = {
         'cart_items': cart_items,
         'cart_total': cart_total,
@@ -169,49 +170,117 @@ def payment(request):
     return render(request, 'sales/payment.html')
 
 def create_order(request):
+    cart = request.session.get('cart', {})
+    cart_items = []
+    cart_total = 0
+    cart_total_quantity = 0
+    cart_product = ''
+    print(cart)
+    for product_pk, product_info in cart.items():
+  
+        product = Product.objects.get(pk=product_pk)
+        total_price = (product_info['quantity']) * product.price
+        cart_total += total_price
+        cart_total_quantity += product_info['quantity']
+        cart_product += product.title + ' '
+
+        cart_items.append({
+            'product': product,
+            'quantity': product_info['quantity'],
+            'total_price': total_price,
+            'cart_product':cart_product,
+        })
+        print(cart_items)
     if request.method == 'POST':
         form = OrderForm(request.POST)
-        if form.is_valid():
-            # 장바구니에 담긴 정보 가져오기
-            cart_items = request.POST.getlist('product[]')
-            quantities = request.POST.getlist('quantity[]')
-            total_price = request.POST.get('total_price')
-            customer = request.POST.get('customer')
-            
-            # 주문 정보 생성
-            for i in range(len(cart_items)):
-                product_name = cart_items[i]
-                quantity = int(quantities[i])
-                price = total_price
-                
-                # 주문 정보 저장
-                order = form.save(commit=False)
-                order.user_id = customer
-                order.product_name = product_name
-                order.quantity = quantity
-                order.price = price
-                order.save()
+        if form.is_valid(): 
+            order = form.save(commit=False)
+            order.user = request.user
+            order.save()
                 # 주문 정보 처리 (예: 결제 등)
                 # ...
             
             # 주문 완료 후 장바구니 비우기
             # ...
             
-            return redirect('sales:order_complete')
+            return redirect('sales:order_payment', order.pk)
     else:
         form = OrderForm()
     context ={
         'form': form,
+        'cart_items': cart_items,
+        'cart_total': cart_total,
+        'cart_total_quantity':cart_total_quantity,
+        'cart_product': cart_product,
     }
 
     return render(request, 'sales/create_order.html', context)
 
+
+# 1 바로 넘어가는 것
+# def order_complete(request):
+#     # 주문 객체 검색 코드 (예시)
+#     order = Order.objects.last()  # 가장 최근에 생성된 주문 객체를 가져옴
+
+#     if order is not None:
+#         order_number = order.order_number
+#         return redirect('sales:order_detail', order_number=order_number)
+#     else:
+#         return render(request, 'sales/order_complete.html')
+
 def order_complete(request):
-    order_id = request.GET.get('order_id', None)
-    if order_id is not None:
-        order = Order.objects.get(id=order_id)
-        context = {'order': order}
-        return render(request, 'sales/order_complete.html', context)
-    else:
-        return render(request, 'sales/order_complete.html')
-    
+    # 주문 객체 검색 코드 (예시)
+    order = Order.objects.last()  # 가장 최근에 생성된 주문 객체를 가져옴
+
+    context = {
+        'order':order,
+    }
+
+    return render(request, 'sales/order_complete.html', context)
+
+
+
+def order_payment(request, order_pk):
+    order = Order.objects.get(pk=order_pk)
+    context = {
+        'order': order
+    }
+    return render(request, 'sales/order_payment.html', context)
+
+def delete_order(request, order_pk):
+    order = Order.objects.get(pk=order_pk)
+    if request.method == 'POST':
+        # 주문 삭제
+        order.delete()
+        return redirect('sales:index')
+
+    context = {
+        'order': order
+    }
+
+    return render(request, 'sales/order_payment.h', context)
+
+from django.shortcuts import render
+
+# def order_complete(request, order_pk):
+#     order = Order.objects.get(pk=order_pk)
+#     context = {
+#         'order': order,
+#     }
+#     return render(request, 'sales/order_complete.html', context)
+
+def order_detail(request, order_number):
+    order = Order.objects.get(order_number=order_number)
+    context = {
+        'order':order,
+    }
+    return render(request, 'sales/order_detail.html', context)
+
+@login_required 
+def order_list(request):
+    user = request.user
+    orders = Order.objects.filter(user=user)
+    context = {
+        'orders':orders,
+    }
+    return render(request, 'sales/order_list.html', context)

@@ -50,4 +50,4 @@ class ReviewForm(forms.ModelForm):
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ['delivery_address']
+        fields = ('delivery_address', 'product_name', 'quantity', 'price')
