@@ -1,10 +1,11 @@
 from django import forms
 from .models import Management, CalenderEntry
+from django.forms.widgets import NumberInput
 
 class ManagementForm(forms.ModelForm):
     class Meta:
         model = Management
-        fields = '__all__'
+        fields = ('plant', 'photo',)
 
 
 
@@ -63,7 +64,16 @@ class CalenderEntryForm(forms.ModelForm):
         }),
         choices= TEMPERATURE_CHOICE,
     )
+    entrydate = forms.DateTimeField(
+        label="날짜",
+        widget=NumberInput(
+            attrs={
+                'class': 'border rounded-md p-2 ps-3 w-full h-8 focus:outline-none focus:ring-1 focus:ring-[#1EB564]',
+                'type': 'date',
+            },
+        ),
+    )
 
     class Meta:
         model = CalenderEntry
-        fields = ('watering', 'sunlight', 'humidity', 'temperature',)
+        fields = ('watering', 'sunlight', 'humidity', 'temperature', 'entrydate')
