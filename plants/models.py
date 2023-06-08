@@ -9,7 +9,7 @@ from taggit.managers import TaggableManager
 class Plant(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=20)
-    content = models.TextField()
+    content = models.CharField(max_length=460)
     # preferences = models.CharField(max_length=20)
     allergy = models.CharField(max_length=20)
     flowering = models.CharField(max_length=20)
@@ -25,6 +25,8 @@ class Plant(models.Model):
     tags = TaggableManager(blank=True)
     # price = models.IntegerField()
 
+    def __str__(self):
+        return self.title
 
 class PlantImage(models.Model):
     def default_image():

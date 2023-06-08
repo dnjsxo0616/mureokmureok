@@ -4,15 +4,23 @@ from .forms import PlantForm, PlantImageForm
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.db.models import Count
+from django.core.paginator import Paginator
 from django.contrib.auth.decorators import user_passes_test
+
+
 # Create your views here.
 def index(request):
-    plants = Plant.objects.all()
+    plants = Plant.objects.order_by('-id')
+    paginator = Paginator(plants, 12)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'plants':plants,
+        'page_obj': page_obj,
         'room_name': "broadcast"
     }
     return render(request, 'plants/index.html', context)
+
 
 # @user_passes_test(lambda u: u.is_superuser)
 @login_required
@@ -31,7 +39,7 @@ def create(request):
             
             for tag in tags:
                 plant.tags.add(tag.strip())
-            return redirect('plants:index')
+            return redirect('plants:detail', plant.pk)
     else:
         form = PlantForm()
         imageForm = PlantImageForm()
@@ -42,6 +50,7 @@ def create(request):
     }
     return render(request, 'plants/create.html', context)
 
+
 # @user_passes_test(lambda u: u.is_superuser)
 def update(request, plant_pk):
     plant = Plant.objects.get(pk=plant_pk)
@@ -49,6 +58,10 @@ def update(request, plant_pk):
         form = PlantForm(request.POST, request.FILES, instance=plant)
         if form.is_valid():
             form.save()
+            plant.tags.clear()
+            tags = request.POST.get('tags').split(',')
+            for tag in tags:
+                plant.tags.add(tag.strip())
             return redirect('plants:detail', plant_pk)
     else:
         form = PlantForm(instance=plant)
@@ -59,6 +72,7 @@ def update(request, plant_pk):
         'room_name': "broadcast"
     }
     return render(request, 'plants/update.html', context)
+
 
 # @user_passes_test(lambda u: u.is_superuser)
 def delete(request, plant_pk):
@@ -111,6 +125,7 @@ def detail(request, plant_pk):
     }
     return render(request, 'plants/detail.html', context)
 
+
 @login_required
 def likes(request, plant_pk):
     plant = Plant.objects.get(pk=plant_pk)
@@ -124,9 +139,9 @@ def likes(request, plant_pk):
 
     context = {
         'is_liked' : is_liked,
+        'like_count': plant.like_users.count(),
     }
     return JsonResponse(context)
-
 
 
 def recommendation(request):
@@ -136,6 +151,7 @@ def recommendation(request):
         'room_name': "broadcast"
     }
     return render(request, 'plants/recommendation.html', context)
+
 
 def search(request):
     query = request.GET.get('searched', '')
@@ -156,4 +172,3 @@ def filter_plants(request, tag):
         'room_name': "broadcast"
     }
     return render(request, 'plants/filter.html', context)
-

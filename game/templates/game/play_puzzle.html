@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/play_puzzle.css' %}">
+{% endblock head %}
+
+{% block content %}
+<div class="puzzle-container">
+  <div class="quadrant">
+    <div class="image-container">
+      <img src="{{ image_url }}" alt="Completed Puzzle">
+    </div>
+  </div>
+  <div class="quadrant">
+    <div class="empty-cells">
+      <div class="empty-row">
+        <div class="empty-cell"></div>
+        <div class="empty-cell"></div>
+        <div class="empty-cell"></div>
+      </div>
+      <div class="empty-row">
+        <div class="empty-cell"></div>
+        <div class="empty-cell"></div>
+        <div class="empty-cell"></div>
+      </div>
+      <div class="empty-row">
+        <div class="empty-cell"></div>
+        <div class="empty-cell"></div>
+        <div class="empty-cell"></div>
+      </div>
+    </div>
+  </div>
+  {% for piece in pieces %}
+  <div class="quadrant">
+    <div class="piece">
+      <img src="{{ piece }}" alt="Puzzle Piece">
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock content %}
+

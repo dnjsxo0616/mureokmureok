@@ -2,36 +2,77 @@
 {% load static %}
 
 
-{% block style %}{% endblock style %}
+{% block head %}
+<title>{{ notice.title }}</title>
+{% endblock head %}
 
 
-{% block content  %}
+{% block content %}
 <main>
-    <h1>공지사항</h1>
     <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-    {% comment %}  본문 제목(조회수) 및 본문 좋아요 부분 {% endcomment %}
-        <div class="flex items-center justify-end">
-        <p class="text-xl">{{ notice.title }}</p>
-        <div class="ml-auto">
-            <p>{{ notice.user.username }} 업데이트: {{ notice.updated_at|date:"Y-m-d" }}</p>
-            <p id="like-count" class="ms-3">조회수{{ notice.hits }}</p>
-        </div>
-        </div>
 
-        {% comment %}  본문 내용 부분 {% endcomment %}
-        <div class="flex justify-center">
-            <div class="ms-3">
-            <p class="fs-5 mb-3 flex justify-center">{{ notice.content }}</p>
-            <div>
-                <img src="{{ notice.thumbnail.url }}" alt="이미지없음">
+        <div class="w-full">
+            <div class="flex justify-between mt-10 border-0 border-b-[1px] border-gray-400 pb-3">
+                <div>
+                    <p class="text-[14px] text-gray-500 mb-8">
+                        <a href="{% url 'communities:index' %}" class="hover:text-black">
+                        <span>공지사항</span>
+                        </a> > {{ notice.title }}
+                    </p>
+
+                    {% comment %} 타이틀 {% endcomment %}
+                    <h1 class="text-[25px] font-semibold">{{ notice.title }}</h1>
+                </div>
+                
+                <div class="flex flex-col items-end justify-end gap-5">
+                    {% comment %} 작성일 {% endcomment %}
+                    <p class="text-[14px] text-gray-500">{{ notice.created_at|date:'Y-m-d' }}</p>
+            
+                    {% comment %} 조회수 {% endcomment %}
+                    <div class="flex justify-end items-end gap-5">
+                        <div class="text-gray-500 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[16px] mt-[0.5px]">visibility</span>
+                            <span>{{ notice.hits }}</span>
+                        </div>
+                        
+                        {% comment %} 수정 및 삭제 드롭다운 버튼 {% endcomment %}
+                        {% if notice.user == request.user %}
+                        <div class="relative">
+                            <div class="dropdown text-end">
+                                <button type="button" class="rounded-md flex justify-center items-center bg-white hover:bg-gray-100" id="notice-menu-button" aria-expanded="false" aria-haspopup="true">
+                                    <span class="material-symbols-outlined text-[20px] text-black font-bold">more_vert</span>
+                                </button>
+                            </div>
+                            
+                            {% comment %} 게시글 수정 및 삭제 부분{% endcomment %}
+                            <div class="absolute right-0 z-10 mt-2 w-36 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="notice-menu-button" tabindex="-1" id="notice-dropdown" style="display: none;">
+                            <a class="block text-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" href="{% url 'notices:update' notice.pk %}">
+                                수정하기
+                            </a>
+                            <form method="POST" action="{% url 'notices:delete' notice.pk %}" class="block px-4 py-2 text-start text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" onclick="return confirm('공지사항을 삭제하시겠습니까?')">
+                                {% csrf_token %}
+                                <input type="submit" value="삭제하기" class="cursor-pointer">
+                            </form>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
+            
+            {% comment %}  본문 내용 부분 {% endcomment %}
+            <div class="flex flex-col justify-center p-[50px] px-48 border-0 border-b-[1px] border-gray-400">
+                <div class="h-[600px] w-full overflow-hidden mb-16">
+                <img src="{{ notice.thumbnail.url }}" alt="" class="w-full h-full object-cover">
+                </div>
+                <p>{{ notice.content }}</p>
             </div>
         </div>
-
-
     </div>
 </main>
 {% endblock content %}
 
+
 {% block script %}
+<script src="{% static 'js/noticeDropdown.js' %}"></script>
 {% endblock script %}

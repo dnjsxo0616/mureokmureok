@@ -3,12 +3,28 @@
 
 
 {% block head %}
+<title>커뮤니티</title>
 <link rel="stylesheet" href="{% static 'css/communities_index.css' %}">
 {% endblock head %}
 
 
 {% block content %}
 <main>
+  {% comment %} 배너 {% endcomment %}
+  <div class="w-full h-[180px] overflow-hidden relative">
+    <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+      <div class="absolute flex items-center gap-10 top-1/2 -translate-y-1/2 z-10">
+        <img src="{% static 'img/talk.png' %}" alt="" class="w-36 h-32">
+        <div>
+          <p class="text-[16px] text-gray-400 font-semibold mb-3">식물에 대한 궁금한 점, 새로 장만한 식물<br>모두여기에서 Talk !</p>
+          <h1 class="text-[25px] font-semibold">커뮤니티</h1>
+        </div>
+      </div>
+    </div>
+    <div class='w-full h-[180px] bg-gradient-to-b from-gray-200 absolute'></div>
+  </div>
+
+  {% comment %} 컨텐츠 {% endcomment %}
   <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center border-0 border-b-[1px] border-gray-400 pt-8 pb-3">
       <div class="flex items-center gap-10">
@@ -135,7 +151,8 @@
         {% endif %}
       </div>
     {% endif %}
-  </main>
+  </div>
+</main>
   
   <!-- <p class='title--content--2 mt-5'>전문가 자문 요청 글</p>
   <div class='owl-carousel owl-theme new_owl-carousel' >
@@ -162,5 +179,5 @@
 
 
 {% block script %}
-    <script src="{% static 'js/communities_index.js' %}"></script>
+<script src="{% static 'js/communities_index.js' %}"></script>
 {% endblock script %}

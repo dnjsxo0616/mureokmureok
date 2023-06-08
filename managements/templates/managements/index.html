@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block head %}
+
+{% endblock head %}
+
+
+{% block content %}
+
+
+<div class="grid grid-cols-4 gap-4">
+    {% for management in managements %}
+      <div class="bg-white rounded-lg p-4">
+        <a href="{% url 'managements:detail' management.pk %}"><img src="{{ management.photo.url }}" alt="{{ management.plant.plantimage }}" class="w-full h-auto mt-4 object-contain"></a>
+        <div class="ml-3">
+
+          <p class=" text-2xl mt-3">{{ management.plant }}</p>
+          <p class="font-bold text-lg">{{ management.score }}점</p>
+        </div>
+
+      </div>
+    {% endfor %}
+  </div>
+  <a href="{% url 'managements:create' %}" class="text-[14px] border rounded-lg p-1 px-2 text-center hover:bg-gray-100">관리 식물 생성</a>
+
+{% endblock content %}
+
+
+{% block script %}
+
+{% endblock script %}
