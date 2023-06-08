@@ -3,7 +3,44 @@
 <!-- 가격표시 단위-->
 {% load humanize %}
 
+{% block head %}
+<!-- jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+<!-- iamport.payment.js -->
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+<script type="text/javascript" src="https://cdn.iamport.kr/v1/iamport.js"></script>
+
+<script>
+    var IMP = window.IMP; 
+    IMP.init("imp43825152"); 
+  
+    var today = new Date();   
+    var hours = today.getHours(); // 시
+    var minutes = today.getMinutes();  // 분
+    var seconds = today.getSeconds();  // 초
+    var milliseconds = today.getMilliseconds();
+    var makeMerchantUid = hours +  minutes + seconds + milliseconds;
+    
+    const payInfo = {
+        pg: "uplus.tlgdacomxpay",
+        pay_method: "card",
+        merchant_uid: "order_no_0003", //상점에서 생성한 고유 주문번호
+        name: "주문명:결제테스트",
+        amount: {{ cart_total}},
+        buyer_name: "구매자이름",
+        appCard: true, // 설정시 신용카드 결제모듈에서 앱카드 결제만 활성화됩니다.
+    }
+    function requestPay() {
+        IMP.request_pay(payInfo,function (rsp) {
+            console.log(rsp)
+
+        });
+    }
+</script>
+{% endblock head %}
+
 {% block content %}
+
 <div class="mx-auto px-[200px] pt-10 pb-10">
   <div class="font-bold text-3xl mb-5">장바구니</div>
 
@@ -82,10 +119,20 @@
 
 
 
+  
   <div class="mt-4 flex justify-center">
     <div class="button1">
-      <button class="bg-[#1EB564] text-white rounded-md px-4 py-2 mx-1" data-bs-toggle="modal" data-bs-target="#buy">전체상품 주문</button>
-      <button class="bg-white border border-[#1EB564] text-[#1EB564] rounded-md px-4 py-2 mx-1" data-bs-toggle="modal" data-bs-target="#buy">선택상품 주문</button>
+      {% comment %} <button class="bg-[#1EB564] text-white rounded-md px-4 py-2 mx-1" data-bs-toggle="modal" data-bs-target="#buy" ><a href="{% url 'sales:create_order' %}">주문하기</a></button> {% endcomment %}
+
+      <button class="bg-[#1EB564] text-white rounded-md px-4 py-2 mx-1" data-bs-toggle="modal" data-bs-target="#buy" onclick="requestPay()" >주문하기</button>
+      {% comment %} <a href="{% url 'sales:create_order' %}" class="bg-[#1EB564] text-white rounded-md px-4 py-2 mx-1">주문하러가기</a> {% endcomment %}
+
+      {% comment %} <form action="{% url 'sales:create_order' %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="bg-[#1EB564] text-white rounded-md px-4 py-2 mx-1">주문하러가기</button>
+      </form> {% endcomment %}
+
+      {% comment %} <button class="bg-white border border-[#1EB564] text-[#1EB564] rounded-md px-4 py-2 mx-1" data-bs-toggle="modal" data-bs-target="#buy">선택상품 주문</button> {% endcomment %}
       <button class="bg-white border border-black  rounded-md px-4 py-2 mx-1"><a class="button2-a" href="{% url 'sales:index'%}">쇼핑계속하기</a></button>
     </div>
   </div>

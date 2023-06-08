@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from .models import Product, Review
-from .forms import ProductForm, ReviewForm
+from .models import Product, Review, Order
+from .forms import ProductForm, ReviewForm, OrderForm
 # from .forms import PurchaseForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -9,6 +9,7 @@ from accounts.models import User, User_title, User_profile
 from django.db.models import Count, Q
 from django.http import JsonResponse
 from decimal import Decimal
+
 
 def index(request):
     # 베스트 프로덕트(리뷰순)
@@ -94,37 +95,23 @@ def update_review(request, product_pk, review_pk):
 #     return redirect('sales:index')
 
 
-
-# def update(request):
-#     product = Product.objects.get(pk=product_pk)
-#     if request.method == 'POST':
-#         form = ProductForm(request.POST, request.FILES, instance=product)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('sales:detail', product.pk)
-#     else:
-#         form = ProductForm(instance=product)
-#     context = {
-#         'product':product,
-#         'form' : form,
-#     }
-#     return render(request,'sales/update.html',context)
-
-
-
-# def purchase_list(request, pk):
-#     products = Product.objects.all()
-#     user = User.objects.get(pk=pk)
-#     purchases = Purchase.objects.filter(user=user)
-#     paginator = Paginator(orders, 5)
-#     page = request.GET.get('page')
-#     context = {
-#         'user': user, 
-#         'purchases': purchases, 
-#         'products': products
-#     }
-#     return render(request, 'sales/purchase_list.html', context)
-
+@login_required 
+def create_review(request, product_pk):
+    product = Product.objects.get(pk = product_pk)
+    form = ReviewForm(request.POST)
+    if request.method == 'POST':
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.user = request.user
+            review.product = product
+            review.save()
+            return redirect('sales:detail', product_pk)
+    context = {
+        'product':product,
+        'form':form,
+        'room_name': "broadcast"
+    }
+    return render(request, 'sales/detail.html', context)
 
 
 def add_to_cart(request, product_pk):
@@ -134,7 +121,7 @@ def add_to_cart(request, product_pk):
     if product_pk in cart:
         cart[product_pk]['quantity'] += quantity
     else:
-        cart[product_pk] = {'quantity': quantity, 'price': str(product.price)}
+        cart[product_pk] = {'quantity': quantity, 'price': str(product.price), 'product_pk': product.pk}
 
     request.session['cart'] = cart
 
@@ -143,7 +130,6 @@ def add_to_cart(request, product_pk):
 
 def cart(request):
     cart = request.session.get('cart', {})
-    print(cart)
     cart_items = []
     cart_total = 0
 
@@ -157,7 +143,6 @@ def cart(request):
             'quantity': product_info['quantity'],
             'total_price': total_price,
         })
-
     context = {
         'cart_items': cart_items,
         'cart_total': cart_total,
@@ -178,61 +163,55 @@ def remove_from_cart(request, product_pk):
 
     return redirect('sales:cart')
 
-@login_required 
-def create_review(request, product_pk):
-    product = Product.objects.get(pk = product_pk)
-    form = ReviewForm(request.POST)
-    if request.method == 'POST':
-        if form.is_valid():
-            review = form.save(commit=False)
-            review.user = request.user
-            review.product = product
-            review.save()
-            return redirect('sales:detail', product_pk)
-    context = {
-        'product':product,
-        'form':form,
-        'room_name': "broadcast"
-    }
-    return render(request, 'sales/detail.html', context)
-
-
-# def cart(request, pk):
-#     user = User.objects.get(pk=pk)
-#     cart = Cart.objects.filter(user=user)
-#     paginator = Paginator(cart, 10)
-
-#     context = {
-#         'user': user, 
-#         'cart': cart
-#     }
-#     return render(request, 'sales/cart.html', context)
-
-
-
-
-
-# def delete_cart(request, pk):
-#     user = request.user
-#     cart = Cart.objects.filter(user=user)
-#     quantity = 0
-
-#     if request.method == 'POST':
-#         pk = int(request.POST.get('product'))
-#         product = Product.objects.get(pk=pk)
-#         for i in cart:
-#             if i.products == product :
-#                 quantity =  i.quantity
-
-#         if quantity > 0 :
-#             product = Product.objects.filter(pk=pk)
-#             cart = Cart.objects.filter(user=user, products__in=product)
-#             cart.delete()
-#             return redirect('shop:cart', user.pk)
-
 
 
 def payment(request):
     return render(request, 'sales/payment.html')
 
+def create_order(request):
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            # 장바구니에 담긴 정보 가져오기
+            cart_items = request.POST.getlist('product[]')
+            quantities = request.POST.getlist('quantity[]')
+            total_price = request.POST.get('total_price')
+            customer = request.POST.get('customer')
+            
+            # 주문 정보 생성
+            for i in range(len(cart_items)):
+                product_name = cart_items[i]
+                quantity = int(quantities[i])
+                price = total_price
+                
+                # 주문 정보 저장
+                order = form.save(commit=False)
+                order.user_id = customer
+                order.product_name = product_name
+                order.quantity = quantity
+                order.price = price
+                order.save()
+                # 주문 정보 처리 (예: 결제 등)
+                # ...
+            
+            # 주문 완료 후 장바구니 비우기
+            # ...
+            
+            return redirect('sales:order_complete')
+    else:
+        form = OrderForm()
+    context ={
+        'form': form,
+    }
 
+    return render(request, 'sales/create_order.html', context)
+
+def order_complete(request):
+    order_id = request.GET.get('order_id', None)
+    if order_id is not None:
+        order = Order.objects.get(id=order_id)
+        context = {'order': order}
+        return render(request, 'sales/order_complete.html', context)
+    else:
+        return render(request, 'sales/order_complete.html')
+    
