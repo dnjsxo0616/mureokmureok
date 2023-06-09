@@ -5,7 +5,7 @@ from django.forms.widgets import NumberInput
 class ManagementForm(forms.ModelForm):
     class Meta:
         model = Management
-        fields = ('plant', 'photo',)
+        fields = ('plant', 'photo', 'managementdate')
 
 
 
