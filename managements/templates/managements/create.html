@@ -8,20 +8,36 @@
 
 
 {% block content %}
-<form action="{% url 'managements:create' %}" method = 'POST' enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.media }}
-    {% for field in form %}
-    <div class="mb-3">
-      {{ field.label_tag}}
-      {{ field }}
-    </div>
-    {% endfor %}
-    <button type="submit" class='d'>등록</button> 
-  </form>
+<form action="{% url 'managements:create' %}" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.media }}
+  {% for field in form %}
+    {% if field.name == 'plant' %}
+      <div class="mb-3">
+        {{ field.label_tag }}
+        <div class="dropdown">
+          {{ field }}
+          <div class="dropdown-content">
+            <input type="text" placeholder="검색">
+            <ul class="plant-list">
+              <!-- 플랜트 목록이 동적으로 추가될 자리 -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <div class="mb-3">
+        {{ field.label_tag }}
+        {{ field }}
+      </div>
+    {% endif %}
+  {% endfor %}
+  <button type="submit" class='d'>등록</button>
+</form>
 {% endblock content %}
 
 
 {% block script %}
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/management_create.js' %}"></script>
 {% endblock script %}

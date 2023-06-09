@@ -13,6 +13,7 @@ class Management(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     plant = models.ForeignKey(Plant, on_delete=models.CASCADE)
     score = models.IntegerField(default=0)
+    managementdate = models.DateField(null=True)
     photo = models.ImageField(upload_to=management_img_path)
     management_photo = ImageSpecField(
         source = 'photo',
