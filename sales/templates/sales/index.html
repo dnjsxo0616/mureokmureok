@@ -87,12 +87,12 @@
       </div>
       <div class="w-9/12">
         {% comment %} sort방식 {% endcomment %}
-        <div class="w-full rounded-lg bg-gray-100 flex gap-8 p-2 px-4 text-gray-500 text-[14px] mb-5">
+        {% comment %} <div class="w-full rounded-lg bg-gray-100 flex gap-8 p-2 px-4 text-gray-500 text-[14px] mb-5">
           <a href="{% url 'sales:sort' %}?sort_type=popularity" class="hover:text-black">인기순</a>
           <a href="{% url 'sales:sort' %}?sort_type=price_low" class="hover:text-black">낮은가격순</a>
           <a href="{% url 'sales:sort' %}?sort_type=price_high" class="hover:text-black">높은가격순</a>
           <a href="{% url 'sales:sort' %}?sort_type=latest" class="hover:text-black">최신순</a>
-        </div>
+        </div> {% endcomment %}
 
         {% comment %} 상품목록 {% endcomment %}
         {% if page_obj %}
