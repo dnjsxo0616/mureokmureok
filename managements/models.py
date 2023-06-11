@@ -13,6 +13,7 @@ class Management(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     plant = models.ForeignKey(Plant, on_delete=models.CASCADE)
     score = models.IntegerField(default=0)
+    nickname = models.CharField(max_length=20)
     managementdate = models.DateField(null=True)
     photo = models.ImageField(upload_to=management_img_path)
     management_photo = ImageSpecField(
@@ -29,6 +30,8 @@ class CalenderEntry(models.Model):
     watering = models.CharField(max_length=20)
     sunlight = models.CharField(max_length=20)
     humidity = models.CharField(max_length=20)
+    things = models.CharField(max_length=20)
+    significant = models.CharField(max_length=40)
     temperature = models.CharField(max_length=20)
     entrydate = models.DateField(null=True)
 

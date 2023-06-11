@@ -34,9 +34,16 @@
         
         {% comment %} 식물 만난 날짜 {% endcomment %}
         <div class="flex gap-3 mb-8 w-full">
+          <div class="mb-2 w-2/12">{{ form.nickname.label }} <span class="text-red-600 text-[20px]">*</span></div>
+          <div>{{ form.nickname }}</div>
+        </div>
+
+        {% comment %} 식물 만난 날짜 {% endcomment %}
+        <div class="flex gap-3 mb-8 w-full">
           <div class="mb-2 w-2/12">{{ form.managementdate.label }} <span class="text-red-600 text-[20px]">*</span></div>
           <div>{{ form.managementdate }}</div>
         </div>
+
 
 
         {% comment %} 생성버튼 {% endcomment %}

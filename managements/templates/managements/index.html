@@ -11,24 +11,30 @@
 
 
 <div class="grid grid-cols-4 gap-4">
-  <div class="bg-white rounded-lg p-4 ">
-    <a href="{% url 'managements:create' %}"><img src="{% static 'img/addcircle.jpg' %}" alt="" class="tab cursor-pointer w-full h-fit flex items-center gap-5 bg-white border rounded-lg p-3 hover:-translate-y-1.5 transform transition hover:shadow-md mt-4"></a>
-    <div class="ml-3">
-
-  
-    </div>
-  
-  </div>
-    {% for management in managements %}
-      <div class="bg-white rounded-lg p-4">
-        <a href="{% url 'managements:detail' management.pk %}"><img src="{{ management.photo.url }}" alt="{{ management.plant.plantimage }}" class="w-full h-auto mt-4 object-contain"></a>
-        <div class="ml-3">
-
-          <p class=" text-2xl mt-3">{{ management.plant }}</p>
-          <p class="font-bold text-lg">{{ management.score }}점</p>
-        </div>
-
+  <div class="bg-white rounded-lg p-4 tab cursor-pointer w-full h-fit flex flex-col items-center gap-5 bg-white border hover:-translate-y-1.5 transform transition hover:shadow-md mt-4 mb-4">
+    <a href="{% url 'managements:create' %}">
+      <div class="flex justify-center">
+        <img src="{% static 'img/addcircle.jpg' %}" alt="" class="w-full h-40 mt-1 object-contain">
       </div>
+      <div class=" text-center">
+        <p>당신의 식물을</p>
+        <p>여기서 추가하세요!</p>
+      </div>
+    </a>
+  </div>
+
+    {% for management in managements %}
+    <div class="bg-white rounded-lg p-4 tab cursor-pointer w-full h-fit flex flex-col items-center gap-5 bg-white border hover:-translate-y-1.5 transform transition hover:shadow-md mt-4 mb-4">
+      <a href="{% url 'managements:detail' management.pk %}">
+          <div class="flex justify-center">
+              <img src="{{ management.photo.url }}" alt="{{ management.plant.plantimage }}" class="w-full h-auto mt-2 object-contain">
+          </div>
+          <div class="ml-3 text-center">
+              <p class="text-2xl">{{ management.plant }}</p>
+              <p class="font-bold text-lg">{{ management.score }}점</p>
+          </div>
+      </a>
+    </div>
     {% endfor %}
   </div>
   

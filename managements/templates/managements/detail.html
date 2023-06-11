@@ -11,17 +11,17 @@
 
 
 
-<h2 class="text-center text-[25px] font-semibold mt-2">{{ management.plant }}</h2>
+<h2 class="text-center text-[25px] font-semibold mt-2">{{ management.nickname }}</h2>
 <div class="bg-white rounded-lg p-4 grid grid-cols-2 gap-4">
   <div>
     <a><img src="{{ management.photo.url }}" alt="{{ management.plant.plantimage }}" class="tab cursor-pointer w-full h-fit flex items-center gap-5 bg-white border rounded-lg p-3 hover:-translate-y-1.5 transform transition hover:shadow-md"></a>
   </div>
-  <div>
-    <p class="font-bold text-lg mt-5">식물 관리 점수: {{ management.score }}점</p>
-    <p class="font-bold text-lg mt-5">식물의 계절: {{ management.plant.season|slice:"2:-2" }}</p>
-    <p class="font-bold text-lg mt-5">알러지 생성 유무: {{ management.plant.allergy }}</p>
-    <p class="font-bold text-lg mt-5">식물의 설명: {{ management.plant.content }}</p>
-
+  <div class="tab cursor-pointer w-full h-fit flex flex-col gap-5 bg-white border rounded-lg p-3 hover:-translate-y-1.5 transform transition hover:shadow-md">
+    <p class="font-bold text-lg mb-5">관리 식물: {{ management.plant }}</p>
+    <p class="font-bold text-lg mb-5">식물 관리 점수: {{ management.score }}점</p>
+    <p class="font-bold text-lg mb-5">식물의 계절: {{ management.plant.season|slice:"2:-2" }}</p>
+    <p class="font-bold text-lg mb-5">알러지 생성 유무: {{ management.plant.allergy }}</p>
+    <p class="font-bold text-lg mb-4">식물의 설명: {{ management.plant.content }}</p>
   </div>
 </div>
 
@@ -115,10 +115,18 @@
           <!-- 엔트리 데이터 표시 -->
           {% for entry in entries %}
             {% if entry.entrydate|date:"Y-m-d" == date|date:"Y-m-d" %}
-              <div class="text-xs mt-2">물주기: {{ entry.watering }}</div>
-              <div class="text-xs mt-2">햇빛주기: {{ entry.sunlight }}</div>
-              <div class="text-xs mt-2">습도: {{ entry.humidity|slice:"2:-2" }}</div>  
-              <div class="text-xs mt-2">온도: {{ entry.temperature|slice:"2:-2" }}</div>
+            <div class="flex flex-wrap">
+              <div class="w-full sm:w-2/3 md:w-1/2">
+                  <div class="text-xs mt-2">물주기: {{ entry.watering }}</div>
+                  <div class="text-xs mt-2">햇빛주기: {{ entry.sunlight }}</div>
+                  <div class="text-xs mt-2">습도: {{ entry.humidity|slice:"2:-2" }}</div>  
+                  <div class="text-xs mt-2">온도: {{ entry.temperature|slice:"2:-2" }}</div>
+              </div>
+              <div class="w-full sm:w-2/3 md:w-1/2">
+                  <div class="text-xs mt-2">비료 or 영양제: {{ entry.things }}</div>
+                  <div class="text-xs mt-2">특이사항: {{ entry.significant }}</div>
+              </div>
+          </div>
             {% endif %}
           {% endfor %}
         {% endif %}
@@ -160,34 +168,46 @@
           <h3 class="text-base font-semibold leading-6 text-gray-900 mb-8" id="modal-title">후기작성</h3>
           <form action="{% url 'managements:calenderentry_create' management.pk %}" method="POST" id="garden_comment-Form">
             {% csrf_token %}
-            <div class="flex gap-3 mb-8 w-full">
+            <div class="flex gap-3 mb-8 w-full text-xs">
               <div class="mb-2 w-2/12">{{ calenderentry_form.watering.label }} <span class="text-red-600 text-[20px]">*</span></div>
               <div>{{ calenderentry_form.watering }}</div>
             </div>
         
             {% comment %} 일조량 {% endcomment %}
-            <div class="flex gap-3 mb-8 w-full">
+            <div class="flex gap-3 mb-8 w-full text-xs">
               <div class="mb-2 w-2/12">{{ calenderentry_form.sunlight.label }} <span class="text-red-600 text-[20px]">*</span></div>
               <div>{{ calenderentry_form.sunlight }}</div>
             </div>
         
             {% comment %} 습도 {% endcomment %}
-            <div class="flex gap-3 mb-8 w-full">
+            <div class="flex gap-3 mb-8 w-full text-xs">
               <div class="mb-2 w-2/12">{{ calenderentry_form.humidity.label }} <span class="text-red-600 text-[20px]">*</span></div>
               <div>{{ calenderentry_form.humidity }}</div>
             </div>
         
             {% comment %} 온도 {% endcomment %}
-            <div class="flex gap-3 mb-8 w-full">
+            <div class="flex gap-3 mb-8 w-full text-xs">
               <div class="mb-2 w-2/12">{{ calenderentry_form.temperature.label }} <span class="text-red-600 text-[20px]">*</span></div>
               <div>{{ calenderentry_form.temperature }}</div>
             </div>
 
+            <div class="flex gap-3 mb-8 w-full text-xs">
+              <div class="mb-2 w-2/12">{{ calenderentry_form.things.label }} <span class="text-red-600 text-[20px]">*</span></div>
+              <div>{{ calenderentry_form.things }}</div>
+            </div>
+
+            <div class="flex gap-3 mb-8 w-full text-xs">
+              <div class="mb-2 w-2/12">{{ calenderentry_form.significant.label }} <span class="text-red-600 text-[20px]">*</span></div>
+              <div>{{ calenderentry_form.significant }}</div>
+            </div>
+
             {% comment %} 습도 {% endcomment %}
-            <div class="flex gap-3 mb-8 w-full">
+            <div class="flex gap-3 mb-8 w-full text-xs">
               <div class="mb-2 w-2/12">{{ calenderentry_form.entrydate.label }} <span class="text-red-600 text-[20px]">*</span></div>
               <div>{{ calenderentry_form.entrydate }}</div>
             </div>
+
+            
         
             <div class="flex justify-end">
               <input type="submit" class="bg-[#1EB564] text-white p-[5px] px-3 rounded-lg cursor-pointer hover:bg-[#148D4C]" value="작 성">
