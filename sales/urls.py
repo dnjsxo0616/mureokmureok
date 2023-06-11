@@ -10,7 +10,7 @@ urlpatterns = [
     path('<int:product_pk>/like/', views.like, name='like'),
     path('detail/<int:product_pk>', views.detail, name="detail"),
     path('filter/', views.filter, name="filter"),
-    path('sort/', views.sort, name="sort"),
+    # path('sort/', views.sort, name="sort"),
 
     path('cart/', views.cart, name="cart"),
     path('add-to-cart/<int:product_pk>/',views.add_to_cart, name='add_to_cart'),

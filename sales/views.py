@@ -128,30 +128,30 @@ def filter(request):
     return render(request, 'sales/filter.html', context)
 
 
-def sort(request, *args, **kwargs):
-    sort_type = request.GET.get('sort_type')
-    queryset = super().get_queryset()
+# def sort(request, *args, **kwargs):
+#     sort_type = request.GET.get('sort_type')
+#     queryset = super().get_queryset()
 
-    if sort_type == 'popularity':
-        queryset = queryset.order_by('-views')
-    elif sort_type == 'latest':
-        queryset = queryset.order_by('-created_at')
-    elif sort_type == 'price_low':
-        queryset = queryset.order_by('price')
-    elif sort_type == 'price_high':
-        queryset = queryset.order_by('-price')
+#     if sort_type == 'popularity':
+#         queryset = queryset.order_by('-views')
+#     elif sort_type == 'latest':
+#         queryset = queryset.order_by('-created_at')
+#     elif sort_type == 'price_low':
+#         queryset = queryset.order_by('price')
+#     elif sort_type == 'price_high':
+#         queryset = queryset.order_by('-price')
 
-    data = serializers.serialize('json', queryset)
+#     data = serializers.serialize('json', queryset)
 
-    paginator = Paginator(data, 16)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+#     paginator = Paginator(data, 16)
+#     page_number = request.GET.get('page')
+#     page_obj = paginator.get_page(page_number)
 
-    context = {
-        'page_obj': page_obj,
-        'room_name': "broadcast",
-    }
-    return JsonResponse(context, safe=False)
+#     context = {
+#         'page_obj': page_obj,
+#         'room_name': "broadcast",
+#     }
+#     return JsonResponse(context, safe=False)
 
 
 @login_required
