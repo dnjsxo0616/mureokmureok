@@ -49,8 +49,7 @@ def search(request):
   
         search_plants = Plant.objects.filter(
             Q(title__icontains=query) |
-            Q(content__icontains=query) | 
-            Q(season__icontains=query)
+            Q(content__icontains=query)
         )
 
         search_supplies = Supply.objects.filter(

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% load social_share %}
+
 
 
 {% block head %}
@@ -24,7 +24,7 @@
           {% comment %} 타이틀 {% endcomment %}
           <div class="flex items-center gap-3 mb-2">
             <div class="text-[14px] border border-black rounded-lg p-1 px-2">{{ community.category }}</div>
-            <h1 class="text-[25px] font-semibold">{{ community.title }}</h1>
+            <h1 class="text-[25px] font-semibold" id="community-title">{{ community.title }}</h1>
           </div>
   
           {% comment %} 작성자 {% endcomment %}
@@ -118,9 +118,38 @@
           </form>
 
           {% comment %} 공유하기 {% endcomment %}
-          <div class="flex items-center w-fit p-3 rounded-full hover:bg-gray-100">
+          {% comment %} <div class="flex items-center w-fit p-3 rounded-full hover:bg-gray-100">
             <span class="material-symbols-outlined">share</span>
-          </div>
+          </div> {% endcomment %}
+          <div class="dropdown-center w-100">
+            <a type="button" data-bs-toggle="dropdown"  aria-expanded="false" class="d-flex align-items-center justify-content-center  gap-2 font-15 text-secondary">
+                <span class="material-icons-outlined font-15">share</span>
+                공유
+            </a>
+            <ul class="dropdown-menu border-0 shadow mt-2">
+                <li>
+                    <a href="javascript:shareTwitter();">
+                        <button class="dropdown-item" type="button" class="d-flex gap-2">
+                        <img src="{% static 'img/twitter_logo.svg' %}" alt="" style="width: 19px; height: 15px;" class="me-2">
+                        트위터</button>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:shareFacebook();">
+                        <button class="dropdown-item" type="button" class="d-flex gap-2">
+                        <img src="{% static 'img/facebook_logo.svg' %}" alt="" style="width: 19px; height: 19px;" class="me-2">
+                        페이스북</button>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:shareLink();">
+                        <button class="dropdown-item" type="button" class="d-flex gap-2">
+                        <img src="https://seekicon.com/free-icon-download/link_7.svg" alt="" style="width: 18px; height: 16px;" class="me-2">
+                        링크복사</button>
+                    </a>
+                </li>
+            </ul>
+        </div>
 
           {% comment %} 댓글로 이동 {% endcomment %}
           <a href="#comment">
@@ -136,7 +165,7 @@
             <div class="h-[600px] w-full overflow-hidden mb-16">
               <img src="{{ community.photo.url }}" alt="" class="w-full h-full object-cover">
             </div>
-            <p>{{ community.content|safe }}</p>
+            <p id="community-content" >{{ community.content|safe }}</p>
           </div>
       
       

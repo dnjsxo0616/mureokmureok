@@ -17,8 +17,8 @@ urlpatterns = [
     path('remove-from-cart/<int:product_pk>/', views.remove_from_cart, name='remove_from_cart'),
     
     path('<int:product_pk>/review/create/', views.create_review, name='create_review'),
-    path('<int:product_pk>/review/<int:review_pk>/delete/', views.delete_review, name='delete_review'),
-    path('<int:product_pk>/reviews/<int:review_pk>/update/', views.update_review, name='update_review'),
+    path('<int:product_pk>/reviews/<int:review_pk>/delete_review/', views.delete_review, name='delete_review'),
+    path('<int:product_pk>/reviews/<int:review_pk>/update_review/', views.update_review, name='update_review'),
 
     path('order_payment/<int:order_pk>/', views.order_payment, name="order_payment"),
     path('delete_order/<int:order_pk>/', views.delete_order, name='delete_order'),
