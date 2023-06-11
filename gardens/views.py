@@ -77,7 +77,7 @@ def comment_update(request, garden_pk, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
     if request.user == comment.user:
         if request.method == 'POST':
-            comment_form = CommentForm(request.POST, instance=comment)
+            comment_form = CommentForm(request.POST, request.FILES, instance=comment)
             if comment_form.is_valid():
                 comment_form.save()
                 return redirect('gardens:detail', garden_pk)

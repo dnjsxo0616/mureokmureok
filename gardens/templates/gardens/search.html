@@ -35,9 +35,26 @@
       <h2>검색 결과: "{{ query }}"</h2>
     {% endif %}
     
-    {% for garden in gardens %}
-      <h3>{{ garden.title }}</h3>
-      <p>{{ garden.address }}</p>
+    <div class="grid grid-cols-2 gap-10 mb-8">
+      {% for garden in gardens %}
+      <a href="{% url 'gardens:detail' garden.pk %}">
+        <div class="h-60 border rounded-xl p-5 flex gap-5 hover:-translate-y-1.5 transform transition hover:shadow-lg">
+          <div class="w-full h-full overflow-hidden rounded-md border">
+            <img src="{{ garden.image.url }}" alt="Garden Image" class="w-full h-full object-cover">
+          </div>
+          <div class="w-full flex flex-col justify-between">
+            <div>
+              <div class="text-[12px] text-gray-700 border border-[1px] border-gray-400 w-fit rounded-md p-[2px] px-[4px] mb-2 shadow-sm">{{ garden.category }}</div>
+              <h1 class="text-[20px] font-semibold">{{ garden.title }}</h1>
+              <p class="text-[14px] text-gray-500">{{ garden.address }}</p>
+            </div>
+            <p>{{ garden.ex_content }}</p>
+            <div class="flex items-end gap-5 text-gray-500">
+              <!-- ... -->
+            </div>
+          </div>
+        </div>
+      </a>
       <!-- Garden 객체의 다른 필드들을 표시하거나 필요한 내용을 추가로 표시 -->
     {% empty %}
       <p>검색 결과가 없습니다.</p>
