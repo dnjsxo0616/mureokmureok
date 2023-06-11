@@ -261,6 +261,7 @@
         </div>
 
         {% comment %} 식물목록 카드 {% endcomment %}
+        {% if page_obj %}
         <div class="grid grid-cols-4 gap-8 mb-10">
         {% for plant in page_obj %}
         <a href="{% url 'plants:detail' plant.pk %}">
@@ -284,6 +285,11 @@
         </a>
         {% endfor %}
         </div>
+        {% else %}
+        <div class="w-full h-96 flex justify-center items-center">
+          식물이 없습니다
+        </div>
+        {% endif %}
 
         {% comment %} 페이지네이션 {% endcomment %}
         {% if page_obj.has_other_pages %}

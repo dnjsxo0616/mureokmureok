@@ -129,10 +129,10 @@
             <div class="bg-gray-100 rounded-xl w-full h-28 flex items-center justify-center text-gray-400">좋아요한 식물원이 없어요.</div>
             {% endif %}
           </div>
-          {% comment %} 찜한 상품 {% endcomment %}
+          {% comment %} 좋아요한 상품 {% endcomment %}
           <div>
             <div class="flex items-center gap-3 mb-5">
-              <h2 class="text-[20px]"><b>내가 찜한 '상품'</b></h2>
+              <h2 class="text-[20px]"><b>내가 좋아요한 '상품'</b></h2>
               <span class="text-gray-400 text-[18px]"><b>{{ person.like_supply.all|length }}</b></span>
             </div>
             {% if person.like_supply.all %}
@@ -151,7 +151,7 @@
               </div>
             </div>
             {% else %}
-            <div class="bg-gray-100 rounded-xl w-full h-28 flex items-center justify-center text-gray-400">찜한 상품이 없어요.</div>
+            <div class="bg-gray-100 rounded-xl w-full h-28 flex items-center justify-center text-gray-400">좋아요한 상품이 없어요.</div>
             {% endif %}
           </div>
         </div>

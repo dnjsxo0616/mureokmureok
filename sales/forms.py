@@ -1,21 +1,52 @@
 from django import forms
 from .models import Product, Review, Order
+from ckeditor.widgets import CKEditorWidget
+
 
 class ProductForm(forms.ModelForm):
+    title = forms.CharField(
+        label='상품명',
+        widget=forms.TextInput(
+            attrs={
+                'class':'w-96 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
+                'id': '상품명',
+                'placeholder': '상품명을 입력해주세요',
+            }
+        )
+    )
 
     CATEGORY_CHOICE = [
-        ('화분', '화분'), ('실내식물', '실외식물'), ('관리상품', '관리상품'),
+        ('화분', '화분'), ('삽', '삽'), ('종자', '종자'), ('비료', '비료'), ('데코레이션', '데코레이션'),
     ]
 
     category = forms.ChoiceField(
         label = '카테고리',
         widget=forms.Select(attrs={
-            'class':'form-input',
+            'class': 'bg-white border-[1px] border-gray-300 p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
             'id':'category',
-            'placeholdeer':'분류',
         }),
         choices=CATEGORY_CHOICE,
     )
+
+    price = forms.IntegerField(
+        label = '가격',
+        widget=forms.NumberInput(attrs={
+            'class': 'bg-white border-[1px] border-gray-300 p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
+            'id':'price',
+        }),
+    )
+
+    photo = forms.ImageField(
+        label='상품 이미지',
+        widget=forms.ClearableFileInput(
+            attrs={
+                'class': 'w-96 bg-white border rounded-md focus:outline-none focus:ring-1 focus:ring-[#1EB564] text-gray-400',
+                'id': 'photo',
+            }
+        )
+    )
+
+    content = forms.CharField(label='상품설명', widget=CKEditorWidget())
 
     class Meta:
         model = Product
@@ -24,28 +55,38 @@ class ProductForm(forms.ModelForm):
 
 class ReviewForm(forms.ModelForm):
     title = forms.CharField(
-        label = '',
+        label='제목',
         widget=forms.TextInput(
-            attrs= {
-                'class':'form-input',
-                'placeholder' : '제목을 입력해주세요.',
+            attrs={
+                'class':'w-96 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
+                'id': '리뷰제목',
+                'placeholder': '제목을 입력해주세요',
             }
-        ),
-
+        )
     )
     content = forms.CharField(
-        label = '',
-        widget=forms.TextInput(
-            attrs= {
-                'class':'form-input',
-                'placeholder' : '내용을 입력해주세요.',
+        label='내용',
+        widget=forms.Textarea(
+            attrs={
+                'class':'w-full bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
+                'id': '소개글',
+                'placeholder': '리뷰를 입력해주세요',
             }
         ),
+    )
+    image = forms.ImageField(
+        label = '사진',
+        widget=forms.ClearableFileInput(
+            attrs={
+                'class': 'w-full bg-white border rounded-md focus:outline-none focus:ring-1 focus:ring-[#1EB564] text-gray-400',
+            }
+        ),
+        required=False
     )
 
     class Meta:
         model = Review
-        fields = ('title', 'content',)
+        fields = ('title', 'score', 'image', 'content',)
 
 class OrderForm(forms.ModelForm):
     class Meta:

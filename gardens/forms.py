@@ -86,6 +86,16 @@ class GardenForm(forms.ModelForm):
 
 
 class CommentForm(forms.ModelForm):
+    title = forms.CharField(
+        label='제목',
+        widget=forms.TextInput(
+            attrs={
+                'class':'w-96 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
+                'id': '후기제목',
+                'placeholder': '제목을 입력해주세요',
+            }
+        )
+    )
     content = forms.CharField(
         label='내용',
         widget=forms.Textarea(
@@ -108,4 +118,4 @@ class CommentForm(forms.ModelForm):
 
     class Meta:
         model = Comment
-        fields = ('content','image',)
+        fields = ('title', 'score', 'content', 'image',)

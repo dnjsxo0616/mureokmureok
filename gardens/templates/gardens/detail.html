@@ -196,9 +196,21 @@
                   </div>
                   <div class="bg-gray-100 rounded-lg p-3">
                     <p class="text-[14px] text-gray-500 mb-2">{{ comment.created_time }}</p>
-        
+
+                    {% comment %} 후기 제목 {% endcomment %}
+                    <p class="font-semibold">{{ comment.title }}</p>
+
                     {% comment %} 후기 내용 {% endcomment %}
                     <p class="text-[16px] mb-5">{{ comment.content }}</p>
+
+                    {% comment %} 후기 사진 {% endcomment %}
+                    <div class="w-36 h-36 overflow-hidden rounded-md border">
+                      {% if comment.image %}
+                      <img src="{{ comment.image.url }}" alt="" class="w-full h-full object-cover">
+                      {% else %}
+                      <img src="{% static 'img/no_image.jpg' %}" alt="" class="w-full h-full object-cover">
+                      {% endif %}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -224,8 +236,25 @@
       <div class="sm:flex sm:items-start w-full">
         <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
           <h3 class="text-base font-semibold leading-6 text-gray-900 mb-8" id="modal-title">후기작성</h3>
-          <form action="{% url 'gardens:comment' garden.pk %}" method="POST" id="garden_comment-Form">
+          <form action="{% url 'gardens:comment' garden.pk %}" method="POST" id="garden_comment-Form" enctype="multipart/form-data">
             {% csrf_token %}
+            {% comment %} 제목작성 {% endcomment %}
+            <div class="flex flex-col gap-2 mb-5">
+              <p>{{ comment_form.title.label }}</p>
+              <p>{{ comment_form.title }}</p>
+            </div>
+            {% comment %} 별점 {% endcomment %}
+            <div class="flex flex-col gap-1 mb-5">
+              <span class="font-12">평가</span>
+              <span class="rating_box">
+                <div class="rating">
+                  ★★★★★
+                  <span class="rating_star">★★★★★</span>
+                  {% comment %} 실제 슬라이더 {% endcomment %}
+                  <input type="range" name="score" id="score" value="0" step="1" min="0" max="10">
+                </div>
+              </span>
+            </div>
             {% comment %} 내용작성 {% endcomment %}
             <div class="flex flex-col gap-2 mb-5">
               <p>{{ comment_form.content.label }}</p>
@@ -256,6 +285,6 @@
 <script src="{% static 'js/gardenCommentDropdown.js' %}"></script>
 <script src="{% static 'js/gardenCommentLike.js' %}"></script>
 <script src="{% static 'js/gardenCommentCreateModal.js' %}"></script>
-<script src="{% static 'js/gardenCommentCreate.js' %}"></script>
 <script src="{% static 'js/gardenCommentDelete.js' %}"></script>
+<script src="{% static 'js/gardenCommentRating.js' %}"></script>
 {% endblock script %}

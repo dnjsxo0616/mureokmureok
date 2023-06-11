@@ -8,7 +8,7 @@ class PlantImageForm(forms.ModelForm):
         model = PlantImage
         fields = ['image']
         widgets = {
-            'image': forms.ClearableFileInput(attrs={'multiple': True}),
+            'image': forms.ClearableFileInput(),
         }
 
 class PlantForm(forms.ModelForm):
@@ -164,7 +164,6 @@ class PlantForm(forms.ModelForm):
         widget=forms.ClearableFileInput(
             attrs={
                 'class': 'w-96 bg-white border rounded-md focus:outline-none focus:ring-1 focus:ring-[#1EB564] text-gray-400',
-                'multiple': True
             }
         )
     )

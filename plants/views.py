@@ -17,7 +17,7 @@ def index(request):
 
     context = {
         'page_obj': page_obj,
-        'room_name': "broadcast"
+        'room_name': "broadcast",
     }
     return render(request, 'plants/index.html', context)
 

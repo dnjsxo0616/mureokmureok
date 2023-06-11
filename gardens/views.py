@@ -12,11 +12,11 @@ def index(request):
     gardens = Garden.objects.order_by('-created_at')
     paginator = Paginator(gardens, 8)  
     page_number = request.GET.get('page')  
-    page_obj = paginator.get_page(page_number) 
+    page_obj = paginator.get_page(page_number)
     
     content = {
         'page_obj': page_obj,
-        'room_name': "broadcast"
+        'room_name': "broadcast",
     }
     return render(request, 'gardens/index.html', content)
 
@@ -59,6 +59,7 @@ def comment(request, garden_pk):
             comment = comment_form.save(commit=False)
             comment.garden = garden
             comment.user = request.user
+            comment.score = request.POST.get('score')
             comment.save()
             return redirect('gardens:detail', garden_pk)
     else:
@@ -173,6 +174,7 @@ def detail(request, garden_pk):
             comment = comment_form.save(commit=False)
             comment.garden = garden
             comment.user = request.user
+            comment.score = request.POST.get('score')
             comment.save()
             return redirect('gardens:detail', garden_pk=garden_pk)
     else:

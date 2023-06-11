@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
-from imagekit.models import ImageSpecField
-from imagekit.processors import Thumbnail
+from imagekit.models import ImageSpecField, ProcessedImageField
+from imagekit.processors import Thumbnail, ResizeToFit
 from django.utils import timezone
 from datetime import timedelta,datetime
 from django_ckeditor_5.fields import CKEditor5Field
@@ -44,5 +44,34 @@ class Review(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
     title = models.CharField(max_length=20)
-    content = models.TextField()
+    score = models.IntegerField()
+    content = models.TextField(null=False)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def review_images_path(instance, filename):
+        return f'reviews/{instance.title}/{filename}'
+    image = ProcessedImageField(
+        upload_to=review_images_path, 
+        processors=[ResizeToFit(800, 800)], 
+        format='JPEG',
+        options={'quality': 100}
+    )
+
+    @property
+    def created_time(self):
+        if self.created_at is None:
+            return False
+
+        time = datetime.now(tz=timezone.utc) - self.created_at
+
+        if time < timedelta(minutes=1):
+            return '방금 전'
+        elif time < timedelta(hours=1):
+            return str(int(time.seconds / 60)) + '분 전'
+        elif time < timedelta(days=1):
+            return str(int(time.seconds / 3600)) + '시간 전'
+        elif time < timedelta(days=7):
+            time = datetime.now(tz=timezone.utc).date() - self.created_at.date()
+            return str(time.days) + '일 전'
+        else:
+            return False
