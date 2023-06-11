@@ -144,11 +144,55 @@
                 
                     {% comment %} 리뷰 수정 및 삭제 부분{% endcomment %}
                     <div class="absolute right-0 z-10 mt-2 w-36 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="review-menu-button" tabindex="-1" id="review-dropdown" style="display: none;">
-                      <form method="POST" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" action="{% url 'sales:update_review' product.pk review.pk %}">
-                        {% csrf_token %}
-                        <button type="submit" class="w-full text-start">수정하기</button>
-                      </form>
+                      <div id="comment-update-btn" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">수정하기</div>
                       <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="deleteReview(event, {{ product.pk }}, {{ review.pk }})">삭제하기</a>
+                    </div>
+                  </div>
+
+                  {% comment %} 댓글 업데이트 modal {% endcomment %}
+                  <div class="relative z-30 modal-overlay hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="comment-update-modal">
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" id="comment-bg"></div>
+                    <div class="fixed top-1/2 start-1/2 -translate-x-1/2 -translate-y-1/2 transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                      <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start w-full">
+                          <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
+                            <h3 class="text-base font-semibold leading-6 text-gray-900 mb-5" id="modal-title">리뷰수정</h3>
+                            <form method="POST" class="block text-sm text-gray-700 cursor-pointer" action="{% url 'sales:update_review' product.pk review.pk %}">
+                              {% csrf_token %}
+                              {% comment %} 제목작성 {% endcomment %}
+                              <div class="flex flex-col gap-2 mb-5">
+                                <p>{{ review_form.title.label }}</p>
+                                <p>{{ review_form.title }}</p>
+                              </div>
+                              {% comment %} 별점 {% endcomment %}
+                              <div class="flex flex-col gap-1 mb-5">
+                                <span class="font-12">평가</span>
+                                <span class="rating_box">
+                                  <div class="rating">
+                                    ★★★★★
+                                    <span class="rating_star">★★★★★</span>
+                                    {% comment %} 실제 슬라이더 {% endcomment %}
+                                    <input type="range" name="score" id="score" value="0" step="1" min="0" max="10">
+                                  </div>
+                                </span>
+                              </div>
+                              {% comment %} 내용작성 {% endcomment %}
+                              <div class="flex flex-col gap-2 mb-5">
+                                <p>{{ review_form.content.label }}</p>
+                                <p>{{ review_form.content }}</p>
+                              </div>
+                              {% comment %} 사진첨부 {% endcomment %}
+                              <div class="flex flex-col gap-2 mb-5">
+                                <p>{{ review_form.image.label }}</p>
+                                <p>{{ review_form.image }}</p>
+                              </div>
+                              <div class="flex justify-end">
+                                <input type="submit" class="bg-[#1EB564] text-white p-[5px] px-3 rounded-lg cursor-pointer hover:bg-[#148D4C]" value="수 정">
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   {% endif %}
@@ -290,6 +334,7 @@
 <script src="{% static 'js/saleReviewDropdown.js' %}"></script>
 <script src="{% static 'js/saleReviewDelete.js' %}"></script>
 <script src="{% static 'js/saleReviewRating.js' %}"></script>
+<script src="{% static 'js/gardenCommentUpdate.js' %}"></script>
 
 <script>
   // 수량에 따른 총 가격

@@ -4,16 +4,14 @@
 
 {% block head %}
 <title>검색</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/assets/owl.carousel.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/assets/owl.theme.default.min.css">
+
 <link rel="stylesheet" href="{% static 'css/search.css' %}">
 {% endblock head %}
 
 
 {% block content %}
 <p class='title--content--2 mt-0'>검색된 식물원</p>
-<div class="slider-1">
-    <div class="owl-carousel owl-theme">
+
         {% for garden in search_result_gardens %}
         <div class="card--border card--border--gray">
         <a href="{% url 'gardens:detail' garden.pk %}">
@@ -28,13 +26,11 @@
         </a>  
         </div>
         {% endfor %}
-    </div>
-</div>
+
 
 
 <p class='title--content--2'>검색된 식물</p>
-<div class="slider-1">
-    <div class='owl-carousel owl-theme'>
+
         {% for plant in search_result_plants %}
         <div class='card--border card--border--gray'>
         <a href="{% url 'plants:detail' plant.pk %}">
@@ -48,13 +44,11 @@
         </a>  
         </div>
         {% endfor %}
-    </div>
-</div>
+
 
 
 <p class='title--content--2'>검색된 소모품</p>
-<div class="slider-1">
-    <div class='owl-carousel owl-theme'>
+
         {% for supply in search_result_supplies %}
         <div class='card--border card--border--gray'>
         <a href="{% url 'supplies:detail' supply.pk %}">
@@ -74,8 +68,7 @@
         </a>  
         </div>
         {% endfor %}
-    </div>
-</div>
+ 
 {% endblock content %}
 
 
