@@ -100,8 +100,8 @@ def detail(request, plant_pk):
     category_list = extract_list(plant.category)
     # preferences_list = extract_list(plant.preferences)
     # allergy_list = extract_list(plant.allergy)
-    flowering_list = extract_list(plant.flowering)
-    season_list = extract_list(plant.season)
+    # flowering_list = extract_list(plant.flowering)
+    # season_list = extract_list(plant.season)
     watering_list = extract_list(plant.watering)
     sunlight_list = extract_list(plant.sunlight)
     humidity_list = extract_list(plant.humidity)
@@ -114,8 +114,8 @@ def detail(request, plant_pk):
         'category_list': category_list,
         # 'preferences_list': preferences_list,
         # 'allergy_list': allergy_list,
-        'flowering_list': flowering_list,
-        'season_list': season_list,
+        # 'flowering_list': flowering_list,
+        # 'season_list': season_list,
         'watering_list': watering_list,
         'sunlight_list': sunlight_list,
         'humidity_list': humidity_list,

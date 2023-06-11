@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'channels',
     'alarms',
     'game',
+    'django_social_share',
     'rest_framework',
     'django_celery_results',
     'django_celery_beat',

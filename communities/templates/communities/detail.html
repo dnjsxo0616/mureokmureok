@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load social_share %}
 
 
 {% block head %}
@@ -76,9 +77,11 @@
               
               {% comment %} 게시글 수정 및 삭제 부분{% endcomment %}
               <div class="absolute right-0 z-10 mt-2 w-36 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="community-menu-button" tabindex="-1" id="community-dropdown" style="display: none;">
+                {% for community_comment in community_comments %}
                 <a class="block text-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" href="{% url 'communities:update' community.pk %}">
                   수정하기
                 </a>
+                {% endfor %}
                 <form method="POST" action="{% url 'communities:delete' community.pk %}" class="block px-4 py-2 text-start text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" onclick="return confirm('게시글을 삭제하시겠습니까?')">
                   {% csrf_token %}
                   <input type="submit" value="삭제하기" class="cursor-pointer">
@@ -183,6 +186,7 @@
         
                   {% comment %} 댓글 수정 및 삭제 드롭다운 버튼 {% endcomment %}
                   {% if request.user == community_comment.user %}
+             
                   <div class="relative">
                     <button type="button" class="rounded-md flex justify-center items-center bg-white p-1 hover:bg-gray-100" id="comment-menu-button" aria-expanded="false" aria-haspopup="true">
                       <span class="material-symbols-outlined text-[20px] text-black font-bold">more_vert</span>
@@ -190,15 +194,34 @@
                 
                     {% comment %} 댓글 수정 및 삭제 부분{% endcomment %}
                     <div class="absolute right-0 z-10 mt-2 w-36 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="comment-menu-button" tabindex="-1" id="comment-dropdown" style="display: none;">
-                      <form method="POST" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" action="{% url 'communities:community_comment_update' community.pk community_comment.pk %}">
-                        {% csrf_token %}
-                        <button type="submit" class="w-full text-start">수정하기</button>
-                      </form>
+                      <div id="comment-update-btn" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">수정하기</div>
                       <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="deleteComment(event, {{ community.pk }}, {{ community_comment.pk }})">삭제하기</a>
+
+                    </div>
+                  </div>
+                  
+                  {% comment %} 댓글 업데이트 modal {% endcomment %}
+                  <div class="relative z-30 modal-overlay hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="comment-update-modal">
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" id="comment-bg"></div>
+                    <div class="fixed top-1/2 start-1/2 -translate-x-1/2 -translate-y-1/2 transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                      <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start w-full">
+                          <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
+                            <h3 class="text-base font-semibold leading-6 text-gray-900 mb-5" id="modal-title">댓글수정</h3>
+                            <form method="POST" class="flex gap-3 block text-sm text-gray-700 cursor-pointer" action="{% url 'communities:community_comment_update' community.pk community_comment.pk %}">
+                              {% csrf_token %}
+                              <div class="w-full">{{ community_comment_form.content }}</div>
+                              <div class="flex justify-end">
+                                <input type="submit" class="bg-[#1EB564] text-white p-[5px] px-3 rounded-lg cursor-pointer hover:bg-[#148D4C]" value="수 정">
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   {% endif %}
-        
+                  
                 </div>
                 <div class="bg-gray-100 rounded-lg p-3">
                   <p class="text-[14px] text-gray-500 mb-2">{{ community_comment.created_time }}</p>
@@ -240,6 +263,13 @@
     </div>
   </div>
 </main>
+
+
+
+
+
+
+
 {% endblock content %}
 
 
@@ -249,5 +279,7 @@
 <script src="{% static 'js/communitiesCommentDropdown.js' %}"></script>
 <script src="{% static 'js/communityCommentLike.js' %}"></script>
 <script src="{% static 'js/communityCommentCreate.js' %}"></script>
+<script src="{% static 'js/communityCommentUpdate.js' %}"></script>
 <script src="{% static 'js/communityCommentDelete.js' %}"></script>
+<script src="{% static 'js/socialshare.js' %}"></script>
 {% endblock script %}

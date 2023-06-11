@@ -45,19 +45,19 @@
     display: inline-block;
     margin: 10px;
     padding: 0;
-    width: 400px;
+    width: 404px;
 }
 
-    #collage #sortable li {
-        background-size: 400% 400%;
-        border: none;
-        cursor: pointer;
-        margin: 0;
-        padding: 0;
-        float:left;
-        width: 100px;
-        height: 100px;
-    }
+#collage #sortable li {
+    background-size: 400% 400%;
+    border: none;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    float:left;
+    width: 100px;
+    height: 100px;
+}
 
 #collage button  {
     background-color:#f5f2f2;
