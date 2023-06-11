@@ -48,10 +48,10 @@
         </div>
         <div class="w-1/12 text-center text-[12px] text-gray-500">{{ cart_item.product.created_at|date:"Y-m-d" }}</div>
         <div class="w-1/12 pl-10">
-          <form action="{% url 'sales:remove_from_cart' cart_item.product.id %}" method="post">
+          <a href="#" onclick="deleteCart(event, {{ cart_item.product.pk }})" class="text-red-500 hover:text-red-700">
             {% csrf_token %}
-            <button type="submit" class="text-red-500 hover:text-red-700">삭제</button>
-          </form>
+            삭제
+          </a>
         </div>
       </div>
     {% endfor %}
@@ -110,7 +110,7 @@
 
 
 {% block script %}
-
+<script src="{% static 'js/baseCartDelete.js' %}"></script>
 <script>
   // 전체 선택 체크박스 클릭 시 개별 선택 체크박스 모두 체크
   document.getElementById("check-all").addEventListener("click", function() {

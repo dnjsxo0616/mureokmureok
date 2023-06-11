@@ -17,7 +17,7 @@ def index(request):
     content = {
         'notices': notices,
         'page_obj': page_obj,
-        'room_name': "broadcast"
+        'room_name': "broadcast",
     }
     return render(request, 'notices/index.html', content)
 

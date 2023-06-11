@@ -1,40 +1,76 @@
 {% extends 'base.html' %}
 {% load static %}
-<!-- 가격표시 -->
 {% load humanize %}
 
+
 {% block head %}
+<title>{{ product.title }}</title>
 <link rel="stylesheet" href="{% static 'css/sales_detail.css' %}">
 {% endblock head %}
 
+
 {% block content %}
-
-  <main class="mx-auto px-[200px] pt-10 pb-10">
-    <div class="flex mb-[50px]">
-      <section class="w-1/3">
-        <img class="detail_img" src="{{ product.photo.url }}" alt="">
-      </section>
-      <section class="w-2/3">
-        <div class="border-b pb-3 mb-5">
-          <div class="font-bold text-2xl mb-3">{{ product.title }}</div>
-          <div>
-            <span class="font-bold">상품 금액 : </span>
-            <span class="font-bold" >{{ product.price|intcomma }}원</span>
-            (1개)
+<main>
+  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+    <p class="text-[14px] text-gray-500 mt-10 mb-8">
+      <a href="{% url 'sales:index' %}" class="hover:text-black">
+        <span>상품</span>
+      </a> > {{ product.title }}
+    </p>
+    <div class="flex gap-8 mb-16">
+      <div class="w-10/12">
+        <div class="flex gap-10 justify-between mb-10">
+          {% comment %} 상품사진 {% endcomment %}
+          <div class="w-1/2 h-96 border rounded-xl overflow-hidden">
+            <img src="{{ product.photo.url }}" alt="" class="w-full h-full object-cover">
           </div>
-          <p class="text-gray-600">(최소 주문 수량 1개 이상)</p>
-        </div>
+  
+          {% comment %} 상품 이름 및 가격 구매버튼 {% endcomment %}
+          <div class="w-1/2 h-96 flex flex-col justify-between">
+  
+            {% comment %} 이름 및 가격 {% endcomment %}
+            <div class="border-b pb-5">
+              <p class="text-[14px] text-gray-500">{{ product.category }}</p>
+              <div class="flex items-center justify-between">
+                <h1 class="font-bold text-[25px] mb-2">{{ product.title }}</h1>
 
-        <div>
-          <div>
+                {% comment %} 상품 좋아요 {% endcomment %}
+                <form class='sale-like_forms' data-product-id='{{ product.pk }}'>
+                  {% csrf_token %}
+                  {% if request.user in product.like_users.all %}
+                    <button type="submit" class="flex items-center justify-center gap-1 px-2 w-fit h-10 border rounded-md hover:bg-gray-100">
+                      <span class="material-symbols-outlined text-red-600" id="sale-like-btn">favorite</span>
+                    </button>
+                  {% else %}
+                  <button type="submit" class="flex items-center justify-center gap-1 px-2 w-fit h-10 border rounded-md hover:bg-gray-100">
+                    <span class="material-symbols-outlined text-gray-500" id="sale-like-btn">favorite</span>
+                  </button>
+                  {% endif %}
+                </form>
+              </div>
+              <div class="flex items-end justify-between">
+                <p class="font-bold text-[#1EB564] text-[25px]">{{ product.price|intcomma }}원</p>
+
+                {% comment %} 좋아요 및 리뷰 개수 {% endcomment %}
+                <div class="flex items-center gap-3">
+                  <div class="flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[16px] mt-[0.5px]">favorite</span>
+                    <span id="sale-like-count" class="text-[14px]">{{ product.like_users.all|length }}</span>
+                  </div>
+                  <div class="flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[16px] mt-[0.5px]">chat_bubble</span>
+                    <span class="text-[14px]">{{ product.reviews.all|length }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+      
             <form method="post" action="{% url 'sales:add_to_cart' product.pk %}">
               {% csrf_token %}
-              <div class="border-b pb-4">
-                <div class="mb-3">
-                  <label for="quantity">수량</label>
-                </div>
+              <div class="border-b pb-5 flex flex-col gap-3">
+                <label for="quantity">수량</label>
+                
                 <div class="flex justify-between">
-                  {% comment %} <input type="number" name="quantity" value="1" min="1" class="border w-24 h-8 m-3" > {% endcomment %}
                   <div class="flex items-center">
                     <button type="button" class="px-3 py-1 bg-gray-300 text-gray-700 rounded-l">
                       -
@@ -47,179 +83,254 @@
                   <div class="mt-3 font-bold">총 상품금액: <span id="total-price">{{ product.price|intcomma }}원</span></div>
                 </div>
               </div>
-              <div class="flex flex-row-reverse mt-5">
-                <button type="submit" class="bg-white border border-[#1EB564] text-[#1EB564] rounded-md px-4 py-2 mx-1">장바구니 담기</button>
-                <button type="button" class="bg-[#1EB564] text-white rounded-md px-4 py-2 mx-1"><a  href="#">바로 구매하기</a></button>
+              <div class="flex justify-end mt-8 gap-3">
+                <button type="submit" class="bg-white border border-[#1EB564] text-[#1EB564] rounded-md px-4 py-2">장바구니 담기</button>
+                <button type="button" class="bg-[#1EB564] text-white rounded-md px-4 py-2"><a  href="#">바로 구매하기</a></button>
               </div>
             </form>
           </div>
         </div>
-      </section>
-    </div>
 
-    <review class="">
-      
-      <section>
-        <div class="mt-10">
-          <div>
-            <section class="flex justify-between">
-              <h2 class="text-2xl font-bold mb-3">리뷰</h2>
-              <div class="mb-4">
-                <button id="createReviewButton" class="bg-[#1EB564] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">리뷰 생성</button>
-              </div>
-              <div id="reviewModal" class="hidden fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
-                <div class="bg-white rounded-lg p-6 w-96">
-                  <form class="" action="{% url 'sales:create_review' product.pk %}" method="POST">
-                    {% csrf_token %}
-                    <div class="mb-4">
-                      <label for="title" class="block text-gray-700 text-sm font-bold mb-2">제목:</label>
-                      <input type="text" id="title" name="title" class="w-full border rounded-lg px-3 py-2">
-                    </div>
-                    <div class="mb-4">
-                      <label for="content" class="block text-gray-700 text-sm font-bold mb-2">내용:</label>
-                      <textarea id="content" name="content" class="w-full border rounded-lg px-3 py-2"></textarea>
-                    </div>
-                    <input type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    <button id="closeModalButton" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">닫기</button>
-                  </form>
-                </div>
-              </div>
-            </section>
-
-          </div>
-          {% if product.reviews%}
-            {% for review in product.reviews.all %}
-              <div class="border border-[#1EB564] rounded-lg p-4 mb-4">
-                <div class="flex justify-between items-center mb-2">
-                  <h3 class="text-lg font-bold">{{ review.title }}</h3>
-                  <div class="flex">
-                    <div  class="flex justify-end">
-                      <button id="updateReviewButton" class="text-blue-500 hover:text-blue-700 mr-2">수정</button>
-                    </div>
-                    <div id="reviewupdateModal" class="hidden fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
-                      <div class="bg-white rounded-lg p-6 w-96">
-                        <form class="" action="{% url 'sales:update_review' product.pk review.pk %}" method="POST">
-                          {% csrf_token %}
-                          <div class="mb-4">
-                            <label for="title" class="block text-gray-700 text-sm font-bold mb-2">제목:</label>
-                            <input type="text" id="title" name="title" class="w-full border rounded-lg px-3 py-2" value="{{ review.title }}">
-                          </div>
-                          <div class="mb-4">
-                            <label for="content" class="block text-gray-700 text-sm font-bold mb-2">내용:</label>
-                            <textarea id="content" name="content" class="w-full border rounded-lg px-3 py-2">{{ review.content }}</textarea>
-                          </div>
-                          <input type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                          <button id="closeModalupdateButton" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">닫기</button>
-                        </form>
-                      </div>
-                    </div>
-
-
-                    <form action="{% url 'sales:delete_review' product.pk review.pk %}" method="POST">
-                      {% csrf_token %}
-                      <button class="text-red-500 hover:text-red-700" type="submit">삭제</button>
-                    </form>
-                  </div>
-                </div>
-                <div class='flex justify-between'>
-                  <p class="text-gray-600">{{ review.content }}</p>
-                  <div >
-                    <p class="flex flex-row-reverse">{{review.user}}</p>
-                    <p>{{ review.created_at}}</p>
-                  </div>
-                </div>
-              </div>
-            {% endfor %}
-          {% else %}
-            <p class="text-gray-600">아직 리뷰가 없습니다.</p>
-          {% endif %}
+        <div class="flex justify-center gap-24 border-0 border-b-[1px] bg-white py-3 sticky top-[66px] z-20 text-gray-500">
+          <a href="#info" class="scrollspy-item">상품정보</a>
+          <a href="#review" class="scrollspy-item">리뷰</a>
         </div>
-      </section>
-    </review>
+        
+        {% comment %} 상품정보 {% endcomment %}
+        <section id="info" class="px-16 py-10 border-0 border-b-[1px]">
+          <p>{{ product.content|safe }}</p>
+        </section>
 
-
-  </main>
-
-  {% endblock content %}
+        {% comment %}  리뷰 부분 {% endcomment %}
+        <section id="review">
+          <div class="flex items-center justify-between pt-20 mb-5">
+            <div class="flex gap-3 items-center font-semibold text-[20px] ">
+              <h3>리뷰</h3>
+              <span class='text-gray-400'>{{ product.reviews.all|length }}</span>
+            </div>
   
-  {% block script %}
-    <script>
-      // 리뷰생성 모달
-      const createReviewButton = document.getElementById('createReviewButton');
-      const reviewModal = document.getElementById('reviewModal');
-      const closeModalButton = document.getElementById('closeModalButton');
-    
-      createReviewButton.addEventListener('click', () => {
-        reviewModal.classList.remove('hidden');
-      });
+            {% comment %} 리뷰 본문 작성 부분 {% endcomment %}
+            <div id="review-create-btn" class="cursor-pointer border p-1 px-2 rounded-md text-[14px] hover:bg-gray-100">리뷰작성</div>
+          </div>
+  
+          {% comment %}  작성된 리뷰 부분 {% endcomment %}
+          <div class="mb-16">
+            {% if reviews %}
       
-      closeModalButton.addEventListener('click', () => {
-        reviewModal.classList.add('hidden');
-      });
-    </script>
+            {% for review in reviews|dictsortreversed:'created_at' %}
+            <div class="flex gap-3 mb-5">
+              <a href="{% url 'accounts:profile' review.user.username %}" class="h-fit">
+                <div class="w-8 h-8 rounded-full overflow-hidden border-[1px] border-gray-400">
+                  {% if review.user.image %}
+                  <img src="{{ review.user.image.url }}" alt="" class="w-full h-full object-cover">
+                  {% else %}
+                  <img src="{% static 'img/no_profile.jpg' %}" alt="" class="w-full h-full object-cover">
+                  {% endif %}
+                </div>
+              </a>
+        
+              <div class="w-full">
+                <div class="flex justify-between items-center mb-2">
+                  <a href="{% url 'accounts:profile' review.user.username %}">
+                    <p class="text-[16px] font-semibold">{{ review.user.username }}</p>
+                  </a>
+        
+                  {% comment %} 리뷰 수정 및 삭제 드롭다운 버튼 {% endcomment %}
+                  {% if request.user == review.user %}
+                  <div class="relative">
+                    <button type="button" class="rounded-md flex justify-center items-center bg-white p-1 hover:bg-gray-100" id="review-menu-button" aria-expanded="false" aria-haspopup="true">
+                      <span class="material-symbols-outlined text-[20px] text-black font-bold">more_vert</span>
+                    </button>
+                
+                    {% comment %} 리뷰 수정 및 삭제 부분{% endcomment %}
+                    <div class="absolute right-0 z-10 mt-2 w-36 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="review-menu-button" tabindex="-1" id="review-dropdown" style="display: none;">
+                      <form method="POST" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" action="{% url 'sales:update_review' product.pk review.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="w-full text-start">수정하기</button>
+                      </form>
+                      <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="deleteReview(event, {{ product.pk }}, {{ review.pk }})">삭제하기</a>
+                    </div>
+                  </div>
+                  {% endif %}
+        
+                </div>
+                <div class="bg-gray-100 rounded-lg p-3">
+                  {% comment %} 리뷰 점수 {% endcomment %}
+                  <span>{{ review.score }}</span>
 
+                  {% comment %} 리뷰작성시간 {% endcomment %}
+                  <p class="text-[14px] text-gray-500 mb-2">{{ review.created_time }}</p>
+                  
+                  {% comment %} 리뷰 제목 {% endcomment %}
+                  <p class="font-semibold">{{ review.title }}</p>
   
-    <script>
-      // 수정 버튼 및 모달 요소 가져오기
-      const updateReviewButton = document.getElementById('updateReviewButton');
-      const reviewupdateModal = document.getElementById('reviewupdateModal');
-      const closeModalupdateButton = document.getElementById('closeModalupdateButton');
-    
-      // 수정 버튼에 클릭 이벤트 리스너 추가
+                  {% comment %} 리뷰 내용 {% endcomment %}
+                  <p class="text-[16px] mb-5">{{ review.content }}</p>
   
-      updateReviewButton.addEventListener('click', () => {
-        reviewupdateModal.classList.remove('hidden');
-      });
-    
-      // 모달 닫기 버튼에 클릭 이벤트 리스너 추가
-      closeModalupdateButton.addEventListener('click', () => {
-        reviewupdateModa.classList.add('hidden');
-      });
-    </script>
+                  {% comment %} 리뷰 사진 {% endcomment %}
+                  <div class="w-36 h-36 overflow-hidden rounded-md border">
+                    {% if review.image %}
+                    <img src="{{ review.image.url }}" alt="" class="w-full h-full object-cover">
+                    {% else %}
+                    <img src="{% static 'img/no_image.jpg' %}" alt="" class="w-full h-full object-cover">
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="w-full flex justify-center">
+              <p class="text-gray-500">작성된 리뷰가 없어요</p>
+            </div>
+            {% endif %}
+          </div>
+        </section>
+      </div>
+  
+      <div class="w-2/12">
+        <div class="w-full h-96 border rounded-lg p-3 sticky top-[80px]">
+          {% comment %} <div class="border border-[#1EB564] text-[#1EB564] text-center rounded-md p-2 px-3 mt-36 cursor-pointer">+ 옵션 선택하기</div> {% endcomment %}
+
+          <div class="h-full flex flex-col justify-between">
+            <div>
+              <div class="w-full h-32 rounded-md overflow-hidden border mb-2">
+                <img src="{{ product.photo.url }}" alt="" class="w-full h-full object-cover">
+              </div>
+              <div class="flex items-center justify-between">
+                <h1 class="text-[14px] font-semibold">{{ product.title }}</h1>
+                <div class="rounded-full w-5 h-5 p-1 text-white bg-gray-300 flex items-center justify-center cursor-pointer hover:bg-gray-400">
+                  <span class="material-symbols-outlined text-[14px] font-semibold">close</span>
+                </div>
+              </div>
+              <p class="text-[14px] text-gray-500">{{ product.price|intcomma }}원</p>
+            </div>
+
+            <div>
+              <form method="post" action="{% url 'sales:add_to_cart' product.pk %}">
+                {% csrf_token %}
+                <div class="w-full flex items-center">
+                  <button type="button" class="px-3 py-1 bg-gray-300 text-gray-700 rounded-l">
+                    -
+                  </button>
+                  <input type="number" name="quantity" value="1" min="1" class=" border w-full h-8 px-2 text-center">
+                  <button type="button" class="px-3 py-1 bg-gray-300 text-gray-700 rounded-r">
+                    +
+                  </button>
+                </div>
+                <div class="mt-3 font-bold text-center mb-2">총 상품금액: <span id="total-price">{{ product.price|intcomma }}원</span></div>
+                <div class="flex flex-col gap-2">
+                  <button type="submit" class="w-full bg-white border border-[#1EB564] text-[14px] text-[#1EB564] rounded-md px-4 py-2">장바구니 담기</button>
+                  <button type="button" class="w-full bg-[#1EB564] text-[14px] text-white rounded-md px-4 py-2"><a  href="#">바로 구매하기</a></button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
 
 
-    <script>
-      // 수량에 따른 총 가격
+{% comment %} 리뷰생성 modal {% endcomment %}
+<div class="relative z-30 modal-overlay hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="review-create-modal">
+  <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" id="review-bg"></div>
+  <div class="fixed top-1/2 start-1/2 -translate-x-1/2 -translate-y-1/2 transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+    <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+      <div class="sm:flex sm:items-start w-full">
+        <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
+          <h3 class="text-base font-semibold leading-6 text-gray-900 mb-8" id="modal-title">리뷰작성</h3>
+          <form action="{% url 'sales:create_review' product.pk %}" method="POST" id="sale_review-Form" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% comment %} 제목작성 {% endcomment %}
+            <div class="flex flex-col gap-2 mb-5">
+              <p>{{ review_form.title.label }}</p>
+              <p>{{ review_form.title }}</p>
+            </div>
+            {% comment %} 별점 {% endcomment %}
+            <div class="flex flex-col gap-1 mb-5">
+              <span class="font-12">평가</span>
+              <span class="rating_box">
+                <div class="rating">
+                  ★★★★★
+                  <span class="rating_star">★★★★★</span>
+                  {% comment %} 실제 슬라이더 {% endcomment %}
+                  <input type="range" name="score" id="score" value="0" step="1" min="0" max="10">
+                </div>
+              </span>
+            </div>
+            {% comment %} 내용작성 {% endcomment %}
+            <div class="flex flex-col gap-2 mb-5">
+              <p>{{ review_form.content.label }}</p>
+              <p>{{ review_form.content }}</p>
+            </div>
+            {% comment %} 사진첨부 {% endcomment %}
+            <div class="flex flex-col gap-2 mb-5">
+              <p>{{ review_form.image.label }}</p>
+              <p>{{ review_form.image }}</p>
+            </div>
+            <div class="flex justify-end">
+              <input type="submit" class="bg-[#1EB564] text-white p-[5px] px-3 rounded-lg cursor-pointer hover:bg-[#148D4C]" value="작 성">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
 
-      function updateTotalPrice() {
-        var price = {{ product.price }};
-        var quantity = document.getElementsByName('quantity')[0].value;
-        var total = price * quantity;
-        document.getElementById('total-price').textContent = total.toLocaleString() + '원';
-      }
-    
-      document.getElementsByName('quantity')[0].addEventListener('input', updateTotalPrice);
-    </script>
-    
 
-    <script>
-      // 버튼 플러스 마이너스
+{% block script %}
+<script src="{% static 'js/saleLike.js' %}"></script>
+<script src="{% static 'js/saleDropdown.js' %}"></script>
+<script src="{% static 'js/saleScrollspy.js' %}"></script>
+<script src="{% static 'js/saleReviewCreateModal.js' %}"></script>
+<script src="{% static 'js/saleReviewDropdown.js' %}"></script>
+<script src="{% static 'js/saleReviewDelete.js' %}"></script>
+<script src="{% static 'js/saleReviewRating.js' %}"></script>
 
-      function updateTotalPrice() {
-        var price = {{ product.price }};
-        var quantity = document.getElementsByName('quantity')[0].value;
-        var total = price * quantity;
-        document.getElementById('total-price').textContent = total.toLocaleString() + '원';
-      }
-    
-      function decrementQuantity() {
-        var quantity = document.getElementsByName('quantity')[0];
-        if (parseInt(quantity.value) > 1) {
-          quantity.value = parseInt(quantity.value) - 1;
-          updateTotalPrice();
-        }
-      }
-    
-      function incrementQuantity() {
-        var quantity = document.getElementsByName('quantity')[0];
-        quantity.value = parseInt(quantity.value) + 1;
-        updateTotalPrice();
-      }
-    
-      document.getElementsByName('quantity')[0].addEventListener('input', updateTotalPrice);
-      document.getElementsByClassName('rounded-l')[0].addEventListener('click', decrementQuantity);
-      document.getElementsByClassName('rounded-r')[0].addEventListener('click', incrementQuantity);
-    </script>
+<script>
+  // 수량에 따른 총 가격
+
+  function updateTotalPrice() {
+    var price = {{ product.price }};
+    var quantity = document.getElementsByName('quantity')[0].value;
+    var total = price * quantity;
+    document.getElementById('total-price').textContent = total.toLocaleString() + '원';
+  }
+
+  document.getElementsByName('quantity')[0].addEventListener('input', updateTotalPrice);
+</script>
+
+
+<script>
+  // 버튼 플러스 마이너스
+
+  function updateTotalPrice() {
+    var price = {{ product.price }};
+    var quantity = document.getElementsByName('quantity')[0].value;
+    var total = price * quantity;
+    document.getElementById('total-price').textContent = total.toLocaleString() + '원';
+  }
+
+  function decrementQuantity() {
+    var quantity = document.getElementsByName('quantity')[0];
+    if (parseInt(quantity.value) > 1) {
+      quantity.value = parseInt(quantity.value) - 1;
+      updateTotalPrice();
+    }
+  }
+
+  function incrementQuantity() {
+    var quantity = document.getElementsByName('quantity')[0];
+    quantity.value = parseInt(quantity.value) + 1;
+    updateTotalPrice();
+  }
+
+  document.getElementsByName('quantity')[0].addEventListener('input', updateTotalPrice);
+  document.getElementsByClassName('rounded-l')[0].addEventListener('click', decrementQuantity);
+  document.getElementsByClassName('rounded-r')[0].addEventListener('click', incrementQuantity);
+</script>
 {% endblock script %}
-
-    

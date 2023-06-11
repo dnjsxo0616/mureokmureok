@@ -9,6 +9,7 @@ from channels.layers import get_channel_layer
 import json
 from django.template import RequestContext
 
+
 def main(request):
     form = CustomAuthenticationForm
     context = {
@@ -19,9 +20,10 @@ def main(request):
 
 
 def home(request):
-    return render(request, 'home.html', {
-        'room_name': "broadcast"
-    })
+    context = {
+        'room_name': "broadcast",
+    }
+    return render(request, 'home.html', context)
 
 
 from asgiref.sync import async_to_sync
