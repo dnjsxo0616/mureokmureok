@@ -60,7 +60,7 @@
                             <a href="{% url 'gardens:index' %}" class="text-gray-400 hover:text-black px-2 py-2 text-sm font-medium">식물원</a>
                             <a href="{% url 'communities:index' %}" class="text-gray-400 hover:text-black px-2 py-2 text-sm font-medium">커뮤니티</a>
                             <a href="{% url 'game:play_puzzle' %}" class="text-gray-400 hover:text-black px-2 py-2 text-sm font-medium">미니게임</a>
-                            <a href="#" class="text-gray-400 hover:text-black px-2 py-2 text-sm font-medium">쇼핑</a>
+                            <a href="{% url 'sales:index' %}" class="text-gray-400 hover:text-black px-2 py-2 text-sm font-medium">쇼핑</a>
                             <a href="{% url 'managements:index' %}" class="text-gray-400 hover:text-black px-2 py-2 text-sm font-medium">My Plants</a>
                         </div>
                     </div>
@@ -78,8 +78,8 @@
                     
                     {% if request.user.is_authenticated %}
                     {% comment %} 장바구니 {% endcomment %}
-                    <button type="button" class="mt-1 text-gray-400 hover:text-black">
-                        <span class="material-symbols-outlined">shopping_cart</span>
+                    <button type="button" class="mt-1 text-gray-400 hover:text-black"><a href="{% url 'sales:cart' %}">
+                        <span class="material-symbols-outlined">shopping_cart</span></a>
                     </button>
 
                     <div class="relative ml-2">

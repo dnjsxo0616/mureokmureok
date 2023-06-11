@@ -1,15 +1,18 @@
-{% comment %} {% extends 'base.html' %} {% endcomment %}
+{% extends 'base.html' %}
 
-{% block content %}
+{% block head %}
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-    {% load static %}
-    {% comment %} <link href="{% static 'css/style.css' %}" rel="stylesheet" /> {% endcomment %}
-    <link href="{% static 'css/image-puzzle.css' %}" rel="stylesheet" />
-    <script src="{% static 'js/jquery-2.1.1.min.js' %}"></script>
-    <script src="{% static 'js/jquery-ui.js' %}"></script>
-    <script src="{% static 'js/image-puzzle.js' %}"></script>
-</head>
+        {% load static %}
+        {% comment %} <link href="{% static 'css/style.css' %}" rel="stylesheet" /> {% endcomment %}
+        <link href="{% static 'css/image-puzzle.css' %}" rel="stylesheet" />
+        <script src="{% static 'js/jquery-2.1.1.min.js' %}"></script>
+        <script src="{% static 'js/jquery-ui.js' %}"></script>
+        <script src="{% static 'js/image-puzzle.js' %}"></script>
+    </head>
+{% endblock head %}
+
+{% block content %}
 <body>
     <div id="collage">
         <div id="playPanel" style="padding:5px;display:none;">

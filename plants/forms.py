@@ -76,28 +76,28 @@ class PlantForm(forms.ModelForm):
     #     choices = FLOWERING_CHOICE,
     # )
 
-    FLOWERING_CHOICE = [(str(i), str(i)) for i in range(1, 31)]
+    # FLOWERING_CHOICE = [(str(i), str(i)) for i in range(1, 31)]
 
-    flowering = forms.ChoiceField(
-        label='개화시기',
-        widget=forms.Select(attrs={
-            'class': 'bg-white border-[1px] border-gray-300 p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
-            'id': 'blossom',
-        }),
-        choices=FLOWERING_CHOICE,
-    )
+    # flowering = forms.ChoiceField(
+    #     label='개화시기',
+    #     widget=forms.Select(attrs={
+    #         'class': 'bg-white border-[1px] border-gray-300 p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
+    #         'id': 'blossom',
+    #     }),
+    #     choices=FLOWERING_CHOICE,
+    # )
 
-    SEASON_CHOICE = [
-        ('사계절', '사계절'), ('봄', '봄'), ('여름', '여름'), ('가을', '가을'), ('겨울', '겨울'),
-    ]
+    # SEASON_CHOICE = [
+    #     ('사계절', '사계절'), ('봄', '봄'), ('여름', '여름'), ('가을', '가을'), ('겨울', '겨울'),
+    # ]
 
-    season = forms.MultipleChoiceField(
-        label = '계절',
-        widget = forms.CheckboxSelectMultiple(attrs={
-            'id': 'season',
-        }),
-        choices = SEASON_CHOICE,
-    )
+    # season = forms.MultipleChoiceField(
+    #     label = '계절',
+    #     widget = forms.CheckboxSelectMultiple(attrs={
+    #         'id': 'season',
+    #     }),
+    #     choices = SEASON_CHOICE,
+    # )
 
     CATEGORY_CHOICE = [
         ('실내식물', '실내식물'), ('실외식물', '실외식물'),
@@ -181,4 +181,4 @@ class PlantForm(forms.ModelForm):
     )
     class Meta:
         model = Plant
-        fields = ('title', 'content', 'allergy', 'flowering', 'season', 'category', 'watering', 'sunlight', 'humidity', 'temperature',  'images', 'tags',)
+        fields = ('title', 'content', 'allergy', 'category', 'watering', 'sunlight', 'humidity', 'temperature',  'images', 'tags',)
