@@ -14,6 +14,16 @@ class ManagementForm(forms.ModelForm):
         label='식물 선택',
         required=True
     )
+    nickname = forms.CharField(
+        label='식물 애칭',
+        widget=forms.TextInput(
+            attrs={
+                'class':'w-96 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
+                'id': '식물 애칭',
+                'placeholder': '식물 애칭을 입력해주세요.',
+            }
+        )
+    )
     managementdate = forms.DateTimeField(
         label="식물 만난 날짜",
         widget=NumberInput(
@@ -93,6 +103,29 @@ class CalenderEntryForm(forms.ModelForm):
         }),
         choices= TEMPERATURE_CHOICE,
     )
+    things_choices = [
+        ('yes', '영양제 or 비료 줬어요!'),
+        ('no', '영양제 or 비료 안줬어요!'),
+    ]
+    things = forms.ChoiceField(
+        label='영양제 or 비료 주기',
+        widget=forms.RadioSelect(
+            attrs={
+                'id': 'things',
+            }
+        ),
+        choices = things_choices,
+    )
+    significant = forms.CharField(
+        label='특이 사항',
+        widget=forms.TextInput(
+            attrs={
+                'class':'w-96 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
+                'id': '특이 사항',
+                'placeholder': '특이 사항을 입력해주세요',
+            }
+        )
+    )
     entrydate = forms.DateTimeField(
         label="날짜",
         widget=NumberInput(
@@ -105,4 +138,4 @@ class CalenderEntryForm(forms.ModelForm):
 
     class Meta:
         model = CalenderEntry
-        fields = ('watering', 'sunlight', 'humidity', 'temperature', 'entrydate')
+        fields = ('watering', 'sunlight', 'humidity', 'temperature', 'things', 'significant', 'entrydate')

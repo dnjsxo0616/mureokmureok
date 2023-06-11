@@ -238,6 +238,41 @@ def detail(request, management_pk):
         score += 5
         temperature_score_reason = '최적 온도를 확인하세요!'
 
+    things_yes_entries_count = CalenderEntry.objects.filter(
+        management=management,
+        entrydate__range=[start_date, end_date],
+        things="yes"
+    ).count()
+
+    things_score_reason = ''
+    if things_yes_entries_count == 1:
+        score += 20
+        things_score_reason = '소모품을 식물 기호에 맞게 주셔야합니다!'
+    elif things_yes_entries_count == 0:
+        score += 10
+        things_score_reason = '소모품은 선택입니다!'
+    else:
+        score += 0
+        things_score_reason = '너무 많이 주신 것 같아요!'
+
+
+    # significant_yes_entries_count = CalenderEntry.objects.filter(
+    #     management=management,
+    #     entrydate__range=[start_date, end_date],
+    #     significant="노란"
+    # ).count()
+
+    # significant_score_reason = ''
+    # if significant_yes_entries_count == 1:
+    #     score += 10
+    #     significant_score_reason = '소모품을 식물 기호에 맞게 주셔야합니다!'
+    # elif significant_yes_entries_count == 0:
+    #     score += 5
+    #     significant_score_reason = '소모품은 선택입니다!'
+    # else:
+    #     score += 0
+    #     significant_score_reason = '너무 많이 주신 것 같아요!'
+
 
     management.score = score
     management.save()
@@ -253,6 +288,7 @@ def detail(request, management_pk):
         'sunlight_score_reason': sunlight_score_reason,
         'humidity_score_reason': humidity_score_reason,
         'temperature_score_reason': temperature_score_reason,
+        'things_score_reason': things_score_reason,
         'room_name': "broadcast"
     }
     return render(request,'managements/detail.html', context)

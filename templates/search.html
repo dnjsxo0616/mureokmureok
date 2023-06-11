@@ -12,63 +12,94 @@
 {% block content %}
 <p class='title--content--2 mt-0'>검색된 식물원</p>
 
-        {% for garden in search_result_gardens %}
-        <div class="card--border card--border--gray">
+    <div class="grid grid-cols-4 gap-8 mb-10">
+        {% for supply in search_result_gardens %}
         <a href="{% url 'gardens:detail' garden.pk %}">
-            <img src="{{garden.image.url}}" class="rounded" alt="img">  
-            <div class="card--name--box">
-            <strong class="card--name">{{garden.title}}</strong>
+            <div class="w-full mb-5 flex gap-5">
+            <div class="flex flex-col gap-3">
+                <div class="rounded-xl border overflow-hidden relative">
+                <img src="{{garden.image.url}}" alt="" class="w-full h-full object-cover duration-200 ease-linear hover:scale-105">
+
+                <strong class='card--name'>{{garden.title}}</strong>
+                </div>
+                <div class="flex items-center justify-between px-2">
+                <h3 class="text-[16px] font-semibold">리뷰 {{product.comment_set.count}}</h3>
+                
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[16px] mt-[0.5px]">favorite</span>
+                    <span id="garden-like-count">좋아요 {{garden.like_users.count}}</span>
+                </div>
+                </div>
             </div>
-            <div class="card--tag--border pb-1">
-            <p><i class="bi bi-heart-fill card--rating__color me-2"></i>{{garden.like_users.count}}</p>
-            <p>리뷰 {{product.comment_set.count}}</p>
-            </div>  
-        </a>  
-        </div>
+            </div>
+        </a>
         {% endfor %}
+
+    </div>
+
 
 
 
 <p class='title--content--2'>검색된 식물</p>
 
-        {% for plant in search_result_plants %}
-        <div class='card--border card--border--gray'>
+    <div class="grid grid-cols-4 gap-8 mb-10">
+        {% for supply in search_result_plants %}
+
+
+
         <a href="{% url 'plants:detail' plant.pk %}">
-            <img src="{{ plant.plantimage.url}}" class='rounded' alt="{{ plant.title }}의 이미지">  
-            <div class='card--name--box'>
-            <strong class='card--name'>{{ plant.title }}</strong>
+            <div class="w-full mb-5 flex gap-5">
+            <div class="flex flex-col gap-3">
+                <div class="rounded-xl border overflow-hidden relative">
+                <img src="{{ plant.plantimage.url}}" alt="" class="w-full h-full object-cover duration-200 ease-linear hover:scale-105">
+
+                <strong class='card--name'>{{ plant.title }}</strong>
+                </div>
+                <div class="flex items-center justify-between px-2">
+                <h3 class="text-[16px] font-semibold">가격 {{ supply.price }}</h3>
+                
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[16px] mt-[0.5px]">favorite</span>
+                    <span id="garden-like-count">좋아요 {{ plant.like_users.count }}</span>
+                </div>
+                </div>
             </div>
-            <div class='card--tag--border pb-1'>
-            <p>좋아요 {{ plant.like_users.count }}</p>
             </div>
-        </a>  
-        </div>
+        </a>
         {% endfor %}
+    </div>
+
 
 
 
 <p class='title--content--2'>검색된 소모품</p>
 
+    <div class="grid grid-cols-4 gap-8 mb-10">
+
         {% for supply in search_result_supplies %}
-        <div class='card--border card--border--gray'>
         <a href="{% url 'supplies:detail' supply.pk %}">
-            <img src="{{ supply.Thumbnail.url}}" class='card--border__image rounded' alt="{{ supply.supply_name }}의 이미지">  
-            <div class='card--name--box'>
-            <strong class='card--name'>{{ supply.supply_name }}</strong>
+            <div class="w-full mb-5 flex gap-5">
+              <div class="flex flex-col gap-3">
+                <div class="rounded-xl border overflow-hidden relative">
+                  <img src="{{ supply.Thumbnail.url}}" alt="" class="w-full h-full object-cover duration-200 ease-linear hover:scale-105">
+  
+                  <strong class='card--name'>{{ supply.supply_name }}</strong>
+                </div>
+                <div class="flex items-center justify-between px-2">
+                  <h3 class="text-[16px] font-semibold">가격 {{ supply.price }}</h3>
+                  
+                  <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[16px] mt-[0.5px]">favorite</span>
+                    <span id="garden-like-count">좋아요 {{ supply.like.count }}</span>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class='card--tag--border'>
-            <p>가격 {{ supply.price }}</p>
-            <p>좋아요 {{ supply.like.count }}</p>
-            </div>
-            <div class='mt-1'>
-                {% for tag in supply.tags.all %}
-                <span class='me-2'>#{{tag}}</span>
-                {% endfor %}
-            </div>
-        </a>  
-        </div>
+          </a>
         {% endfor %}
- 
+
+    </div>
+
 {% endblock content %}
 
 
