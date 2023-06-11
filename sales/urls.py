@@ -26,4 +26,6 @@ urlpatterns = [
 
     path('order_list/', views.order_list, name='order_list'),
 
+
+
 ]
