@@ -1,10 +1,40 @@
 from django import forms
 from .models import Management, CalenderEntry
+from django.forms.widgets import NumberInput
+from plants.models import Plant
 
 class ManagementForm(forms.ModelForm):
+    plant = forms.ModelChoiceField(
+        queryset=Plant.objects.all(),
+        widget=forms.Select(
+            attrs={
+                'class': 'border rounded-md p-2 ps-3 w-96 h-auto focus:outline-none focus:ring-1 focus:ring-[#1EB564]'
+            }
+        ),
+        label='식물 선택',
+        required=True
+    )
+    managementdate = forms.DateTimeField(
+        label="식물 만난 날짜",
+        widget=NumberInput(
+            attrs={
+                'class': 'border rounded-md p-2 ps-3 w-full h-auto focus:outline-none focus:ring-1 focus:ring-[#1EB564]',
+                'type': 'date',
+            },
+        ),
+    )
+    photo = forms.FileField(
+        label = '이미지',
+        widget=forms.ClearableFileInput(
+            attrs={
+                'class': 'w-96 bg-white border rounded-md focus:outline-none focus:ring-1 focus:ring-[#1EB564] text-gray-400',
+                'multiple': True
+            }
+        )
+    )
     class Meta:
         model = Management
-        fields = '__all__'
+        fields = ('plant', 'photo', 'managementdate')
 
 
 
@@ -63,7 +93,16 @@ class CalenderEntryForm(forms.ModelForm):
         }),
         choices= TEMPERATURE_CHOICE,
     )
+    entrydate = forms.DateTimeField(
+        label="날짜",
+        widget=NumberInput(
+            attrs={
+                'class': 'border rounded-md p-2 ps-3 w-full h-8 focus:outline-none focus:ring-1 focus:ring-[#1EB564]',
+                'type': 'date',
+            },
+        ),
+    )
 
     class Meta:
         model = CalenderEntry
-        fields = ('watering', 'sunlight', 'humidity', 'temperature',)
+        fields = ('watering', 'sunlight', 'humidity', 'temperature', 'entrydate')

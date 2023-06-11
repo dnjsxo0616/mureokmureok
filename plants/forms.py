@@ -112,7 +112,8 @@ class PlantForm(forms.ModelForm):
     )
 
     WATERING_CHOICE = [
-        ('주1~2회', '주1~2회'), ('월1회이하', '월1회이하'), ('월1~2회', '월1~2회'),
+        ('주 1~2회', '주 1~2회'), ('주 2~3회', '주 2~3회'), ('주 3~4회', '주 3~4회'),
+        ('주 4~5회', '주 4~5회'), ('월1~2회', '월1~2회'), ('월1회이하', '월1회이하')
     ]
 
     watering = forms.MultipleChoiceField(
@@ -124,7 +125,7 @@ class PlantForm(forms.ModelForm):
     )
 
     SUNLIGHT_CHOICE = [
-        ('양지', '양지'), ('반양지', '반양지'), ('반음지', '반음지'),
+        ('양지', '양지'), ('반양지', '반양지'), ('반음지', '반음지'), ('음지', '음지'),
     ]
 
     sunlight = forms.MultipleChoiceField(

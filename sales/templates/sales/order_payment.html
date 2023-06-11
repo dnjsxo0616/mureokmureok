@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block head %}
+  <!-- jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+<!-- iamport.payment.js -->
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+<script type="text/javascript" src="https://cdn.iamport.kr/v1/iamport.js"></script>
+
+<script>
+    var IMP = window.IMP; 
+    IMP.init("imp43825152"); 
+  
+    var today = new Date();   
+    var hours = today.getHours(); // 시
+    var minutes = today.getMinutes();  // 분
+    var seconds = today.getSeconds();  // 초
+    var milliseconds = today.getMilliseconds();
+    var makeMerchantUid = hours +  minutes + seconds + milliseconds;
+
+    const payInfo = {
+        pg: "uplus.tlgdacomxpay",
+        pay_method: "card",
+        merchant_uid: {{order.order_number}}, //상점에서 생성한 고유 주문번호
+        name: "주문명:결제테스트",
+        buyer_email: "mureok@gmail.com",
+        amount: {{ order.price }},
+        buyer_name: "구매자이름",
+        appCard: true, // 설정시 신용카드 결제모듈에서 앱카드 결제만 활성화됩니다.
+
+    }
+    function requestPay() {
+        IMP.request_pay(payInfo,function (rsp) {
+            console.log(rsp)
+            if (rsp.success) {
+              // 결제가 성공한 경우
+              window.location.href = "{% url 'sales:order_complete' %}"; // 결제 완료 페이지로 이동
+            } else {
+              // 결제가 실패한 경우
+              alert("결제가 실패하였습니다. 다시 시도해주세요."); // 실패 메시지 표시
+            }
+
+        });
+    }
+</script>
+{% endblock head %}
+
+
+{% block content %}
+<div class="font-bold text-[45px] text-center border-b pb-3 mb-5">주문/결제</div>
+
+<div class="max-w-md mx-auto">
+  <div class="font-bold text-2xl text-left leading-relaxed">구매자 정보</div>
+  <table class="table-auto">
+    <tr>
+      <td class="border px-4 py-2">이름</td>
+      <td class="border px-4 py-2">{{ request.user }}</td>
+    </tr>
+    <tr>
+      <td class="border px-4 py-2">이메일</td>
+      <td class="border px-4 py-2">{{request.user.email }}</td>
+    </tr>
+    <tr>
+      <td class="border px-4 py-2">배송 주소</td>
+      <td class="border px-4 py-2">{{ order.delivery_address }}</td>
+    </tr>
+  </table>
+</div>
+
+<div class="max-w-md mx-auto">
+  <div class="font-bold text-2xl text-left leading-relaxed mt-8">배송 물품</div>
+  <table class="table-auto">
+    <tr>
+      <td class="border px-4 py-2">상품명</td>
+      <td class="border px-4 py-2">{{ order.product_name }}</td>
+    </tr>
+    <tr>
+      <td class="border px-4 py-2">수량</td>
+      <td class="border px-4 py-2">{{ order.quantity }}</td>
+    </tr>
+  </table>
+</div>
+
+<div class="max-w-md mx-auto">
+  <div class="font-bold text-2xl text-left leading-relaxed mt-8">결제 정보</div>
+  <table class="table-auto">
+    <tr>
+      <td class="border px-4 py-2">금액</td>
+      <td class="border px-4 py-2">{{ order.price|intcomma }}</td>
+    </tr>
+    <tr>
+      <td class="border px-4 py-2">할인쿠폰</td>
+      <td class="border px-4 py-2">0원 <span class="text-sm text-gray-400">적용 가능한 할인 쿠폰이 없습니다.</span></td> 
+    </tr>
+    <tr>
+      <td class="border px-4 py-2">배송비</td>
+      <td class="border px-4 py-2">0원</td>
+    </tr>
+  </table>
+</div>
+
+<div class="flex justify-center mt-8 mb-[50px]">
+  <form method="post" action="{% url 'sales:delete_order' order.pk %}">
+    {% csrf_token %}
+    <button type="submit" class="bg-white hover:bg-red-700 hover:text-white border border-red-500 text-red-500 font-bold rounded-md px-6 py-3 mx-2">주문 취소하기</button>
+  </form>
+  <button class="bg-white hover:bg-[#1EB564] hover:text-white border border-[#1EB564] text-[#1EB564] font-bold rounded-md px-6 py-3 mx-2" onclick="requestPay()">결제하기</button>
+</div>
+
+
+{% endblock content %}

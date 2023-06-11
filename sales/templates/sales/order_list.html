@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>나의 주문 정보</div>
+{% comment %} 가로로 넘치면 스크롤 {% endcomment %}
+<div class="overflow-x-auto">
+  {% comment %} min-w-full 최소 가로 너비 100%  / 분할선 divide-y{% endcomment %}
+    <table class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 divide-y divide-gray-200">
+        <thead>
+            <tr>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                    주문 번호
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                    주문 일자
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                    배송 주소
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                    상품명
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                    배송 상태
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                    수량
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                    가격
+                </th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            {% for order in orders %}
+            <tr>
+                <td class="px-6 py-4 whitespace-no-wrap">
+                    {{ order.order_number }}
+                </td>
+                <td class="px-6 py-4 whitespace-no-wrap">
+                    {{ order.order_date }}
+                </td>
+                <td class="px-6 py-4 whitespace-no-wrap">
+                    {{ order.delivery_address }}
+                </td>
+                <td class="px-6 py-4 whitespace-no-wrap">
+                    {{ order.product_name }}
+                </td>
+                <td class="px-6 py-4 whitespace-no-wrap">
+                  {% if order.payment_status %}
+                    배송 시작!!
+                  {% else %}
+                    배송 준비중
+                  {% endif %}
+                </td>
+                <td class="px-6 py-4 whitespace-no-wrap">
+                    {{ order.quantity }}
+                </td>
+                <td class="px-6 py-4 whitespace-no-wrap">
+                    {{ order.price }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}
