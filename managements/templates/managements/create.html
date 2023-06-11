@@ -6,38 +6,68 @@
 
 {% endblock head %}
 
-
 {% block content %}
-<form action="{% url 'managements:create' %}" method="POST" enctype="multipart/form-data">
-  {% csrf_token %}
-  {{ form.media }}
-  {% for field in form %}
-    {% if field.name == 'plant' %}
-      <div class="mb-3">
-        {{ field.label_tag }}
-        <div class="dropdown">
-          {{ field }}
-          <div class="dropdown-content">
-            <input type="text" placeholder="검색">
-            <ul class="plant-list">
-              <!-- 플랜트 목록이 동적으로 추가될 자리 -->
-            </ul>
+
+
+
+<main class="bg-gray-50">
+  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+    <div class="py-10 px-24">
+      <a href="{% url 'managements:index' %}" class="text-[14px] text-gray-500 hover:text-black"><p class="mb-3">식물 관리 돌아가기</p></a>
+      <h1 class="text-[25px] font-semibold mb-10">관리 식물 등록</h1>
+      <form action="{% url 'managements:create' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+      
+        {% comment %} 식물  {% endcomment %}
+        <div class="flex gap-3 items-center mb-8 w-full">
+          <div class="mb-2 w-2/12">{{ form.plant.label }} <span class="text-red-600 text-[20px]">*</span></div>
+          <div>
+            {{ form.plant }}
           </div>
         </div>
-      </div>
-    {% else %}
-      <div class="mb-3">
-        {{ field.label_tag }}
-        {{ field }}
-      </div>
-    {% endif %}
-  {% endfor %}
-  <button type="submit" class='d'>등록</button>
-</form>
+
+        {% comment %} 식물 사진 {% endcomment %}
+        <div class="flex gap-3 mb-8 w-full">
+          <div class="mb-2 w-2/12">{{ form.photo.label }} <span class="text-red-600 text-[20px]">*</span></div>
+          <div class="grow">{{ form.photo }}</div>
+        </div>
+        
+        {% comment %} 식물 만난 날짜 {% endcomment %}
+        <div class="flex gap-3 mb-8 w-full">
+          <div class="mb-2 w-2/12">{{ form.managementdate.label }} <span class="text-red-600 text-[20px]">*</span></div>
+          <div>{{ form.managementdate }}</div>
+        </div>
+
+
+        {% comment %} 생성버튼 {% endcomment %}
+        <div class="flex justify-end w-full">
+          <button type="submit" class='rounded-md bg-[#1EB564] text-white p-2 px-4 hover:bg-[#148D4C]'>등록하기</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {% endblock content %}
 
 
 {% block script %}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="{% static 'js/management_create.js' %}"></script>
+
+<script src="{% static 'js/managements_create.js' %}"></script>
 {% endblock script %}

@@ -80,23 +80,34 @@ def detail(request, management_pk):
         watering="yes"
     ).count()
 
+    watering_score_reason = ''
 
     if watering_numbers[0] <= watering_yes_entries_count <= watering_numbers[1]:
         score += 20
+        watering_score_reason = '물을 잘 주시고 계시네요!'
     elif watering_yes_entries_count == watering_numbers[0] + 2:
         score += 15
+        watering_score_reason = '물주기를 조금 줄여보세요!'
     elif watering_yes_entries_count == watering_numbers[0] + 3:
         score += 10
+        watering_score_reason = '물을 너무 많이 주고 계시네요!'
+    elif watering_yes_entries_count == watering_numbers[0] + 4:
+        score += 5
+        watering_score_reason = '꾸르륵 꾸르륵...(물에 잠기는 소리)'
     elif watering_yes_entries_count < watering_numbers[0]:
         difference = watering_numbers[0] - watering_yes_entries_count
         if difference == 1:
             score += 15
+            watering_score_reason = '물을 조금 덜 주고 계시네요!'
         elif difference == 2:
             score += 10
+            watering_score_reason = '친구가 목이 마르다는데요..'
         else:
             score += 5
+            watering_score_reason = '곧 말라버릴지도...'
     else:
         score += 5
+        watering_score_reason = '일지에 기록해보세요!'
 
     sunlight_level = management.plant.sunlight
     
@@ -107,53 +118,75 @@ def detail(request, management_pk):
         sunlight="yes"
     ).count()
 
+    sunlight_score_reason = ''
+
     if '양지' in sunlight_level:
         if sunlight_yes_entries_count >= 4:
             score += 20
+            sunlight_score_reason = '햇빛 양이 충분해요!'
         elif sunlight_yes_entries_count == 3:
             score += 15
+            sunlight_score_reason = '햇빛 양이 살짝 부족해요!'
         elif sunlight_yes_entries_count == 2:
             score += 10
+            sunlight_score_reason = '햇빛 양이 많이 부족해요!'
         else:
             score += 5
+            sunlight_score_reason = '친구가 빛이 보고싶다는데요...'
 
     elif '반양지' in sunlight_level:
         if sunlight_yes_entries_count == 5:
             score += 10
+            sunlight_score_reason = '햇빛 양이 너무 많아요!'
         elif sunlight_yes_entries_count == 4:
             score += 15
+            sunlight_score_reason = '햇빛 양이 조금 많아요!'
         elif sunlight_yes_entries_count == 3:
             score += 20
+            sunlight_score_reason = '햇빛 양이 충분해요!'
         elif sunlight_yes_entries_count == 2:
             score += 15
+            sunlight_score_reason = '햇빛 양이 살짝 부족해요!'
         elif sunlight_yes_entries_count == 1:
             score += 10
+            sunlight_score_reason = '햇빛 양이 많이 부족해요!'
         else:
             score += 5
+            sunlight_score_reason = '친구가 빛이 보고싶다는데요...'
 
     elif '반음지' in sunlight_level:
         if sunlight_yes_entries_count == 3:
             score += 15
+            sunlight_score_reason = '햇빛 양이 조금 많아요!'
         elif sunlight_yes_entries_count == 4:
             score += 10
+            sunlight_score_reason = '햇빛 양이 너무 많아요!'
         elif sunlight_yes_entries_count == 2:
             score += 20
+            sunlight_score_reason = '햇빛 양이 충분해요!'
         elif sunlight_yes_entries_count == 1:
             score += 15
+            sunlight_score_reason = '햇빛 양이 살짝 부족해요!'
         elif sunlight_yes_entries_count == 0:
             score += 10
+            sunlight_score_reason = '햇빛 양이 살짝 부족해요!'
         else:
             score += 5
+            sunlight_score_reason = '반음지라도 햇빛을 한번쯤은...'
 
     elif '음지' in sunlight_level:
         if sunlight_yes_entries_count == 1:
             score += 15
+            sunlight_score_reason = '햇빛 양이 조금 많아요!'
         elif sunlight_yes_entries_count == 2:
             score += 10
+            sunlight_score_reason = '햇빛 양이 너무 많아요!'
         elif sunlight_yes_entries_count == 0:
             score += 20
+            sunlight_score_reason = '햇빛 양이 충분해요!'
         else:
             score += 5
+            sunlight_score_reason = '음지 식물은 빛을 싫어해요..'
 
 
     humidity_level = management.plant.humidity
@@ -163,18 +196,23 @@ def detail(request, management_pk):
         entrydate__range=[start_date, end_date],
     ).exclude(humidity=humidity_level).count()
 
-    
+    humidity_score_reason = ''
     if humidity_another_entries_count == 0:
         score += 20
+        humidity_score_reason = '습도가 잘 맞아요!'
     elif humidity_another_entries_count == 1:
         score += 15
+        humidity_score_reason = '최적 습도를 유지해주세요!'
     elif humidity_another_entries_count == 2:
         score += 10
+        humidity_score_reason = '최적 습도를 많이 벗어났어요!'
 
     elif humidity_another_entries_count >= 3:
         score += 5
+        humidity_score_reason = '식물의 위치를 습도가 맞는 곳으로 바꿔야 할 것 같아요!'
     else:
         score += 5
+        humidity_score_reason = '최적 습도를 맞춰주세요!'
 
     temperature_level = management.plant.temperature
     
@@ -183,17 +221,22 @@ def detail(request, management_pk):
         entrydate__range=[start_date, end_date],
     ).exclude(temperature=temperature_level).count()
 
-    
+    temperature_score_reason = ''
     if temperature_another_entries_count == 0:
         score += 20
+        temperature_score_reason = '최적 온도가 잘 맞춰지고 있어요'
     elif temperature_another_entries_count == 1:
         score += 15
+        temperature_score_reason = '최적 온도를 유지해주세요!'
     elif temperature_another_entries_count == 2:
         score += 10
+        temperature_score_reason = '식물 위치를 온도에 맞게 바꿔보는 것은 어떠세요?'
     elif temperature_another_entries_count >= 3:
         score += 5
+        temperature_score_reason = '최적 온도를 확인하세요!'
     else:
         score += 5
+        temperature_score_reason = '최적 온도를 확인하세요!'
 
 
     management.score = score
@@ -206,6 +249,10 @@ def detail(request, management_pk):
         'calenderentry_form': calenderentry_form,
         'entries': entries,
         'calendarData': calendar_days,
+        'watering_score_reason': watering_score_reason,
+        'sunlight_score_reason': sunlight_score_reason,
+        'humidity_score_reason': humidity_score_reason,
+        'temperature_score_reason': temperature_score_reason,
         'room_name': "broadcast"
     }
     return render(request,'managements/detail.html', context)
@@ -225,6 +272,7 @@ def index(request):
 
 @login_required
 def create(request):
+    plants = Plant.objects.all()
     if request.method == 'POST':
         form = ManagementForm(request.POST, request.FILES)
         if form.is_valid():
@@ -238,6 +286,7 @@ def create(request):
         form = ManagementForm()
     context = {
         'form' : form,
+        'plants': plants,
         'room_name': "broadcast"
     }
     return render(request, 'managements/create.html', context)
