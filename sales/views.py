@@ -9,6 +9,9 @@ from accounts.models import User, User_title, User_profile
 from django.db.models import Count, Q
 from django.http import JsonResponse
 from decimal import Decimal
+# csrf 권한 해제
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
 
 def index(request):
@@ -132,7 +135,6 @@ def cart(request):
     cart = request.session.get('cart', {})
     cart_items = []
     cart_total = 0
-    print(cart)
     for product_pk, product_info in cart.items():
         product = Product.objects.get(pk=product_pk)
         total_price = (product_info['quantity']) * product.price
@@ -165,17 +167,12 @@ def remove_from_cart(request, product_pk):
     return redirect('sales:cart')
 
 
-
-def payment(request):
-    return render(request, 'sales/payment.html')
-
 def create_order(request):
     cart = request.session.get('cart', {})
     cart_items = []
     cart_total = 0
     cart_total_quantity = 0
     cart_product = ''
-    print(cart)
     for product_pk, product_info in cart.items():
   
         product = Product.objects.get(pk=product_pk)
@@ -260,7 +257,6 @@ def delete_order(request, order_pk):
 
     return render(request, 'sales/order_payment.h', context)
 
-from django.shortcuts import render
 
 # def order_complete(request, order_pk):
 #     order = Order.objects.get(pk=order_pk)
@@ -284,3 +280,24 @@ def order_list(request):
         'orders':orders,
     }
     return render(request, 'sales/order_list.html', context)
+
+
+def order_cancel(request):
+    return render(request, 'sales/order_cancel.html')
+
+@method_decorator(csrf_exempt, name='dispatch')
+def juso_popup(request):
+    inputYn = request.GET.get('inputYn')
+    roadFullAddr = request.GET.get('roadFullAddr')
+    context = {
+        'inputYn': inputYn,
+        'roadFullAddr':roadFullAddr,
+    }
+    return render(request, 'sales/jusoPopup.html', context)
+
+
+def jusopopuptest(request):
+    return render(request, 'sales/jusopopup.html')
+
+def sampletest(request):
+    return render(request, 'sales/sampletest.html')
