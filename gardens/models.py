@@ -43,14 +43,16 @@ class Garden(models.Model):
 class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     garden = models.ForeignKey(Garden, on_delete=models.CASCADE, related_name='comments')
+    title = models.CharField(max_length=20)
+    score = models.IntegerField()
     content = models.TextField(null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
-    def garden_images_path(instance, filename):
-        return f'gardens/{instance.garden.title}/{filename}'
+    def comment_images_path(instance, filename):
+        return f'comments/{instance.title}/{filename}'
     image = ProcessedImageField(
-        upload_to=garden_images_path, 
+        upload_to=comment_images_path, 
         processors=[ResizeToFit(800, 800)], 
         format='JPEG', 
         options={'quality': 100}

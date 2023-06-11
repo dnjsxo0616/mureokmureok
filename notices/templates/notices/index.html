@@ -41,6 +41,7 @@
     </div>
 
     {% comment %} 게시물 {% endcomment %}
+    {% if page_obj %}
     <div class="flex flex-col mb-10">
       {% for notice in page_obj %}
       <a href="{% url 'notices:detail' notice.pk %}">
@@ -57,6 +58,11 @@
       </a>
       {% endfor %}
     </div>
+    {% else %}
+    <div class="w-full h-96 flex justify-center items-center">
+      공지사항이 없습니다
+    </div>
+    {% endif %}
 
 
     {% comment %} 검색 쿼리 추가 페이지네이션 {% endcomment %}

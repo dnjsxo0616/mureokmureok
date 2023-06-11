@@ -16,7 +16,7 @@
       <div class="absolute flex items-center gap-10 top-1/2 -translate-y-1/2 z-10">
         <img src="{% static 'img/talk.png' %}" alt="" class="w-36 h-32">
         <div>
-          <p class="text-[16px] text-gray-400 font-semibold mb-3">식물에 대한 궁금한 점, 새로 장만한 식물<br>모두여기에서 Talk !</p>
+          <p class="text-[16px] text-gray-400 font-semibold mb-3">식물에 대한 궁금한 점, 새로 장만한 식물<br>모두 여기에서 Talk !</p>
           <h1 class="text-[25px] font-semibold">커뮤니티</h1>
         </div>
       </div>
@@ -96,6 +96,7 @@
     </div>
 
     {% comment %} 게시물 {% endcomment %}
+    {% if page_obj %}
     <div class="flex flex-col mb-10">
       {% for community in page_obj %}
       <a href="{% url 'communities:detail' community.pk %}">
@@ -125,6 +126,11 @@
       </a>
       {% endfor %}
     </div>
+    {% else %}
+    <div class="w-full h-96 flex justify-center items-center">
+      게시글이 없습니다
+    </div>
+    {% endif %}
 
 
     {% comment %} 검색 쿼리 추가 페이지네이션 {% endcomment %}

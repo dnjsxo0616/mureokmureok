@@ -58,6 +58,8 @@
       </div>
     </div>
     
+    {% comment %} 장소목록 {% endcomment %}
+    {% if page_obj %}
     <div class="grid grid-cols-2 gap-10 mb-8">
       {% for garden in page_obj %}
       <a href="{% url 'gardens:detail' garden.pk %}">
@@ -91,6 +93,11 @@
       </a>
       {% endfor %}
     </div>
+    {% else %}
+    <div class="w-full h-96 flex justify-center items-center">
+      식물원 및 축제가 없습니다
+    </div>
+    {% endif %}
 
     {% comment %} 검색 쿼리 추가 페이지네이션 {% endcomment %}
     {% if page_obj.has_other_pages %}

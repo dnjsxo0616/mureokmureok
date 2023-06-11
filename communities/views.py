@@ -21,7 +21,7 @@ def index(request):
         'communities': communities,
         'need_experts': need_experts,
         'page_obj': page_obj,
-        'room_name': "broadcast"
+        'room_name': "broadcast",
     }
     return render(request, 'communities/index.html', content)
 
@@ -79,8 +79,9 @@ def update(request, community_pk):
     context = {
         'community':community,
         'form' : form,
+        'room_name': "broadcast",
     }
-    return render(request,'communities/update.html',context)
+    return render(request,'communities/update.html', context)
 
 
 @login_required

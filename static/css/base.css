@@ -17,3 +17,14 @@ a {
     background: #b9b9b9;
     border-radius: 4px;
 }
+
+.cart-container::-webkit-scrollbar {
+    width: 8px;
+    border-radius: 4px;
+    background-color: #e6e6e6;
+}
+
+.cart-container::-webkit-scrollbar-thumb {
+    background: #b9b9b9;
+    border-radius: 4px;
+}

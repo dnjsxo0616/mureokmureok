@@ -38,30 +38,33 @@
             <h3 class="pb-3 border-0 border-b-[1px] mb-3">카테고리</h3>
             <div class="grid grid-flow-cols grid-cols-2 gap-2">
               <div class="flex items-center gap-2">
-                <input type="checkbox" id="화분" name="category" value="화분" class="accent-emerald-600" />
+                <input type="checkbox" id="화분" name="category" value="화분" class="accent-emerald-600" {% if '화분' in category %}checked{% endif %} />
                 <label for="화분" class="text-[14px]">화분</label>
               </div>
               <div class="flex items-center gap-2">
-                <input type="checkbox" id="삽" name="category" value="삽" class="accent-emerald-600" />
+                <input type="checkbox" id="삽" name="category" value="삽" class="accent-emerald-600" {% if '삽' in category %}checked{% endif %} />
                 <label for="삽" class="text-[14px]">삽</label>
               </div>
               <div class="flex items-center gap-2">
-                <input type="checkbox" id="종자" name="category" value="종자" class="accent-emerald-600" />
+                <input type="checkbox" id="종자" name="category" value="종자" class="accent-emerald-600" {% if '종자' in category %}checked{% endif %} />
                 <label for="종자" class="text-[14px]">종자</label>
               </div>
               <div class="flex items-center gap-2">
-                <input type="checkbox" id="비료" name="category" value="비료" class="accent-emerald-600" />
+                <input type="checkbox" id="비료" name="category" value="비료" class="accent-emerald-600" {% if '비료' in category %}checked{% endif %} />
                 <label for="비료" class="text-[14px]">비료</label>
               </div>
               <div class="flex items-center gap-2">
-                <input type="checkbox" id="데코레이션" name="category" value="데코레이션" class="accent-emerald-600" />
+                <input type="checkbox" id="데코레이션" name="category" value="데코레이션" class="accent-emerald-600" {% if '데코레이션' in category %}checked{% endif %} />
                 <label for="데코레이션" class="text-[14px]">데코레이션</label>
               </div>
             </div>
           </div>
           <div class="mb-8">
             {% comment %} 가격 범위설정 {% endcomment %}
-            <h3 class="pb-3 border-0 border-b-[1px] mb-3">가격</h3>
+            <div class="flex justify-between items-end pb-3 border-0 border-b-[1px] mb-3">
+              <h3>가격</h3>
+              <p class="text-[14px]"><b>{{ low_price|intcomma }}</b>원 - <b>{{ high_price|intcomma }}</b>원</p>
+            </div>
             <div class="middle mb-3">
               <div class="multi-range-slider">
                 <!-- 진짜 슬라이더 -->
@@ -88,10 +91,10 @@
       <div class="w-9/12">
         {% comment %} sort방식 {% endcomment %}
         <div class="w-full rounded-lg bg-gray-100 flex gap-8 p-2 px-4 text-gray-500 text-[14px] mb-5">
-          <a href="{% url 'sales:sort' %}?sort_type=popularity" class="hover:text-black">인기순</a>
-          <a href="{% url 'sales:sort' %}?sort_type=price_low" class="hover:text-black">낮은가격순</a>
-          <a href="{% url 'sales:sort' %}?sort_type=price_high" class="hover:text-black">높은가격순</a>
-          <a href="{% url 'sales:sort' %}?sort_type=latest" class="hover:text-black">최신순</a>
+          <a href="#" class="hover:text-black">인기순</a>
+          <a href="#" class="hover:text-black">낮은가격순</a>
+          <a href="#" class="hover:text-black">높은가격순</a>
+          <a href="#" class="hover:text-black">최신순</a>
         </div>
 
         {% comment %} 상품목록 {% endcomment %}
@@ -162,5 +165,4 @@
 
 {% block script %}
 <script src="{% static 'js/salesPriceRange.js' %}"></script>
-<script src="{% static 'js/salesSort.js' %}"></script>
 {% endblock script %}
