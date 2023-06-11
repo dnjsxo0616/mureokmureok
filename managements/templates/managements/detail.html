@@ -9,17 +9,94 @@
 
 {% block content %}
 
-<p>Plant Name: {{ management.plant.title }}</p>
-<p>Plant water: {{ management.plant.watering }}</p>
-<p>{{ management.plant.sunlight }}</p>
-<p>{{ management.plant.humidity }}</p>
-<p>{{ management.plant.temperature }}</p>
-<p>{{ management.plant.season }}</p>
-<p>{{ management.plant.flowering }}</p>
-<p>{{ management.plant.allergy }}</p>
-<p>{{ management.plant.content }}</p>
 
 
+<h2 class="text-center text-[25px] font-semibold mt-2">{{ management.plant }}</h2>
+<div class="bg-white rounded-lg p-4 grid grid-cols-2 gap-4">
+  <div>
+    <a><img src="{{ management.photo.url }}" alt="{{ management.plant.plantimage }}" class="tab cursor-pointer w-full h-fit flex items-center gap-5 bg-white border rounded-lg p-3 hover:-translate-y-1.5 transform transition hover:shadow-md"></a>
+  </div>
+  <div>
+    <p class="font-bold text-lg mt-5">식물 관리 점수: {{ management.score }}점</p>
+    <p class="font-bold text-lg mt-5">식물의 계절: {{ management.plant.season|slice:"2:-2" }}</p>
+    <p class="font-bold text-lg mt-5">알러지 생성 유무: {{ management.plant.allergy }}</p>
+    <p class="font-bold text-lg mt-5">식물의 설명: {{ management.plant.content }}</p>
+
+  </div>
+</div>
+
+<section class="w-full mb-16">
+  <h2 class="text-center text-[25px] font-semibold mb-5">적정 기준과 솔루션</h2>
+  <div class="w-full rounded-xl bg-gray-100 p-5">
+    <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-5">
+      {% comment %} 물주기탭 {% endcomment %}
+      <div class="tab cursor-pointer w-full h-fit flex items-center gap-5 bg-white border rounded-lg p-3 hover:-translate-y-1.5 transform transition hover:shadow-md">
+        <div class="flex flex-col items-center gap-3 px-2">
+          <div class="w-14 h-12 overflow-hidden">
+            <img src="{% static 'img/water_pot.png' %}" alt="" class="w-full h-full object-cover">
+          </div>
+          <h3><b>물주기</b></h3>
+        </div>
+        <div>
+          <ul class="flex flex-col gap-3 text-[14px]">
+            <li>적정 기준: {{ management.plant.watering|slice:"2:-2" }}</li>
+            <li>솔루션: {{ watering_score_reason }}</li>
+          </ul>
+        </div>
+      </div>
+
+      {% comment %} 일조탭 {% endcomment %}
+      <div class="tab cursor-pointer w-full h-fit flex items-center gap-5 bg-white border rounded-lg p-3 hover:-translate-y-1.5 transform transition hover:shadow-md">
+        <div class="flex flex-col items-center gap-3 px-2">
+          <div class="w-12 h-12 overflow-hidden">
+            <img src="{% static 'img/sun.png' %}" alt="" class="w-full h-full object-cover">
+          </div>
+          <h3><b>일조</b></h3>
+        </div>
+        <div>
+          <ul class="flex flex-col gap-3 text-[14px]">
+            <li>적정 기준: {{ management.plant.sunlight|slice:"2:-2" }}</li>
+            <li>솔루션: {{ sunlight_score_reason }}</li>
+          </ul>
+        </div>
+      </div>
+
+      {% comment %} 습도탭 {% endcomment %}
+      <div class="tab cursor-pointer w-full h-fit flex items-center gap-5 bg-white border rounded-lg p-3 hover:-translate-y-1.5 transform transition hover:shadow-md">
+        <div class="flex flex-col items-center gap-3 px-2">
+          <div class="w-12 h-12 overflow-hidden">
+            <img src="{% static 'img/humidity.png' %}" alt="" class="w-full h-full object-cover">
+          </div>
+          <h3><b>습도</b></h3>
+        </div>
+        <div>
+          <ul class="flex flex-col gap-3 text-[14px]">
+            <li>적정 기준: {{ management.plant.humidity|slice:"2:-2" }}</li>
+            <li>솔루션: {{ humidity_score_reason }}</li>
+          </ul>
+        </div>
+      </div>
+
+      {% comment %} 온도탭 {% endcomment %}
+      <div class="tab cursor-pointer w-full h-fit flex items-center gap-5 bg-white border rounded-lg p-3 hover:-translate-y-1.5 transform transition hover:shadow-md">
+        <div class="flex flex-col items-center gap-3 px-2">
+          <div class="w-12 h-12 overflow-hidden">
+            <img src="{% static 'img/temperature.png' %}" alt="" class="w-full h-full object-cover">
+          </div>
+          <h3><b>온도</b></h3>
+        </div>
+        <div>
+          <ul class="flex flex-col gap-3 text-[14px]">
+            <li>적정 기준: {{ management.plant.temperature|slice:"2:-2" }}</li>
+            <li>솔루션: {{ temperature_score_reason }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<h2 class="text-center text-[25px] font-semibold mb-5">일지 캘린더</h2>
 <div class="grid grid-cols-7 gap-4 mt-5 mb-2">
   <div class="col-span-1 text-center font-bold">Sun</div>
   <div class="col-span-1 text-center font-bold">Mon</div>
@@ -40,8 +117,8 @@
             {% if entry.entrydate|date:"Y-m-d" == date|date:"Y-m-d" %}
               <div class="text-xs mt-2">물주기: {{ entry.watering }}</div>
               <div class="text-xs mt-2">햇빛주기: {{ entry.sunlight }}</div>
-              <div class="text-xs mt-2">습도: {{ entry.humidity }}</div>  
-              <div class="text-xs mt-2">온도: {{ entry.temperature }}</div>
+              <div class="text-xs mt-2">습도: {{ entry.humidity|slice:"2:-2" }}</div>  
+              <div class="text-xs mt-2">온도: {{ entry.temperature|slice:"2:-2" }}</div>
             {% endif %}
           {% endfor %}
         {% endif %}
@@ -49,11 +126,29 @@
     {% endfor %}
   </div>
 {% endfor %}
+<div id="entry-create-btn" class="cursor-pointer border mb-5 mt-5 p-1 px-2 rounded-md text-[14px] hover:bg-gray-100" style="text-align: right; width: fit-content; margin-left: auto;">일지 작성</div>
 
 
 
 
-<div id="entry-create-btn" class="cursor-pointer border p-1 px-2 rounded-md text-[14px] hover:bg-gray-100">후기작성</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 {% comment %} 후기생성 modal {% endcomment %}
 <div class="relative z-30 modal-overlay hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="entry-create-modal">
