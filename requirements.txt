@@ -47,7 +47,6 @@ greenlet==2.0.2
 hiredis==2.2.3
 humanize==4.6.0
 hyperlink==21.0.0
-icalendar==5.0.7
 idna==3.4
 incremental==22.10.0
 ipython==8.14.0
