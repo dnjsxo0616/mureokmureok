@@ -5,6 +5,7 @@ from imagekit.processors import Thumbnail, ResizeToFit
 from django.utils import timezone
 from datetime import timedelta,datetime
 from django_ckeditor_5.fields import CKEditor5Field
+from taggit.managers import TaggableManager
 import random
 def sale_img_path(instance, filename):
     return f'images/sale/{instance.title}/{filename}'
@@ -19,12 +20,17 @@ class Product(models.Model):
     price = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    tags = TaggableManager(blank=True)
     photo = models.ImageField(upload_to=sale_img_path)
     Thumbnail = ImageSpecField( 
 		source = 'photo', 		  
 		processors = [Thumbnail(300, 300)], 
 		format = 'JPEG',		   
 		options = {'quality': 90}) 
+    
+    def __str__(self):
+        return self.title
+    
 
 # 주문정보
 class Order(models.Model):

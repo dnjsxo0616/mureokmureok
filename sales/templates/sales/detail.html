@@ -17,6 +17,18 @@
         <span>상품</span>
       </a> > {{ product.title }}
     </p>
+
+
+    {% comment %} 임시삭제버튼 {% endcomment %}
+    <form action="{% url 'sales:delete' product.pk %}" nethod="POST">
+      {% csrf_token %}
+      <input type="submit" value="DELETE">
+    </form>
+    <p><a href="{% url 'sales:update' product.pk %}">수정</a></p>
+
+
+
+
     <div class="flex gap-8 mb-16">
       <div class="w-10/12">
         <div class="flex gap-10 justify-between mb-10">
@@ -97,9 +109,17 @@
         </div>
         
         {% comment %} 상품정보 {% endcomment %}
-        <section id="info" class="px-16 py-10 border-0 border-b-[1px]">
+        <section id="info" class="px-16 pt-10 border-0 border-b-[1px]">
           <p>{{ product.content|safe }}</p>
+
+          <ul class="flex items-center gap-3 mt-8">
+            {% for tag in product.tags.all %}
+              <li class="flex items-center justify-center rounded-full text-[14px]"># {{ tag }}</li>
+            {% endfor %}
+          </ul>
         </section>
+
+        
 
         {% comment %}  리뷰 부분 {% endcomment %}
         <section id="review">

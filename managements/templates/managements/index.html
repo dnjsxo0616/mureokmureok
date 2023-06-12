@@ -3,47 +3,98 @@
 
 
 {% block head %}
-
+<title>식물관리</title>
 {% endblock head %}
 
 
 {% block content %}
-
-
-<div class="grid grid-cols-4 gap-4">
-  <div class="bg-white rounded-lg p-4 tab cursor-pointer w-full h-fit flex flex-col items-center gap-5 bg-white border hover:-translate-y-1.5 transform transition hover:shadow-md mt-4 mb-4">
-    <a href="{% url 'managements:create' %}">
-      <div class="flex justify-center">
-        <img src="{% static 'img/addcircle.jpg' %}" alt="" class="w-full h-40 mt-1 object-contain">
+<main>
+  {% comment %} 배너 {% endcomment %}
+  <div class="w-full h-[180px] overflow-hidden relative">
+    <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+      <div class="absolute flex items-center gap-10 top-1/2 -translate-y-1/2 z-10">
+        <img src="{% static 'img/manage.png' %}" alt="" class="w-36 h-32">
+        <div>
+          <img src="{% static 'img/식물실루엣.png' %}" alt="">
+          <p class="text-[16px] text-gray-400 font-semibold mb-3">여러분의 반려 식물<br>모두 여기에서 관리해보세요 !</p>
+          <h1 class="text-[25px] font-semibold">식물관리</h1>
+        </div>
       </div>
-      <div class=" text-center">
-        <p>당신의 식물을</p>
-        <p>여기서 추가하세요!</p>
-      </div>
-    </a>
-  </div>
-
-    {% for management in managements %}
-    <div class="bg-white rounded-lg p-4 tab cursor-pointer w-full h-fit flex flex-col items-center gap-5 bg-white border hover:-translate-y-1.5 transform transition hover:shadow-md mt-4 mb-4">
-      <a href="{% url 'managements:detail' management.pk %}">
-          <div class="flex justify-center">
-              <img src="{{ management.photo.url }}" alt="{{ management.plant.plantimage }}" class="w-full h-auto mt-2 object-contain">
-          </div>
-          <div class="ml-3 text-center">
-              <p class="text-2xl">{{ management.plant }}</p>
-              <p class="font-bold text-lg">{{ management.score }}점</p>
-          </div>
-      </a>
     </div>
-    {% endfor %}
+    <div class='w-full h-[180px] bg-gradient-to-b from-gray-200 absolute'></div>
   </div>
-  
 
+  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+
+    <h1 class="text-[20px] my-8 text-center font-semibold">MY 반려식물 <span class="text-gray-400">({{ managements|length }})</span></h1>
+
+    <div class="bg-gray-100 rounded-xl p-5 mb-16">
+      <div class="grid grid-cols-4 gap-4">
+        <a href="{% url 'managements:create' %}" class="h-fit w-full">
+        <div class="bg-gray-200 rounded-lg p-4 tab cursor-pointer w-full h-96 flex flex-col items-center gap-5 border-2 border-gray-400 border-dashed hover:bg-gray-300">
+            <div class="flex flex-col items-center justify-center">
+              <div class="w-36 h-44 mb-5">
+                <!-- 추후 식물실루엣 이미지로 교체할 예정 -->
+                <img src="{% static 'img/emoji.png' %}" alt="" class="w-full h-full object-cover">
+              </div>
+              <span class="material-symbols-outlined text-[30px]">add_circle</span>
+            </div>
+            <div class=" text-center">
+              <p>여러분의 식물을</p>
+              <p>추가해주세요</p>
+            </div>
+          </div>
+        </a>
+        
+        {% for management in managements %}
+        <div class="bg-white rounded-xl p-3 tab cursor-pointer w-full h-96 bg-white border hover:-translate-y-1.5 transform transition hover:shadow-md">
+          <a href="{% url 'managements:detail' management.pk %}">
+            <div class="w-full h-56 overflow-hidden border rounded-md mb-3">
+                <img src="{{ management.photo.url }}" alt="{{ management.plant.plantimage }}" class="w-full h-full object-cover">
+            </div>
+            <div class="flex justify-between items-center">
+              <div class="flex flex-col gap-10">
+                <div>
+                  <p class="text-[14px] text-gray-500 mb-2">{{ management.plant }}</p>
+                  <h1 class="font-semibold text-[20px]">{{ management.nickname }}</h1>
+                </div>
+                <div>
+                  {{ management_time_passed }}
+                </div>
+              </div>
+
+              <!-- 식물상태 -->
+              {% if management.score >= 80 %}
+              <div class="border border-[#1EB564] rounded-md h-full p-3 flex flex-col items-center gap-3 bg-gray-50">
+                <!-- 추후 이모티콘으로 변경 -->
+                <!-- <img src="{% static 'img/.png' %}" alt=""> -->
+                <p class="text-center text-[30px]">🙂</p>
+                <p class="text-[#1EB564] font-semibold">Good</p>
+              </div>
+              {% elif management.score < 80 and management.score >= 20 %}
+              <div class="border border-[#F0BB00] rounded-md h-full p-3 flex flex-col items-center gap-3 bg-gray-50">
+                <!-- 추후 이모티콘으로 변경 -->
+                <!-- <img src="{% static 'img/.png' %}" alt=""> -->
+                <p class="text-center text-[30px]">🙂</p>
+                <p class="text-[#F0BB00] font-semibold">Nice</p>
+              </div>
+              {% elif management.score < 20 %}
+              <div class="border border-red-600 rounded-md h-full p-3 flex flex-col items-center gap-3 bg-gray-50">
+                <!-- 추후 이모티콘으로 변경 -->
+                <!-- <img src="{% static 'img/.png' %}" alt=""> -->
+                <p class="text-center text-[30px]">🙂</p>
+                <p class="text-red-600 font-semibold">bad</p>
+              </div>
+              {% endif %}
+            </div>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</main>
 {% endblock content %}
 
 
-
-
-{% block script %}
-
-{% endblock script %}
+{% block script %}{% endblock script %}

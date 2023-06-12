@@ -69,7 +69,7 @@ def search(request):
     context = {
         'search_result_gardens': search_result_gardens,
         'search_result_plants': search_result_plants,
-        'search_result_supplies': search_result_supplies
-
+        'search_result_supplies': search_result_supplies,
+        'query': query,
     }
     return render(request, 'search.html', context)

@@ -18,6 +18,13 @@
         </a> > {{ plant.title }}
       </p>
 
+
+
+
+
+
+
+      
       <div class="flex gap-10 justify-between">
         {% comment %} 식물사진 {% endcomment %}
         {% with plant_images=plant.plant_images.all %}
@@ -34,10 +41,7 @@
               <div class="text-[14px] text-white w-fit h-fit rounded-md mt-1 p-[4px] px-[8px] shadow-sm {% if plant.category == "['실내식물']" %}bg-[#439A3C]{% elif plant.category == "['실외식물']" %}bg-[#9D9441]{% elif plant.category == "['실내식물', '실외식물']" %}bg-[#35493D]{% endif %}">{% if plant.category == "['실내식물']" %}실내{% elif plant.category == "['실외식물']" %}실외{% elif plant.category == "['실내식물', '실외식물']" %}실내, 실외{% endif %}</div>
 
               {% comment %} 식물이름 {% endcomment %}
-              <div>
-                <h1 class="text-[25px] font-semibold">{{ plant.title }}</h1>
-                <h2 class="text-[14px] text-gray-500">{{ plant.title }}</h2>
-              </div>
+              <h1 class="text-[25px] font-semibold">{{ plant.title }}</h1>
             </div>
 
             <div class="flex gap-5">
@@ -142,6 +146,11 @@
                       <li class="font-bold">{{ watering }}</li>
                       <p>단단한 몸통이 말랑해지면 듬뿍 주세요</p>
                     </div>
+                    {% elif watering == '주2~3회'%}
+                    <div>
+                      <li class="font-bold">{{ watering }}</li>
+                      <p>화분 속 후 흙이 다 마르면 듬뿍 주세요</p>
+                    </div>
                     {% endif %}
                   {% endfor %}
                 </ul>
@@ -175,7 +184,7 @@
                       <p>하루  2시간 이하 정도의 은은한 햇빛이 필요해요</p>
                     </div>
                     {% elif sunlight == '반음지'%}
-                    <div>
+                    <div></div>
                       <li class="font-bold">{{ sunlight }}</li>
                       <p>반그늘로 아침나절 또는 오후 3~4시간 정도의 은은한 햇빛이 필요해요</p>
                     </div>
@@ -262,6 +271,8 @@
                       <p>'{{ plant.title }}'은 수분을 저장하는 능력이 아주 뛰어나 물이 많이 필요하지 않아요. 흙이 다 마르기 전에 물을 주면 몸통이 물러버릴 수 있으니 꼭 흙이 마른 것을 확인한 후에 물을 주셔야해요. 물을 주실 때는 몸통에 직접 닿지 않게 주셔야 무름을 방지할 수 있답니다. 너무 차갑지 않은 온도의 물을 듬뿍 주세요. 물을 준 후에는 받침대에 고인 물을 바로 버리고, 통풍이 잘 되는 곳에 두세요.</p>
                       {% elif watering == '월1~2회' %}
                       <p>'{{ plant.title }}'은 수분을 유지하는 능력이 뛰어나 물 주는 시기를 조금 놓쳐도 잘 견디는 식물이에요. 토양이 완전히 마르기 전에 물을 주시면 뿌리 호흡이 불량해져 과습의 피해를 입을 수 있어 화분 받침대에 물이 계속 고여 뿌리가 습해지지 않게 주의해주세요. 물을 주실 때는 몸통에 직접 닿지 않게 주셔야 무름을 방지할 수 있답니다.</p>
+                      {% elif watering == '주2~3회' %}
+                      <p>'{{ plant.title }}'은 수분을 많이 가지고 있어 흙이 보송하게 마른 것을 확인한 후 물을 주는 게 좋아요. 흙이 축축한 상태로 오래 지속되면 뿌리가 숨을 잘 쉴 수 없게 만들어 과습의 피해를 입을 수 있어요. 물을 준 후에는 받침대의 물을 바로 비워주시고, 통풍이 잘 되도록 해주세요. 또한 온도 변화에 예민해 물을 주실 때는 너무 차가운 온도의 물 보다 살짝 미지근한 온도의 물을 주는 게 좋아요. 물을 줄 때는 화분 밑으로 물이 빠져나올 때까지 천천히, 그리고 충분히 주어야 흙 전체에 충분히 물이 흡수될 수 있답니다.</p>
                     {% endif %}
                   </div>
                 </div>
@@ -404,7 +415,13 @@
         </section>
 
         {% comment %} 관련 상품정보 {% endcomment %}
+
+
+
+
+
         <section>
+
           {% comment %} 물주기 관련 상품 {% endcomment %}
           <div class="supply">
             <div class="flex flex-col items-center mb-8">
@@ -491,7 +508,7 @@
                   </div>
                 </div>
               </a>
-              <a href="#" class="w-full">
+              {% comment %} <a href="#" class="w-full">
                 <div class="flex flex-col gap-3 bg-white rounded-lg w-full h-72 p-3 hover:bg-gray-200">
                   <div class="w-full h-48 rounded-md overflow-hidden">
                     <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/20883/product/image_1588330718910_750.jpeg" alt="" class="w-full h-full object-cover">
@@ -526,7 +543,7 @@
                     <div>좋아요버튼</div>
                   </div>
                 </div>
-              </a>
+              </a> {% endcomment %}
             </div>
           </div>
 

@@ -2,14 +2,10 @@
 {% load static %}
 
 
-{% block head %}
+{% block head %}{% endblock head %}
 
-{% endblock head %}
 
 {% block content %}
-
-
-
 <main class="bg-gray-50">
   <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
     <div class="py-10 px-24">
@@ -32,7 +28,7 @@
           <div class="grow">{{ form.photo }}</div>
         </div>
         
-        {% comment %} 식물 만난 날짜 {% endcomment %}
+        {% comment %} 식물 닉네임 {% endcomment %}
         <div class="flex gap-3 mb-8 w-full">
           <div class="mb-2 w-2/12">{{ form.nickname.label }} <span class="text-red-600 text-[20px]">*</span></div>
           <div>{{ form.nickname }}</div>
@@ -44,8 +40,6 @@
           <div>{{ form.managementdate }}</div>
         </div>
 
-
-
         {% comment %} 생성버튼 {% endcomment %}
         <div class="flex justify-end w-full">
           <button type="submit" class='rounded-md bg-[#1EB564] text-white p-2 px-4 hover:bg-[#148D4C]'>등록하기</button>
@@ -54,27 +48,9 @@
     </div>
   </div>
 </main>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 {% endblock content %}
 
 
 {% block script %}
-
 <script src="{% static 'js/managements_create.js' %}"></script>
 {% endblock script %}
