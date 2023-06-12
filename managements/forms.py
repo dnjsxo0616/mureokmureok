@@ -44,7 +44,7 @@ class ManagementForm(forms.ModelForm):
     )
     class Meta:
         model = Management
-        fields = ('plant', 'photo', 'managementdate')
+        fields = ('plant', 'photo', 'managementdate', 'nickname')
 
 
 

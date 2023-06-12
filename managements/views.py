@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.views import View
 from datetime import datetime, date, timedelta
 from plants.models import Plant
+from django.utils import timezone
 from accounts.models import User, User_title, User_profile
 import calendar
 import datetime
@@ -15,12 +16,6 @@ import math
 import re
 
 # Create your views here.
-
-
-
-
-
-
 
 def detail(request, management_pk):
     management = Management.objects.get(pk=management_pk)
@@ -277,6 +272,9 @@ def detail(request, management_pk):
     management.score = score
     management.save()
     
+    management_start_date = management.managementdate
+    management_current_date = date.today()
+    management_time_passed = (management_current_date - management_start_date).days
 
     context ={
         'management' : management,
@@ -289,15 +287,16 @@ def detail(request, management_pk):
         'humidity_score_reason': humidity_score_reason,
         'temperature_score_reason': temperature_score_reason,
         'things_score_reason': things_score_reason,
+        'management_time_passed': management_time_passed,
         'room_name': "broadcast"
     }
     return render(request,'managements/detail.html', context)
 
 
 
-
 def index(request):
     managements = Management.objects.all()
+    
     context = {
         'managements': managements,
         'room_name': "broadcast"

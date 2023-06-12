@@ -1,6 +1,7 @@
 from django import forms
 from .models import Product, Review, Order
 from ckeditor.widgets import CKEditorWidget
+from taggit.forms import TagField, TagWidget
 
 
 class ProductForm(forms.ModelForm):
@@ -16,7 +17,7 @@ class ProductForm(forms.ModelForm):
     )
 
     CATEGORY_CHOICE = [
-        ('화분', '화분'), ('삽', '삽'), ('종자', '종자'), ('비료', '비료'), ('데코레이션', '데코레이션'),
+        ('화분', '화분'), ('삽', '삽'), ('식물', '식물'), ('비료', '비료'), ('습도', '습도'), ('물주기', '물주기'), ('온도', '온도')
     ]
 
     category = forms.ChoiceField(
@@ -46,11 +47,21 @@ class ProductForm(forms.ModelForm):
         )
     )
 
+    tags = forms.CharField(
+        label='태그',
+        widget=TagWidget(
+            attrs={
+                'class': 'w-96 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
+                'placeholder': '태그는 콤마(,)로 구분하여 작성해주세요',
+            }
+        )
+    )
+    
     content = forms.CharField(label='상품설명', widget=CKEditorWidget())
 
     class Meta:
         model = Product
-        fields = ('title', 'content', 'category', 'price', 'photo',)
+        fields = ('title', 'content', 'category', 'price', 'photo', 'tags')
 
 
 class ReviewForm(forms.ModelForm):
@@ -83,7 +94,7 @@ class ReviewForm(forms.ModelForm):
         ),
         required=False
     )
-
+    
     class Meta:
         model = Review
         fields = ('title', 'score', 'image', 'content',)

@@ -35,18 +35,6 @@
           <div>{{ form.allergy }}</div>
         </div>
 
-        {% comment %} 개화시기 {% endcomment %}
-        {% comment %} <div class="flex gap-3 mb-8 w-full">
-          <div class="mb-2 w-2/12">{{ form.flowering.label }} <span class="text-red-600 text-[20px]">*</span></div>
-          <div>{{ form.flowering }}</div>
-        </div> {% endcomment %}
-
-        {% comment %} 계절 {% endcomment %}
-        {% comment %} <div class="flex gap-3 mb-8 w-full">
-          <div class="mb-2 w-2/12">{{ form.season.label }} <span class="text-red-600 text-[20px]">*</span></div>
-          <div>{{ form.season }}</div>
-        </div> {% endcomment %}
-
         {% comment %} 카테고리 {% endcomment %}
         <div class="flex gap-3 mb-8 w-full">
           <div class="mb-2 w-2/12">{{ form.category.label }} <span class="text-red-600 text-[20px]">*</span></div>
@@ -75,6 +63,12 @@
         <div class="flex gap-3 mb-8 w-full">
           <div class="mb-2 w-2/12">{{ form.temperature.label }} <span class="text-red-600 text-[20px]">*</span></div>
           <div>{{ form.temperature }}</div>
+        </div>
+
+        {% comment %} 개화시기 {% endcomment %}
+        <div class="flex gap-3 mb-8 w-full">
+          <div class="mb-2 w-2/12">{{ form.price.label }} <span class="text-red-600 text-[20px]">*</span></div>
+          <div>{{ form.price }}</div>
         </div>
 
         {% comment %} 이미지 {% endcomment %}

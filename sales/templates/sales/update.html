@@ -59,6 +59,12 @@
           <div class="grow">{{ form.content }}</div>
         </div>
 
+        {% comment %} 태그 {% endcomment %}
+        <div class="flex gap-3 mb-8 w-full">
+          <div class="mb-2 w-2/12">{{ form.tags.label }} <span class="text-red-600 text-[20px]">*</span></div>
+          <div>{{ form.tags }}</div>
+        </div>
+
         {% comment %} 생성버튼 {% endcomment %}
         <div class="flex justify-end w-full">
           <button type="submit" class='rounded-md bg-[#1EB564] text-white p-2 px-4 hover:bg-[#148D4C]'>수정하기</button>

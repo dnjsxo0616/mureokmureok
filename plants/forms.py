@@ -33,19 +33,6 @@ class PlantForm(forms.ModelForm):
         ),
     )
 
-    # Allergy_CHOICES = [
-    #     ('알러지1', '알러지1'), ('알러지2', '알러지2'),
-    # ]
-
-    # allergy = forms.MultipleChoiceField(
-    #     label = '알레르기',
-    #     widget = forms.CheckboxSelectMultiple(attrs={
-    #         'class': 'form-control',
-    #         'id': 'category',
-    #         'placeholder': '분류',
-    #     }),
-    #     choices = Allergy_CHOICES,
-    # )
 
     Allergy_CHOICES = [
         ('yes', '꽃가루 알러지 있음'),
@@ -62,42 +49,6 @@ class PlantForm(forms.ModelForm):
         choices=Allergy_CHOICES,
     )
 
-    # FLOWERING_CHOICE = [
-    #     ('10일', '10일'), ('15일', '15일'), ('20일', '20일'), ('없음', '없음'),
-    # ]
-
-    # flowering = forms.MultipleChoiceField(
-    #     label = '개화시기',
-    #     widget = forms.CheckboxSelectMultiple(attrs={
-    #         'class': 'form-control',
-    #         'id': 'category',
-    #         'placeholder': '분류',
-    #     }),
-    #     choices = FLOWERING_CHOICE,
-    # )
-
-    # FLOWERING_CHOICE = [(str(i), str(i)) for i in range(1, 31)]
-
-    # flowering = forms.ChoiceField(
-    #     label='개화시기',
-    #     widget=forms.Select(attrs={
-    #         'class': 'bg-white border-[1px] border-gray-300 p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
-    #         'id': 'blossom',
-    #     }),
-    #     choices=FLOWERING_CHOICE,
-    # )
-
-    # SEASON_CHOICE = [
-    #     ('사계절', '사계절'), ('봄', '봄'), ('여름', '여름'), ('가을', '가을'), ('겨울', '겨울'),
-    # ]
-
-    # season = forms.MultipleChoiceField(
-    #     label = '계절',
-    #     widget = forms.CheckboxSelectMultiple(attrs={
-    #         'id': 'season',
-    #     }),
-    #     choices = SEASON_CHOICE,
-    # )
 
     CATEGORY_CHOICE = [
         ('실내식물', '실내식물'), ('실외식물', '실외식물'),
@@ -112,8 +63,8 @@ class PlantForm(forms.ModelForm):
     )
 
     WATERING_CHOICE = [
-        ('주 1~2회', '주 1~2회'), ('주 2~3회', '주 2~3회'), ('주 3~4회', '주 3~4회'),
-        ('주 4~5회', '주 4~5회'), ('월1~2회', '월1~2회'), ('월1회이하', '월1회이하')
+        ('주1~2회', '주1~2회'), ('주2~3회', '주2~3회'), ('주3~4회', '주3~4회'),
+        ('주4~5회', '주4~5회'), ('월1~2회', '월1~2회'), ('월1회이하', '월1회이하')
     ]
 
     watering = forms.MultipleChoiceField(
@@ -178,6 +129,17 @@ class PlantForm(forms.ModelForm):
             }
         )
     )
+
+    price = forms.IntegerField(  # 가격 필드 추가
+        label='가격',
+        widget=forms.NumberInput(
+            attrs={
+                'class': 'w-96 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
+                'id': 'price',
+                'placeholder': '가격을 입력해주세요',
+            }
+        ),
+    )
     class Meta:
         model = Plant
-        fields = ('title', 'content', 'allergy', 'category', 'watering', 'sunlight', 'humidity', 'temperature',  'images', 'tags',)
+        fields = ('title', 'content', 'allergy', 'category', 'watering', 'sunlight', 'humidity', 'temperature', 'price','images', 'tags',)

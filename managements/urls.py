@@ -1,8 +1,5 @@
-
 from django.urls import path
 from . import views
-
-
 
 app_name = 'managements'
 urlpatterns = [
@@ -13,6 +10,5 @@ urlpatterns = [
     path('<int:management_pk>/', views.detail, name='detail'),
     path('<int:management_pk>/calenderentry_create/',views.calenderentry_create, name='calenderentry_create'),
     path('<int:management_pk>/calenderentrys/<int:calenderentry_pk>/calenderentry_update/',views.calenderentry_update, name='calenderentry_update'),
-    path('<int:management_pk>/calenderentrys/<int:calenderentry_pk>/calenderentry_delete/',views.calenderentry_delete, name='calenderentry_delete'),
-    
+    path('<int:management_pk>/calenderentrys/<int:calenderentry_pk>/calenderentry_delete/',views.calenderentry_delete, name='calenderentry_delete'), 
 ]

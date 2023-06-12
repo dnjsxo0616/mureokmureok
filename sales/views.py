@@ -34,11 +34,15 @@ def index(request):
 @login_required
 def create(request):
     if request.method == 'POST':
+        tags = request.POST.get('tags').split(',')
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             product = form.save(commit=False)
             product.user = request.user
             product.save()
+
+            for tag in tags:
+                product.tags.add(tag.strip())
             return redirect('sales:detail', product.pk)
     else:
         form = ProductForm()
@@ -161,6 +165,10 @@ def update(request, product_pk):
         form = ProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
             form.save()
+            product.tags.clear()
+            tags = request.POST.get('tags').split(',')
+            for tag in tags:
+                product.tags.add(tag.strip())
             return redirect('sales:detail', product.pk)
     else:
         form = ProductForm(instance=product)

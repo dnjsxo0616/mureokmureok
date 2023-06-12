@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Order
+from .models import Order, Product
 # Register your models here.
 
 
@@ -8,3 +8,8 @@ class CustomOrderAdmin(admin.ModelAdmin):
     list_filter = ['payment_status']
 
 admin.site.register(Order)
+
+class ProductAdmin(admin.ModelAdmin):
+    exclude = ('like_users',)  # 'like_users' 필드를 제외하고 표시
+
+admin.site.register(Product, ProductAdmin)
