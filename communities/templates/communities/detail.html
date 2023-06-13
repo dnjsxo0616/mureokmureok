@@ -118,38 +118,39 @@
           </form>
 
           {% comment %} 공유하기 {% endcomment %}
-          {% comment %} <div class="flex items-center w-fit p-3 rounded-full hover:bg-gray-100">
-            <span class="material-symbols-outlined">share</span>
-          </div> {% endcomment %}
-          <div class="dropdown-center w-100">
-            <a type="button" data-bs-toggle="dropdown"  aria-expanded="false" class="d-flex align-items-center justify-content-center  gap-2 font-15 text-secondary">
-                <span class="material-icons-outlined font-15">share</span>
-                공유
-            </a>
-            <ul class="dropdown-menu border-0 shadow mt-2">
+          <div class="relative">
+            <div id="share-menu-button" class="flex items-center w-fit p-3 rounded-full cursor-pointer hover:bg-gray-100" aria-expanded="false" aria-haspopup="true">
+              <span class="material-symbols-outlined">share</span>
+            </div>
+            <div class="absolute left-0 mt-2 w-36 origin-top-left rounded-md bg-white shadow-lg overflow-hidden ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="share-menu-button" tabindex="-1" id="share-dropdown" style="display: none;">
+              <ul>
                 <li>
-                    <a href="javascript:shareTwitter();">
-                        <button class="dropdown-item" type="button" class="d-flex gap-2">
-                        <img src="{% static 'img/twitter_logo.svg' %}" alt="" style="width: 19px; height: 15px;" class="me-2">
-                        트위터</button>
-                    </a>
+                  <a href="javascript:shareTwitter();">
+                    <button type="button" class="flex items-center gap-2 p-3 w-full hover:bg-gray-100">
+                      <img src="{% static 'img/twitter_logo.svg' %}" alt="" style="width: 19px; height: 15px;">
+                      <span>트위터</span>
+                    </button>
+                  </a>
                 </li>
                 <li>
-                    <a href="javascript:shareFacebook();">
-                        <button class="dropdown-item" type="button" class="d-flex gap-2">
-                        <img src="{% static 'img/facebook_logo.svg' %}" alt="" style="width: 19px; height: 19px;" class="me-2">
-                        페이스북</button>
-                    </a>
+                  <a href="javascript:shareFacebook();">
+                    <button type="button" class="flex items-center gap-2 p-3 w-full hover:bg-gray-100">
+                      <img src="{% static 'img/facebook_logo.svg' %}" alt="" style="width: 19px; height: 19px;">
+                      <span>페이스북</span>
+                    </button>
+                  </a>
                 </li>
                 <li>
-                    <a href="javascript:shareLink();">
-                        <button class="dropdown-item" type="button" class="d-flex gap-2">
-                        <img src="https://seekicon.com/free-icon-download/link_7.svg" alt="" style="width: 18px; height: 16px;" class="me-2">
-                        링크복사</button>
-                    </a>
+                  <a href="javascript:shareLink();">
+                    <button type="button" class="flex items-center gap-2 p-3 w-full hover:bg-gray-100">
+                      <img src="https://seekicon.com/free-icon-download/link_7.svg" alt="" style="width: 18px; height: 16px;">
+                      <span>링크복사</span>
+                    </button>
+                  </a>
                 </li>
-            </ul>
-        </div>
+              </ul>
+            </div>
+          </div>
 
           {% comment %} 댓글로 이동 {% endcomment %}
           <a href="#comment">
@@ -215,7 +216,7 @@
         
                   {% comment %} 댓글 수정 및 삭제 드롭다운 버튼 {% endcomment %}
                   {% if request.user == community_comment.user %}
-             
+
                   <div class="relative">
                     <button type="button" class="rounded-md flex justify-center items-center bg-white p-1 hover:bg-gray-100" id="comment-menu-button" aria-expanded="false" aria-haspopup="true">
                       <span class="material-symbols-outlined text-[20px] text-black font-bold">more_vert</span>
@@ -310,5 +311,6 @@
 <script src="{% static 'js/communityCommentCreate.js' %}"></script>
 <script src="{% static 'js/communityCommentUpdate.js' %}"></script>
 <script src="{% static 'js/communityCommentDelete.js' %}"></script>
-<script src="{% static 'js/socialshare.js' %}"></script>
+<script src="{% static 'js/communityShareDropdown.js' %}"></script>
+<script src="{% static 'js/communityShare.js' %}"></script>
 {% endblock script %}
