@@ -296,7 +296,15 @@ def detail(request, management_pk):
 
 def index(request):
     managements = Management.objects.all()
-    
+
+
+    for management in managements:
+        management_start_date = management.managementdate
+        if management_start_date is not None:
+            management_current_date = date.today()
+            management_time_passed = (management_current_date - management_start_date).days
+            management.management_time_passed = management_time_passed
+
     context = {
         'managements': managements,
         'room_name': "broadcast"
