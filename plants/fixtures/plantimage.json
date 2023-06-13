@@ -1,0 +1,218 @@
+[
+{
+    "model": "plants.plantimage",
+    "pk": 1,
+    "fields": {
+        "plant": 1,
+        "image": "plants/images/장미.jpg"
+    }
+},
+{
+    "model": "plants.plantimage",
+    "pk": 3,
+    "fields": {
+        "plant": 3,
+        "image": "plants/images/무늬_아이비.jpg"
+    }
+},
+{
+    "model": "plants.plantimage",
+    "pk": 4,
+    "fields": {
+        "plant": 4,
+        "image": "plants/images/오렌지자스민.jpg"
+    }
+},
+{
+    "model": "plants.plantimage",
+    "pk": 5,
+    "fields": {
+        "plant": 5,
+        "image": "plants/images/테이블야자.jpg"
+    }
+},
+{
+    "model": "plants.plantimage",
+    "pk": 6,
+    "fields": {
+        "plant": 6,
+        "image": "plants/images/산호수.jpg"
+    }
+},
+{
+    "model": "plants.plantimage",
+    "pk": 7,
+    "fields": {
+        "plant": 7,
+        "image": "plants/images/스킨답서스.jpg"
+    }
+},
+{
+    "model": "plants.plantimage",
+    "pk": 8,
+    "fields": {
+        "plant": 8,
+        "image": "plants/images/유칼립투스_파블로.jpg"
+    }
+},
+{
+    "model": "plants.plantimage",
+    "pk": 9,
+    "fields": {
+        "plant": 9,
+        "image": "plants/images/네모필라_유리당초.jpg"
+    }
+},
+{
+    "model": "plants.plantimage",
+    "pk": 10,
+    "fields": {
+        "plant": 10,
+        "image": "plants/images/수레국화.jpg"
+    }
+},
+{
+    "model": "plants.plantimage",
+    "pk": 11,
+    "fields": {
+        "plant": 11,
+        "image": "plants/images/아레카야자_K8nIC5o.jpg"
+    }
+},
+{
+    "model": "plants.plantimage",
+    "pk": 12,
+    "fields": {
+        "plant": 12,
+        "image": "plants/images/비모란_선인장.jpg"
+    }
+},
+{
+    "model": "plants.plantimage",
+    "pk": 13,
+    "fields": {
+        "plant": 13,
+        "image": "plants/images/금오모자.jpg"
+    }
+},
+{
+    "model": "plants.plantimage",
+    "pk": 14,
+    "fields": {
+        "plant": 14,
+        "image": "plants/images/소정선인장.jpg"
+    }
+},
+{
+    "model": "plants.plantimage",
+    "pk": 15,
+    "fields": {
+        "plant": 15,
+        "image": "plants/images/드라세나_맛상게아나.jpg"
+    }
+},
+{
+    "model": "plants.plantimage",
+    "pk": 16,
+    "fields": {
+        "plant": 16,
+        "image": "plants/images/스투키.jpg"
+    }
+},
+{
+    "model": "plants.plantimage",
+    "pk": 17,
+    "fields": {
+        "plant": 17,
+        "image": "plants/images/아라비카_커피나무.jpg"
+    }
+},
+{
+    "model": "plants.plantimage",
+    "pk": 18,
+    "fields": {
+        "plant": 18,
+        "image": "plants/images/뱅갈고무나무.jpg"
+    }
+},
+{
+    "model": "plants.plantimage",
+    "pk": 19,
+    "fields": {
+        "plant": 19,
+        "image": "plants/images/장미_캄파눌라.jpg"
+    }
+},
+{
+    "model": "plants.plantimage",
+    "pk": 20,
+    "fields": {
+        "plant": 20,
+        "image": "plants/images/잉글리쉬_라벤더.jpg"
+    }
+},
+{
+    "model": "plants.plantimage",
+    "pk": 21,
+    "fields": {
+        "plant": 21,
+        "image": "plants/images/스타_재스민.jpg"
+    }
+},
+{
+    "model": "plants.plantimage",
+    "pk": 22,
+    "fields": {
+        "plant": 22,
+        "image": "plants/images/라벤더.jpg"
+    }
+},
+{
+    "model": "plants.plantimage",
+    "pk": 23,
+    "fields": {
+        "plant": 23,
+        "image": "plants/images/로즈부쉬.jpg"
+    }
+},
+{
+    "model": "plants.plantimage",
+    "pk": 24,
+    "fields": {
+        "plant": 24,
+        "image": "plants/images/카네이션.jpg"
+    }
+},
+{
+    "model": "plants.plantimage",
+    "pk": 25,
+    "fields": {
+        "plant": 25,
+        "image": "plants/images/애기말발도리.jpg"
+    }
+},
+{
+    "model": "plants.plantimage",
+    "pk": 26,
+    "fields": {
+        "plant": 26,
+        "image": "plants/images/황금세덤.jpg"
+    }
+},
+{
+    "model": "plants.plantimage",
+    "pk": 27,
+    "fields": {
+        "plant": 27,
+        "image": "plants/images/국화2.jpg"
+    }
+},
+{
+    "model": "plants.plantimage",
+    "pk": 28,
+    "fields": {
+        "plant": 28,
+        "image": "plants/images/낮달맞이꽃.jpg"
+    }
+}
+]
