@@ -50,7 +50,7 @@
               </div>
               
               {% comment %} 수정 및 삭제 드롭다운 버튼 {% endcomment %}
-              {% if garden.user == request.user %}
+              {% comment %} {% if request.user.is_superuser %} {% endcomment %}
               <div class="relative">
                 <div class="dropdown text-end">
                   <button type="button" class="rounded-md flex justify-center items-center bg-white hover:bg-gray-100" id="garden-menu-button" aria-expanded="false" aria-haspopup="true">
@@ -69,7 +69,7 @@
                   </form>
                 </div>
               </div>
-              {% endif %}
+              {% comment %} {% endif %} {% endcomment %}
             </div>
           </div>
 
@@ -124,44 +124,39 @@
             </form>
   
             {% comment %} 공유하기 {% endcomment %}
-            {% comment %} <div class="flex items-center w-fit p-3 rounded-full hover:bg-gray-100">
-              <span class="material-symbols-outlined">share</span>
-            </div> {% endcomment %}
-
-
-            <div class="dropdown">
-              <button type="button" class="flex items-center w-fit p-3 rounded-full hover:bg-gray-100" id="garden-menu-button" aria-expanded="false" aria-haspopup="true">
+            <div class="relative">
+              <div id="share-menu-button" class="flex items-center w-fit p-3 rounded-full cursor-pointer hover:bg-gray-100" aria-expanded="false" aria-haspopup="true">
                 <span class="material-symbols-outlined">share</span>
-              </button>
-
-              <ul class="absolute right-0 z-10 mt-2 w-48 rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="garden-menu-button" tabindex="-1" id="garden-dropdown" style="display: none;">
-                
+              </div>
+              <div class="absolute left-0 mt-2 w-36 origin-top-left rounded-md bg-white shadow-lg overflow-hidden ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="share-menu-button" tabindex="-1" id="share-dropdown" style="display: none;">
+                <ul>
                   <li>
                     <a href="javascript:shareTwitter2();">
-                      <button type="button" class="flex items-center gap-2">
+                      <button type="button" class="flex items-center gap-2 p-3 w-full hover:bg-gray-100">
                         <img src="{% static 'img/twitter_logo.svg' %}" alt="" style="width: 19px; height: 15px;">
-                        트위터
+                        <span>트위터</span>
                       </button>
                     </a>
                   </li>
                   <li>
                     <a href="javascript:shareFacebook2();">
-                      <button type="button" class="flex items-center gap-2">
-                      <img src="{% static 'img/facebook_logo.svg' %}" alt="" style="width: 19px; height: 19px;">
-                      페이스북</button>
+                      <button type="button" class="flex items-center gap-2 p-3 w-full hover:bg-gray-100">
+                        <img src="{% static 'img/facebook_logo.svg' %}" alt="" style="width: 19px; height: 19px;">
+                        <span>페이스북</span>
+                      </button>
                     </a>
                   </li>
                   <li>
                     <a href="javascript:shareLink2();">
-                      <button type="button" class="flex items-center gap-2">
-                      <img src="https://seekicon.com/free-icon-download/link_7.svg" alt="" style="width: 18px; height: 16px;">
-                      링크복사</button>
+                      <button type="button" class="flex items-center gap-2 p-3 w-full hover:bg-gray-100">
+                        <img src="https://seekicon.com/free-icon-download/link_7.svg" alt="" style="width: 18px; height: 16px;">
+                        <span>링크복사</span>
+                      </button>
                     </a>
                   </li>
-                
-              </ul>
+                </ul>
+              </div>
             </div>
-
 
             {% comment %} 댓글로 이동 {% endcomment %}
             <a href="#comment">
@@ -369,5 +364,6 @@
 <script src="{% static 'js/gardenCommentDelete.js' %}"></script>
 <script src="{% static 'js/gardenCommentRating.js' %}"></script>
 <script src="{% static 'js/gardenCommentUpdate.js' %}"></script>
+<script src="{% static 'js/gardenShareDropdown.js' %}"></script>
 <script src="{% static 'js/gardenShare.js' %}"></script>
 {% endblock script %}
