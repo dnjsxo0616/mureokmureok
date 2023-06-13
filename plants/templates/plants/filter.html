@@ -1,32 +1,26 @@
 {% extends 'base.html' %}
 {% load static %}
 
-
 {% block head %}
 <title>태그검색</title>
 {% endblock head %}
 
-
 {% block content %}
-<div class="mx-auto px-[200px] pt-10 pb-10">
+<div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+  
+  <div class="mx-auto px-[200px] pt-10 pb-10">
   <div>
     <div class="font-bold text-3xl text-left leading-relaxed">
       <p>어떤 종류의</p>식물을 찾고 있나요?
     </div>
     <div>
       <ul class="flex text-base mt-4">
+        <!-- 최대 4개의 태그만 출력하도록 수정 -->
+        {% for tag in unique_tags|slice:":4" %}
         <li class="rounded-full py-2 px-4 m-2 bg-white border border-gray-500 text-gray-500 cursor-pointer transition-colors duration-300 ease-in-out hover:bg-green-500 hover:text-white"  style="pointer-events: auto;">
-          <a href="{% url 'plants:filter_plants' '잎을 감상하는' %}">잎을 감상하는</a>
+          <a href="{% url 'plants:filter_plants' tag %}">#{{ tag }}</a>
         </li>
-        <li class="rounded-full py-2 px-4 m-2 bg-white border border-gray-500 text-gray-500 cursor-pointer transition-colors duration-300 ease-in-out hover:bg-green-500 hover:text-white"  style="pointer-events: auto;">
-          <a href="{% url 'plants:filter_plants' '꽃을 감상하는' %}">꽃을 감상하는</a>
-        </li>
-        <li class="rounded-full py-2 px-4 m-2 bg-white border border-gray-500 text-gray-500 cursor-pointer transition-colors duration-300 ease-in-out hover:bg-green-500 hover:text-white"  style="pointer-events: auto;">
-          <a href="{% url 'plants:filter_plants' '열매를 감상하는' %}">열매를 감상하는</a>
-        </li>
-        <li class="rounded-full py-2 px-4 m-2 bg-white border border-gray-500 text-gray-500 cursor-pointer transition-colors duration-300 ease-in-out hover:bg-green-500 hover:text-white"  style="pointer-events: auto;">
-          <a href="{% url 'plants:filter_plants' '열매를 감상하는' %}">다육/선인장</a>
-        </li>
+        {% endfor %}
       </ul>
     </div>
   </div>
@@ -36,23 +30,38 @@
       <input class="border-b-2 border-[#1EB564] outline-none cursor-blink w-full" type="text" name="searched" placeholder="검색어" oninput="toggleSearchButton(this)">
     </form>
   </div>
+  
+  {% if filtered_plants %}
+  <div class="grid grid-cols-4 gap-8 mb-10">
+    {% for plant in filtered_plants %}
+    <a href="{% url 'plants:detail' plant.pk %}">
+      <div class="w-full mb-5 flex gap-5">
+        <div class="flex flex-col gap-3">
+          <div class="rounded-xl border overflow-hidden relative">
+            <img src="{{ plant.plant_images.first.image.url }}" alt="" class="w-full h-full object-cover duration-200 ease-linear hover:scale-105">
 
-  <div>
-    {% if filtered_plants %}
-      <div class="grid grid-cols-4 gap-4">
-        {% for plant in filtered_plants %}
-          <div class="bg-white rounded-lg p-4">
-            <p>{{plant.title}}</p>
-            {% if plant.plant_images.all %}
-            <a href="{% url 'plants:detail' plant.pk %}"><img src="{{ plant.plant_images.first.image.url }}" alt="{{ plant.title }}" class="w-full h-auto mt-4 object-contain"></a>
-            {% endif %}
+            <div class="text-[12px] text-white w-fit rounded-md p-1 px-2 shadow-lg absolute top-2 left-2 {% if plant.category == "['실내식물']" %}bg-[#439A3C]{% elif plant.category == "['실외식물']" %}bg-[#9D9441]{% elif plant.category == "['실내식물', '실외식물']" %}bg-[#35493D]{% endif %}">{% if plant.category == "['실내식물']" %}실내{% elif plant.category == "['실외식물']" %}실외{% elif plant.category == "['실내식물', '실외식물']" %}실내, 실외{% endif %}</div>
           </div>
-        {% endfor %}
+          <div class="flex items-center justify-between px-2">
+            <h3 class="text-[16px] font-semibold">{{ plant.title }}</h3>
+
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[16px] mt-[0.5px]">favorite</span>
+              <span id="garden-like-count">{{ plant.like_users.all|length }}</span>
+            </div>
+          </div>
+        </div>
       </div>
+    </a>
+    {% endfor %}
   </div>
-    {% else %}
-      <p>검색 결과가 없습니다.</p>
-    {% endif %}
+  {% else %}
+  <div class="w-full h-96 flex justify-center items-center">
+    식물이 없습니다
+  </div>
+  {% endif %}
+
+</div>
 </div>
 
 {% endblock content %}
