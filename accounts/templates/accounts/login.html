@@ -30,34 +30,32 @@
       <div class="w-100 text-center mt-5">
           {% comment %} 소셜 로그인 부분입니다. {% endcomment %}
   
-            {% comment %} {% load socialaccount %}
-            <a href="{% provider_login_url 'kakao' method='oauth2' %}">
-              <img src="" alt="kakao"  class="w-100">
-            </a>
-  
-            <a href="{% provider_login_url 'google' method='oauth2' %}">
-              <button type='button'class="btn btn-link w-100 social--btn_google container mt-3 p-0">
-                <div class='col-5'>
-                  <img src="" alt="logo">
-                </div>
-                <div class='col-7'>
-                  Google 로그인
-                </div>
-              </button>
-            </a>
-  
-            <a href="{% provider_login_url 'naver' method='oauth2' %}">
-              <button type='button'class="w-100 social--btn_naver container mt-3 rounded">
-                <div class='col-5'>
-                  <img src="" alt="logo" style='width: 40px;' class='ms-2'>
-                </div>
-                <div class='col-7'>
-                  네이버  로그인
-                </div>
-              </button>
-            </a>  {% endcomment %}
+            {% comment %} 
+            {% load socialaccount %}
+            <div class="flex flex-col items-center gap-5">
+              <p class="text-[18px]"><b>소셜로그인</b></p>
+              <div class="flex justify-evenly gap-5">
+                <a href="{% provider_login_url 'kakao' method='oauth2' %}">
+                  <div class="flex items-center p-4 border rounded-xl bg-white w-16 h-16">
+                    <img src="{% static 'img/google_logo.png' %}" alt="">
+                  </div>
+                </a>
+                <a href="{% provider_login_url 'google' method='oauth2' %}">
+                  <div class="flex items-center p-4 rounded-xl bg-[#FFE24A] w-16 h-16">
+                    <img src="{% static 'img/kakao_logo.png' %}" alt="">
+                  </div>
+                </a>
+                <a href="{% provider_login_url 'naver' method='oauth2' %}">
+                  <div class="flex items-center p-5 text-white rounded-xl bg-[#25D036] w-16 h-16 text-center">
+                    <img src="{% static 'img/naver_logo.png' %}" alt="">
+                  </div>
+                </a>
+              </div>
+            </div>
+            {% endcomment %}
       </div>
     </div>
   </div>
 </main>
 {% endblock content %}
+

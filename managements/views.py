@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Management, CalenderEntry
 from .forms import ManagementForm, CalenderEntryForm
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from django.db.models import Count
 from django.contrib.auth.decorators import user_passes_test
 from django.views import View
@@ -14,6 +14,8 @@ import calendar
 import datetime
 import math
 import re
+from django.contrib.auth import logout
+from django.shortcuts import redirect
 
 # Create your views here.
 
@@ -344,12 +346,16 @@ def detail(request, management_pk):
 
 
 def index(request):
+
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect('/home/')
     managements = Management.objects.filter(user_id=request.user.id)
     good_plants = 0
     nice_plants = 0
     bad_plants = 0
     sum_score = 0
     average_score = 0
+
 
     for management in managements:
         sum_score += management.score
@@ -377,6 +383,7 @@ def index(request):
         'average_score': average_score,
         'room_name': "broadcast",
     }
+    
     return render(request, 'managements/index.html', context)
 
 
@@ -437,11 +444,16 @@ def calenderentry_create(request, management_pk):
     if request.method == 'POST':
         calenderentry_form = CalenderEntryForm(request.POST, request.FILES)
         if calenderentry_form.is_valid():
-            calenderentry = calenderentry_form.save(commit=False)
-            calenderentry.management = management
-            calenderentry.user = request.user
-            calenderentry.save()
-            return redirect('managements:detail', management_pk)
+            entry_date = calenderentry_form.cleaned_data['entrydate']  # 등록하려는 날짜 가져오기
+            existing_entries = CalenderEntry.objects.filter(entrydate=entry_date, user=request.user)
+            if existing_entries.exists():
+                return redirect('managements:detail', management_pk)
+            else:
+                calenderentry = calenderentry_form.save(commit=False)
+                calenderentry.management = management
+                calenderentry.user = request.user
+                calenderentry.save()
+                return redirect('managements:detail', management_pk)
     else:
         calenderentry_form = CalenderEntryForm()
 
@@ -457,7 +469,7 @@ def calenderentry_create(request, management_pk):
 
 @login_required
 def calenderentry_update(request, management_pk, calenderentry_pk):
-    calenderentry = calenderentry.objects.get(pk=calenderentry_pk)
+    calenderentry = CalenderEntry.objects.get(pk=calenderentry_pk)
     if request.user == calenderentry.user:
         if request.method == 'POST':
             calenderentry_form = CalenderEntryForm(request.POST, instance=calenderentry)
