@@ -23,32 +23,35 @@ window.addEventListener("keyup", e => {
 })
 
 
-const entryupdateModal = document.getElementById("entry-update-modal");
-const entryupdateBtnModals = document.querySelectorAll(".entry-update-btn");
-const entryupdateBackground = document.getElementById("entry-update-bg");
+const entryUpdateModals = document.querySelectorAll(".entry-update-modal");
+const entryUpdateBtns = document.querySelectorAll(".entry-update-btn");
+const entryUpdateBackground = document.getElementById("entry-update-bg");
 
-entryupdateBtnModals.forEach(btn => {
+entryUpdateBtns.forEach((btn, index) => {
   btn.addEventListener("click", () => {
-    entryupdateModal.style.display = "flex";
+    const modal = entryUpdateModals[index];
+    modal.style.display = "flex";
   });
 });
 
-entryupdateModal.addEventListener("click", e => {
-  const evTarget = e.target
-  if(evTarget.classList.contains("modal-overlay")) {
-    entryupdateModal.style.display = "none"
-  }
-})
 
-entryupdateBackground.addEventListener("click", () => {
-  entryupdateModal.style.display = "none"
-})
+entryUpdateModals.forEach((modal, index) => {
+  modal.addEventListener("click", (e) => {
+    if (e.target.classList.contains("modal-overlay")) {
+      modal.style.display = "none";
+    }
+  });
 
-window.addEventListener("keyup", e => {
-  if(entryupdateModal.style.display === "flex" && e.key === "Escape") {
-    entryupdateModal.style.display = "none"
-  }
-})
+  entryUpdateBackground.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+
+  window.addEventListener("keyup", (e) => {
+    if (modal.style.display === "flex" && e.key === "Escape") {
+      modal.style.display = "none";
+    }
+  });
+});
 
 
 
@@ -57,6 +60,8 @@ window.addEventListener("keyup", e => {
 
 
 var today = new Date();
+
+
 
   // 캘린더 생성 함수
   function createCalendar(year, month) {
@@ -127,3 +132,6 @@ var today = new Date();
 
   // 캘린더 생성 호출
   createCalendar(today.getFullYear(), today.getMonth(), JSON.parse('{{ entries_json|safe }}'));
+
+
+  
