@@ -68,7 +68,10 @@
             {% endif %} 
           </div>
           <h2 class="text-[14px] text-gray-400">{{ person.email }}</h2>
-          <div class="text-[16px] mt-1">팔로워 <b><span id="followers-count" class="cursor-pointer">{{ person.followers.count }}</span></b> · 팔로잉 <b><span id="followings-count" class="cursor-pointer">{{ person.followings.count }}</span></b></div>
+          <div class="flex justify-between">
+            <div class="text-[16px] mt-1">팔로워 <b><span id="followers-count" class="cursor-pointer">{{ person.followers.count }}</span></b> · 팔로잉 <b><span id="followings-count" class="cursor-pointer">{{ person.followings.count }}</span></b></div>
+            <button class="text-[16px] bg-white border border-[#1EB564] text-[#1EB564] rounded-md px-3 py-1 hover:bg-[#1EB564] hover:text-white"><a href="{% url 'sales:order_list' %}">나의 주문 목록</a></button>
+          </div>
         </div>
       </div>
     </div>

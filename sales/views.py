@@ -351,6 +351,23 @@ def create_order(request):
 
     return render(request, 'sales/create_order.html', context)
 
+def create_ordernow(request, product_pk):
+    product = Product.objects.get(pk=product_pk)
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            order = form.save(commit=False)
+            order.user = request.user
+            order.save()
+            return redirect('sales:order_payment', order.pk)
+    else:
+        form = OrderForm()
+    context = {
+        'form':form,
+        'product':product,
+
+    }
+    return render(request, 'sales/create_ordernow.html', context)
 
 # 1 바로 넘어가는 것
 # def order_complete(request):
