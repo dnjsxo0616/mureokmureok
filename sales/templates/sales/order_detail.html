@@ -1,53 +1,40 @@
 {% extends 'base.html' %}
-
+{% load humanize%}
 {% block head %}
 
-<script
-  src="https://code.jquery.com/jquery-3.3.1.min.js"
-  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-  crossorigin="anonymous"></script>
-<script>
-  function cancelPay() {
-    jQuery.ajax({
-      // 예: http://www.myservice.com/payments/cancel
-      "url": "{% url 'sales:order_cancel' %}", 
-      "type": "POST",
-      "contentType": "application/json",
-      "data": JSON.stringify({
-        "merchant_uid": {{ order.order_number }}, // 예: ORD20180131-0000011
-        "cancel_request_amount": {{order.price}}, // 환불금액
-        "reason": "테스트 결제 환불" // 환불사유
-        // [가상계좌 환불시 필수입력] 환불 수령계좌 예금주
-        "refund_holder": "홍길동", 
-        // [가상계좌 환불시 필수입력] 환불 수령계좌 은행코드(예: KG이니시스의 경우 신한은행은 88번)
-        "refund_bank": "88" 
-        // [가상계좌 환불시 필수입력] 환불 수령계좌 번호
-        "refund_account": "56211105948400" 
-      }),
-      "dataType": "json"
-    });
+<style>
+  .card {
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
-</script>
-
-
+</style>
 {% endblock head %}
 
 {% block content %}
-  <h1>주문 세부 정보</h1>
-  <p>주문번호: {{ order.order_number }}</p>
-  <p>주문일시: {{ order.order_date }}</p>
-  <p>주문자 : {{ order.user }}</p>
-  <p>상품명 :{{ order.product_name}} </p>
-  <p>수량: {{ order.quantity }}</p>
-  <p>금액 :{{ order.price}} </p>
-  <p>주소  :{{ order.delivery_address }} </p>
-  <p>주문상태:
-    {% if order.payment_status %}
-      배송 시작!!
-    {% else %}
-      배송 준비중
-    {% endif %}
-  </p>
-
-  <button onclick="cancelPay()">환불하기</button>
+<div class="flex items-center justify-center min-h-screen">
+  <div class="max-w-3xl w-full px-4 py-6 ">
+    <div class="card bg-white h-full">
+      <div class="card-header bg-green-600 text-white py-2 px-4">
+        <h1 class="text-2xl">주문 정보</h1>
+      </div>
+      <div class="card-body px-4 py-4">
+        <p class="text-xl mb-3 border-b pb-4 font-bold"><span class="text-4xl">주문상태:</span>
+          {% if order.payment_status %}
+            <span class="text-3xl text-[#1EB564]">배송 시작!!</span>
+          {% else %}
+          <span class="text-3xl text-[#1EB564]">배송 준비중</span>
+          {% endif %}
+        </p>
+        <p class="text-xl mb-3"><span class="font-bold">주문번호:</span> {{ order.order_number }}</p>
+        <p class="text-xl mb-3"><span class="font-bold">주문일시:</span> {{ order.order_date }}</p>
+        <p class="text-xl mb-3"><span class="font-bold">주문자:</span> {{ order.user }}</p>
+        <p class="text-xl mb-3"><span class="font-bold">상품명:</span> {{ order.product_name }}</p>
+        <p class="text-xl mb-3"><span class="font-bold">수량:</span> {{ order.quantity }}개</p>
+        <p class="text-xl mb-3"><span class="font-bold">금액:</span> {{ order.price|intcomma}}원</p>
+        <p class="text-xl mb-3"><span class="font-bold">주소:</span> {{ order.delivery_address }}</p>
+        <a href="{% url 'home' %}" class="mt-4 block text-center bg-white border border-[#1EB564] text-[#1EB564] rounded-md px-4 py-2 hover:bg-[#1EB564] hover:text-white">메인화면</a>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock content %}

@@ -8,89 +8,157 @@
 
 
 {% block content %}
-<main>
+<main class="min-h-screen">
   {% comment %} 배너 {% endcomment %}
   <div class="w-full h-[180px] overflow-hidden relative">
     <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
       <div class="absolute flex items-center gap-10 top-1/2 -translate-y-1/2 z-10">
         <img src="{% static 'img/manage.png' %}" alt="" class="w-36 h-32">
         <div>
-          <img src="{% static 'img/식물실루엣.png' %}" alt="">
           <p class="text-[16px] text-gray-400 font-semibold mb-3">여러분의 반려 식물<br>모두 여기에서 관리해보세요 !</p>
           <h1 class="text-[25px] font-semibold">식물관리</h1>
         </div>
       </div>
     </div>
+
+    {% if user.is_authenticated %}
+    <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 flex justify-end">
+      <div class="absolute z-10 flex items-center gap-8 origin-right top-1/2 -translate-y-1/2">
+
+        {% comment %} 식집사 자격 {% endcomment %}
+        <div class="flex flex-col gap-2 items-center">
+          <div class="border-2 w-12 h-12 rounded-full overflow-hidden">
+            {% if request.user.image %}
+              <img src="{{ request.user.image.url }}" alt="" class="w-full h-full object-cover">
+            {% else %}
+              <img src="{% static 'img/no_profile.jpg' %}" alt="" class="w-full h-full object-cover">
+            {% endif %}
+          </div>
+
+          {% if average_score %}
+            {% if average_score >= 80 %}
+            <div class="rounded-lg bg-[#1EB564] text-center text-white p-[2px] px-[12px] text-[14px] font-semibold">
+              우수한 식집사
+            </div>
+            {% elif average_score < 80 and average_score >= 40 %}
+            <div class="rounded-lg bg-[#F0BB00] text-center text-white p-[2px] px-[12px] text-[14px] font-semibold">
+              보통의 식집사
+            </div>
+            {% elif average_score < 40 %}
+            <div class="rounded-lg bg-red-600 text-center text-white p-[2px] px-[12px] text-[14px] font-semibold">
+              부족한 식집사
+            </div>
+            {% endif %}
+          {% endif %}
+        </div>
+
+        {% comment %} 내 식물 평가 {% endcomment %}
+        <div class="border rounded-xl min-w-[200px]">
+          <h2 class="text-[18px] text-center text-white font-semibold rounded-t-xl bg-gray-400 py-1">MY 반려식물 <span class="text-gray-100">({{ managements|length }})</span></h2>
+          <div class="flex items-center justify-center gap-5 p-3 bg-white rounded-b-xl">
+
+            {% if good_plants %}
+            <div class="flex items-center gap-2 rounded-full p-1 pe-3 border border-[#1EB564]">
+              <div class="w-8 h-8 overflow-hidden rounded-full">
+                <img src="{% static 'img/good.png' %}" alt="" class="w-full h-full object-cover">
+              </div>
+              <p class="font-semibold text-gray-600">{{ good_plants }}</p>
+            </div>
+            {% endif %}
+
+            {% if nice_plants %}
+            <div class="flex items-center gap-2 rounded-full p-1 pe-3 border border-[#F0BB00]">
+              <div class="w-8 h-8 overflow-hidden rounded-full">
+                <img src="{% static 'img/nice.png' %}" alt="" class="w-full h-full object-cover">
+              </div>
+              <p class="font-semibold text-gray-600">{{ nice_plants }}</p>
+            </div>
+            {% endif %}
+
+            {% if bad_plants %}
+            <div class="flex items-center gap-2 rounded-full p-1 pe-3 border border-red-600">
+              <div class="w-8 h-8 overflow-hidden rounded-full">
+                <img src="{% static 'img/bad.png' %}" alt="" class="w-full h-full object-cover">
+              </div>
+              <p class="font-semibold text-gray-600">{{ bad_plants }}</p>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
     <div class='w-full h-[180px] bg-gradient-to-b from-gray-200 absolute'></div>
   </div>
 
+  {% comment %} 반려식물 목록 {% endcomment %}
   <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-
-    <h1 class="text-[20px] my-8 text-center font-semibold">MY 반려식물 <span class="text-gray-400">({{ managements|length }})</span></h1>
-
-    <div class="bg-gray-100 rounded-xl p-5 mb-16">
-      <div class="grid grid-cols-4 gap-4">
-        <a href="{% url 'managements:create' %}" class="h-fit w-full">
-        <div class="bg-gray-200 rounded-lg p-4 tab cursor-pointer w-full h-96 flex flex-col items-center gap-5 border-2 border-gray-400 border-dashed hover:bg-gray-300">
-            <div class="flex flex-col items-center justify-center">
-              <div class="w-36 h-44 mb-5">
-                <!-- 추후 식물실루엣 이미지로 교체할 예정 -->
-                <img src="{% static 'img/emoji.png' %}" alt="" class="w-full h-full object-cover">
+    <div class="grid grid-cols-4 gap-8 mt-5 mb-16">
+      <a href="{% url 'managements:create' %}" class="h-fit w-full">
+      <div class="bg-gray-100 rounded-lg p-4 tab cursor-pointer w-full h-96 flex flex-col items-center justify-center gap-5 border-2 border-gray-400 border-dashed hover:bg-gray-200">
+          <div class="flex flex-col items-center justify-center">
+            <div class="w-36 h-44 mb-5">
+              <img src="{% static 'img/식물실루엣.png' %}" alt="" class="w-full h-full object-cover">
+            </div>
+            <span class="material-symbols-outlined text-[35px]">add_circle</span>
+          </div>
+          <div class=" text-center">
+            <p>여러분의 식물을</p>
+            <p>추가해주세요</p>
+          </div>
+        </div>
+      </a>
+      
+      {% for management in managements|dictsortreversed:'id' %}
+      <div class="bg-white rounded-xl p-3 tab cursor-pointer w-full h-96 bg-white border hover:-translate-y-1.5 transform transition hover:shadow-md">
+        <a href="{% url 'managements:detail' management.pk %}">
+          <div class="w-full h-56 overflow-hidden border rounded-md mb-3">
+              <img src="{{ management.photo.url }}" alt="{{ management.plant.plantimage }}" class="w-full h-full object-cover">
+          </div>
+          <div class="flex justify-between items-center">
+            <div class="flex flex-col gap-10">
+              <div>
+                <p class="text-[14px] text-gray-500 mb-2">{{ management.plant }}</p>
+                <h1 class="font-semibold text-[20px]">{{ management.nickname }}</h1>
               </div>
-              <span class="material-symbols-outlined text-[30px]">add_circle</span>
+              <div>
+                <p>D+{{ management.management_time_passed }}</p>
+              </div>
             </div>
-            <div class=" text-center">
-              <p>여러분의 식물을</p>
-              <p>추가해주세요</p>
+
+            <!-- 식물상태 -->
+
+            {% comment %} 80점 이상 {% endcomment %}
+            {% if management.score >= 80 %}
+            <div class="border border-[#1EB564] rounded-md h-full p-3 flex flex-col items-center gap-3 bg-gray-50">
+              <div class="w-12 h-12 rounded-full overflow-hidden p-1 bg-gray-200">
+                <img src="{% static 'img/good.png' %}" alt="" class="w-full h-full object-cover">
+              </div>
+              <p class="text-[#1EB564] font-semibold">Good</p>
             </div>
+
+            {% comment %} 80점 40점 사이 {% endcomment %}
+            {% elif management.score < 80 and management.score >= 40 %}
+            <div class="border border-[#F0BB00] rounded-md h-full p-3 flex flex-col items-center gap-3 bg-gray-50">
+              <div class="w-12 h-12 rounded-full overflow-hidden p-1 bg-gray-200">
+                <img src="{% static 'img/nice.png' %}" alt="" class="w-full h-full object-cover">
+              </div>
+              <p class="text-[#F0BB00] font-semibold">Nice</p>
+            </div>
+
+            {% comment %} 40점 미만 {% endcomment %}
+            {% elif management.score < 40 %}
+            <div class="border border-red-600 rounded-md h-full p-3 flex flex-col items-center gap-3 bg-gray-50">
+              <div class="w-12 h-12 rounded-full overflow-hidden p-1 bg-gray-200">
+                <img src="{% static 'img/bad.png' %}" alt="" class="w-full h-full object-cover">
+              </div>
+              <p class="text-red-600 font-semibold">bad</p>
+            </div>
+            {% endif %}
           </div>
         </a>
-        
-        {% for management in managements %}
-        <div class="bg-white rounded-xl p-3 tab cursor-pointer w-full h-96 bg-white border hover:-translate-y-1.5 transform transition hover:shadow-md">
-          <a href="{% url 'managements:detail' management.pk %}">
-            <div class="w-full h-56 overflow-hidden border rounded-md mb-3">
-                <img src="{{ management.photo.url }}" alt="{{ management.plant.plantimage }}" class="w-full h-full object-cover">
-            </div>
-            <div class="flex justify-between items-center">
-              <div class="flex flex-col gap-10">
-                <div>
-                  <p class="text-[14px] text-gray-500 mb-2">{{ management.plant }}</p>
-                  <h1 class="font-semibold text-[20px]">{{ management.nickname }}</h1>
-                </div>
-                <div>
-                  <p>D + {{ management.management_time_passed }}</p>
-                </div>
-              </div>
-
-              <!-- 식물상태 -->
-              {% if management.score >= 80 %}
-              <div class="border border-[#1EB564] rounded-md h-full p-3 flex flex-col items-center gap-3 bg-gray-50">
-                <!-- 추후 이모티콘으로 변경 -->
-                <!-- <img src="{% static 'img/.png' %}" alt=""> -->
-                <p class="text-center text-[30px]">🙂</p>
-                <p class="text-[#1EB564] font-semibold">Good</p>
-              </div>
-              {% elif management.score < 80 and management.score >= 20 %}
-              <div class="border border-[#F0BB00] rounded-md h-full p-3 flex flex-col items-center gap-3 bg-gray-50">
-                <!-- 추후 이모티콘으로 변경 -->
-                <!-- <img src="{% static 'img/.png' %}" alt=""> -->
-                <p class="text-center text-[30px]">🙂</p>
-                <p class="text-[#F0BB00] font-semibold">Nice</p>
-              </div>
-              {% elif management.score < 20 %}
-              <div class="border border-red-600 rounded-md h-full p-3 flex flex-col items-center gap-3 bg-gray-50">
-                <!-- 추후 이모티콘으로 변경 -->
-                <!-- <img src="{% static 'img/.png' %}" alt=""> -->
-                <p class="text-center text-[30px]">🙂</p>
-                <p class="text-red-600 font-semibold">bad</p>
-              </div>
-              {% endif %}
-            </div>
-          </a>
-        </div>
-        {% endfor %}
       </div>
+      {% endfor %}
     </div>
   </div>
 </main>

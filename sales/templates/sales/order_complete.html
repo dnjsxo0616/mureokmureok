@@ -1,8 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="mx-auto px-[200px] pt-10 pb-10">
-  <h1>주문이 완료되었습니다.</h1>
-  <a href="{% url 'sales:order_detail' order.order_number %}">주문 세부 정보 보기</a>
+<div class="flex items-center justify-center min-h-screen">
+  <div class="bg-white p-10 rounded-lg shadow-lg">
+    <div class="text-5xl font-bold mb-6">주문이 완료되었습니다.</div>
+    <div class="text-right">
+      <a href="{% url 'sales:order_detail' order.order_number %}" class="text-[#1EB564]">주문 세부 정보 보러가기</a>
+    </div>
+  </div>
 </div>
 {% endblock content %}

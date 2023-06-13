@@ -214,9 +214,36 @@ def search(request):
 
 def filter_plants(request, tag):
     filtered_plants = Plant.objects.filter(tags__name__in=[tag])
+    unique_tags = Plant.objects.values_list('tags__name', flat=True).distinct()
+
     context = {
         'filtered_plants': filtered_plants,
+        'unique_tags': unique_tags,
         'room_name': "broadcast"
     }
+
     return render(request, 'plants/filter.html', context)
+
+
+def category_plants(request):
+    category = request.GET.getlist('category')
+
+    if '전체' in category:
+        filtered_plants = Plant.objects.all()
+    elif '실내식물' in category:
+        filtered_plants = Plant.objects.filter(category__contains='실내식물')
+    elif '실외식물' in category:
+        filtered_plants = Plant.objects.filter(category__contains='실외식물')
+    else:
+        filtered_plants = Plant.objects.none()
+
+    context = {
+        'filtered_plants': filtered_plants,
+        'category': category,
+    }
+    return render(request, 'plants/category.html', context)
+
+
+
+
 

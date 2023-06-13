@@ -103,106 +103,43 @@
     </div>
   </section>
   
-  {% comment %} <div class="font-blod text-6xl">
-    <div class="title-wrap aos-init aos-animate" data-aos="fade-up" data-aos-duration="800">
-      <div class="text-slide">
-        <p class="select-text">
-          <span>어떤 식물</span>
-        </p>
-      </div>
-      <em class="prefix">을</em>
-      <p class="default-text">찾고 있나요?</p>
-    </div>
-    <div class="filter-wrap aos-init aos-animate" data-aos="fade-up" data-aos-duration="900">
-      <div class="depth-slide swiper-initialized swiper-horizontal swiper-backface-hidden">
-        <div class="swiper-wrapper" id="swiper-wrapper-57d58b4e4e26b08c" aria-live="polite" style="transition-duration: 0ms; transform: translate3d(0px, 0px, 0px);">
-          <div class="swiper-slide depth-1 swiper-slide-active" role="group" aria-label="1 / 3" style="width: 496px;">
-            <ul class="filter-item-box">
-              <li class="filter-item" filtertype="firstfilter" data="62abf69202b4dd10c1280adf" style="pointer-events: auto;">잎을 감상하는</li>
-              <li class="filter-item" filtertype="firstfilter" data="62abf69902b4dd10c1280ae6" style="pointer-events: auto;">꽃을 감상하는</li>
-              <li class="filter-item" filtertype="firstfilter" data="62abf69e02b4dd10c1280aeb" style="pointer-events: auto;">열매를 감상하는</li>
-              <li class="filter-item" filtertype="firstfilter" data="62abf6ab02b4dd10c1280af4" style="pointer-events: auto;">다육/선인장</li>
-            </ul>
-          </div>
-          <div class="swiper-slide depth-2 swiper-slide-next" role="group" aria-label="2 / 3" style="width: 496px;">
-            <ul class="filter-item-box">
-              <li class="btn-prev">이전</li>
-              <li class="filter-item" filtertype="secondfilter" data="62abf74402b4dd10c1280c2c">잎모양</li>
-              <li class="filter-item" filtertype="secondfilter" data="62abf74b02b4dd10c1280c33">초보자용</li>
-              <li class="filter-item" filtertype="secondfilter" data="62abf74f02b4dd10c1280c3b">선물하기 좋은</li>
-              <li class="filter-item" filtertype="secondfilter" data="62abf75402b4dd10c1280c44">공기정화</li>
-              <li class="filter-item" filtertype="secondfilter" data="62abf75902b4dd10c1280c4e">빛이 적어도 되는</li>
-              <li class="filter-item" filtertype="secondfilter" data="62abf76402b4dd10c1280c65">향기나는</li>
-              <li class="filter-item" filtertype="secondfilter" data="62abf76002b4dd10c1280c59">반려동물 안전한</li>
-              <li class="filter-item" filtertype="secondfilter" data="62abf76702b4dd10c1280c72">목대있는</li>
-              <li class="filter-item" filtertype="secondfilter" data="62abf76d02b4dd10c1280c80">흙이 필요없는</li>
-              <li class="filter-item" filtertype="secondfilter" data="62abf77202b4dd10c1280c8f">덩굴로 자라는</li>
-            </ul>
-          </div>
-          <div class="swiper-slide depth-3" role="group" aria-label="3 / 3" style="width: 496px;">
-            <ul class="filter-item-box">
-              <li class="btn-prev">이전</li>
-            </ul>
-          </div>
-        </div>
-        <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
-      </div>
-    </div>
-  </div> {% endcomment %}
-
-
   {% comment %} 태그검색 {% endcomment %}
-<section class="h-screen relative" id="tag">
-    <div class="absolute w-full top-1/2 start-1/2 -translate-x-1/2 -translate-y-1/2">
-        <h2 class="text-[45px] font-semibold text-center mb-10">'# 태그'를 통해 찾아보세요</h2>
-      
-        <div>
-            <ul class="flex gap-16 justify-center text-[25px]">
-                {% for tag in unique_tags|slice:":3" %}
-                    <a href="{% url 'plants:filter_plants' tag %}">
-                        <li class="w-fit rounded-full py-2 px-4 bg-white border border-gray-500 text-gray-500 cursor-pointer transition-colors duration-300 ease-in-out hover:bg-green-500 hover:text-white" style="margin-bottom: 30px;">
-                            #{{ tag }}
-                        </li>
-                    </a>
-                {% endfor %}
-            </ul>
-            <ul class="flex gap-16 justify-center text-[25px]">
-                {% for tag in unique_tags|slice:"3:7" %}
-                    <a href="{% url 'plants:filter_plants' tag %}">
-                        <li class="w-fit rounded-full py-2 px-4 bg-white border border-gray-500 text-gray-500 cursor-pointer transition-colors duration-300 ease-in-out hover:bg-green-500 hover:text-white" style="margin-bottom: 30px;">
-                            #{{ tag }}
-                        </li>
-                    </a>
-                {% endfor %}
-            </ul>
-            <ul class="flex gap-16 justify-center text-[25px]">
-                {% for tag in unique_tags|slice:"7:10" %}
-                    <a href="{% url 'plants:filter_plants' tag %}">
-                        <li class="w-fit rounded-full py-2 px-4 bg-white border border-gray-500 text-gray-500 cursor-pointer transition-colors duration-300 ease-in-out hover:bg-green-500 hover:text-white" style="margin-bottom: 30px;">
-                            #{{ tag }}
-                        </li>
-                    </a>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
-</section>
+  <section class="h-screen relative" id="tag">
+      <div class="absolute w-full top-1/2 start-1/2 -translate-x-1/2 -translate-y-1/2">
+          <h2 class="text-[45px] font-semibold text-center mb-10">'# 태그'를 통해 찾아보세요</h2>
+        
+          <div>
+              <ul class="flex gap-16 justify-center text-[25px]">
+                  {% for tag in unique_tags|slice:":3" %}
+                      <a href="{% url 'plants:filter_plants' tag %}">
+                          <li class="w-fit rounded-full py-2 px-4 bg-white border border-gray-500 text-gray-500 cursor-pointer transition-colors duration-300 ease-in-out hover:bg-green-500 hover:text-white" style="margin-bottom: 30px;">
+                              #{{ tag }}
+                          </li>
+                      </a>
+                  {% endfor %}
+              </ul>
+              <ul class="flex gap-16 justify-center text-[25px]">
+                  {% for tag in unique_tags|slice:"3:7" %}
+                      <a href="{% url 'plants:filter_plants' tag %}">
+                          <li class="w-fit rounded-full py-2 px-4 bg-white border border-gray-500 text-gray-500 cursor-pointer transition-colors duration-300 ease-in-out hover:bg-green-500 hover:text-white" style="margin-bottom: 30px;">
+                              #{{ tag }}
+                          </li>
+                      </a>
+                  {% endfor %}
+              </ul>
+              <ul class="flex gap-16 justify-center text-[25px]">
+                  {% for tag in unique_tags|slice:"7:10" %}
+                      <a href="{% url 'plants:filter_plants' tag %}">
+                          <li class="w-fit rounded-full py-2 px-4 bg-white border border-gray-500 text-gray-500 cursor-pointer transition-colors duration-300 ease-in-out hover:bg-green-500 hover:text-white" style="margin-bottom: 30px;">
+                              #{{ tag }}
+                          </li>
+                      </a>
+                  {% endfor %}
+              </ul>
+          </div>
+      </div>
+  </section>
 
-
-
-      
-      {% comment %} <div class="filter-selection" style="display: none;">
-        <ul class="flex justify-center text-3xl mt-8">
-          <li class="btn-prev">이전</li>
-          <li class="filter-item">잎모양</li>
-          <li class="filter-item">초보자용</li>
-          <li class="filter-item">선물하기 좋은</li>
-        </ul>
-      </div> {% endcomment %}
-      
-    </div>
-  </section>  
-  
   {% comment %} 인기있는 식물 {% endcomment %}
   <section class="bg-gray-100 h-screen relative mb-10" id="favor">
     <div class="flex gap-10 absolute top-1/2 start-1/2 -translate-x-[55%] -translate-y-1/2">
@@ -245,29 +182,34 @@
         <div class="flex items-center justify-between border-0 border-b-[1px] border-gray-400 bg-white py-3 my-5 sticky top-[60px] z-10">
           <div class="flex gap-10">
             <div class='text-gray-400 hover:text-black'>
-              <a href="{% url 'gardens:listing' %}?category=전체">
+              <a href="{% url 'plants:category' %}?category=전체">
                 <span class="{% if category == '전체' %}text-black font-semibold{% endif %}">전체</span>
               </a>
             </div>
             <div class='text-gray-400 hover:text-black'>
-              <a href="{% url 'gardens:listing' %}?category=전시회">
-                <span class="{% if category == '전시회' %}text-black font-semibold{% endif %}">실내식물</span>
+              <a href="{% url 'plants:category' %}?category=실내식물">
+                <span class="{% if category == '실내식물' %}text-black font-semibold{% endif %}">실내식물</span>
               </a>
             </div>
             <div class='text-gray-400 hover:text-black'>
-              <a href="{% url 'gardens:listing' %}?category=식물원">
-                <span class="{% if category == '식물원' %}text-black font-semibold{% endif %}">식외식물</span>
+              <a href="{% url 'plants:category' %}?category=실외식물">
+                <span class="{% if category == '실외식물' %}text-black font-semibold{% endif %}">실외식물</span>
               </a>
             </div>
           </div>
 
-          {% comment %} 검색 {% endcomment %}
-          <form action="{% url 'plants:search' %}" method="GET" role="search">
-            <div class="border-0 border-b border-gray-300 flex items-center">
-              <input type="search" name="searched" class="ps-1 pe-3 h-8 w-60 text-sm bg-transparent focus:outline-none" placeholder="식물을 검색해보세요">
-              <span class="material-symbols-outlined text-gray-400">search</span>
-            </div>
-          </form>
+          <div class="flex items-center gap-10">
+            {% comment %} 검색 {% endcomment %}
+            <form action="{% url 'plants:search' %}" method="GET" role="search">
+              <div class="border-0 border-b border-gray-300 flex items-center">
+                <input type="search" name="searched" class="ps-1 pe-3 h-8 w-60 text-sm bg-transparent focus:outline-none" placeholder="식물을 검색해보세요">
+                <span class="material-symbols-outlined text-gray-400">search</span>
+              </div>
+            </form>
+            {% comment %} {% if request.user.is_superuser %} {% endcomment %}
+              <a href="{% url 'plants:create' %}" class="text-[14px] border rounded-lg p-1 px-2 text-center hover:bg-gray-100">식물 등록</a>
+            {% comment %} {% endif %} {% endcomment %}
+          </div>
         </div>
 
         {% comment %} 식물목록 카드 {% endcomment %}
