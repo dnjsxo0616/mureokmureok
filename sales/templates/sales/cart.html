@@ -1,111 +1,118 @@
 {% extends 'base.html' %}
 {% load static %}
-<!-- 가격표시 단위-->
 {% load humanize %}
 
-{% block head %}
 
+{% block head %}
+<title>장바구니</title>
 {% endblock head %}
 
+
 {% block content %}
-
-<div class="mx-auto px-[200px] pt-10 pb-10">
-  <div class="font-bold text-3xl mb-5">장바구니</div>
-
-  {% comment %} 구매 테이블 {% endcomment %}
-
-   {% comment %} 표시항목 {% endcomment %}
-  <div class="flex p-3 py-2 text-[14px] text-white bg-[#1EB564] rounded-lg">
-    <div class="w-1/12 text-center"><input type="checkbox" id="check-all"></div>
-    <div class="w-1/12 text-center">이미지</div>
-    <div class="w-1/12 grow text-center">상품명</div>
-    <div class="w-1/12 text-center">수량</div>
-    <div class="w-1/12 text-center">금액</div>
-    <div class="w-1/12 text-center">게시일</div>
-    <div class="w-1/12 text-center">삭제</div>
-  </div>
-
-   {% comment %} 게시물 {% endcomment %}
-
-  <div class="flex flex-col mb-10">
-    {% if cart_items %}
-    {% for cart_item in cart_items %}
-      <div class="flex items-center bg-white p-3 border-0 border-b-[1px] border-gray-300 hover:bg-gray-100">
-        <div class="w-1/12 pl-11" scope="row"><input type="checkbox" id="check-item-1"></div>
-        <div class="w-1/12 rounded-md h-24 border"> 
-          {% comment %} overflow-hidden 삭제 {% endcomment %}
-          <a href="{% url 'sales:detail' cart_item.product.pk %}">
-          <img src="{{ cart_item.product.photo.url }}" alt="" class="object-cover w-full h-full">
-          </a>
-        </div>
-        <div class="w-1/12 grow px-10">
-          <div class="text-[12px] text-gray-700 border border-[1px] border-gray-400 w-fit rounded-md p-[2px] px-[4px] mb-2 shadow-sm">{{ cart_item.product.category }}</div>
-          <h4 class="text-[18px] mb-1">{{ cart_item.product.title }}</h4>
-        </div>
-        <div class="text-center w-1/12">{{ cart_item.quantity }}</div>
-        <div class="w-1/12 text-center flex flex-col items-center gap-2">
-          <div>{{ cart_item.total_price|intcomma }}원</div>
-        </div>
-        <div class="w-1/12 text-center text-[12px] text-gray-500">{{ cart_item.product.created_at|date:"Y-m-d" }}</div>
-        <div class="w-1/12 pl-10">
-          <a href="#" onclick="deleteCart(event, {{ cart_item.product.pk }})" class="text-red-500 hover:text-red-700">
-            {% csrf_token %}
-            삭제
-          </a>
-        </div>
-      </div>
-    {% endfor %}
-    {% else %}
-    <p>장바구니에 담긴 상품이 없습니다.</p>
-    {% endif %}
-    
-    
-    {% comment %} 주문창 {% endcomment %}
-    <table class="border-t border-b mt-[50px]">
-      <tr class="border-b text-2xl">
-        <td>총 주문 상품 : <span class="font-bold">{{ cart_items|length }}개</span></td>
-      </tr>
-      <tr>
-        <td class="flex justify-center">
-          <table class="mb-3 mt-3">
-            <tr class="text-3xl text-center">
-              <td class="pr-3">{{ cart_total |intcomma}}원</td>
-              <td> + 0원</td>
-              <td> = {{ cart_total |intcomma}}</td>
-
-            </tr>
-            <tr class="text-lg text-center">
-              <td class="pr-5">상품금액</td>
-              <td>배송비</td>
-              <td>총 주문금액</td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
-  </div>
-
-
-
+<main class="min-h-screen">
+  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+    <div class="font-bold text-3xl mt-16 mb-8">장바구니</div>
   
-  <div class="mt-4 flex justify-center">
-    <div class="button1">
-      {% comment %} <button class="bg-[#1EB564] text-white rounded-md px-4 py-2 mx-1" data-bs-toggle="modal" data-bs-target="#buy" ><a href="{% url 'sales:create_order' %}">주문하기</a></button> {% endcomment %}
-
-      <button class="bg-[#1EB564] text-white rounded-md px-4 py-2 mx-1" data-bs-toggle="modal" data-bs-target="#buy"><a href="{% url 'sales:create_order' %}">주문하기</a></button>
-      {% comment %} <a href="{% url 'sales:create_order' %}" class="bg-[#1EB564] text-white rounded-md px-4 py-2 mx-1">주문하러가기</a> {% endcomment %}
-
-      {% comment %} <form action="{% url 'sales:create_order' %}" method="POST">
-        {% csrf_token %}
-        <button type="submit" class="bg-[#1EB564] text-white rounded-md px-4 py-2 mx-1">주문하러가기</button>
-      </form> {% endcomment %}
-
-      {% comment %} <button class="bg-white border border-[#1EB564] text-[#1EB564] rounded-md px-4 py-2 mx-1" data-bs-toggle="modal" data-bs-target="#buy">선택상품 주문</button> {% endcomment %}
-      <button class="bg-white border border-black  rounded-md px-4 py-2 mx-1"><a class="button2-a" href="{% url 'sales:index'%}">쇼핑계속하기</a></button>
+    {% comment %} 구매 테이블 {% endcomment %}
+  
+    {% comment %} 표시항목 {% endcomment %}
+    <div class="flex p-3 py-2 text-[14px] text-white bg-[#1EB564] rounded-lg">
+      <div class="w-1/12 text-center"><input type="checkbox" id="check-all"></div>
+      <div class="w-1/12 text-center">이미지</div>
+      <div class="w-1/12 grow text-center">상품명</div>
+      <div class="w-1/12 text-center">수량</div>
+      <div class="w-1/12 text-center">금액</div>
+      <div class="w-1/12 text-center">삭제</div>
     </div>
+  
+    {% comment %} 게시물 {% endcomment %}
+  
+    <div class="flex flex-col mb-12">
+      {% if cart_items %}
+      {% for cart_item in cart_items %}
+        <div class="flex items-center bg-white p-3 border-0 border-b-[1px] border-gray-300 hover:bg-gray-100">
+          <div class="w-1/12 pl-11" scope="row"><input type="checkbox" id="check-item-1"></div>
+          <div class="w-1/12 rounded-md h-24 border"> 
+            {% comment %} overflow-hidden 삭제 {% endcomment %}
+            <a href="{% url 'sales:detail' cart_item.product.pk %}">
+            <img src="{{ cart_item.product.photo.url }}" alt="" class="object-cover w-full h-full">
+            </a>
+          </div>
+          <div class="w-1/12 grow px-10">
+            <div class="text-[12px] text-gray-700 border border-[1px] border-gray-400 w-fit rounded-md p-[2px] px-[4px] mb-2 shadow-sm">{{ cart_item.product.category }}</div>
+            <h4 class="text-[18px] mb-1">{{ cart_item.product.title }}</h4>
+          </div>
+          <div class="text-center w-1/12">{{ cart_item.quantity }}</div>
+          <div class="w-1/12 text-center flex flex-col items-center gap-2">
+            <div>{{ cart_item.total_price|intcomma }}원</div>
+          </div>
+          <div class="w-1/12 pl-10">
+            <a href="#" onclick="deleteCart(event, {{ cart_item.product.pk }})" class="text-red-500 hover:text-red-700">
+              {% csrf_token %}
+              삭제
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+      {% else %}
+      <div class="flex items-center justify-center h-80">
+        <p>장바구니에 담긴 상품이 없습니다.</p>
+      </div>
+      {% endif %}
+      
+      
+      {% comment %} 주문창 {% endcomment %}
+      <table class="border-t border-b mt-[50px]">
+        <tr class="border-b text-center text-[20px]">
+          <td>총 주문 상품 : <span class="font-bold">{{ cart_items|length }}개</span></td>
+        </tr>
+        <tr>
+          <td class="flex justify-center">
+            <table class="my-3">
+              <tr class="text-[25px] text-center">
+                <td>{{ cart_total|intcomma }}원</td>
+                <td>+</td>
+                <td>0원</td>
+                <td>=</td>
+                <td><b>{{ cart_total|intcomma }}원</b></td>
+              </tr>
+              <tr class="text-center">
+                <td>상품금액</td>
+                <td></td>
+                <td>배송비</td>
+                <td></td>
+                <td>총 주문금액</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+  
+  
+  
+    
+    <div class="mt-4 flex justify-center">
+      <div class="button1">
+        {% comment %} <button class="bg-[#1EB564] text-white rounded-md px-4 py-2 mx-1" data-bs-toggle="modal" data-bs-target="#buy" ><a href="{% url 'sales:create_order' %}">주문하기</a></button> {% endcomment %}
+        {% if cart_items %}
+        <button class="bg-[#1EB564] text-white rounded-md px-4 py-2 mx-1" data-bs-toggle="modal" data-bs-target="#buy"><a href="{% url 'sales:create_order' %}">주문하기</a></button>
+        {% endif %}
+        {% comment %} <a href="{% url 'sales:create_order' %}" class="bg-[#1EB564] text-white rounded-md px-4 py-2 mx-1">주문하러가기</a> {% endcomment %}
+  
+        {% comment %} <form action="{% url 'sales:create_order' %}" method="POST">
+          {% csrf_token %}
+          <button type="submit" class="bg-[#1EB564] text-white rounded-md px-4 py-2 mx-1">주문하러가기</button>
+        </form> {% endcomment %}
+  
+        {% comment %} <button class="bg-white border border-[#1EB564] text-[#1EB564] rounded-md px-4 py-2 mx-1" data-bs-toggle="modal" data-bs-target="#buy">선택상품 주문</button> {% endcomment %}
+        <button class="bg-white border border-black  rounded-md px-4 py-2 mx-1"><a class="button2-a" href="{% url 'sales:index'%}">쇼핑계속하기</a></button>
+      </div>
+    </div>
+    
+  
   </div>
-
-</div>
+</main>
 {% endblock content %}
 
 
