@@ -54,6 +54,21 @@ entryUpdateModals.forEach((modal, index) => {
 });
 
 
+const entryButton = document.getElementById("entry-menu-button");
+
+entryButton.addEventListener('click', () => {
+const entryDropdown = document.getElementById("entry-dropdown");
+entryDropdown.style.display = 'block';
+});
+
+entryButton.addEventListener('blur', () => {
+    const entryDropdown = document.getElementById("entry-dropdown");
+    
+    // 0.2초 뒤에 실행
+    setTimeout(() => {
+      entryDropdown.style.display = 'none';
+    }, 20);
+});
 
 
 
@@ -165,3 +180,4 @@ var today = new Date();
   //     });
   //   }
   // }
+
