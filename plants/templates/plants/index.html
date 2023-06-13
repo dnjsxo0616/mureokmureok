@@ -182,18 +182,18 @@
         <div class="flex items-center justify-between border-0 border-b-[1px] border-gray-400 bg-white py-3 my-5 sticky top-[60px] z-10">
           <div class="flex gap-10">
             <div class='text-gray-400 hover:text-black'>
-              <a href="{% url 'gardens:listing' %}?category=전체">
+              <a href="{% url 'plants:category' %}?category=전체">
                 <span class="{% if category == '전체' %}text-black font-semibold{% endif %}">전체</span>
               </a>
             </div>
             <div class='text-gray-400 hover:text-black'>
-              <a href="{% url 'gardens:listing' %}?category=전시회">
-                <span class="{% if category == '전시회' %}text-black font-semibold{% endif %}">실내식물</span>
+              <a href="{% url 'plants:category' %}?category=실내식물">
+                <span class="{% if category == '실내식물' %}text-black font-semibold{% endif %}">실내식물</span>
               </a>
             </div>
             <div class='text-gray-400 hover:text-black'>
-              <a href="{% url 'gardens:listing' %}?category=식물원">
-                <span class="{% if category == '식물원' %}text-black font-semibold{% endif %}">식외식물</span>
+              <a href="{% url 'plants:category' %}?category=실외식물">
+                <span class="{% if category == '실외식물' %}text-black font-semibold{% endif %}">실외식물</span>
               </a>
             </div>
           </div>

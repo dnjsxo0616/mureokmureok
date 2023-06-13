@@ -18,4 +18,5 @@ urlpatterns = [
     # path('filter-plants-ajax/', views.filter_plants_ajax, name='filter_plants_ajax'),
 
     path('recommendation/', views.recommendation, name='recommendation'),
+    path('category/', views.category_plants, name='category'),
 ]
