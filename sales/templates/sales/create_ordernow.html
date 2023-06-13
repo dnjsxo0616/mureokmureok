@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form method="post" action="{% url 'sales:create_ordernow' product.pk %}" class="mx-auto px-[200px] pt-10 pb-10">
+  {% csrf_token %}
+  
+  <!-- 장바구니 상품 정보 -->
+  <div class="mb-4">
+    <label for="product_name" class="block font-medium text-sm text-gray-700">상품명</label>
+    <input type="text" id="product_name" name="product_name" value="{{ product.title }}" readonly class="w-full px-3 py-2 mt-1 text-gray-700 bg-gray-100 rounded-md">
+  </div>
+  
+  <div class="mb-4">
+    <label for="quantity" class="block font-medium text-sm text-gray-700">수량</label>
+    <input type="text" id="quantity" name="quantity" value="1" readonly class="w-full px-3 py-2 mt-1 text-gray-700 bg-gray-100 rounded-md">
+  </div>
+
+  <div class="mb-4">
+    <label for="price" class="block font-medium text-sm text-gray-700">금액</label>
+    <input type="text" id="price" name="price" value="{{ product.price }}" readonly class="w-full px-3 py-2 mt-1 text-gray-700 bg-gray-100 rounded-md">
+  </div>
+
+  <!-- 배송 주소 입력 필드 -->
+  <div class="mb-4">
+    <div class="flex justify-end">
+    </div>
+    <label for="id_delivery_address" class="block font-medium text-sm text-gray-700">배송 주소</label>
+    <input type="text" name="delivery_address" id="id_delivery_address" class="w-full px-3 py-2 mt-1 text-gray-700 bg-gray-100 rounded-md"  required>
+    
+  </div>
+  
+  <!-- 주문하기 버튼 -->
+  <button type="submit" class="w-full px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600" >주문하기</button>
+</form>
+
+{% endblock content %}
+
+{% block script %}
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+  window.onload = function(){
+    document.getElementById("id_delivery_address").addEventListener("click", function(){ //주소입력칸을 클릭하면
+        //카카오 지도 발생
+        new daum.Postcode({
+            oncomplete: function(data) { //선택시 입력값 세팅
+                document.getElementById("id_delivery_address").value = data.address; // 주소 넣기
+            }
+        }).open();
+    });
+}
+</script>
+{% endblock script %}

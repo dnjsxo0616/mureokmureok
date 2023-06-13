@@ -97,7 +97,7 @@
               </div>
               <div class="flex justify-end mt-8 gap-3">
                 <button type="submit" class="bg-white border border-[#1EB564] text-[#1EB564] rounded-md px-4 py-2">장바구니 담기</button>
-                <button type="button" class="bg-[#1EB564] text-white rounded-md px-4 py-2"><a  href="#">바로 구매하기</a></button>
+                <button type="button" class="bg-[#1EB564] text-white rounded-md px-4 py-2"><a  href="{% url 'sales:create_ordernow' product.pk %}">바로 구매하기</a></button>
               </div>
             </form>
           </div>
@@ -285,7 +285,7 @@
                 <div class="mt-3 font-bold text-center mb-2">총 상품금액: <span id="total-price">{{ product.price|intcomma }}원</span></div>
                 <div class="flex flex-col gap-2">
                   <button type="submit" class="w-full bg-white border border-[#1EB564] text-[14px] text-[#1EB564] rounded-md px-4 py-2">장바구니 담기</button>
-                  <button type="button" class="w-full bg-[#1EB564] text-[14px] text-white rounded-md px-4 py-2"><a  href="#">바로 구매하기</a></button>
+                  <button type="button" class="w-full bg-[#1EB564] text-[14px] text-white rounded-md px-4 py-2"><a  href="{% url 'sales:create_ordernow' product.pk %}">바로 구매하기</a></button>
                 </div>
               </form>
             </div>
