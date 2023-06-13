@@ -4,11 +4,13 @@ from gardens.models import Garden
 from plants.models import Plant
 from supplies.models import Supply
 from accounts.models import User
-from django.db.models import Q
+from django.db.models import Q, Max
 from channels.layers import get_channel_layer
 import json
 from django.template import RequestContext
-
+from django.db.models import Count
+from sales.models import Product
+from managements.models import Management
 
 def main(request):
     form = CustomAuthenticationForm
@@ -20,9 +22,24 @@ def main(request):
 
 
 def home(request):
+    popular_plants = Plant.objects.annotate(num_likes=Count('like_users')).order_by('-num_likes')[:3]
+    popular_product = Product.objects.annotate(num_likes=Count('like_users')).order_by('-num_likes')[:4]
+    recommended_gardens = Garden.objects.annotate(num_likes=Count('like_users')).order_by('-num_likes')[:1]
+    additional_garden_links = Garden.objects.annotate(num_likes=Count('like_users')).order_by('-num_likes')[1:7]
+    recent_plants = Plant.objects.annotate(max_id=Max('id')).order_by('-max_id')
+    recent_tags = recent_plants.distinct().values_list('tags__name', flat=True)[:5]
+    user_managements = Management.objects.filter(user=request.user)
+
     context = {
         'room_name': "broadcast",
+        'popular_plants': popular_plants,
+        'popular_product': popular_product,
+        'recommended_gardens': recommended_gardens,
+        'additional_garden_links': additional_garden_links,
+        'recent_tags': recent_tags,
+        'user_managements': user_managements,
     }
+
     return render(request, 'home.html', context)
 
 
