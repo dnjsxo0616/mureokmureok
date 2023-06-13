@@ -234,7 +234,12 @@
                           <div class="text-xs mt-1">N: {{ entry.things }}</div>
                           <div class="text-xs mt-1">특이점: {{ entry.significant }}</div>
                           <div id="entry-update-btn" class="entry-update-btn text-xs cursor-pointer border p-1 mt-1 px-2 rounded-md text-[14px] hover:bg-gray-100" style="text-align: right; width: fit-content; margin-left: auto;">수정</div>
-                      </div>
+                          <form action="{% url 'managements:calenderentry_delete' management.pk entry.pk %}" class="text-xs cursor-pointer border p-1 mt-1 px-2 rounded-md text-[14px] hover:bg-gray-100" style="text-align: right; width: fit-content; margin-left: auto;" method="POST">
+                            {% csrf_token %}
+                            <input type="submit" value="삭제">
+                          </form>
+                          <!-- <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="deletecalenderentry(event, {{ management.pk }}, {{ entry.pk }}, '{{ csrf_token }}')">삭제하기</a> -->
+                        </div>
                   </div>
                 {% comment %} 업데이트 modal {% endcomment %}
                 <div class="entry-update-modal relative z-30 modal-overlay hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="entry-update-modal">
