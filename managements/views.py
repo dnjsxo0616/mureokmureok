@@ -493,12 +493,20 @@ def calenderentry_update(request, management_pk, calenderentry_pk):
 
 
 
+# @login_required
+# def calenderentry_delete(request, management_pk, calenderentry_pk):
+#     calenderentry = CalenderEntry.objects.get(pk=calenderentry_pk)
+#     if request.user == calenderentry.user:
+#         calenderentry.delete()
+
+#         return JsonResponse({'status': 'ok'})
+#     else:
+#         return JsonResponse({'status': 'error', 'message': '권한이 없습니다.'})
+
 @login_required
 def calenderentry_delete(request, management_pk, calenderentry_pk):
     calenderentry = CalenderEntry.objects.get(pk=calenderentry_pk)
+
     if request.user == calenderentry.user:
         calenderentry.delete()
-
-        return JsonResponse({'status': 'ok'})
-    else:
-        return JsonResponse({'status': 'error', 'message': '권한이 없습니다.'})
+    return redirect('managements:detail', management_pk)
