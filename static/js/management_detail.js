@@ -23,6 +23,34 @@ window.addEventListener("keyup", e => {
 })
 
 
+const entryupdateModal = document.getElementById("entry-update-modal");
+const entryupdateBtnModals = document.querySelectorAll(".entry-update-btn");
+const entryupdateBackground = document.getElementById("entry-update-bg");
+
+entryupdateBtnModals.forEach(btn => {
+  btn.addEventListener("click", () => {
+    entryupdateModal.style.display = "flex";
+  });
+});
+
+entryupdateModal.addEventListener("click", e => {
+  const evTarget = e.target
+  if(evTarget.classList.contains("modal-overlay")) {
+    entryupdateModal.style.display = "none"
+  }
+})
+
+entryupdateBackground.addEventListener("click", () => {
+  entryupdateModal.style.display = "none"
+})
+
+window.addEventListener("keyup", e => {
+  if(entryupdateModal.style.display === "flex" && e.key === "Escape") {
+    entryupdateModal.style.display = "none"
+  }
+})
+
+
 
 
 
@@ -88,6 +116,7 @@ var today = new Date();
             var entryDiv = document.createElement("div");
             entryDiv.textContent = "Watering: " + entryData.fields.watering + ", Sunlight: " + entryData.fields.sunlight + ", Humidity: " + entryData.fields.humidity + ", Temperature: " + entryData.fields.temperature;
             dayCell.appendChild(entryDiv);
+            
           }
         }
         weekRow.appendChild(dayCell);
@@ -97,4 +126,4 @@ var today = new Date();
   }
 
   // 캘린더 생성 호출
-  createCalendar(today.getFullYear(), today.getMonth(), JSON.parse('{{ entries_json }}'));
+  createCalendar(today.getFullYear(), today.getMonth(), JSON.parse('{{ entries_json|safe }}'));

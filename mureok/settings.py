@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-slt&1_xx_&-1=c9slhd7c@!m#xbbuv@c01v5eac0^ltlk^(7#w
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost',]
 
 
 # Application definition
@@ -59,6 +59,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    #allauth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
+    #provider
+    'allauth.socialaccount.providers.kakao',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.naver'
 ]
 
 MIDDLEWARE = [
@@ -151,6 +161,19 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 AUTH_USER_MODEL = 'accounts.User'
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+SITE_ID = 1
+LOGIN_REDIRECT_URL = '/'  # 로그인 후 리다이렉트 될 경로
+
+SOCIALACCOUNT_LOGIN_ON_GET = True
+
+ACCOUNT_LOGOUT_ON_GET = True
 
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760
