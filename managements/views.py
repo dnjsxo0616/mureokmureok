@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Management, CalenderEntry
 from .forms import ManagementForm, CalenderEntryForm
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
+from django.http import JsonResponse, HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
 from django.db.models import Count
 from django.contrib.auth.decorators import user_passes_test
 from django.views import View
@@ -444,7 +444,7 @@ def calenderentry_create(request, management_pk):
     if request.method == 'POST':
         calenderentry_form = CalenderEntryForm(request.POST, request.FILES)
         if calenderentry_form.is_valid():
-            entry_date = calenderentry_form.cleaned_data['entrydate']  # 등록하려는 날짜 가져오기
+            entry_date = calenderentry_form.cleaned_data['entrydate']  
             existing_entries = CalenderEntry.objects.filter(entrydate=entry_date, user=request.user)
             if existing_entries.exists():
                 return redirect('managements:detail', management_pk)
@@ -454,6 +454,12 @@ def calenderentry_create(request, management_pk):
                 calenderentry.user = request.user
                 calenderentry.save()
                 return redirect('managements:detail', management_pk)
+        else:
+            calenderentry = calenderentry_form.save(commit=False)
+            calenderentry.management = management
+            calenderentry.user = request.user
+            calenderentry.save()
+            return redirect('managements:detail', management_pk)
     else:
         calenderentry_form = CalenderEntryForm()
 

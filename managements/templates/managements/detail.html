@@ -224,20 +224,20 @@
                   {% if entry.entrydate|date:"Y-m-d" == date|date:"Y-m-d" %}
                   <div class="flex flex-wrap">
                     <div class="w-full sm:w-2/3 md:w-1/2">
-                        <div class="text-xs mt-2">물주기: {{ entry.watering }}</div>
-                        <div class="text-xs mt-2">햇빛주기: {{ entry.sunlight }}</div>
-                        <div class="text-xs mt-2">습도: {{ entry.humidity|slice:"2:-2" }}</div>  
-                        <div class="text-xs mt-2">온도: {{ entry.temperature|slice:"2:-2" }}</div>
+                        <div class="text-xs mt-1">W: {{ entry.watering }}</div>
+                        <div class="text-xs mt-1">S: {{ entry.sunlight }}</div>
+                        <div class="text-xs mt-1">H: {{ entry.humidity|slice:"2:-2" }}</div>  
+                        <div class="text-xs mt-1">T: {{ entry.temperature|slice:"2:-2" }}</div>
 
                       </div>
                       <div class="w-full sm:w-2/3 md:w-1/2">
-                          <div class="text-xs mt-2">비료 or 영양제: {{ entry.things }}</div>
-                          <div class="text-xs mt-2">특이사항: {{ entry.significant }}</div>
-                          <div id="entry-update-btn" class="entry-update-btn cursor-pointer border p-1 px-2 rounded-md text-[14px] hover:bg-gray-100" style="text-align: right; width: fit-content; margin-left: auto;">수정</div>
+                          <div class="text-xs mt-1">N: {{ entry.things }}</div>
+                          <div class="text-xs mt-1">특이점: {{ entry.significant }}</div>
+                          <div id="entry-update-btn" class="entry-update-btn text-xs cursor-pointer border p-1 mt-1 px-2 rounded-md text-[14px] hover:bg-gray-100" style="text-align: right; width: fit-content; margin-left: auto;">수정</div>
                       </div>
                   </div>
                 {% comment %} 업데이트 modal {% endcomment %}
-                <div class="relative z-30 modal-overlay hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="entry-update-modal">
+                <div class="entry-update-modal relative z-30 modal-overlay hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="entry-update-modal">
                   <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" id="entry-update-bg"></div>
                   <div class="fixed top-1/2 start-1/2 -translate-x-1/2 -translate-y-1/2 transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                     <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">

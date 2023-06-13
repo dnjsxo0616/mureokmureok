@@ -1,26 +1,20 @@
-const searchInput = document.querySelector('#plant-search');
-const selectField = document.querySelector('#plant-select');
-const options = Array.from(selectField.options);
+const plantSelect = document.getElementById('plant-select');
+  const plantSearchInput = document.getElementById('plant-search-input');
+  const plants = Array.from(document.querySelectorAll('#plant-select option'));
 
-searchInput.addEventListener('input', function() {
-  const searchTerm = this.value.toLowerCase();
+  plantSearchInput.addEventListener('input', () => {
+    const searchTerm = plantSearchInput.value.toLowerCase();
 
-  options.forEach(option => {
-    const label = option.textContent.toLowerCase();
-    if (label.includes(searchTerm)) {
-      option.hidden = false;
-    } else {
-      option.hidden = true;
-    }
+    // 필터링된 식물 목록 업데이트
+    const filteredPlants = plants.filter((plant) => {
+      return plant.textContent.toLowerCase().includes(searchTerm);
+    });
+
+    // 기존 옵션 제거
+    plantSelect.innerHTML = '';
+
+    // 필터링된 식물 목록 추가
+    filteredPlants.forEach((plant) => {
+      plantSelect.appendChild(plant);
+    });
   });
-});
-
-selectField.addEventListener('change', function() {
-  const selectedValue = this.value;
-
-  if (selectedValue === '') {
-    searchInput.classList.remove('hidden');
-  } else {
-    searchInput.classList.add('hidden');
-  }
-});
