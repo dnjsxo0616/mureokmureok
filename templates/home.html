@@ -15,48 +15,48 @@
     {% comment %} 캐로젤 {% endcomment %}
     <div class="slider-1">
         <div class="owl-carousel owl-theme">
-            <div class="item" style="background-image:url({% static 'img/carousel_1.jpg' %});">
-                <div class="txt-box">
-                    <h1><b>공기정화 식물로 싱그러운 생활</b></h1>
-                    <h2>공기정화와 인테리어를 한 번에</h2>
-                    <div>
-                        내용1
-                    </div>
-                </div>
-            </div>
-            <div class="item" style="background-image:url({% static 'img/carousel_2.jpg' %});">
-                <div class="txt-box">
-                    <h1><b>큰 제목2</b></h1>
-                    <h2>중간 제목2</h2>
-                    <div>
-                        내용2
-                    </div>
-                </div>
-            </div>
             <div class="item" style="background-image:url({% static 'img/carousel_3.jpg' %});">
                 <div class="txt-box">
-                    <h1><b>큰 제목3</b></h1>
-                    <h2>중간 제목3</h2>
+                    <h1><b>공기정화 식물로 싱그러운 생활</b></h1>
+                    <h2 class="mt-2">공기정화와 인테리어를 한 번에</h2>
                     <div>
-                        내용3
+                     
                     </div>
                 </div>
             </div>
-            <div class="item" style="background-image:url({% static 'img/carousel_4.jpg' %});">
+            <div class="item" style="background-image:url({% static 'img/carousel_1.jpg' %});">
                 <div class="txt-box">
-                    <h1><b>큰 제목4</b></h1>
-                    <h2>중간 제목4</h2>
+                    <h1><b><a href="{% url 'gardens:index' %}">힐링 핫플레이스</a></b></h1>
+                    <h2 class="mt-2">모든 정보를 한 번에</h2>
                     <div>
-                        내용4
+                        
                     </div>
                 </div>
             </div>
-            <div class="item" style="background-image:url({% static 'img/carousel_5.jpg' %});">
+            <div class="item" style="background-image:url({% static 'img/carouselsales.png' %});">
                 <div class="txt-box">
-                    <h1><b>큰 제목5</b></h1>
-                    <h2>중간 제목5</h2>
+                    <h1><b><a href="{% url 'sales:index' %}">그린샵</a></b></h1>
+                    <h2 class="mt-2"></h2>
                     <div>
-                        내용5
+        
+                    </div>
+                </div>
+            </div>
+            <div class="item" style="background-image:url({% static 'img/carouselcares.jpg' %});">
+                <div class="txt-box">
+                    <h1><b class="text-white"><a href="{% url 'managements:index' %}">식물관리일지</a></b></h1>
+                    <h2 class="text-white class="mt-2"">초보 가드너를 위한</h2>
+                    <div class="text-white">
+                        무럭무럭만의 관리 서비스
+                    </div>
+                </div>
+            </div>
+            <div class="item" style="background-image:url({% static 'img/homekakao.png' %});">
+                <div class="txt-box">
+                    <h1><b></b></h1>
+                    <h2></h2>
+                    <div>
+                        
                     </div>
                 </div>
             </div>
@@ -73,7 +73,7 @@
                             <img src="{% static 'img/선물그림.png' %}" alt="">
                         </div>
                         <div>
-                            <h3><b>선물용 식물 모음</b></h3>
+                            <h3><b>따뜻한 느낌의 식물 모음</b></h3>
                             <p class="text-[12px]">집들이 및 이벤트를 위한 식물을<br>찾아보세요.</p>
                         </div>
                     </div>
@@ -106,8 +106,8 @@
                             <img src="{% static 'img/선물그림.png' %}" alt="">
                         </div>
                         <div>
-                            <h3><b>선물용 식물 모음</b></h3>
-                            <p class="text-[12px]">집들이 및 이벤트를 위한 식물을<br>찾아보세요.</p>
+                            <h3><b>집중력 향상 식물 모음</b></h3>
+                            <p class="text-[12px]">스트레스를 줄여주고, 집중력 향상<br>찾아보세요.</p>
                         </div>
                     </div>
                 </a>
