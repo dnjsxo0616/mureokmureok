@@ -22,6 +22,22 @@ window.addEventListener("keyup", e => {
   }
 })
 
+// const entryButton = document.querySelectorAll(".entry-menu-button");
+
+// entryButton.addEventListener('click', () => {
+// const entryDropdown = document.querySelectorAll(".entry-dropdown");
+// entryDropdown.style.display = 'block';
+// });
+
+// entryButton.addEventListener('blur', () => {
+//     const entryDropdown = document.querySelectorAll(".entry-dropdown");
+    
+//     // 0.2초 뒤에 실행
+//     setTimeout(() => {
+//       entryDropdown.style.display = 'none';
+//     }, 20);
+// });
+
 
 const entryUpdateModals = document.querySelectorAll(".entry-update-modal");
 const entryUpdateBtns = document.querySelectorAll(".entry-update-btn");
@@ -54,21 +70,9 @@ entryUpdateModals.forEach((modal, index) => {
 });
 
 
-const entryButton = document.getElementById("entry-menu-button");
 
-entryButton.addEventListener('click', () => {
-const entryDropdown = document.getElementById("entry-dropdown");
-entryDropdown.style.display = 'block';
-});
 
-entryButton.addEventListener('blur', () => {
-    const entryDropdown = document.getElementById("entry-dropdown");
-    
-    // 0.2초 뒤에 실행
-    setTimeout(() => {
-      entryDropdown.style.display = 'none';
-    }, 20);
-});
+
 
 
 
@@ -149,35 +153,5 @@ var today = new Date();
   createCalendar(today.getFullYear(), today.getMonth(), JSON.parse('{{ entries_json|safe }}'));
 
 
-  
-  // const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-  // function deletecalenderentry(event, management_pk, entry_pk, csrftoken) {
-  //   event.preventDefault();
-  //   if (confirm('해당 일지를 삭제하시겠습니까?')) {
-  //     fetch(`/managements/${management_pk}/calenderentrys/${entry_pk}/delete/`, {
-  //       method: 'DELETE',
-  //       headers: {
-  //         'X-CSRFToken': csrftoken,
-  //       },
-  //     })
-  //     .then(response => {
-  //       if (response.ok) {
-  //         return response.json();
-  //       } else {
-  //         throw new Error('서버 에러');
-  //       }
-  //     })
-  //     .then(data => {
-  //       if (data.status === 'ok') {
 
-  //         location.reload();
-  //       } else {
-  //         alert(data.message);
-  //       }
-  //     })
-  //     .catch(error => {
-  //       alert(error.message);
-  //     });
-  //   }
-  // }
 

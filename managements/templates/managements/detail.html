@@ -15,6 +15,21 @@
         <span>식물관리</span>
       </a> > {{ management.nickname }}
     </p>
+   
+      {% comment %} 게시글 수정 및 삭제 부분{% endcomment %}
+      
+
+      <div class="flex justify-end">
+        <a class="block text-start text-sm text-gray-700 hover:bg-gray-100 cursor-pointer border p-1 mb-3 px-2 me-5 rounded-md" href="{% url 'managements:update' management.pk %}">
+          식물 관리 수정하기
+        </a>
+      
+        <form method="POST" action="{% url 'managements:delete' management.pk %}" class="block border p-1 mb-3 px-2 rounded-md text-start text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" onclick="return confirm('식물 관리를 삭제하시겠습니까?')">
+          {% csrf_token %}
+          <input type="submit" value="식물 관리 삭제하기" class="cursor-pointer">
+        </form>
+      </div>
+
     <section>
       <div class="flex h-80 items-center gap-5">
 
@@ -234,20 +249,13 @@
                           <div class="text-xs mt-1">N: {{ entry.things }}</div>
                           <div class="text-xs mt-1">특이점: {{ entry.significant }}</div>
 
-                          <div class="relative">
-                            <div class="dropdown text-end">
-                              <button type="button" class="rounded-md flex justify-center items-center bg-white hover:bg-gray-100" id="entry-menu-button" aria-expanded="false" aria-haspopup="true">
-                                <span class="material-symbols-outlined text-[20px] text-black font-bold">more_vert</span>
-                              </button>
-                            </div>
-                            <div class="absolute right-0 z-10 w-15 mt-2 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="entry-menu-button" tabindex="-1" id="entry-dropdown" style="display: none;">
+                        
                               <div id="entry-update-btn" class="entry-update-btn text-xs cursor-pointer border p-1 mt-1 px-2 rounded-md text-[14px] hover:bg-gray-100" style="text-align: right; width: fit-content; margin-left: auto;">수정</div>
                               <form action="{% url 'managements:calenderentry_delete' management.pk entry.pk %}" class="text-xs cursor-pointer border p-1 mt-1 px-2 rounded-md text-[14px] hover:bg-gray-100" style="text-align: right; width: fit-content; margin-left: auto;" method="POST">
                                 {% csrf_token %}
                                 <input type="submit" value="삭제">
                               </form>
-                            </div>
-                          </div>
+                            
 
                           <!-- <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="deletecalenderentry(event, {{ management.pk }}, {{ entry.pk }}, '{{ csrf_token }}')">삭제하기</a> -->
                         </div>
@@ -392,7 +400,9 @@
 {% endblock content %}
 
 {% block script %}
+
 <script src="{% static 'js/management_detail.js' %}"></script>
+
 <script src="{% static 'js/scoreChart.js' %}"></script>
 {% endblock script %}
 
