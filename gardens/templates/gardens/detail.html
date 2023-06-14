@@ -12,30 +12,35 @@
 {% block content %}
 <main>
   <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-    
-    <div class="w-full">
-      <p class="text-[14px] text-gray-500 mb-8 mt-10">
+    <div class="sm:hidden h-14 px-2 flex items-center">
+    <div class="flex flex-shrink-0 items-center gap-4">
+        <img class="h-8 w-auto" src="{% static 'img/logo.svg' %}" alt="Your Company">
+        <p class="text-xl h-8 w-auto"><b>식물원 및 축제</b></p>
+    </div>
+  </div>
+    <div class="w-full mb-12">
+      <p class="text-[14px] text-gray-500 mt-3 sm:mt-10 mb-8">
         <a href="{% url 'gardens:index' %}" class="hover:text-black">
           <span>식물원</span>
         </a> > {{ garden.title }}
       </p>
 
-      <section class="flex gap-10 pb-8">
-        <div class="w-full h-96 overflow-hidden rounded-xl border">
+      <section class="flex sm:flex-row flex-col sm:gap-10 pb-8">
+        <div class="w-full h-64 sm:h-96 overflow-hidden rounded-xl border">
           <img src="{{ garden.image.url }}" alt="" class="w-full h-full object-cover">
         </div>
 
-        <div class="w-full h-96">
-          <div class="flex justify-between border-0 border-b-[1px] border-gray-400 pb-3 mb-5">
+        <div class="w-full h-fit sm:h-96">
+          <div class="flex sm:flex-row flex-col gap-2 sm:gap-0 justify-between border-0 border-b-[1px] border-gray-400 pb-3 mb-5 mt-3 sm:mt-0">
 
             {% comment %} 타이틀 {% endcomment %}
-            <div class="flex items-center gap-3">
-              <div class="text-[14px] border border-black rounded-lg p-1 px-2">{{ garden.category }}</div>
-              <h1 id="garden-title" class="text-[25px] font-semibold">{{ garden.title }}</h1>
+            <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+              <div class="text-[12px] sm:text-[14px] w-fit border border-black rounded-lg p-1 px-2">{{ garden.category }}</div>
+              <h1 id="garden-title" class="text-[20px] sm:text-[25px] w-64 font-semibold whitespace-nowrap overflow-hidden truncate">{{ garden.title }}</h1>
             </div>
             
             {% comment %} 좋아요, 댓글, 조회수 {% endcomment %}
-            <div class="flex justify-end items-end gap-5 text-gray-500">
+            <div class="flex sm:justify-end items-end gap-5 text-gray-500">
               <div class="flex items-center gap-2">
                 <span class="material-symbols-outlined text-[16px] mt-[0.5px]">favorite</span>
                 <span id="garden-like-count">{{ garden.like_users.all|length }}</span>
@@ -73,7 +78,7 @@
             </div>
           </div>
 
-          <div class="h-full">
+          <div class="h-full pb-5 border-b-[1px] border-gray-400 sm:pb-0 sm:border-none">
             {% comment %} 위치 {% endcomment %}
             <div class="flex mb-3">
               <p class="w-2/12 font-semibold">위치</p>
@@ -101,9 +106,9 @@
 
       {% comment %} 세부정보 {% endcomment %}
       <section>
-        <div class="border-0 border-b-[1px] border-gray-400 py-3 text-[18px] text-center">세부정보</div>
+        <div class="border-0 border-b-[1px] border-gray-400 py-3 font-semibold text-[16px] sm:text-[18px] text-center">세부정보</div>
         <div class="flex gap-16">
-          <div class="sticky top-[100px] flex flex-col items-center gap-5 border border-gray-300 rounded-full h-fit mt-[50px] p-2">
+          <div class="sticky top-[100px] hidden sm:inline-flex flex flex-col items-center gap-5 border border-gray-300 rounded-full h-fit mt-[50px] p-2">
 
             {% comment %} 게시글 좋아요 {% endcomment %}
             <form class="garden-like_forms" data-garden-id="{{ garden.id }}">
@@ -169,7 +174,7 @@
           {% comment %} 본문 내용 부분 {% endcomment %}
           <div class="w-full">
             {% comment %}  본문 내용 부분 {% endcomment %}
-            <div class="p-[50px] px-48 border-0 border-b-[1px] border-gray-400">
+            <div class="p-2 py-4 sm:p-[50px] sm:px-48 border-0 border-b-[1px] border-gray-400">
               <p>{{ garden.content|safe }}</p>
             </div>
 
@@ -316,12 +321,12 @@
             {% csrf_token %}
             {% comment %} 제목작성 {% endcomment %}
             <div class="flex flex-col gap-2 mb-5">
-              <p>{{ comment_form.title.label }}</p>
+              <p class="text-start px-3 sm:px-0">{{ comment_form.title.label }}</p>
               <p>{{ comment_form.title }}</p>
             </div>
             {% comment %} 별점 {% endcomment %}
             <div class="flex flex-col gap-1 mb-5">
-              <span class="font-12">평가</span>
+              <span class="font-12 text-start px-3 sm:px-0">평가</span>
               <span class="rating_box">
                 <div class="rating">
                   ★★★★★
@@ -333,15 +338,15 @@
             </div>
             {% comment %} 내용작성 {% endcomment %}
             <div class="flex flex-col gap-2 mb-5">
-              <p>{{ comment_form.content.label }}</p>
+              <p class="text-start px-3 sm:px-0">{{ comment_form.content.label }}</p>
               <p>{{ comment_form.content }}</p>
             </div>
             {% comment %} 사진첨부 {% endcomment %}
             <div class="flex flex-col gap-2 mb-5">
-              <p>{{ comment_form.image.label }}</p>
+              <p class="text-start px-3 sm:px-0">{{ comment_form.image.label }}</p>
               <p>{{ comment_form.image }}</p>
             </div>
-            <div class="flex justify-end">
+            <div class="flex justify-center sm:justify-end grow sm:grow-0 w-full sm:w-fit">
               <input type="submit" class="bg-[#1EB564] text-white p-[5px] px-3 rounded-lg cursor-pointer hover:bg-[#148D4C]" value="작 성">
             </div>
           </form>

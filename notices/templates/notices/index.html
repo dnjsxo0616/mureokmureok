@@ -10,14 +10,21 @@
 
 {% block content  %}
 <main>
+  <div class="sm:hidden h-14 px-2 flex items-center">
+    <div class="flex flex-shrink-0 items-center gap-4">
+        <img class="h-8 w-auto" src="{% static 'img/logo.svg' %}" alt="Your Company">
+        <p class="text-xl h-8 w-auto"><b>공지사항</b></p>
+    </div>
+  </div>
+  
   {% comment %} 배너 {% endcomment %}
-  <div class="w-full h-[180px] overflow-hidden relative">
+  <div class="hidden sm:block w-full h-[180px] overflow-hidden relative">
     <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
       <div class="absolute flex items-center gap-10 top-1/2 -translate-y-1/2 z-10">
         <img src="{% static 'img/확성기.png' %}" alt="" class="w-36 h-32">
         <div>
           <p class="text-[16px] text-gray-400 font-semibold mb-3">새로운 소식, 주의사항<br>꼭! 읽어주세요</p>
-          <h1 class="text-[25px] font-semibold">공지사항</h1>
+          <h1 class="text-[25px] font-semibold sm:text-2">공지사항</h1>
         </div>
       </div>
     </div>
@@ -25,7 +32,7 @@
   </div>
 
   {% comment %} 컨텐츠 {% endcomment %}
-  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 min-h-[530px]">
     <div class="flex justify-end pb-3">
       {% comment %} {% if request.user.is_superuser %} {% endcomment %}
       <a href="{% url 'notices:create' %}" class="text-[14px] border rounded-lg p-1 px-2 text-center hover:bg-gray-100">글 작성</a>
@@ -33,7 +40,7 @@
     </div>
 
     {% comment %} 표시항목 {% endcomment %}
-    <div class="flex p-3 py-2 text-[14px] sticky top-[66px] bg-gray-50 border-0 border-b border-t">
+    <div class="hidden sm:inline-flex w-full flex p-3 py-2 text-[14px] sticky top-[66px] bg-gray-50 border-0 border-b border-t">
       <div class="w-1/12 text-center">이미지</div>
       <div class="w-1/12 grow text-center">제목 및 내용</div>
       <div class="w-1/12 text-center">조회수</div>
@@ -45,15 +52,16 @@
     <div class="flex flex-col mb-10">
       {% for notice in page_obj %}
       <a href="{% url 'notices:detail' notice.pk %}">
-        <div class="flex items-center p-3 border-0 border-b-[1px] border-gray-300 hover:bg-gray-100">
-          <div class="w-1/12 rounded-md overflow-hidden h-24 border">
+        <div class="flex items-center border rounded-lg sm:rounded-none p-3 sm:border-0 mb-3 sm:mb-0 sm:border-b-[1px] sm:border-gray-300 hover:bg-gray-100">
+          <div class="w-28 sm:w-1/12 rounded-md overflow-hidden h-24 border">
             <img src="{{ notice.thumbnail.url }}" alt="" class="object-cover w-full h-full">
           </div>
           <div class="w-1/12 grow px-10">
             <h4 class="text-[18px] truncate">{{ notice.title }}</h4>
+            <p class="sm:hidden text-[12px] text-gray-500">{{ notice.created_at|date:'Y-m-d' }}</p>
           </div>
           <div class="w-1/12 text-center text-[14px]">{{ notice.hits }}</div>
-          <div class="w-1/12 text-center text-[12px] text-gray-500">{{ notice.created_at|date:'Y-m-d' }}</div>
+          <div class="hidden sm:block w-1/12 text-center text-[12px] text-gray-500">{{ notice.created_at|date:'Y-m-d' }}</div>
         </div>
       </a>
       {% endfor %}

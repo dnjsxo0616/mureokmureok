@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 
 
 {% block head %}
@@ -12,15 +13,21 @@
 
 {% block content %}
 <main>
+    <div class="sm:hidden h-14 px-4 flex items-center">
+        <div class="flex flex-shrink-0 items-center gap-4">
+            <img class="h-8 w-auto" src="{% static 'img/logo.svg' %}" alt="Your Company">
+            <p class="text-xl h-8 w-auto"><b>무럭무럭</b></p>
+        </div>
+    </div>
     {% comment %} 캐로젤 {% endcomment %}
-    <div class="slider-1">
+    <div class="slider-1 h-[230px] sm:h-min overflow-hidden border-0 border-b-[1px]">
         <div class="owl-carousel owl-theme">
             <div class="item" style="background-image:url({% static 'img/carousel_3.jpg' %});">
                 <div class="txt-box">
-                    <h1><b>공기정화 식물로 싱그러운 생활</b></h1>
+                    <h1 class="text-[30px] sm:text-[48px]"><b>공기정화 식물로 싱그러운 생활</b></h1>
                     <h2 class="mt-2">공기정화와 인테리어를 한 번에</h2>
                     <div>
-                     
+
                     </div>
                 </div>
             </div>
@@ -63,195 +70,177 @@
         </div>
     </div>
 
-    {% comment %} 식물 컬렉션 {% endcomment %}
-    <section class="py-10">
-        <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-            <div class="flex justify-between">
-                <a href="#">
-                    <div class="flex items-center gap-5 border rounded-md p-3 w-full hover:-translate-y-1.5 transform transition hover:shadow-md">
-                        <div class="collection-image_wrapper">
-                            <img src="{% static 'img/선물그림.png' %}" alt="">
+    <div class="flex flex-col-reverse sm:flex-col">
+        {% comment %} 식물 컬렉션 {% endcomment %}
+        <section class="pt-6 pb-10">
+            <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+                <h2 class="text-center mb-3 text-[18px] sm:hidden"><b>식물 모음</b></h2>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-5">
+                    <a href="#">
+                        <div class="flex flex-col justify-center sm:flex-row items-center gap-3 sm:gap-5 border rounded-md p-2 sm:p-3 w-full h-full hover:-translate-y-1.5 transform transition hover:shadow-md">
+                            <div class="w-[56px] h-[65px] overflow-hidden">
+                                <img src="{% static 'img/따뜻한.png' %}" alt="" class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <h3 class="text-center sm:text-start sm:text-[16px]"><b>따뜻한 느낌</b></h3>
+                                <p class="text-[12px] hidden sm:block">삭막한 공간을<br>따뜻하게 만들어보세요.</p>
+                            </div>
                         </div>
-                        <div>
-                            <h3><b>따뜻한 느낌의 식물 모음</b></h3>
-                            <p class="text-[12px]">집들이 및 이벤트를 위한 식물을<br>찾아보세요.</p>
-                        </div>
-                    </div>
-                </a>
-                <a href="#">
-                    <div class="flex items-center gap-5 border rounded-md p-3 w-full hover:-translate-y-1.5 transform transition hover:shadow-md">
-                        <div class="collection-image_wrapper">
-                            <img src="{% static 'img/청소그림.png' %}" alt="">
-                        </div>
-                        <div>
-                            <h3><b>공기정화 식물 모음</b></h3>
-                            <p class="text-[12px]">플랜테리어와 가족의 건강을 <br>만족시킬 식물을 찾아보세요.</p>
-                        </div>
-                    </div>
-                </a>
-                <a href="#">
-                    <div class="flex items-center gap-5 border rounded-md p-3 w-full hover:-translate-y-1.5 transform transition hover:shadow-md">
-                        <div class="collection-image_wrapper">
-                            <img src="{% static 'img/선물그림.png' %}" alt="">
-                        </div>
-                        <div>
-                            <h3><b>선물용 식물 모음</b></h3>
-                            <p class="text-[12px]">집들이 및 이벤트를 위한 식물을<br>찾아보세요.</p>
-                        </div>
-                    </div>
-                </a>
-                <a href="#">
-                    <div class="flex items-center gap-5 border rounded-md p-3 w-full hover:-translate-y-1.5 transform transition hover:shadow-md">
-                        <div class="collection-image_wrapper">
-                            <img src="{% static 'img/선물그림.png' %}" alt="">
-                        </div>
-                        <div>
-                            <h3><b>집중력 향상 식물 모음</b></h3>
-                            <p class="text-[12px]">스트레스를 줄여주고, 집중력 향상<br>찾아보세요.</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    {% comment %} 이번 주의 식물 {% endcomment %}
-    <section class="pt-3 pb-10">
-        <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-          <div class="flex flex-col gap-8">
-            <div class="text-center">
-              <h2 class="text-[20px]"><b>이번 주의 식물</b></h2>
-              <p>회원들이 좋아하는 식물을 알려드려요.</p>
-            </div>
-            <div class="grid grid-cols-3 gap-8">
-              {% for plant in popular_plants %}
-              <div class="flex flex-col gap-3">
-                <a href="{% url 'plants:detail' plant.pk %}">
-                  <div class="favor-image_wrapper border rounded-2xl">
-                    <img src="{{ plant.plant_images.first.image.url }}" alt="">
-                  </div>
-                  <div class="flex items-center justify-between px-3">
-                    <p class="text-[18px]"><b>{{ plant.title }}</b></p>
-                    <a href="{% url 'plants:detail' plant.pk %}">
-                      <div class="border rounded-md flex items-center justify-center items-center gap-1 p-1 px-2 hover:bg-gray-100">
-                        <span class="material-symbols-outlined text-[16px] mt-1">favorite</span>
-                        <p class="text-[12px]">{{ plant.like_users.count }}</p>
-                      </div>
                     </a>
-                  </div>
-                </a>
-              </div>
-              {% endfor %}
+                    <a href="#">
+                        <div class="flex flex-col justify-center sm:flex-row items-center gap-3 sm:gap-5 border rounded-md p-2 sm:p-3 w-full h-full hover:-translate-y-1.5 transform transition hover:shadow-md">
+                            <div class="w-[56px] h-[65px] overflow-hidden">
+                                <img src="{% static 'img/청소그림.png' %}" alt="" class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <h3 class="text-center sm:text-start sm:text-[16px]"><b>공기 정화</b></h3>
+                                <p class="text-[12px] hidden sm:block">플랜테리어와 가족의 건강을 <br>만족시킬 식물을 찾아보세요.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#">
+                        <div class="flex flex-col justify-center sm:flex-row items-center gap-3 sm:gap-5 border rounded-md p-2 sm:p-3 w-full h-full hover:-translate-y-1.5 transform transition hover:shadow-md">
+                            <div class="w-[56px] h-[65px] overflow-hidden">
+                                <img src="{% static 'img/선물그림.png' %}" alt="" class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <h3 class="text-center sm:text-start sm:text-[16px]"><b>선물용</b></h3>
+                                <p class="text-[12px] hidden sm:block">집들이 및 이벤트를 위한 식물을<br>찾아보세요.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#">
+                        <div class="flex flex-col justify-center sm:flex-row items-center gap-3 sm:gap-5 border rounded-md p-2 sm:p-3 w-full h-full hover:-translate-y-1.5 transform transition hover:shadow-md">
+                            <div class="w-[56px] h-[65px] overflow-hidden">
+                                <img src="{% static 'img/집중.png' %}" alt="" class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <h3 class="text-center sm:text-start sm:text-[16px]"><b>집중력 향상</b></h3>
+                                <p class="text-[12px] hidden sm:block">식물을 통해 스트레스는 줄이고<br>집중력은 높여보세요.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
             </div>
-          </div>
-        </div>
-      </section>
-      
-
-    {% comment %} 커뮤니티 {% endcomment %}
-    <section class="pb-32">
-        <div class="h-3/6 bg-gray-200">
-            <div class="relative flex justify-between mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-                <div class="flex gap-5 pt-32 pb-16">
-                    <div class="community-image_wrapper border rounded-xl">
-                        <a href="#">
-                            <img src="https://tgzzmmgvheix1905536.cdn.ntruss.com/2021/01/4dd0305b502d4f7a8f91891d9e4f5371" alt="">
-                        </a>
+        </section>
+    
+        {% comment %} 이번 주의 식물 {% endcomment %}
+        <section class="pt-6 pb-10">
+            <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+                <div class="flex flex-col gap-8">
+                    <div class="text-center flex flex-col items-center gap-3">
+                        <h2 class="text-[18px] sm:text-[23px]"><b>이번 주의 식물</b></h2>
+                        <p class="text-[14px] sm:text-[16px]">회원들이 좋아하는 식물을 알려드려요.</p>
                     </div>
-                    <div class="community-image_wrapper border rounded-xl">
-                        <a href="#">
-                            <img src="https://cdn.aitimes.com/news/photo/202203/143552_148724_2323.jpg" alt="">
-                        </a>
+                    <div class="grid grid-cols-3 gap-2 sm:gap-8">
+                        {% for plant in popular_plants %}
+                        <div class="flex flex-col gap-3 w-fit">
+                            <a href="{% url 'plants:detail' plant.pk %}">
+                                <div class="sm:w-[354px] sm:h-[250px] overflow-hidden border rounded-xl">
+                                    <img src="{{ plant.plant_images.first.image.url }}" alt="" class="w-full h-full object-cover">
+                                </div>
+                                <div class="flex flex-col gap-2 sm:flex-row items-center justify-between px-3">
+                                    <p class="text-[14px] sm:text-[18px] whitespace-nowrap overflow-hidden truncate w-24 sm:w-64 text-center sm:text-start"><b>{{ plant.title }}</b></p>
+                                    <a href="{% url 'plants:detail' plant.pk %}">
+                                        <div class="border rounded-md flex items-center justify-center items-center gap-1 p-1 px-2 hover:bg-gray-100">
+                                            <span class="material-symbols-outlined text-[16px] mt-1">favorite</span>
+                                            <p class="text-[12px]">{{ plant.like_users.count }}</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </a>
+                        </div>
+                        {% endfor %}
                     </div>
-                    <div class="community-image_wrapper border rounded-xl">
-                        <a href="#">
-                            <img src="https://www.sisain.co.kr/news/photo/202208/48282_87456_336.jpg" alt="">
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    {% comment %} 식물관리 {% endcomment %}
+    <section>
+        <div class="h-fit bg-gray-100 py-16 sm:py-36">
+            <div class="flex sm:flex-row flex-col gap-8 items-center justify-between mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+                <div class="flex flex-col gap-3 sm:gap-5">
+                    <h2 class="text-[18px] sm:text-[36px] text-center sm:text-start"><b>여러분의 식물을 '관리'해보세요</b></h2>
+                    <div class="flex flex-col gap-3 sm:gap-0 sm:flex-row justify-between items-center sm:items-end">
+                        <p class="text-center sm:text-start text-[14px] sm:text-[18px] sm:font-semibold">식물 정보를 매칭시켜<br>식물에 대한 맞춤형 관리제공</p>
+                        <a href="{% url 'managements:index' %}">
+                            <p>더보기</p>
                         </a>
                     </div>
                 </div>
             
                 {% for management in request.user.management_set.all %}
-                <div class="absolute right-10 mt-32 w-5/12 flex flex-col gap-6">
-                    <a href="{% url 'managements:index' %}">
-                        <div class="community-image_wrapper2 border rounded-3xl w-full h-72">
-                            <img src="{{ management.management_photo.url }}" alt="">
+                <a href="{% url 'managements:index' %}">
+                <div class="flex flex-col sm:items-start items-center gap-6">
+                        <div class="border rounded-2xl overflow-hidden w-64 h-44 sm:w-[500px] sm:h-[300px]">
+                            <img src="{{ management.management_photo.url }}" alt="" class="w-full h-full object-cover">
                         </div>
                         <div class="flex justify-between items-center px-5">
                             <div class="flex items-center gap-5">
-                                <button type="button" class="flex rounded-full bg-gray-800 text-sm" id="user-menu-button" aria-expanded="false" aria-haspopup="true" onclick="dp_menu()">
-                                    <span class="sr-only">Open user menu</span>
+                                <div class="h-8 w-8 rounded-full overflow-hidden">
                                     {% if request.user.image %}
-                                        <img class="h-8 w-8 rounded-full border-[0.5px] border-[#1EB564]" src="{{ request.user.image.url }}" alt="">
+                                        <img class="h-full w-full object-cover border-[0.5px] border-[#1EB564]" src="{{ request.user.image.url }}" alt="">
                                     {% else %}
-                                        <img class="h-8 w-8 rounded-full border-[0.5px] border-[#1EB564]" src="{% static 'img/no_profile.jpg' %}" alt="">
+                                        <img class="h-full w-full object-cover rounded-full border-[0.5px] border-[#1EB564]" src="{% static 'img/no_profile.jpg' %}" alt="">
                                     {% endif %}
-                                </button>
-                                <p class="text-[16px]"><b>User님의 '{{ management.nickname }}'</b></p>
-                            </div>
-                            <a href="{% url 'managements:index' %}">
-                                <div class="border rounded-md p-1 px-2 flex gap-2 hover:bg-gray-100">
-                                    <span class="material-symbols-outlined">thumb_up</span>
                                 </div>
-                            </a>
+                                <p class="text-[16px]"><b>{{ request.user.username }}님의 '{{ management.nickname }}'</b></p>
+                            </div>
                         </div>
-                    </a>
-                </div>
+                    </div>
+                </a>
                 {% endfor %}
                 
             </div>
         </div>
-        <div class="h-3/6 flex flex-col gap-3 mt-10 mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-            <h2 class="text-[36px]"><b>여러분의 식물을 보여주세요</b></h2>
-            <div class="flex justify-between items-end w-5/12">
-                <p class="text-[20px]"><b>식물 정보부터 판매, 관리까지<br>식물에 대한 다양한 서비스</b></p>
-                <a href="{% url 'gardens:index' %}">
-                    <p>더보기</p>
-                </a>
+    </section>
+
+    {% comment %} 태그별 {% endcomment %}
+    <section>
+        <div class="flex flex-col my-16 mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+            <div class="text-center flex flex-col items-center gap-3 mb-8">
+                <h2 class="text-[18px] sm:text-[23px]"><b>다양한 '태그'로 찾아보세요</b></h2>
+                <p class="text-[14px] sm:text-[16px]">회원들이 좋아하는 식물을 알려드려요</p>
+            </div>
+            <div class="flex sm:justify-between justify-center gap-3 flex-wrap">
+                {% for tag in recent_tags %}
+                    <a href="{% url 'plants:filter_plants' tag %}">
+                        <div class="border border-gray-400 rounded-full w-fit mb-3 p-1 px-2 sm:p-3 sm:px-10 sm:text-[18px] hover:bg-gray-100"><b># {{ tag }}</b></div>
+                    </a>
+                {% endfor %}
             </div>
         </div>
-
-        {% comment %} 태그별 {% endcomment %}
-        <div class="flex justify-between mt-16 mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-            {% for tag in recent_tags %}
-                <a href="{% url 'plants:filter_plants' tag %}">
-                    <div class="border border-gray-400 rounded-full w-fit p-3 px-10 text-[18px] hover:bg-gray-100"><b># {{ tag }}</b></div>
-                </a>
-            {% endfor %}
-        </div>
-        
     </section>
 
     {% comment %} 식물원 추천 {% endcomment %}
-    <section class="py-36 bg-gray-100 flex flex-col items-center">
+    <section class="py-16 sm:py-36 bg-gray-100 flex flex-col items-center">
         <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
             <div class="flex flex-col gap-8">
-                <div class="text-center">
-                    <h2 class="text-[20px]"><b>식물원 추천</b></h2>
-                    <p class="mb-3">요즘가면 좋은 식물원을 추천해드려요.</p>
+                <div class="text-center flex flex-col items-center gap-3">
+                    <h2 class="text-[18px] sm:text-[23px]"><b>식물원 추천</b></h2>
+                    <p class="text-[14px] sm:text-[16px]">요즘가면 좋은 식물원을 추천해드려요.</p>
                     <a href="{% url 'gardens:index' %}">
                         <span class="text-[16px] text-gray-500 hover:text-black">바로가기</span>
                     </a>
                 </div>
-                <div class="flex gap-5">
-                    <div class="w-9/12 bg-white rounded-3xl p-5 flex gap-5">
+                <div class="flex sm:flex-row flex-col gap-5">
+                    <div class="sm:w-9/12 bg-white rounded-xl p-5 flex sm:flex-row flex-col gap-5">
                         {% for garden in recommended_gardens %}
                         <a href="{% url 'gardens:detail' garden.pk %}">
-                            <div class="garden-image_wrapper w-full h-full border rounded-xl">
+                            <div class="garden-image_wrapper w-full h-full border rounded-lg">
                                 <img src="{{ garden.image.url }}" alt="">
                             </div>
                         </a>
-                        <div class="w-1/2 h-full flex flex-col justify-between">
-                            <div class="flex justify-end">
-                                <a href="{% url 'gardens:detail' garden.pk %}">
-                                    <div class="border rounded-full flex items-center justify-center w-fit p-2 hover:bg-gray-100">
-                                        <span class="material-symbols-outlined">bookmark</span>
-                                    </div>
-                                </a>
-                            </div>
+                        <div class="sm:w-1/2 h-full flex flex-col justify-between">
                             <a href="{% url 'gardens:detail' garden.pk %}">
                                 <div class="flex flex-col gap-6">
-                                    <h3 class="text-[20px]"><b>{{ garden.title }}</b></h3>
-                                    {{ garden.content|striptags }}
+                                    <div>
+                                        <h3 class="text-[20px] mb-2"><b>{{ garden.title }}</b></h3>
+                                        <p class="text-[14px]">{{ garden.address }}</p>
+                                    </div>
+                                    <p>{{ garden.content|striptags }}</p>
                                 </div>
                             </a>
                             <div class="flex justify-end">
@@ -265,12 +254,15 @@
                         </div>
                         {% endfor %}
                     </div>
-                    <div class="w-3/12 bg-gray-200 p-8 rounded-3xl flex flex-col justify-between">
-                        {% for i in additional_garden_links %}
-                            {% if 2 < forloop.counter <= 7 %}
-                            <a href="{% url 'gardens:detail' i.pk %}"><p class="text-[20px] text-gray-400 hover:text-black"><b>{{ i.title }}</b></p></a>
-                            {% endif %}
-                        {% endfor %}
+                    <div class="w-full sm:w-3/12 bg-gray-200 p-5 sm:p-8 rounded-xl">
+                        <h3 class="mb-3 sm:text-[20px] font-semibold">여기 어때요?</h3>
+                        <div class="flex flex-col justify-between gap-2 sm:gap-5">
+                            {% for i in additional_garden_links %}
+                                {% if 2 < forloop.counter <= 7 %}
+                                <a href="{% url 'gardens:detail' i.pk %}"><p class="text-[16px] sm:text-[20px] text-gray-400 hover:text-black"><b>{{ forloop.counter }}. {{ i.title }}</b></p></a>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -280,34 +272,26 @@
     
 
     {% comment %} 판매상품 추천 {% endcomment %}
-    <section class="py-24">
+    <section class="py-16 sm:py-24">
         <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
             <div class="flex flex-col gap-8">
-                <div class="text-center">
-                    <h2 class="text-[20px]"><b>평가좋은 상품</b></h2>
-                    <p class="mb-3">식물을 키우는데 필요한 상품들이 여기 있어요.</p>
+                <div class="text-center flex flex-col items-center gap-3">
+                    <h2 class="text-[18px] sm:text-[23px]"><b>평가좋은 상품</b></h2>
+                    <p class="text-[14px] sm:text-[16px]">식물을 키우는데 필요한 상품들이 여기 있어요.</p>
                     <a href="{% url 'sales:index' %}">
                         <span class="text-[16px] text-gray-500 hover:text-black">바로가기</span>
                     </a>
                 </div>
-                <div class="flex justify-between">
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-8">
                     {% for product in popular_product %}
-                    <div class="flex flex-col gap-3 bg-gray-100 p-3 rounded-2xl hover:bg-gray-200">
-                        <a href="#">
-                            <div class="sale-image_wrapper border rounded-xl">
-                                <img src="{{ product.photo.url }}" alt="">
+                    <div class="flex flex-col gap-3 bg-gray-100 p-3 rounded-xl hover:bg-gray-200">
+                        <a href="{% url 'sales:detail' product.pk %}">
+                            <div class="bg-white w-full h-36 sm:h-56 mb-2 overflow-hidden border rounded-lg">
+                                <img src="{{ product.photo.url }}" alt="" class="w-full h-full object-cover">
                             </div>
-                            <div class="flex flex-col ps-3 gap-5">
-                                <p class="text-[16px]"><b>{{ product.title }}</b></p>
-                                <div class="flex justify-between items-center">
-                                    <p class="text-[20px]"><b>{{ product.price }}원</b></p>
-                                    <a href="#">
-                                        <div class="rounded-full flex items-center justify-center items-center gap-1 p-1 px-3 hover:bg-gray-100">
-                                            <span class="material-symbols-outlined text-[16px] mt-1">favorite</span>
-                                            <p class="text-[12px]">{{ product.num_likes }}</p>
-                                        </div>
-                                    </a>
-                                </div>
+                            <div class="flex flex-col ps-3 gap-2 sm:gap-5">
+                                <p class="text-[16px] sm:font-semibold">{{ product.title }}</p>
+                                <p class="text-[16px] sm:text-[20px] font-semibold">{{ product.price|intcomma }}원</p>
                             </div>
                         </a>
                     </div>

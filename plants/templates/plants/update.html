@@ -11,78 +11,89 @@
 {% block content %}
 <main class="bg-gray-50">
   <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-    <div class="py-10 px-24">
-      <a href="{% url 'plants:detail' plant.pk %}" class="text-[14px] text-gray-500 hover:text-black"><p class="mb-3">식물 돌아가기</p></a>
-      <h1 class="text-[25px] font-semibold mb-10">식물 정보 수정</h1>
-      <form action="{% url 'plants:update' plant.pk %}" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-      
-        {% comment %} 이름 {% endcomment %}
-        <div class="flex gap-3 items-center mb-8 w-full">
-          <div class="mb-2 w-2/12">{{ form.title.label }} <span class="text-red-600 text-[20px]">*</span></div>
-          <div>{{ form.title }}</div>
-        </div>
-
-        {% comment %} 설명 {% endcomment %}
-        <div class="flex gap-3 mb-8 w-full">
-          <div class="mb-2 w-2/12">{{ form.content.label }} <span class="text-red-600 text-[20px]">*</span></div>
-          <div class="grow">{{ form.content }}</div>
-        </div>
-        
-        {% comment %} 알레르기 {% endcomment %}
-        <div class="flex gap-3 mb-8 w-full">
-          <div class="mb-2 w-2/12">{{ form.allergy.label }} <span class="text-red-600 text-[20px]">*</span></div>
-          <div>{{ form.allergy }}</div>
-        </div>
-
-        {% comment %} 카테고리 {% endcomment %}
-        <div class="flex gap-3 mb-8 w-full">
-          <div class="mb-2 w-2/12">{{ form.category.label }} <span class="text-red-600 text-[20px]">*</span></div>
-          <div>{{ form.category }}</div>
-        </div>
-
-        {% comment %} 물 주기 {% endcomment %}
-        <div class="flex gap-3 mb-8 w-full">
-          <div class="mb-2 w-2/12">{{ form.watering.label }} <span class="text-red-600 text-[20px]">*</span></div>
-          <div>{{ form.watering }}</div>
-        </div>
-
-        {% comment %} 일조량 {% endcomment %}
-        <div class="flex gap-3 mb-8 w-full">
-          <div class="mb-2 w-2/12">{{ form.sunlight.label }} <span class="text-red-600 text-[20px]">*</span></div>
-          <div>{{ form.sunlight }}</div>
-        </div>
-
-        {% comment %} 습도 {% endcomment %}
-        <div class="flex gap-3 mb-8 w-full">
-          <div class="mb-2 w-2/12">{{ form.humidity.label }} <span class="text-red-600 text-[20px]">*</span></div>
-          <div>{{ form.humidity }}</div>
-        </div>
-
-        {% comment %} 온도 {% endcomment %}
-        <div class="flex gap-3 mb-8 w-full">
-          <div class="mb-2 w-2/12">{{ form.temperature.label }} <span class="text-red-600 text-[20px]">*</span></div>
-          <div>{{ form.temperature }}</div>
-        </div>
-
-        {% comment %} 이미지 {% endcomment %}
-        <div class="flex gap-3 mb-8 w-full">
-          <div class="mb-2 w-2/12">{{ form.images.label }} <span class="text-red-600 text-[20px]">*</span></div>
-          <div>{{ form.images }}</div>
-        </div>
-
-        {% comment %} 태그 {% endcomment %}
-        <div class="flex gap-3 mb-8 w-full">
-          <div class="mb-2 w-2/12">{{ form.tags.label }} <span class="text-red-600 text-[20px]">*</span></div>
-          <div>{{ form.tags }}</div>
-        </div>
-
-        {% comment %} 생성버튼 {% endcomment %}
-        <div class="flex justify-end w-full">
-          <button type="submit" class='rounded-md bg-[#1EB564] text-white p-2 px-4 hover:bg-[#148D4C]'>수정하기</button>
-        </div>
-      </form>
+    <div class="sm:hidden h-14 px-2 flex items-center">
+    <div class="flex flex-shrink-0 items-center gap-4">
+        <img class="h-8 w-auto" src="{% static 'img/logo.svg' %}" alt="Your Company">
+        <p class="text-xl h-8 w-auto"><b>식물</b></p>
     </div>
+  </div>
+  <div class="py-10 sm:px-24">
+    <a href="{% url 'plants:detail' plant.pk %}" class="w-fit text-[14px] text-gray-500 hover:text-black"><p class="mb-3">식물 돌아가기</p></a>
+    <h1 class="text-[25px] font-semibold mb-10">식물 정보 수정</h1>
+    <form action="{% url 'plants:update' plant.pk %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      {% comment %} 이름 {% endcomment %}
+    <div class="flex sm:flex-row flex-col gap-3 sm:items-center mb-8 w-full">
+      <div class="mb-2 w-full sm:w-2/12">{{ form.title.label }} <span class="text-red-600 text-[20px]">*</span></div>
+      <div>{{ form.title }}</div>
+    </div>
+
+    {% comment %} 설명 {% endcomment %}
+    <div class="flex sm:flex-row flex-col gap-3 mb-8 w-full">
+      <div class="mb-2 w-full sm:w-2/12">{{ form.content.label }} <span class="text-red-600 text-[20px]">*</span></div>
+      <div class="grow">{{ form.content }}</div>
+    </div>
+    
+    {% comment %} 알레르기 {% endcomment %}
+    <div class="flex sm:flex-row flex-col gap-3 mb-8 w-full">
+      <div class="mb-2 w-full sm:w-2/12">{{ form.allergy.label }} <span class="text-red-600 text-[20px]">*</span></div>
+      <div>{{ form.allergy }}</div>
+    </div>
+
+    {% comment %} 카테고리 {% endcomment %}
+    <div class="flex sm:flex-row flex-col gap-3 mb-8 w-full">
+      <div class="mb-2 w-full sm:w-2/12">{{ form.category.label }} <span class="text-red-600 text-[20px]">*</span></div>
+      <div>{{ form.category }}</div>
+    </div>
+
+    {% comment %} 물 주기 {% endcomment %}
+    <div class="flex sm:flex-row flex-col gap-3 mb-8 w-full">
+      <div class="mb-2 w-full sm:w-2/12">{{ form.watering.label }} <span class="text-red-600 text-[20px]">*</span></div>
+      <div>{{ form.watering }}</div>
+    </div>
+
+    {% comment %} 일조량 {% endcomment %}
+    <div class="flex sm:flex-row flex-col gap-3 mb-8 w-full">
+      <div class="mb-2 w-full sm:w-2/12">{{ form.sunlight.label }} <span class="text-red-600 text-[20px]">*</span></div>
+      <div>{{ form.sunlight }}</div>
+    </div>
+
+    {% comment %} 습도 {% endcomment %}
+    <div class="flex sm:flex-row flex-col gap-3 mb-8 w-full">
+      <div class="mb-2 w-full sm:w-2/12">{{ form.humidity.label }} <span class="text-red-600 text-[20px]">*</span></div>
+      <div>{{ form.humidity }}</div>
+    </div>
+
+    {% comment %} 온도 {% endcomment %}
+    <div class="flex sm:flex-row flex-col gap-3 mb-8 w-full">
+      <div class="mb-2 w-full sm:w-2/12">{{ form.temperature.label }} <span class="text-red-600 text-[20px]">*</span></div>
+      <div>{{ form.temperature }}</div>
+    </div>
+
+    {% comment %} 개화시기 {% endcomment %}
+    <div class="flex sm:flex-row flex-col gap-3 mb-8 w-full">
+      <div class="mb-2 w-full sm:w-2/12">{{ form.price.label }} <span class="text-red-600 text-[20px]">*</span></div>
+      <div>{{ form.price }}</div>
+    </div>
+
+    {% comment %} 이미지 {% endcomment %}
+    <div class="flex sm:flex-row flex-col gap-3 mb-8 w-full">
+      <div class="mb-2 w-full sm:w-2/12">{{ form.images.label }} <span class="text-red-600 text-[20px]">*</span></div>
+      <div>{{ form.images }}</div>
+    </div>
+
+    {% comment %} 태그 {% endcomment %}
+    <div class="flex sm:flex-row flex-col gap-3 mb-8 w-full">
+      <div class="mb-2 w-full sm:w-2/12">{{ form.tags.label }} <span class="text-red-600 text-[20px]">*</span></div>
+      <div>{{ form.tags }}</div>
+    </div>
+
+      {% comment %} 생성버튼 {% endcomment %}
+      <div class="flex justify-center sm:justify-end w-full">
+        <button type="submit" class='rounded-md bg-[#1EB564] text-white p-2 px-4 hover:bg-[#148D4C]'>수정하기</button>
+      </div>
+    </form>
   </div>
 </main>
 {% endblock content %}

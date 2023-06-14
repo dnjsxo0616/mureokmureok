@@ -10,8 +10,15 @@
 
 {% block content %}
 <main>
+  <div class="sm:hidden h-14 px-2 flex items-center">
+    <div class="flex flex-shrink-0 items-center gap-4">
+        <img class="h-8 w-auto" src="{% static 'img/logo.svg' %}" alt="Your Company">
+        <p class="text-xl h-8 w-auto"><b>커뮤니티</b></p>
+    </div>
+  </div>
+
   {% comment %} 배너 {% endcomment %}
-  <div class="w-full h-[180px] overflow-hidden relative">
+  <div class="hidden sm:block w-full h-[180px] overflow-hidden relative">
     <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
       <div class="absolute flex items-center gap-10 top-1/2 -translate-y-1/2 z-10">
         <img src="{% static 'img/talk.png' %}" alt="" class="w-36 h-32">
@@ -26,12 +33,12 @@
 
   {% comment %} 컨텐츠 {% endcomment %}
   <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-    <div class="flex justify-between items-center border-0 border-b-[1px] border-gray-400 pt-8 pb-3">
+    <div class="flex justify-between items-center border-0 border-b-[1px] border-gray-400 pt-3 sm:pt-8 pb-3">
       <div class="flex items-center gap-10">
-        <a href="#" class="text-gray-400 hover:text-black text-[20px] font-medium" onclick="changeContent('board')">
+        <a href="#" class="text-gray-400 hover:text-black text-[16px] sm:text-[20px] font-medium" onclick="changeContent('board')">
           <li id="btn_board" class="btn" onclick="changeTextColor(this)">게시판</li>
         </a>
-        <a href="#" class="text-gray-400 hover:text-black text-[20px] font-medium" onclick="changeContent('qa')">
+        <a href="#" class="text-gray-400 hover:text-black text-[16px] sm:text-[20px] font-medium" onclick="changeContent('qa')">
           <li id="btn_qa" class="btn" onclick="changeTextColor(this)">Q&A</li>
         </a>
       </div>
@@ -41,8 +48,8 @@
       {% comment %} {% endif %} {% endcomment %}
     </div>
 
-    <div class="flex items-center justify-between py-3 mb-5 sticky top-[65px] bg-white" id="content_board">
-      <div class="flex items-center gap-10 pb-3">
+    <div class="flex sm:flex-row flex-col sm:items-center sm:justify-between py-3 mb-5 sm:sticky sm:top-[65px] bg-white" id="content_board">
+      <div class="grid grid-cols-3 sm:flex sm:items-center sm:gap-10 gap-3 pb-3">
         <a href="{% url 'communities:index' %}" class="text-gray-400 hover:text-black {% if request.path == index_url %}btn_active{% endif %}" aria-current="page">
           <li class="btn" onclick="changeTextColor(this)">전체</li>
         </a>
@@ -67,7 +74,7 @@
       </form>
     </div>
     
-    <div class="hidden flex items-center justify-between gap-10 py-3 mb-5 sticky top-[65px] bg-white" id="content_qa">
+    <div class="hidden flex items-center justify-between gap-10 py-3 mb-5 sm:sticky sm:top-[65px] bg-white" id="content_qa">
       <div class="flex items-center gap-10 pb-3">
         <a href="{% url 'communities:filter_communities' '전문가 Q&A' %}" class="text-gray-400 hover:text-black {% if '/전문가 Q&A/' in request.path %}btn_active{% endif %}">
           <li class="btn" onclick="changeTextColor(this)">전문가 Q&A</li>
@@ -85,7 +92,7 @@
     </div>
 
     {% comment %} 표시항목 {% endcomment %}
-    <div class="flex p-3 py-2 text-[14px] sticky top-[110px] bg-gray-50 border-0 border-b border-t">
+    <div class="hidden sm:inline-flex w-full flex p-3 py-2 text-[14px] sticky top-[110px] bg-gray-50 border-0 border-b border-t">
       <div class="w-1/12 text-center">이미지</div>
       <div class="w-1/12 grow text-center">제목 및 내용</div>
       <div class="w-1/12 text-center">작성자</div>
@@ -97,18 +104,20 @@
 
     {% comment %} 게시물 {% endcomment %}
     {% if page_obj %}
-    <div class="flex flex-col mb-10">
+    <div class="flex flex-col mb-10 min-h-[250px]">
       {% for community in page_obj %}
       <a href="{% url 'communities:detail' community.pk %}">
-        <div class="flex items-center p-3 border-0 border-b-[1px] border-gray-300 hover:bg-gray-100">
-          <div class="w-1/12 rounded-md overflow-hidden h-24 border">
+        <div class="flex items-center gap-3 sm:gap-0 p-3 mb-3 sm:mb-0 border rounded-lg sm:rounded-none sm:border-0 h-40 sm:h-fit sm:border-b-[1px] border-gray-300 hover:bg-gray-100">
+          <div class="w-36 sm:w-1/12 rounded-md overflow-hidden h-full sm:h-24 border">
             <img src="{{ community.community_photo.url }}" alt="Community Photo" class="object-cover w-full h-full">
           </div>
-          <div class="w-1/12 grow px-10">
+
+          {% comment %} 웹 버전 {% endcomment %}
+          <div class="hidden sm:block w-1/12 grow px-10">
             <div class="text-[12px] text-gray-700 border border-[1px] border-gray-400 w-fit rounded-md p-[2px] px-[4px] mb-2 shadow-sm">{{ community.category }}</div>
             <h4 class="text-[18px] truncate">{{ community.title }}</h4>
           </div>
-          <div class="w-1/12 text-center flex flex-col items-center gap-2">
+          <div class="hidden sm:inline-flex w-1/12 text-center flex flex-col items-center gap-2">
             <div class="rounded-full w-8 h-8 overflow-hidden border border-[0.5px] border-gray-700">
               {% if community.user.image %}
               <img src="{{ community.user.image.url }}" alt="">
@@ -118,10 +127,47 @@
             </div>
             <p class="text-[14px] text-gray-600">{{ community.user }}</p>
           </div>
-          <div class="w-1/12 text-center text-[14px]">{{ community.like_users.count }}</div>
-          <div class="w-1/12 text-center text-[14px]">{{ community.community_comment_set.count }}</div>
-          <div class="w-1/12 text-center text-[14px]">{{ community.hits }}</div>
-          <div class="w-1/12 text-center text-[12px] text-gray-500">{{ community.created_time }}</div>
+          <div class="hidden sm:block w-1/12 text-center text-[14px]">{{ community.like_users.count }}</div>
+          <div class="hidden sm:block w-1/12 text-center text-[14px]">{{ community.community_comment_set.count }}</div>
+          <div class="hidden sm:block w-1/12 text-center text-[14px]">{{ community.hits }}</div>
+          <div class="hidden sm:block w-1/12 text-center text-[12px] text-gray-500">{{ community.created_time }}</div>
+          
+          {% comment %} 모바일 버전 {% endcomment %}
+          <div class="sm:hidden flex flex-col justify-between h-full">
+            <div>
+              <div class="text-[12px] text-gray-700 border border-[1px] border-gray-400 w-fit rounded-md p-[2px] px-[4px] mb-2 shadow-sm">{{ community.category }}</div>
+              <h4 class="font-semibold text-[16px] truncate">{{ community.title }}</h4>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <div class="rounded-full w-8 h-8 overflow-hidden border border-[0.5px] border-gray-700">
+                {% if community.user.image %}
+                <img src="{{ community.user.image.url }}" alt="">
+                {% else %}
+                <img src="{% static 'img/no_profile.jpg' %}" alt="">
+                {% endif %}
+              </div>
+              <p class="text-[14px] text-gray-600">{{ community.user }}</p>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <div class="text-[14px] flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[16px]">favorite</span>
+                  {{ community.like_users.count }}
+                </div>
+                <div class="text-[14px] flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[16px]">chat_bubble</span>
+                  {{ community.community_comment_set.count }}
+                </div>
+                <div class="text-[14px] flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[16px]">visibility</span>
+                  {{ community.hits }}
+                </div>
+              </div>
+              <div class="text-[12px] text-gray-500">{{ community.created_time }}</div>
+            </div>
+          </div>
         </div>
       </a>
       {% endfor %}

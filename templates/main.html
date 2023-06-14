@@ -11,18 +11,18 @@
 {% block content %}
 <main>
     <section class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 h-screen flex flex-col justify-center relative">
-        <div class="flex items-center justify-between mb-6">
+        <div class="sm:flex sm:items-center sm:justify-between mb-6">
             {% comment %} 서비스 타이틀 영역 {% endcomment %}
             <div>
-                <div class="flex gap-3 mb-[50px]">
-                    <img src="{% static 'img/logo.svg' %}" alt="" style="width: 67px; height: 67px;">
-                    <h1 class="text-[50px]"><b>무럭무럭</b></h1>
+                <div class="mx-2 sm:mx-0 flex items-center gap-3 mt-10 sm:mt-0 mb-5 sm:mb-[50px]">
+                    <img src="{% static 'img/logo.svg' %}" alt="" class="w-10 h-10 sm:w-[67px] sm:h-[67px]">
+                    <h1 class="text-[35px] sm:text-[50px]"><b>무럭무럭</b></h1>
                 </div>
-                <div class="mb-[100px] flex flex-col gap-4">
-                    <p class="text-[45px]"><b>당신의 식물은 어떤가요?</b></p>
-                    <p class="text-[25px]"><b>식물 정보부터 판매, 관리까지<br>식물에 대한 다양한 서비스를 한 번에</b></p>
+                <div class="mx-2 sm:mx-0 mb-8 sm:mb-16 sm:mb-[100px] flex flex-col gap-4">
+                    <p class="text-[20px] sm:text-[45px]"><b>당신의 식물은 어떤가요?</b></p>
+                    <p class="text-[16px] sm:text-[25px]"><b>식물 정보부터 판매, 관리까지<br>식물에 대한 다양한 서비스를 한 번에</b></p>
                 </div>
-                <div class="flex flex-col gap-5">
+                <div class="hidden sm:flex sm:flex-col sm:gap-5">
                     <div class="p-3 px-5 border rounded-xl shadow-md w-fit text-[20px]">🤔 언제 얼마나 물을 주어야 하지?</div>
                     <div class="ms-[25%] p-3 px-5 border rounded-xl shadow-md w-fit text-[20px]">괜찮은 식물을 추천받고 싶어요!! 🤔</div>
                     <div class="ms-[10%] p-3 px-5 border rounded-xl shadow-md w-fit text-[20px]">🤔 화분을 사고 싶은데 어떤 걸 사지?</div>
@@ -30,12 +30,12 @@
             </div>
     
             {% comment %} 로그인 영역 {% endcomment %}
-            <div class="relative w-4/12 flex flex-col gap-8 items-center border rounded-[30px] px-[60px] pb-[60px] shadow-lg">
-                <img src="{% static 'img/watering_plant.png' %}" alt="" class="absolute top-[-100px]">
+            <div class="relative h-[500px] sm:h-min w-full sm:w-4/12 flex flex-col items-center gap-8 justify-center border rounded-[30px] p-8 sm:px-[60px] sm:pb-[60px] shadow-lg">
+                <img src="{% static 'img/watering_plant.png' %}" alt="" class="absolute top-[-100px] hidden sm:block">
 
                 {% comment %} 이미 로그인 된 유저인지 검증 {% endcomment %}
                 {% if request.user.is_authenticated %}
-                <div class="mt-[65%] w-full flex flex-col items-center gap-5">
+                <div class="sm:mt-[65%] w-full flex flex-col items-center gap-5">
                     <div class="rounded-full profile-image_wrapper border-[0.5px] border-[#1EB564]">
                         {% if request.user.image %}
                             <img src="{{ request.user.image.url }}" alt="">
@@ -50,7 +50,7 @@
                     <a href="{% url 'accounts:logout' %}" class="block px-4 py-2 text-sm text-gray-700 hover:text-black" role="menuitem" tabindex="-1" id="user-menu-item-2">로그아웃</a>
                 </div>
                 {% else %}
-                <div class="mt-[65%] w-full">
+                <div class="sm:mt-[65%] w-full">
                     <h2 class="text-[22px] text-center mb-5"><b>로그인</b></h2>
                     <form action="{% url 'accounts:login' %}" method="POST" class="flex flex-col items-center gap-3 w-full">
                         {% csrf_token %}
@@ -62,7 +62,7 @@
     
                 {% comment %} 회원가입 {% endcomment %}
                 {% load socialaccount %}
-                <div class="flex gap-3">
+                <div class="flex flex-col items-center sm:flex-row sm:gap-3">
                     <p>혹시 처음 방문하셨나요?</p>
                     <a href="{% url 'accounts:signup' %}" class="text-[#1EB564]"><b>회원가입</b></a>
                 </div>
@@ -91,45 +91,45 @@
                 {% endif %}
             </div>
         </div>
-        <div class="absolute left-1/2 bottom-8 animate-bounce text-center">
-            <p>Scroll</p>
+        <div class="sm:absolute sm:left-1/2 -translate-x-1/2 bottom-8 animate-bounce text-center">
+            <p class="hidden sm:block">Scroll</p>
             <span class="material-symbols-outlined text-[60px]">expand_more</span>
         </div>
     </section>
 
     {% comment %} 서비스 소개 {% endcomment %}
     <section class="h-screen bg-gray-200 flex items-center">
-        <div class="mx-auto flex items-center gap-20 max-w-7xl px-2 sm:px-6 lg:px-8">
-            <div class="p-5 bg-white rounded-xl border shadow-lg" style="width: 45%; height: 40%;">
-                <img src="{% static 'img/screenshot.jpg' %}" alt="">
+        <div class="mx-auto flex flex-col sm:flex-row items-center gap-20 max-w-7xl px-2 sm:px-6 lg:px-8">
+            <div class="p-5 bg-white rounded-xl border shadow-lg">
+                <img src="{% static 'img/screenshot.jpg' %}" alt="" class="w-60 h-40 sm:w-[500px] sm:h-[350px]">
             </div>
             <div class="flex flex-col gap-8">
-                <p class="text-[45px]"><b>1. 당신의 식물은 어떤가요?</b></p>
-                <p class="text-[25px]"><b>식물 정보부터 판매, 관리까지<br>식물에 대한 다양한 서비스를 한 번에</b></p>
+                <p class="text-[25px] sm:text-[45px]"><b>1. 당신의 식물은 어떤가요?</b></p>
+                <p class="text-[18px] sm:text-[25px]"><b>식물 정보부터 판매, 관리까지<br>식물에 대한 다양한 서비스를 한 번에</b></p>
             </div>
         </div>
     </section>
 
     <section class="h-screen bg-white flex items-center">
-        <div class="mx-auto flex items-center gap-20 max-w-7xl px-2 sm:px-6 lg:px-8">
+        <div class="mx-auto flex flex-col-reverse sm:flex-row items-center gap-20 max-w-7xl px-2 sm:px-6 lg:px-8">
             <div class="flex flex-col gap-8">
-                <p class="text-[45px]"><b>2. 당신의 식물은 어떤가요?</b></p>
-                <p class="text-[25px]"><b>식물 정보부터 판매, 관리까지<br>식물에 대한 다양한 서비스를 한 번에</b></p>
+                <p class="text-[25px] sm:text-[45px]"><b>1. 당신의 식물은 어떤가요?</b></p>
+                <p class="text-[18px] sm:text-[25px]"><b>식물 정보부터 판매, 관리까지<br>식물에 대한 다양한 서비스를 한 번에</b></p>
             </div>
-            <div class="p-5 bg-white rounded-xl border shadow-lg" style="width: 45%; height: 40%;">
-                <img src="{% static 'img/screenshot.jpg' %}" alt="">
+            <div class="p-5 bg-white rounded-xl border shadow-lg">
+                <img src="{% static 'img/screenshot.jpg' %}" alt="" class="w-60 h-40 sm:w-[500px] sm:h-[350px]">
             </div>
         </div>
     </section>
 
     <section class="h-screen bg-gray-200 flex items-center">
-        <div class="mx-auto flex items-center gap-20 max-w-7xl px-2 sm:px-6 lg:px-8">
-            <div class="p-5 bg-white rounded-xl border shadow-lg" style="width: 45%; height: 40%;">
-                <img src="{% static 'img/screenshot.jpg' %}" alt="">
+        <div class="mx-auto flex flex-col sm:flex-row items-center gap-20 max-w-7xl px-2 sm:px-6 lg:px-8">
+            <div class="p-5 bg-white rounded-xl border shadow-lg">
+                <img src="{% static 'img/screenshot.jpg' %}" alt="" class="w-60 h-40 sm:w-[500px] sm:h-[350px]">
             </div>
             <div class="flex flex-col gap-8">
-                <p class="text-[45px]"><b>3. 당신의 식물은 어떤가요?</b></p>
-                <p class="text-[25px]"><b>식물 정보부터 판매, 관리까지<br>식물에 대한 다양한 서비스를 한 번에</b></p>
+                <p class="text-[25px] sm:text-[45px]"><b>1. 당신의 식물은 어떤가요?</b></p>
+                <p class="text-[18px] sm:text-[25px]"><b>식물 정보부터 판매, 관리까지<br>식물에 대한 다양한 서비스를 한 번에</b></p>
             </div>
         </div>
     </section>

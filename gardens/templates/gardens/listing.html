@@ -9,19 +9,25 @@
 
 {% block content %}
 <main>
+  <div class="sm:hidden h-14 px-2 flex items-center">
+    <div class="flex flex-shrink-0 items-center gap-4">
+        <img class="h-8 w-auto" src="{% static 'img/logo.svg' %}" alt="Your Company">
+        <p class="text-xl h-8 w-auto"><b>식물원 및 축제</b></p>
+    </div>
+  </div>
   {% comment %} 배너 {% endcomment %}
-  <div class="w-full h-[350px] overflow-hidden relative mb-5">
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-      <div class="flex items-center gap-5">
-        <img src="{% static 'img/finger.png' %}" alt="" class="w-28 h-24">
-        <p class="text-[20px] font-semibold text-white">어디 갈지 고민될 때, <span class="text-[#00FF76]">{% if category == '전체' %}여기{% else %}{{ category }}{% endif %}</span> 어때요?</p>
+  <div class="w-full h-44 sm:h-[350px] overflow-hidden relative mb-5">
+    <div class="absolute w-full px-3 sm:px-0 sm:w-min top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+      <div class="flex items-center gap-5 mb-3 sm:mb-0">
+        <img src="{% static 'img/finger.png' %}" alt="" class="hidden sm:block w-28 h-24">
+        <p class="text-[20px] px-2 sm:px-0 font-semibold text-white">어디 갈지 고민될 때, <span class="text-[#00FF76]">{% if category == '전체' %}여기{% else %}{{ category }}{% endif %}</span> 어때요?</p>
       </div>
 
       {% comment %} 검색 {% endcomment %}
-      <form class="flex items-center justify-center rounded-lg border-[1px] border-black bg-white p-1 ps-3 w-[500px]" action="{% url 'gardens:search' %}" method="GET">
+      <form class="flex items-center justify-center rounded-lg border-[1px] border-black bg-white p-1 ps-3 w-full sm:w-[500px]" action="{% url 'gardens:search' %}" method="GET">
         {% csrf_token %}
         <span class="material-symbols-outlined text-gray-400">search</span>
-        <input type="search" name="query" class="ps-1 pe-3 h-8 w-full bg-transparent rounded-lg focus:outline-none" placeholder="식물원 및 축제 이름을 입력해주세요">
+        <input type="search" name="query" class="text-[14px] sm:text-[16px] ps-1 pe-3 h-8 w-full bg-transparent rounded-lg focus:outline-none" placeholder="식물원 및 축제 이름을 입력해주세요">
         <button class="text-white bg-[#1EB564] w-20 hover:bg-[#148D4C] p-1 px-2 rounded-md" type="submit">검 색</button>
       </form>
     </div>
@@ -30,7 +36,7 @@
   </div>
 
   <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-    <div class="flex justify-center gap-10 border-0 border-b-[1px] border-gray-400 bg-white py-3 mb-5 sticky top-[60px] z-10">
+    <div class="relative grid grid-cols-3 text-center sm:text-start gap-5 sm:flex sm:justify-center sm:gap-10 border-0 border-b-[1px] border-gray-400 bg-white py-3 mb-5 sticky top-0 sm:top-[60px] z-10">
       <div class='text-gray-400 hover:text-black'>
         <a href="{% url 'gardens:listing' %}?category=전체">
           <span class="{% if category == '전체' %}text-black font-semibold{% endif %}">전체</span>
@@ -58,20 +64,20 @@
       </div>
     </div>
   
-    <div class="grid grid-cols-2 gap-10 mb-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-10 mb-8">
       {% for garden in page_obj %}
       <a href="{% url 'gardens:detail' garden.pk %}">
-        <div class="h-60 border rounded-xl p-5 flex gap-5 hover:-translate-y-1.5 transform transition hover:shadow-lg">
+        <div class="h-44 sm:h-60 border rounded-xl p-3 sm:p-5 flex gap-5 hover:-translate-y-1.5 transform transition hover:shadow-lg">
           <div class="w-full h-full overflow-hidden rounded-md border">
             <img src="{{ garden.image.url }}" alt="Garden Image" class="w-full h-full object-cover">
           </div>
           <div class="w-full flex flex-col justify-between">
             <div>
               <div class="text-[12px] text-gray-700 border border-[1px] border-gray-400 w-fit rounded-md p-[2px] px-[4px] mb-2 shadow-sm">{{ garden.category }}</div>
-              <h1 class="text-[20px] font-semibold">{{ garden.title }}</h1>
-              <p class="text-[14px] text-gray-500">{{ garden.address }}</p>
+              <h1 class="text-[18px] sm:text-[20px] font-semibold mb-2">{{ garden.title }}</h1>
+              <p class="text-[12px] sm:text-[14px] text-gray-500">{{ garden.address }}</p>
             </div>
-            <p>{{ garden.ex_content }}</p>
+            <p class="hidden sm:block">{{ garden.ex_content }}</p>
             <div class="flex items-end gap-5 text-gray-500">
               <div class="flex items-center gap-2">
                 <span class="material-symbols-outlined text-[16px] mt-[0.5px]">favorite</span>

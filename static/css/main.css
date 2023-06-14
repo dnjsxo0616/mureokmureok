@@ -3,8 +3,8 @@ nav {
 }
 
 .profile-image_wrapper {
-    width: 40%;
-    height: 40%;
+    width: 100px;
+    height: 100px;
     overflow: hidden;
 }
 

@@ -15,40 +15,16 @@
     {% block head %}{% endblock head %}
 </head>
 <body>
-    <nav class="z-50 bg-white border-t-0 border-r-0 border-l-0 border-solid border-2 border-[#1EB564] sticky top-0">
+    <nav class="hidden sm:block z-50 bg-white border-t-0 border-r-0 border-l-0 border-solid border-2 border-[#1EB564] sticky top-0">
         <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
             <div class="relative flex h-16 items-center justify-between">
-                <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                {% comment %} 모바일 버전 메뉴버튼 {% endcomment %}
-                    <button type="button" class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
-                        <span class="sr-only">Open main menu</span>
-                        <!--
-                        Icon when menu is closed.
-            
-                        Menu open: "hidden", Menu closed: "block"
-                        -->
-                        <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                        </svg>
-                        <!--
-                        Icon when menu is open.
-            
-                        Menu open: "block", Menu closed: "hidden"
-                        -->
-                        <svg class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
 
                 {% comment %} 로고 {% endcomment %}
                 <a href="{% url 'home' %}">
                     <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                     <div class="flex flex-shrink-0 items-center gap-4">
-                        <img class="block h-8 w-auto lg:hidden" src="{% static 'img/logo.svg' %}" alt="Your Company">
-                        <p class="text-xl block h-8 w-auto lg:hidden"><b>무럭무럭</b></p>
-                        <img class="hidden h-8 w-auto lg:block" src="{% static 'img/logo.svg' %}" alt="Your Company">
-                        <p class="text-xl hidden h-8 w-auto lg:block"><b>무럭무럭</b></p>
+                        <img class="h-8 w-auto" src="{% static 'img/logo.svg' %}" alt="Your Company">
+                        <p class="text-xl h-8 w-auto"><b>무럭무럭</b></p>
                     </div>
                 </a>
 
@@ -63,8 +39,8 @@
                             <!-- <a href="{% url 'supplies:index' %}" class="text-gray-400 hover:text-black px-2 py-2 text-sm font-medium">관리용품</a> -->
                             <a href="{% url 'communities:index' %}" class="text-gray-400 hover:text-black px-2 py-2 text-sm font-medium">커뮤니티</a>
                             <a href="{% url 'game:play_puzzle' %}" class="text-gray-400 hover:text-black px-2 py-2 text-sm font-medium">미니게임</a>
-                            <a href="{% url 'sales:index' %}" class="text-gray-400 hover:text-black px-2 py-2 text-sm font-medium">쇼핑</a>
-                            <a href="{% url 'managements:index' %}" class="text-gray-400 hover:text-black px-2 py-2 text-sm font-medium">My Plants</a>
+                            <a href="{% url 'sales:index' %}" class="text-gray-400 hover:text-black px-2 py-2 text-sm font-medium">그린샵</a>
+                            <a href="{% url 'managements:index' %}" class="text-gray-400 hover:text-black px-2 py-2 text-sm font-medium">식집사</a>
                         </div>
                     </div>
                 </div>
@@ -205,32 +181,45 @@
                 </div>
             </div>
         </div>
-    
-        <!-- Mobile menu, show/hide based on menu state. -->
-        <div class="sm:hidden" id="mobile-menu">
-            <div class="space-y-1 px-2 pb-3 pt-2">
-                <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                <a href="#" class="text-gray-400 hover:text-black block rounded-md px-3 py-2 text-base font-medium">홈</a>
-                <a href="#" class="text-gray-400 hover:text-black block rounded-md px-3 py-2 text-base font-medium">공지사항</a>
-                <a href="#" class="text-gray-400 hover:text-black block rounded-md px-3 py-2 text-base font-medium">식물</a>
-                <a href="#" class="text-gray-400 hover:text-black block rounded-md px-3 py-2 text-base font-medium">식물원</a>
-                <a href="#" class="text-gray-400 hover:text-black block rounded-md px-3 py-2 text-base font-medium">커뮤니티</a>
-                <a href="#" class="text-gray-400 hover:text-black block rounded-md px-3 py-2 text-base font-medium">미니게임</a>
-                <a href="#" class="text-gray-400 hover:text-black block rounded-md px-3 py-2 text-base font-medium">쇼핑</a>
-                <a href="#" class="text-gray-400 hover:text-black block rounded-md px-3 py-2 text-base font-medium">My Plants</a>
-            </div>
+    </nav>
+
+    {% comment %} 모바일 하단 네비게이션 바 {% endcomment %}
+    <nav class="sm:hidden fixed bottom-0 left-0 z-50 w-screen h-16 bg-white border-t border-[#1EB564] dark:bg-gray-700 dark:border-gray-600">
+        <div class="grid h-full max-w-lg grid-cols-5 mx-auto font-medium">
+            <a href="{% url 'home' %}" class="inline-flex flex-col gap-1 items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
+                <span class="material-symbols-outlined text-gray-500 group-hover:text-[#1EB564] dark:group-hover:text-[#1EB564] font-semibold" fill="currentColor">home</span>
+                <span class="text-[12px] text-gray-500 dark:text-gray-400 group-hover:text-[#1EB564] dark:group-hover:text-[#1EB564]">홈</span>
+            </a>
+            <a href="{% url 'plants:index' %}" class="inline-flex flex-col gap-1 items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
+                <span class="material-symbols-outlined text-gray-500 group-hover:text-[#1EB564] dark:group-hover:text-[#1EB564] font-semibold" fill="currentColor">potted_plant</span>
+                <span class="text-[12px] text-gray-500 dark:text-gray-400 group-hover:text-[#1EB564] dark:group-hover:text-[#1EB564]">식물</span>
+            </a>
+            <a href="{% url 'gardens:index' %}" class="inline-flex flex-col gap-1 items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
+                <span class="material-symbols-outlined text-gray-500 group-hover:text-[#1EB564] dark:group-hover:text-[#1EB564] font-semibold" fill="currentColor">location_on</span>
+                <span class="text-[12px] text-gray-500 dark:text-gray-400 group-hover:text-[#1EB564] dark:group-hover:text-[#1EB564]">공간</span>
+            </a>
+            <a href="{% url 'sales:index' %}" class="inline-flex flex-col gap-1 items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
+                <span class="material-symbols-outlined text-gray-500 group-hover:text-[#1EB564] dark:group-hover:text-[#1EB564] font-semibold" fill="currentColor">shopping_cart</span>
+                <span class="text-[12px] text-gray-500 dark:text-gray-400 group-hover:text-[#1EB564] dark:group-hover:text-[#1EB564]">그린샵</span>
+            </a>
+            <a href="{% url 'sales:index' %}" class="inline-flex flex-col gap-1 items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
+                <span class="material-symbols-outlined text-gray-500 group-hover:text-[#1EB564] dark:group-hover:text-[#1EB564] font-semibold" fill="currentColor">more_vert</span>
+                <span class="text-[12px] text-gray-500 dark:text-gray-400 group-hover:text-[#1EB564] dark:group-hover:text-[#1EB564]">더보기</span>
+            </a>
         </div>
     </nav>
+    
     
     {% block content %}{% endblock content %}
 
 
+    {% comment %} 푸터 {% endcomment %}
     <footer class="bg-black p-[30px]">
         <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
             <div class="relative flex h-16 items-center justify-between">
 
                 <!-- 로고 -->
-                <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                <div class="sm:flex sm:flex-1 sm:items-center sm:items-stretch sm:justify-start">
                     <div class="flex flex-shrink-0 items-center gap-4">
                         <img class="block h-8 w-auto lg:hidden" src="{% static 'img/logo_black.svg' %}" alt="Your Company">
                         <p class="text-xl block h-8 w-auto lg:hidden text-white"><b>무럭무럭</b></p>
@@ -242,8 +231,8 @@
                     </div>
                 </div>
 
-                    <!-- 팀 멤버 -->
-                    <div class="relative ml-4 flex gap-4">
+                    {% comment %} 멤버 {% endcomment %}
+                    <div class="hidden sm:relative sm:ml-4 sm:flex sm:gap-4">
                         <div class="text-white mt-1">Members</div>
                         <div class="flex flex-col">
                             <a href="https://github.com/Sunhyeok11" class="text-gray-400 hover:text-white px-2 py-2 text-sm font-medium">홍순혁</a>
@@ -261,22 +250,19 @@
             </div>
         </div>
     
-        <!-- Mobile menu, show/hide based on menu state. -->
+        {% comment %} 모바일 푸터 {% endcomment %}
         <div class="sm:hidden" id="mobile-menu">
-            <div class="space-y-1 px-2 pb-3 pt-2">
-                <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                <div class="relative ml-4 flex gap-4">
+            <div class="space-y-1 pb-16 pt-2">
+                <div class="relative flex flex-col gap-4">
                     <div class="text-white mt-1">Members</div>
-                    <div class="flex flex-col">
-                        <a href="https://github.com/Sunhyeok11" class="text-gray-400 hover:text-white px-2 py-2 text-sm font-medium">홍순혁</a>
-                        <a href="https://github.com/yeongbin05" class="text-gray-400 hover:text-white px-2 py-2 text-sm font-medium">김영빈</a>
-                    </div>
-                    <div class="flex flex-col">
-                        <a href="https://github.com/illson97" class="text-gray-400 hover:text-white px-2 py-2 text-sm font-medium">이정일</a>
-                        <a href="https://github.com/JeonggonCho" class="text-gray-400 hover:text-white px-2 py-2 text-sm font-medium">조정곤</a>
-                    </div>
-                    <div class="flex flex-col">
-                        <a href="https://github.com/dnjsxo0616" class="text-gray-400 hover:text-white px-2 py-2 text-sm font-medium">한원태</a>
+                    <div>
+                        <div class="flex">
+                            <a href="https://github.com/Sunhyeok11" class="text-gray-400 hover:text-white pe-2 py-2 text-sm font-medium">홍순혁</a>
+                            <a href="https://github.com/yeongbin05" class="text-gray-400 hover:text-white px-2 py-2 text-sm font-medium">김영빈</a>
+                            <a href="https://github.com/illson97" class="text-gray-400 hover:text-white px-2 py-2 text-sm font-medium">이정일</a>
+                            <a href="https://github.com/JeonggonCho" class="text-gray-400 hover:text-white px-2 py-2 text-sm font-medium">조정곤</a>
+                            <a href="https://github.com/dnjsxo0616" class="text-gray-400 hover:text-white px-2 py-2 text-sm font-medium">한원태</a>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -9,7 +9,7 @@ class ProductForm(forms.ModelForm):
         label='상품명',
         widget=forms.TextInput(
             attrs={
-                'class':'w-96 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
+                'class':'w-80 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
                 'id': '상품명',
                 'placeholder': '상품명을 입력해주세요',
             }
@@ -41,7 +41,7 @@ class ProductForm(forms.ModelForm):
         label='상품 이미지',
         widget=forms.ClearableFileInput(
             attrs={
-                'class': 'w-96 bg-white border rounded-md focus:outline-none focus:ring-1 focus:ring-[#1EB564] text-gray-400',
+                'class': 'w-80 bg-white border rounded-md focus:outline-none focus:ring-1 focus:ring-[#1EB564] text-gray-400',
                 'id': 'photo',
             }
         )
@@ -51,7 +51,7 @@ class ProductForm(forms.ModelForm):
         label='태그',
         widget=TagWidget(
             attrs={
-                'class': 'w-96 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
+                'class': 'w-80 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
                 'placeholder': '태그는 콤마(,)로 구분하여 작성해주세요',
             }
         )
