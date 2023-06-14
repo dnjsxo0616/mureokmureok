@@ -71,7 +71,7 @@ def search(request):
         )
 
         search_sales = Product.objects.filter(
-            Q(supply_name__icontains=query) |
+            Q(title__icontains=query) |
             Q(category__icontains=query) | 
             Q(price__icontains=query)
         )
