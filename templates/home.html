@@ -170,33 +170,34 @@
                     </div>
                 </div>
             
-                {% for management in request.user.management_set.all %}
-                <div class="absolute right-10 mt-32 w-5/12 flex flex-col gap-6">
-                    <a href="{% url 'managements:index' %}">
-                        <div class="community-image_wrapper2 border rounded-3xl w-full h-72">
-                            <img src="{{ management.management_photo.url }}" alt="">
-                        </div>
-                        <div class="flex justify-between items-center px-5">
-                            <div class="flex items-center gap-5">
-                                <button type="button" class="flex rounded-full bg-gray-800 text-sm" id="user-menu-button" aria-expanded="false" aria-haspopup="true" onclick="dp_menu()">
-                                    <span class="sr-only">Open user menu</span>
-                                    {% if request.user.image %}
-                                        <img class="h-8 w-8 rounded-full border-[0.5px] border-[#1EB564]" src="{{ request.user.image.url }}" alt="">
-                                    {% else %}
-                                        <img class="h-8 w-8 rounded-full border-[0.5px] border-[#1EB564]" src="{% static 'img/no_profile.jpg' %}" alt="">
-                                    {% endif %}
-                                </button>
-                                <p class="text-[16px]"><b>User님의 '{{ management.nickname }}'</b></p>
+                {% if latest_management %}
+                    <div class="absolute right-10 mt-32 w-5/12 flex flex-col gap-6">
+                        <a href="{% url 'managements:index' %}">
+                            <div class="community-image_wrapper2 border rounded-3xl w-full h-72">
+                                <img src="{{ latest_management.management_photo.url }}" alt="">
                             </div>
-                            <a href="{% url 'managements:index' %}">
-                                <div class="border rounded-md p-1 px-2 flex gap-2 hover:bg-gray-100">
-                                    <span class="material-symbols-outlined">thumb_up</span>
+                            <div class="flex justify-between items-center px-5">
+                                <div class="flex items-center gap-5">
+                                    <button type="button" class="flex rounded-full bg-gray-800 text-sm" id="user-menu-button" aria-expanded="false" aria-haspopup="true" onclick="dp_menu()">
+                                        <span class="sr-only">Open user menu</span>
+                                        {% if request.user.image %}
+                                            <img class="h-8 w-8 rounded-full border-[0.5px] border-[#1EB564]" src="{{ request.user.image.url }}" alt="">
+                                        {% else %}
+                                            <img class="h-8 w-8 rounded-full border-[0.5px] border-[#1EB564]" src="{% static 'img/no_profile.jpg' %}" alt="">
+                                        {% endif %}
+                                    </button>
+                                    <p class="text-[16px]"><b>User님의 '{{ latest_management.nickname }}'</b></p>
                                 </div>
-                            </a>
-                        </div>
-                    </a>
-                </div>
-                {% endfor %}
+                                <a href="{% url 'managements:index' %}">
+                                    <div class="border rounded-md p-1 px-2 flex gap-2 hover:bg-gray-100">
+                                        <span class="material-symbols-outlined">thumb_up</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </a>
+                    </div>
+                {% endif %}
+
                 
             </div>
         </div>
