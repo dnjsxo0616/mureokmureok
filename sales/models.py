@@ -44,7 +44,7 @@ class Order(models.Model):
     order_number = models.CharField(max_length=10, unique=True)
 
     def __str__(self):
-        return f"Order {self.id}"
+        return f"주문번호 {self.order_number}"
 
     def save(self, *args, **kwargs):
         if not self.order_number:

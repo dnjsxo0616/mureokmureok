@@ -33,6 +33,9 @@ def index(request):
 
 @login_required
 def create(request):
+    if not request.user.is_superuser:
+        return redirect('home')
+    
     if request.method == 'POST':
         tags = request.POST.get('tags').split(',')
         form = ProductForm(request.POST, request.FILES)
@@ -160,6 +163,9 @@ def filter(request):
 
 @login_required
 def update(request, product_pk):
+    if not request.user.is_superuser:
+        return redirect('home')
+
     product = Product.objects.get(pk=product_pk)
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES, instance=product)
@@ -182,6 +188,10 @@ def update(request, product_pk):
 
 @login_required
 def delete(request, product_pk):
+
+    if not request.user.is_superuser:
+        return redirect('home')
+    
     product = Product.objects.get(pk=product_pk)
     if request.user == product.user:
         product.delete()
@@ -410,15 +420,8 @@ def delete_order(request, order_pk):
         'order': order
     }
 
-    return render(request, 'sales/order_payment.h', context)
+    return render(request, 'sales/order_payment.html', context)
 
-
-# def order_complete(request, order_pk):
-#     order = Order.objects.get(pk=order_pk)
-#     context = {
-#         'order': order,
-#     }
-#     return render(request, 'sales/order_complete.html', context)
 
 def order_detail(request, order_number):
     order = Order.objects.get(order_number=order_number)
@@ -440,19 +443,5 @@ def order_list(request):
 def order_cancel(request):
     return render(request, 'sales/order_cancel.html')
 
-@method_decorator(csrf_exempt, name='dispatch')
-def juso_popup(request):
-    inputYn = request.GET.get('inputYn')
-    roadFullAddr = request.GET.get('roadFullAddr')
-    context = {
-        'inputYn': inputYn,
-        'roadFullAddr':roadFullAddr,
-    }
-    return render(request, 'sales/jusoPopup.html', context)
 
 
-def jusopopuptest(request):
-    return render(request, 'sales/jusopopup.html')
-
-def sampletest(request):
-    return render(request, 'sales/sampletest.html')

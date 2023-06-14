@@ -5,8 +5,9 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.db.models import Count
 from django.core.paginator import Paginator
-from django.contrib.auth.decorators import user_passes_test
+from django.http import HttpResponseForbidden
 from sales.models import Product
+
 
 # Create your views here.
 def index(request):
@@ -31,9 +32,13 @@ def index(request):
     return render(request, 'plants/index.html', context)
 
 
-# @user_passes_test(lambda u: u.is_superuser)
-@login_required
+
+@login_required(login_url='admin:login')
 def create(request):
+
+    if not request.user.is_superuser:
+        return redirect('home')
+    
     if request.method == 'POST':
         tags = request.POST.get('tags').split(',')
         form = PlantForm(request.POST, request.FILES)
@@ -60,8 +65,12 @@ def create(request):
     return render(request, 'plants/create.html', context)
 
 
-# @user_passes_test(lambda u: u.is_superuser)
+
 def update(request, plant_pk):
+    
+    if not request.user.is_superuser:
+        return redirect('home')
+    
     plant = Plant.objects.get(pk=plant_pk)
     if request.method == 'POST':
         form = PlantForm(request.POST, request.FILES, instance=plant)
@@ -83,8 +92,12 @@ def update(request, plant_pk):
     return render(request, 'plants/update.html', context)
 
 
-# @user_passes_test(lambda u: u.is_superuser)
+
 def delete(request, plant_pk):
+    
+    if not request.user.is_superuser:
+        return redirect('home')
+    
     plant = Plant.objects.get(pk=plant_pk)
     if request.user == plant.user:
         plant.delete()
@@ -158,7 +171,9 @@ def detail(request, plant_pk):
     #         #     if '주2~3회 태그' in product.tags:
     #         #         filtered_products.append(product)
 
-    
+    products = Product.objects.all()
+   
+
     context = {
         'plant': plant,
         'category_list': category_list,
@@ -168,7 +183,7 @@ def detail(request, plant_pk):
         'humidity_list': humidity_list,
         'temperature_list': temperature_list,
         'allergy': allergy,
-        # 'products':products,
+        'products':products,
     }
     return render(request, 'plants/detail.html', context)
 

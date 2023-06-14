@@ -18,7 +18,7 @@ from django.contrib.auth import logout
 from django.shortcuts import redirect
 
 # Create your views here.
-
+@login_required
 def detail(request, management_pk):
     management = Management.objects.get(pk=management_pk)
     calenderentrys = management.calenderentry_set.all()
@@ -344,11 +344,9 @@ def detail(request, management_pk):
     return render(request,'managements/detail.html', context)
 
 
-
+@login_required
 def index(request):
 
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect('/home/')
     managements = Management.objects.filter(user_id=request.user.id)
     good_plants = 0
     nice_plants = 0
@@ -365,7 +363,7 @@ def index(request):
             nice_plants += 1
         elif management.score < 40:
             bad_plants += 1
-            
+
     if managements.count() != 0:
         average_score = sum_score // (managements.count())
 
@@ -411,7 +409,7 @@ def create(request):
     return render(request, 'managements/create.html', context)
 
 
-
+@login_required
 def update(request, management_pk):
     management = Management.objects.get(pk=management_pk)
     if request.method == 'POST':
@@ -430,7 +428,7 @@ def update(request, management_pk):
     return render(request, 'managements/update.html', context)
 
 
-
+@login_required
 def delete(request, management_pk):
     management = Management.objects.get(pk=management_pk)
     if request.user == management.user:
@@ -438,7 +436,7 @@ def delete(request, management_pk):
     return redirect('managements:index')
 
 
-
+@login_required
 def calenderentry_create(request, management_pk):
     management = Management.objects.get(pk=management_pk)
 

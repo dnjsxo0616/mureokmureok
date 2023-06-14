@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 
 
 {% block head %}
@@ -68,6 +69,7 @@
               </a>
 
               {% comment %} 수정 및 삭제 드롭다운 버튼 {% endcomment %}
+
               {% comment %} {% if request.user.is_superuser %} {% endcomment %}
               <div class="relative mt-3 flex justify-end grow sm:grow-0">
                 <div class="dropdown text-end">
@@ -87,7 +89,7 @@
                   </form>
                 </div>
               </div>
-              {% comment %} {% endif %} {% endcomment %}
+              {% endif %}
             </div>
           </div>
 
@@ -426,6 +428,7 @@
                   <span class="text-[16px] text-gray-500 hover:text-black">바로가기</span>
               </a>
             </div>
+
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-10">
               <a href="#" class="w-full">
                 <div class="flex flex-col gap-3 bg-white rounded-lg w-full h-72 p-3 hover:bg-gray-200">
@@ -468,15 +471,11 @@
                   <div class="w-full h-48 rounded-md overflow-hidden">
                     <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/20883/product/image_1588330718910_750.jpeg" alt="" class="w-full h-full object-cover">
                   </div>
-                  <p class="text-[16px] font-semibold px-2">화분</p>
-                  <div class="flex justify-between px-2">
-                    <p class="text-[20px] font-semibold">6,000원</p>
-                    <div>좋아요버튼</div>
-                  </div>
-                </div>
-              </a>
+                {% endif %}
+              {% endfor %}
             </div>
           </div>
+          
 
           {% comment %} 일조 관련 상품 없음 {% endcomment %}
           <div class="supply"></div>
@@ -490,6 +489,7 @@
                   <span class="text-[16px] text-gray-500 hover:text-black">바로가기</span>
               </a>
             </div>
+
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-10">
               <a href="#" class="w-full">
                 <div class="flex flex-col gap-3 bg-white rounded-lg w-full h-72 p-3 hover:bg-gray-200">
@@ -537,8 +537,8 @@
                     <p class="text-[20px] font-semibold">6,000원</p>
                     <div>좋아요버튼</div>
                   </div>
-                </div>
-              </a>
+                {% endif %}
+              {% endfor %}
             </div>
           </div>
 
@@ -551,6 +551,7 @@
                   <span class="text-[16px] text-gray-500 hover:text-black">바로가기</span>
               </a>
             </div>
+
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-10">
               <a href="#" class="w-full">
                 <div class="flex flex-col gap-3 bg-white rounded-lg w-full h-72 p-3 hover:bg-gray-200">
@@ -574,32 +575,8 @@
                     <p class="text-[20px] font-semibold">6,000원</p>
                     <div>좋아요버튼</div>
                   </div>
-                </div>
-              </a>
-              <a href="#" class="w-full">
-                <div class="flex flex-col gap-3 bg-white rounded-lg w-full h-72 p-3 hover:bg-gray-200">
-                  <div class="w-full h-48 rounded-md overflow-hidden">
-                    <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/20883/product/image_1588330718910_750.jpeg" alt="" class="w-full h-full object-cover">
-                  </div>
-                  <p class="text-[16px] font-semibold px-2">화분</p>
-                  <div class="flex justify-between px-2">
-                    <p class="text-[20px] font-semibold">6,000원</p>
-                    <div>좋아요버튼</div>
-                  </div>
-                </div>
-              </a>
-              <a href="#" class="w-full">
-                <div class="flex flex-col gap-3 bg-white rounded-lg w-full h-72 p-3 hover:bg-gray-200">
-                  <div class="w-full h-48 rounded-md overflow-hidden">
-                    <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/20883/product/image_1588330718910_750.jpeg" alt="" class="w-full h-full object-cover">
-                  </div>
-                  <p class="text-[16px] font-semibold px-2">화분</p>
-                  <div class="flex justify-between px-2">
-                    <p class="text-[20px] font-semibold">6,000원</p>
-                    <div>좋아요버튼</div>
-                  </div>
-                </div>
-              </a>
+                {% endif %}
+              {% endfor %}
             </div>
           </div>
         </section>

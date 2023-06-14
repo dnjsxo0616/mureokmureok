@@ -211,9 +211,9 @@
                 <span class="material-symbols-outlined text-gray-400">search</span>
               </div>
             </form>
-            {% comment %} {% if request.user.is_superuser %} {% endcomment %}
+            {% if request.user.is_superuser %}
               <a href="{% url 'plants:create' %}" class="text-[14px] border rounded-lg p-1 px-2 text-center hover:bg-gray-100">식물 등록</a>
-            {% comment %} {% endif %} {% endcomment %}
+            {% endif %}
           </div>
         </div>
 
