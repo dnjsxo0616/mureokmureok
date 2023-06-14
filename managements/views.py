@@ -366,7 +366,8 @@ def index(request):
         elif management.score < 40:
             bad_plants += 1
 
-    average_score = sum_score // (managements.count())
+    if managements.count() != 0:
+        average_score = sum_score // (managements.count())
 
     for management in managements:
         management_start_date = management.managementdate
