@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, HttpResponse
 from accounts.forms import CustomAuthenticationForm
 from gardens.models import Garden
 from plants.models import Plant
-from supplies.models import Supply
+from sales.models import Product
 from accounts.models import User
 from django.db.models import Q, Max
 from channels.layers import get_channel_layer
@@ -70,7 +70,7 @@ def search(request):
             Q(content__icontains=query)
         )
 
-        search_supplies = Supply.objects.filter(
+        search_sales = Product.objects.filter(
             Q(supply_name__icontains=query) |
             Q(category__icontains=query) | 
             Q(price__icontains=query)
@@ -78,16 +78,16 @@ def search(request):
 
         search_result_gardens = list(search_gardens)
         search_result_plants = list(search_plants)
-        search_result_supplies = list(search_supplies)
+        search_result_sales = list(search_sales)
        
     else:
         search_result_gardens = list(Garden.objects.all())
         search_result_plants = list(Plant.objects.all())
-        search_result_supplies = list(Supply.objects.all())
+        search_result_sales = list(Product.objects.all())
     context = {
         'search_result_gardens': search_result_gardens,
         'search_result_plants': search_result_plants,
-        'search_result_supplies': search_result_supplies,
+        'search_result_sales': search_result_sales,
         'query': query,
     }
     return render(request, 'search.html', context)
