@@ -8,22 +8,40 @@
 
 
 {% block content %}
-<div class="mx-auto px-[200px] pt-10 pb-10">
-  <div class="font-bold text-3xl text-left leading-relaxed mb-3 border-b border-green-500 pb-3">
+<div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+  <div class="sm:hidden h-14 px-2 flex items-center">
+    <div class="flex flex-shrink-0 items-center gap-4">
+        <img class="h-8 w-auto" src="{% static 'img/logo.svg' %}" alt="Your Company">
+        <p class="text-xl h-8 w-auto"><b>식물</b></p>
+    </div>
+  </div>
+  <div class="font-bold text-[25px] sm:text-3xl mt-5 sm:mt-16 mb-8 pb-5 border-b">
     <p>인기있는 식물들을</p>
     <p>모아봤어요.</p>
   </div>
   <div>
     {% if recommended_plants %}
-      <div class="grid grid-cols-4 gap-4">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8 min-h-[350px]">
         {% for plant in recommended_plants %}
-          <div class="bg-white rounded-lg p-4">
-            <div class="flex">
-              <p class="font-bold">{{plant.title}}</p>
-              <p class="ml-auto">좋아요: {{ plant.like_users.count }}</p>
+        <a href="{% url 'plants:detail' plant.pk %}">
+          <div class="w-full mb-5 flex gap-5">
+            <div class="flex flex-col gap-3">
+              <div class="rounded-xl border overflow-hidden relative">
+                <img src="{{ plant.plant_images.first.image.url }}" alt="" class="w-full h-full object-cover duration-200 ease-linear hover:scale-105">
+                
+                <div class="text-[12px] text-white w-fit rounded-md p-1 px-2 shadow-lg absolute top-2 left-2 {% if plant.category == "['실내식물']" %}bg-[#439A3C]{% elif plant.category == "['실외식물']" %}bg-[#9D9441]{% elif plant.category == "['실내식물', '실외식물']" %}bg-[#35493D]{% endif %}">{% if plant.category == "['실내식물']" %}실내{% elif plant.category == "['실외식물']" %}실외{% elif plant.category == "['실내식물', '실외식물']" %}실내, 실외{% endif %}</div>
+              </div>
+              <div class="flex items-center justify-between px-2">
+                <h3 class="text-[16px] font-semibold w-24 whitespace-nowrap overflow-hidden truncate">{{ plant.title }}</h3>
+    
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-[16px] mt-[0.5px]">favorite</span>
+                  <span id="garden-like-count">{{ plant.like_users.all|length }}</span>
+                </div>
+              </div>
             </div>
-            <a href="{% url 'plants:detail' plant.pk %}"><img src="{{ plant.plant_images.first.image.url }}" alt="{{ plant.title }}" width="300" class="w-full h-auto mt-4 object-contain"></a>
           </div>
+        </a>
         {% endfor %}
       </div>
   </div>

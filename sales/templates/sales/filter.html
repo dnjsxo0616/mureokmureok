@@ -11,8 +11,15 @@
 
 {% block content %}
 <main>
+  <div class="sm:hidden h-14 px-2 flex items-center">
+    <div class="flex flex-shrink-0 items-center gap-4">
+        <img class="h-8 w-auto" src="{% static 'img/logo.svg' %}" alt="Your Company">
+        <p class="text-xl h-8 w-auto"><b>그린샵</b></p>
+    </div>
+  </div>
+
   {% comment %} 배너 {% endcomment %}
-  <div class="w-full h-[180px] overflow-hidden relative">
+  <div class="hidden sm:block w-full h-[180px] overflow-hidden relative">
     <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
       <div class="absolute flex items-center gap-10 top-1/2 -translate-y-1/2 z-10">
         <img src="{% static 'img/카트.png' %}" alt="" class="w-36 h-32">
@@ -27,16 +34,16 @@
 
   {% comment %} 컨텐츠 {% endcomment %}
   <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-    <div class="flex gap-8 w-full mb-16">
+    <div class="flex sm:flex-row flex-col gap-3 sm:gap-8 w-full mb-16">
       {% comment %} 필터 {% endcomment %}
-      <div class="border rounded-xl w-3/12 h-fit p-5 sticky top-[100px]">
-        <h2 class="text-[18px] font-semibold mb-8">필터</h2>
+      <div class="border rounded-xl w-full sm:w-3/12 h-fit p-5 sm:sticky sm:top-[100px]">
+        <h2 class="text-[18px] font-semibold mb-5 sm:mb-8">필터</h2>
         <form action="{% url 'sales:filter' %}" method="GET">
           <div class="mb-8">
 
             {% comment %} 카테고리 {% endcomment %}
             <h3 class="pb-3 border-0 border-b-[1px] mb-3">카테고리</h3>
-            <div class="grid grid-flow-cols grid-cols-2 gap-2">
+            <div class="grid grid-flow-cols grid-cols-4 sm:grid-cols-2 gap-2">
               <div class="flex items-center gap-2">
                 <input type="checkbox" id="화분" name="category" value="화분" class="accent-emerald-600" {% if '화분' in category %}checked{% endif %} />
                 <label for="화분" class="text-[14px]">화분</label>
@@ -96,9 +103,9 @@
           <input type="submit" class="w-full h-10 rounded-md bg-[#1EB564] text-white text-[18px] font-semibold cursor-pointer hover:bg-green-700" value="적 용">
         </form>
       </div>
-      <div class="w-9/12">
+      <div class="w-full sm:w-9/12">
         {% comment %} sort방식 {% endcomment %}
-        <div class="w-full rounded-lg bg-gray-100 flex gap-8 p-2 px-4 text-gray-500 text-[14px] mb-5">
+        <div class="w-full rounded-lg bg-gray-100 flex items-center justify-between p-2 px-4 text-gray-500 text-[14px] mb-3 sm:mb-5">
           <a href="#" class="hover:text-black">인기순</a>
           <a href="#" class="hover:text-black">낮은가격순</a>
           <a href="#" class="hover:text-black">높은가격순</a>
@@ -107,7 +114,7 @@
 
         {% comment %} 상품목록 {% endcomment %}
         {% if page_obj %}
-        <div class="grid grid-flow-rows grid-cols-4 gap-8">
+        <div class="grid grid-flow-rows grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8">
           {% for product in page_obj %}
           <a href="{% url 'sales:detail' product.pk %}">
             <div>

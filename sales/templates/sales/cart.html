@@ -10,19 +10,28 @@
 
 {% block content %}
 <main class="min-h-screen">
+  <div class="sm:hidden h-14 px-2 flex items-center">
+    <div class="flex flex-shrink-0 items-center gap-4">
+        <img class="h-8 w-auto" src="{% static 'img/logo.svg' %}" alt="Your Company">
+        <p class="text-xl h-8 w-auto"><b>그린샵</b></p>
+    </div>
+  </div>
   <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-    <div class="font-bold text-3xl mt-16 mb-8">장바구니</div>
+    <div class="font-bold text-[20px] sm:text-[25px] mt-5 sm:mt-16 mb-8">장바구니</div>
   
     {% comment %} 구매 테이블 {% endcomment %}
   
     {% comment %} 표시항목 {% endcomment %}
-    <div class="flex p-3 py-2 text-[14px] text-white bg-[#1EB564] rounded-lg">
-      <div class="w-1/12 text-center"><input type="checkbox" id="check-all"></div>
-      <div class="w-1/12 text-center">이미지</div>
-      <div class="w-1/12 grow text-center">상품명</div>
-      <div class="w-1/12 text-center">수량</div>
-      <div class="w-1/12 text-center">금액</div>
-      <div class="w-1/12 text-center">삭제</div>
+    <div class="flex px-3  sm:p-3 sm:py-2 text-[14px] sm:text-white sm:bg-[#1EB564] sm:rounded-lg mb-5 sm:mb-0">
+      <div class="sm:w-1/12 text-center flex gap-2">
+        <input type="checkbox" id="check-all" class="grow">
+        <span class="sm:hidden text-[16px]">전체선택</span>
+      </div>
+      <div class="hidden sm:block w-1/12 text-center">이미지</div>
+      <div class="hidden sm:block w-1/12 grow text-center">상품명</div>
+      <div class="hidden sm:block w-1/12 text-center">수량</div>
+      <div class="hidden sm:block w-1/12 text-center">금액</div>
+      <div class="hidden sm:block w-1/12 text-center">삭제</div>
     </div>
   
     {% comment %} 게시물 {% endcomment %}
@@ -30,10 +39,11 @@
     <div class="flex flex-col mb-12">
       {% if cart_items %}
       {% for cart_item in cart_items %}
-        <div class="flex items-center bg-white p-3 border-0 border-b-[1px] border-gray-300 hover:bg-gray-100">
+
+        {% comment %} 웹 버전 {% endcomment %}
+        <div class="hidden sm:inline-flex flex items-center bg-white p-3 border-0 border-b-[1px] border-gray-300 hover:bg-gray-100">
           <div class="w-1/12 pl-11" scope="row"><input type="checkbox" id="check-item-1"></div>
-          <div class="w-1/12 rounded-md h-24 border"> 
-            {% comment %} overflow-hidden 삭제 {% endcomment %}
+          <div class="w-1/12 rounded-md h-24 border overflow-hidden"> 
             <a href="{% url 'sales:detail' cart_item.product.pk %}">
             <img src="{{ cart_item.product.photo.url }}" alt="" class="object-cover w-full h-full">
             </a>
@@ -51,6 +61,33 @@
               {% csrf_token %}
               삭제
             </a>
+          </div>
+        </div>
+
+        {% comment %} 모바일 버전 {% endcomment %}
+        <div class="sm:hidden mb-5 p-3 border rounded-lg">
+          <div class="flex items-center gap-4 w-full">
+            <div scope="row"><input type="checkbox" id="check-item-1"></div>
+            <div class="w-44 rounded-md h-24 border overflow-hidden"> 
+              <a href="{% url 'sales:detail' cart_item.product.pk %}">
+              <img src="{{ cart_item.product.photo.url }}" alt="" class="object-cover w-full h-full">
+              </a>
+            </div>
+
+            <div class="w-full">
+              <div class="flex justify-between">
+                <div class="text-[12px] text-gray-700 border border-[1px] border-gray-400 w-fit rounded-md p-[2px] px-[4px] mb-2 shadow-sm">{{ cart_item.product.category }}</div>
+                <a href="#" onclick="deleteCart(event, {{ cart_item.product.pk }})" class="text-red-500 hover:text-red-700">
+                  {% csrf_token %}
+                  <span class="material-symbols-outlined">close</span>
+                </a>
+              </div>
+              <h4 class="text-[16px] mb-1">{{ cart_item.product.title }}</h4>
+              <div class="flex justify-between">
+                <div class="text-gray-500">{{ cart_item.quantity }}개</div>
+                <div><b>{{ cart_item.total_price|intcomma }}원</b></div>
+              </div>
+            </div>
           </div>
         </div>
       {% endfor %}
@@ -92,7 +129,7 @@
   
   
     
-    <div class="mt-4 flex justify-center">
+    <div class="mt-4 mb-8 flex justify-center">
       <div class="button1">
         {% comment %} <button class="bg-[#1EB564] text-white rounded-md px-4 py-2 mx-1" data-bs-toggle="modal" data-bs-target="#buy" ><a href="{% url 'sales:create_order' %}">주문하기</a></button> {% endcomment %}
         {% if cart_items %}

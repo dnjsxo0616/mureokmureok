@@ -8,7 +8,7 @@ class GardenForm(forms.ModelForm):
         label='이름',
         widget=forms.TextInput(
             attrs={
-                'class':'w-96 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
+                'class':'w-80 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
                 'id': '식물원 이름',
                 'placeholder': '식물원 또는 축제 이름을 입력해주세요',
             }
@@ -19,7 +19,7 @@ class GardenForm(forms.ModelForm):
         label='소개글',
         widget=forms.TextInput(
             attrs={
-                'class':'w-96 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
+                'class':'w-80 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
                 'id': '소개글',
                 'placeholder': '소개글을 입력해주세요',
             }
@@ -31,7 +31,7 @@ class GardenForm(forms.ModelForm):
         label='위치',
         widget=forms.TextInput(
             attrs={
-                'class':'w-96 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
+                'class':'w-80 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
                 'id': '주소',
                 'placeholder': '주소를 입력해주세요',
             }
@@ -53,7 +53,7 @@ class GardenForm(forms.ModelForm):
         label='썸네일 사진 첨부',
         widget=forms.ClearableFileInput(
             attrs={
-                'class': 'w-96 bg-white border rounded-md focus:outline-none focus:ring-1 focus:ring-[#1EB564] text-gray-400',
+                'class': 'w-80 bg-white border rounded-md focus:outline-none focus:ring-1 focus:ring-[#1EB564] text-gray-400',
                 'id': 'photo',
             }
         ),
@@ -62,7 +62,7 @@ class GardenForm(forms.ModelForm):
         label='관련 사이트 링크',
         widget=forms.TextInput(
             attrs={
-                'class':'w-96 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
+                'class':'w-80 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
                 'id': '사이트 링크',
                 'placeholder': '링크를 입력해주세요',
             }
@@ -74,7 +74,7 @@ class GardenForm(forms.ModelForm):
         max_length=100,
         widget=forms.TextInput(
             attrs={
-                'class':'w-96 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
+                'class':'w-80 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
                 'id': '검색어',
                 'placeholder': '검색어를 입력해주세요',
             }

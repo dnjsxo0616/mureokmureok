@@ -16,7 +16,7 @@ class PlantForm(forms.ModelForm):
         label='이름',
         widget=forms.TextInput(
             attrs={
-                'class':'w-96 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
+                'class':'w-80 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
                 'id': 'title',
                 'placeholder': '식물 이름을 입력해주세요',
             }
@@ -71,6 +71,7 @@ class PlantForm(forms.ModelForm):
         label = '물 주기',
         widget= forms.CheckboxSelectMultiple(attrs={
             'id': 'watering',
+            'class': 'w-full flex-wrap',
         }),
         choices=WATERING_CHOICE,
     )
@@ -83,6 +84,7 @@ class PlantForm(forms.ModelForm):
         label = '일조량',
         widget= forms.CheckboxSelectMultiple(attrs={
             'id': 'sunlight',
+            'class': 'w-full flex-wrap flex gap-5 sm:gap-0',
         }),
         choices=SUNLIGHT_CHOICE,
     )
@@ -115,7 +117,7 @@ class PlantForm(forms.ModelForm):
         label = '이미지',
         widget=forms.ClearableFileInput(
             attrs={
-                'class': 'w-96 bg-white border rounded-md focus:outline-none focus:ring-1 focus:ring-[#1EB564] text-gray-400',
+                'class': 'w-80 bg-white border rounded-md focus:outline-none focus:ring-1 focus:ring-[#1EB564] text-gray-400',
             }
         )
     )
@@ -124,7 +126,7 @@ class PlantForm(forms.ModelForm):
         label='태그',
         widget=TagWidget(
             attrs={
-                'class': 'w-96 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
+                'class': 'w-80 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
                 'placeholder': '태그는 콤마(,)로 구분하여 작성해주세요',
             }
         )
@@ -134,7 +136,7 @@ class PlantForm(forms.ModelForm):
         label='가격',
         widget=forms.NumberInput(
             attrs={
-                'class': 'w-96 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
+                'class': 'w-80 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
                 'id': 'price',
                 'placeholder': '가격을 입력해주세요',
             }

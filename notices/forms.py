@@ -13,7 +13,7 @@ class NoticeForm(forms.ModelForm):
         label='제목',
         widget=forms.TextInput(
             attrs={
-                'class':'w-96 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
+                'class':'w-80 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
                 'id': '게시글 제목',
                 'placeholder': '게시글 제목을 입력해주세요',
             }
@@ -35,7 +35,7 @@ class NoticeForm(forms.ModelForm):
         label='사진 첨부',
         widget=forms.ClearableFileInput(
             attrs={
-                'class': 'w-96 bg-white border rounded-md focus:outline-none focus:ring-1 focus:ring-[#1EB564] text-gray-400',
+                'class': 'w-80 bg-white border rounded-md focus:outline-none focus:ring-1 focus:ring-[#1EB564] text-gray-400',
                 'id': 'photo',
             }
         )

@@ -11,8 +11,14 @@
 
 {% block content %}
 <main>
+  <div class="sm:hidden h-14 px-2 flex items-center">
+    <div class="flex flex-shrink-0 items-center gap-4">
+        <img class="h-8 w-auto" src="{% static 'img/logo.svg' %}" alt="Your Company">
+        <p class="text-xl h-8 w-auto"><b>그린샵</b></p>
+    </div>
+  </div>
   <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-    <p class="text-[14px] text-gray-500 mt-10 mb-8">
+    <p class="text-[14px] text-gray-500 mt-3 sm:mt-10 mb-8">
       <a href="{% url 'sales:index' %}" class="hover:text-black">
         <span>상품</span>
       </a> > {{ product.title }}
@@ -32,15 +38,15 @@
 
 
     <div class="flex gap-8 mb-16">
-      <div class="w-10/12">
-        <div class="flex gap-10 justify-between mb-10">
+      <div class="w-full sm:w-10/12">
+        <div class="flex sm:flex-row flex-col gap-10 justify-between mb-10">
           {% comment %} 상품사진 {% endcomment %}
-          <div class="w-1/2 h-96 border rounded-xl overflow-hidden">
+          <div class="w-full h-72 sm:w-1/2 sm:h-96 border rounded-xl overflow-hidden">
             <img src="{{ product.photo.url }}" alt="" class="w-full h-full object-cover">
           </div>
   
           {% comment %} 상품 이름 및 가격 구매버튼 {% endcomment %}
-          <div class="w-1/2 h-96 flex flex-col justify-between">
+          <div class="w-full h-fit sm:w-1/2 sm:h-96 flex flex-col justify-between">
   
             {% comment %} 이름 및 가격 {% endcomment %}
             <div class="border-b pb-5">
@@ -98,20 +104,20 @@
                 </div>
               </div>
               <div class="flex justify-end mt-8 gap-3">
-                <button type="submit" class="bg-white border border-[#1EB564] text-[#1EB564] rounded-md px-4 py-2">장바구니 담기</button>
-                <button type="button" class="bg-[#1EB564] text-white rounded-md px-4 py-2"><a  href="{% url 'sales:create_ordernow' product.pk %}">바로 구매하기</a></button>
+                <button type="submit" class="bg-white border border-[#1EB564] text-[#1EB564] rounded-md px-4 py-2 grow sm:grow-0">장바구니 담기</button>
+                <button type="button" class="bg-[#1EB564] text-white rounded-md px-4 py-2 grow sm:grow-0"><a  href="{% url 'sales:create_ordernow' product.pk %}">바로 구매하기</a></button>
               </div>
             </form>
           </div>
         </div>
 
-        <div class="flex justify-center gap-24 border-0 border-b-[1px] bg-white py-3 sticky top-[66px] z-20 text-gray-500">
+        <div class="flex justify-center gap-24 border-0 border-b-[1px] bg-white py-3 sticky top-0 sm:top-[66px] z-20 text-gray-500">
           <a href="#info" class="scrollspy-item">상품정보</a>
           <a href="#review" class="scrollspy-item">리뷰</a>
         </div>
         
         {% comment %} 상품정보 {% endcomment %}
-        <section id="info" class="px-16 pt-10 border-0 border-b-[1px]">
+        <section id="info" class="p-2 sm:px-16 sm:pt-10 border-0 border-b-[1px]">
           <p>{{ product.content|safe }}</p>
 
           <ul class="flex items-center gap-3 mt-8">
@@ -254,7 +260,7 @@
         </section>
       </div>
   
-      <div class="w-2/12">
+      <div class="hidden sm:inline-flex sm:w-2/12">
         <div class="w-full h-96 border rounded-lg p-3 sticky top-[80px]">
           {% comment %} <div class="border border-[#1EB564] text-[#1EB564] text-center rounded-md p-2 px-3 mt-36 cursor-pointer">+ 옵션 선택하기</div> {% endcomment %}
 
@@ -311,12 +317,12 @@
             {% csrf_token %}
             {% comment %} 제목작성 {% endcomment %}
             <div class="flex flex-col gap-2 mb-5">
-              <p>{{ review_form.title.label }}</p>
+              <p class="text-start px-3 sm:px-0">{{ review_form.title.label }}</p>
               <p>{{ review_form.title }}</p>
             </div>
             {% comment %} 별점 {% endcomment %}
             <div class="flex flex-col gap-1 mb-5">
-              <span class="font-12">평가</span>
+              <span class="font-12 text-start px-3 sm:px-0">평가</span>
               <span class="rating_box">
                 <div class="rating">
                   ★★★★★
@@ -328,15 +334,15 @@
             </div>
             {% comment %} 내용작성 {% endcomment %}
             <div class="flex flex-col gap-2 mb-5">
-              <p>{{ review_form.content.label }}</p>
+              <p class="text-start px-3 sm:px-0">{{ review_form.content.label }}</p>
               <p>{{ review_form.content }}</p>
             </div>
             {% comment %} 사진첨부 {% endcomment %}
             <div class="flex flex-col gap-2 mb-5">
-              <p>{{ review_form.image.label }}</p>
+              <p class="text-start px-3 sm:px-0">{{ review_form.image.label }}</p>
               <p>{{ review_form.image }}</p>
             </div>
-            <div class="flex justify-end">
+            <div class="flex justify-center sm:justify-end grow sm:grow-0 w-full sm:w-fit">
               <input type="submit" class="bg-[#1EB564] text-white p-[5px] px-3 rounded-lg cursor-pointer hover:bg-[#148D4C]" value="작 성">
             </div>
           </form>

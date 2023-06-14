@@ -10,9 +10,14 @@
 {% block content %}
 <main>
     <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-
+        <div class="sm:hidden h-14 px-2 flex items-center">
+            <div class="flex flex-shrink-0 items-center gap-4">
+                <img class="h-8 w-auto" src="{% static 'img/logo.svg' %}" alt="Your Company">
+                <p class="text-xl h-8 w-auto"><b>공지사항</b></p>
+            </div>
+        </div>
         <div class="w-full">
-            <div class="flex justify-between mt-10 border-0 border-b-[1px] border-gray-400 pb-3">
+            <div class="flex justify-between mt-3 sm:mt-10 border-0 border-b-[1px] border-gray-400 pb-3">
                 <div>
                     <p class="text-[14px] text-gray-500 mb-8">
                         <a href="{% url 'notices:index' %}" class="hover:text-black">
@@ -61,8 +66,8 @@
             </div>
             
             {% comment %}  본문 내용 부분 {% endcomment %}
-            <div class="flex flex-col justify-center p-[50px] px-48 border-0 border-b-[1px] border-gray-400">
-                <div class="h-[600px] w-full overflow-hidden mb-16">
+            <div class="min-h-[400px] flex flex-col justify-center sm:p-[50px] sm:px-48 py-5 px-2 border-0 border-b-[1px] border-gray-400">
+                <div class="h-56 sm:h-[600px] w-full overflow-hidden mb-16">
                 <img src="{{ notice.thumbnail.url }}" alt="" class="w-full h-full object-cover">
                 </div>
                 <p>{{ notice.content }}</p>

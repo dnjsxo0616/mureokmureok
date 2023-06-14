@@ -11,9 +11,14 @@
 {% block content %}
 <main>
   <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-    
+    <div class="sm:hidden h-14 px-2 flex items-center">
+      <div class="flex flex-shrink-0 items-center gap-4">
+          <img class="h-8 w-auto" src="{% static 'img/logo.svg' %}" alt="Your Company">
+          <p class="text-xl h-8 w-auto"><b>커뮤니티</b></p>
+      </div>
+    </div>
     <div class="w-full">
-      <div class="flex justify-between mt-10 border-0 border-b-[1px] border-gray-400 pb-3">
+      <div class="flex justify-between mt-3 sm:mt-10 border-0 border-b-[1px] border-gray-400 pb-3">
         <div>
           <p class="text-[14px] text-gray-500 mb-8">
             <a href="{% url 'communities:index' %}" class="hover:text-black">
@@ -22,9 +27,9 @@
           </p>
   
           {% comment %} 타이틀 {% endcomment %}
-          <div class="flex items-center gap-3 mb-2">
-            <div class="text-[14px] border border-black rounded-lg p-1 px-2">{{ community.category }}</div>
-            <h1 class="text-[25px] font-semibold" id="community-title">{{ community.title }}</h1>
+          <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-2">
+            <div class="text-[12px] sm:text-[14px] w-fit text-center border border-black rounded-lg p-1 px-2">{{ community.category }}</div>
+            <h1 class="text-[20px] sm:text-[25px] font-semibold" id="community-title">{{ community.title }}</h1>
           </div>
   
           {% comment %} 작성자 {% endcomment %}
@@ -38,7 +43,7 @@
                 {% endif %}
               </div>
               <div class="flex gap-3">
-                <p class="font-semibold text-[16px]">{{ community.user.username }}</p>
+                <p class="font-semibold text-[14px] sm:text-[16px]">{{ community.user.username }}</p>
                 <p class="text-[14px]">🌱 {{ community.user.user_profile.title }}</p>
               </div>
               
@@ -52,7 +57,7 @@
           <p class="text-[14px] text-gray-500">{{ community.created_time }}</p>
   
           {% comment %} 좋아요, 댓글, 조회수 {% endcomment %}
-          <div class="flex justify-end items-end gap-5 text-gray-500">
+          <div class="flex justify-end items-end gap-3 sm:gap-5 text-gray-500">
             <div class="flex items-center gap-2">
               <span class="material-symbols-outlined text-[16px] mt-[0.5px]">favorite</span>
               <span id="community-like-count">{{ community.count_likes_user }}</span>
@@ -97,7 +102,7 @@
       {% comment %} <p class="flex justify-center">{{ community.need_expert }}</p> {% endcomment %}
 
       <div class="flex gap-16">
-        <div class="sticky top-[100px] flex flex-col items-center gap-5 border border-gray-300 rounded-full h-fit mt-[50px] p-2">
+        <div class="hidden sm:inline-flex sticky top-[100px] flex flex-col items-center gap-5 border border-gray-300 rounded-full h-fit mt-[50px] p-2">
 
           {% comment %} 게시글 좋아요 {% endcomment %}
           <form class="community-like_forms" data-community-id="{{ community.id }}">
@@ -162,8 +167,8 @@
   
         <div class="w-full">
           {% comment %}  본문 내용 부분 {% endcomment %}
-          <div class="flex flex-col justify-center p-[50px] px-48 border-0 border-b-[1px] border-gray-400">
-            <div class="h-[600px] w-full overflow-hidden mb-16">
+          <div class="flex flex-col justify-center p-2 py-5 sm:p-[50px] sm:px-48 border-0 border-b-[1px] border-gray-400">
+            <div class="h-60 sm:h-[600px] w-full overflow-hidden mb-16">
               <img src="{{ community.photo.url }}" alt="" class="w-full h-full object-cover">
             </div>
             <p id="community-content" >{{ community.content|safe }}</p>
@@ -180,14 +185,14 @@
           <div class="mb-10">
             <form action="{% url 'communities:community_comment_create' community.pk %}" method="POST" class="flex items-center gap-3" id="Community_comment-Form">
               {% csrf_token %}
-              <div class="w-11 h-10 rounded-full overflow-hidden border-[1px] border-[#1EB564]">
+              <div class="w-10 h-10 rounded-full overflow-hidden border-[1px] border-[#1EB564]">
                 {% if user.image %}
                 <img src="{{ user.image.url }}" alt="" class="w-full h-full object-cover">
                 {% else %}
                 <img src="{% static 'img/no_profile.jpg' %}" alt="" class="w-full h-full object-cover">
                 {% endif %}
               </div>
-              <div class="w-full">{{ community_comment_form.content }}</div>
+              <div class="grow sm:w-full">{{ community_comment_form.content }}</div>
               <input type="submit" class="bg-[#1EB564] text-white p-[5px] px-3 rounded-lg cursor-pointer hover:bg-[#148D4C]" value="댓 글">
             </form>
           </div>

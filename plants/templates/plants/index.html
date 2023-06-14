@@ -10,6 +10,12 @@
 
 {% block content %}
 <main class="relative">
+  <div class="sm:hidden h-14 px-2 flex items-center">
+    <div class="flex flex-shrink-0 items-center gap-4">
+        <img class="h-8 w-auto" src="{% static 'img/logo.svg' %}" alt="Your Company">
+        <p class="text-xl h-8 w-auto"><b>식물</b></p>
+    </div>
+  </div>
   {% if page_obj.number < 2 %}
   {% comment %} 식물검색 {% endcomment %}
   <section class="bg-gray-100 h-screen relative" id="search">
@@ -18,67 +24,67 @@
       <div class="rolling-list">
         <ul>
           <li>
-            <div class="w-36 h-36 overflow-hidden rounded-lg m-5">
+            <div class="w-16 h-16 sm:w-36 sm:h-36 overflow-hidden rounded-lg m-5">
               <img src="https://m.bonarteflower.com/web/product/big/201808/5a1633fbe339ffe8d33b80e88da81d87.jpg" alt="" class="w-full h-full object-cover">
             </div>
           </li>
           <li>
-            <div class="w-36 h-36 overflow-hidden rounded-lg m-5">
+            <div class="w-16 h-16 sm:w-36 sm:h-36 overflow-hidden rounded-lg m-5">
               <img src="https://www.f-mans.com/data/goods/1/2022/11/90_temp_16672843952850view.jpg" alt="" class="w-full h-full object-cover">
             </div>
           </li>
           <li>
-            <div class="w-36 h-36 overflow-hidden rounded-lg m-5">
+            <div class="w-16 h-16 sm:w-36 sm:h-36 overflow-hidden rounded-lg m-5">
               <img src="https://upload.wikimedia.org/wikipedia/ko/thumb/e/e2/%EC%84%9C%EC%9A%B8%EC%8B%9C%EC%A7%80%EC%8B%9D%EA%B3%B5%EC%9C%A0115.JPG/640px-%EC%84%9C%EC%9A%B8%EC%8B%9C%EC%A7%80%EC%8B%9D%EA%B3%B5%EC%9C%A0115.JPG" alt="" class="w-full h-full object-cover">
             </div>
           </li>
           <li>
-            <div class="w-36 h-36 overflow-hidden rounded-lg m-5">
+            <div class="w-16 h-16 sm:w-36 sm:h-36 overflow-hidden rounded-lg m-5">
               <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Mount_Hakodate_Shiga_Pref06n.jpg/1200px-Mount_Hakodate_Shiga_Pref06n.jpg" alt="" class="w-full h-full object-cover">
             </div>
           </li>
           <li>
-            <div class="w-36 h-36 overflow-hidden rounded-lg m-5">
+            <div class="w-16 h-16 sm:w-36 sm:h-36 overflow-hidden rounded-lg m-5">
               <img src="https://post-phinf.pstatic.net/MjAyMTA4MjNfMTUg/MDAxNjI5NjkxMjgzMjEw.cTiY_DLyuAaP--tz95_OoXNlyLIvV15gUTAwH0CNrAUg.PDs0Dj494TpcjNZBWUFdcd9gyrMDWRtvjEtAuc4SFsIg.JPEG/tip250t016393.jpg?type=w1200" alt="" class="w-full h-full object-cover">
             </div>
           </li>
           <li>
-            <div class="w-36 h-36 overflow-hidden rounded-lg m-5">
+            <div class="w-16 h-16 sm:w-36 sm:h-36 overflow-hidden rounded-lg m-5">
               <img src="https://ai.esmplus.com/detox5/1037/1037_10.jpg" alt="" class="w-full h-full object-cover">
             </div>
           </li>
           <li>
-            <div class="w-36 h-36 overflow-hidden rounded-lg m-5">
+            <div class="w-16 h-16 sm:w-36 sm:h-36 overflow-hidden rounded-lg m-5">
               <img src="https://picturethisai.com/image-handle/website_cmsname/image/1080/153406529523941388.jpeg?x-oss-process=image/format,webp/quality,q_60&v=1.0" alt="" class="w-full h-full object-cover">
             </div>
           </li>
           <li>
-            <div class="w-36 h-36 overflow-hidden rounded-lg m-5">
+            <div class="w-16 h-16 sm:w-36 sm:h-36 overflow-hidden rounded-lg m-5">
               <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Rhododendron_mucronulatum4.jpg/1200px-Rhododendron_mucronulatum4.jpg" alt="" class="w-full h-full object-cover">
             </div>
           </li>
           <li>
-            <div class="w-36 h-36 overflow-hidden rounded-lg m-5">
+            <div class="w-16 h-16 sm:w-36 sm:h-36 overflow-hidden rounded-lg m-5">
               <img src="https://kukka-2-media-123.s3.amazonaws.com/media/contents/event_template/391fbba8-73aa-4cad-8516-42e898ef36e1.jpg" alt="" class="w-full h-full object-cover">
             </div>
           </li>
           <li>
-            <div class="w-36 h-36 overflow-hidden rounded-lg m-5">
+            <div class="w-16 h-16 sm:w-36 sm:h-36 overflow-hidden rounded-lg m-5">
               <img src="https://mblogthumb-phinf.pstatic.net/MjAxOTEwMzFfMTEw/MDAxNTcyNDY3MjM4MTE4.2_Pfg6svmfkiLJDxRiDV0JNtCBYWEc9LKHxfYPemPakg.JSEnDQRDq1HhfSlNCN7ZfBWusDlOsOXiqknG5WDjWnog.JPEG.professionaldog/%EB%B0%94%EC%A7%88%ED%8A%B8%EB%A6%AC.jpg?type=w800" alt="" class="w-full h-full object-cover">
             </div>
           </li>
           <li>
-            <div class="w-36 h-36 overflow-hidden rounded-lg m-5">
+            <div class="w-16 h-16 sm:w-36 sm:h-36 overflow-hidden rounded-lg m-5">
               <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/20883/product/image_1669963455403_750.jpeg" alt="" class="w-full h-full object-cover">
             </div>
           </li>
           <li>
-            <div class="w-36 h-36 overflow-hidden rounded-lg m-5">
+            <div class="w-16 h-16 sm:w-36 sm:h-36 overflow-hidden rounded-lg m-5">
               <img src="https://sitem.ssgcdn.com/37/58/95/item/1000410955837_i1_750.jpg" alt="" class="w-full h-full object-cover">
             </div>
           </li>
           <li>
-            <div class="w-36 h-36 overflow-hidden rounded-lg m-5">
+            <div class="w-16 h-16 sm:w-36 sm:h-36 overflow-hidden rounded-lg m-5">
               <img src="https://t1.daumcdn.net/cfile/tistory/9989D14D5EF8ECD606" alt="" class="w-full h-full object-cover">
             </div>
           </li>
@@ -87,14 +93,14 @@
     </div>
 
     <div class="flex gap-10 absolute top-1/2 start-1/2 -translate-x-[55%] -translate-y-1/2">
-      <img src="{% static 'img/emoji.png' %}" alt="" class="w-24 h-24">
+      <img src="{% static 'img/emoji.png' %}" alt="" class="w-24 h-24 hidden sm:block">
       
-      <div class="flex flex-col chat-bubble">
+      <div class="flex flex-col sm:chat-bubble">
         <p class=" text-[20px] text-[#1EB564] font-semibold">식 물</p>
-        <form action="{% url 'plants:search' %}" method="GET" class="font-bold text-[45px] leading-relaxed">
+        <form action="{% url 'plants:search' %}" method="GET" class="font-bold text-[35px] sm:text-[45px] leading-relaxed">
           <span id="firstSpan">나는</span>
-          <input class="w-96 border-b-2 border-[#1EB564] outline-none cursor-blink text-[#1EB564] bg-transparent" type="text" name="searched" placeholder="식물" oninput="toggleSearchButton(this)">
-          <span>에<br>대한 정보<span id="secondParagraph">가</span>
+          <input class="w-60 sm:w-96 border-b-2 border-[#1EB564] outline-none cursor-blink text-[#1EB564] bg-transparent" type="text" name="searched" placeholder="식물" oninput="toggleSearchButton(this)">
+          <span>에 <br class="hidden sm:block">대한 정보<span id="secondParagraph"><br class="block sm:hidden">가</span>
           </span>
           <span id="thirdParagraph" class="m-0">궁금해요</span>
           <button id="searchButton" type="submit" class="text-[#1EB564] hidden" >보러가기</button>
@@ -106,31 +112,31 @@
   {% comment %} 태그검색 {% endcomment %}
   <section class="h-screen relative" id="tag">
       <div class="absolute w-full top-1/2 start-1/2 -translate-x-1/2 -translate-y-1/2">
-          <h2 class="text-[45px] font-semibold text-center mb-10">'# 태그'를 통해 찾아보세요</h2>
+          <h2 class="text-[25px] sm:text-[45px] font-semibold text-center mb-10">'# 태그'를 통해 찾아보세요</h2>
         
           <div>
-              <ul class="flex gap-16 justify-center text-[25px]">
+              <ul class="flex gap-5 sm:gap-16 justify-center text-[16px] sm:text-[25px]">
                   {% for tag in unique_tags|slice:":3" %}
                       <a href="{% url 'plants:filter_plants' tag %}">
-                          <li class="w-fit rounded-full py-2 px-4 bg-white border border-gray-500 text-gray-500 cursor-pointer transition-colors duration-300 ease-in-out hover:bg-green-500 hover:text-white" style="margin-bottom: 30px;">
+                          <li class="w-fit rounded-full py-1 px-2 sm:py-2 sm:px-4 bg-white border border-gray-500 text-gray-500 cursor-pointer transition-colors duration-300 ease-in-out hover:bg-green-500 hover:text-white" style="margin-bottom: 30px;">
                               #{{ tag }}
                           </li>
                       </a>
                   {% endfor %}
               </ul>
-              <ul class="flex gap-16 justify-center text-[25px]">
+              <ul class="flex gap-5 sm:gap-16 justify-center text-[16px] sm:text-[25px]">
                   {% for tag in unique_tags|slice:"3:7" %}
                       <a href="{% url 'plants:filter_plants' tag %}">
-                          <li class="w-fit rounded-full py-2 px-4 bg-white border border-gray-500 text-gray-500 cursor-pointer transition-colors duration-300 ease-in-out hover:bg-green-500 hover:text-white" style="margin-bottom: 30px;">
+                          <li class="w-fit rounded-full py-1 px-2 sm:py-2 sm:px-4 bg-white border border-gray-500 text-gray-500 cursor-pointer transition-colors duration-300 ease-in-out hover:bg-green-500 hover:text-white" style="margin-bottom: 30px;">
                               #{{ tag }}
                           </li>
                       </a>
                   {% endfor %}
               </ul>
-              <ul class="flex gap-16 justify-center text-[25px]">
+              <ul class="flex gap-5 sm:gap-16 justify-center text-[16px] sm:text-[25px]">
                   {% for tag in unique_tags|slice:"7:10" %}
                       <a href="{% url 'plants:filter_plants' tag %}">
-                          <li class="w-fit rounded-full py-2 px-4 bg-white border border-gray-500 text-gray-500 cursor-pointer transition-colors duration-300 ease-in-out hover:bg-green-500 hover:text-white" style="margin-bottom: 30px;">
+                          <li class="w-fit rounded-full py-1 px-2 sm:py-2 sm:px-4 bg-white border border-gray-500 text-gray-500 cursor-pointer transition-colors duration-300 ease-in-out hover:bg-green-500 hover:text-white" style="margin-bottom: 30px;">
                               #{{ tag }}
                           </li>
                       </a>
@@ -142,18 +148,20 @@
 
   {% comment %} 인기있는 식물 {% endcomment %}
   <section class="bg-gray-100 h-screen relative mb-10" id="favor">
-    <div class="flex gap-10 absolute top-1/2 start-1/2 -translate-x-[55%] -translate-y-1/2">
-      <img src="{% static 'img/돋보기.png' %}" alt="" class="w-30 h-24">
+    <div class="flex flex-col sm:flex-row gap-10 absolute top-1/2 start-1/2 -translate-x-[55%] -translate-y-1/2">
+      <div class="w-30 h-30 sm:w-36 sm:h-18 overflow-hidden">
+        <img src="{% static 'img/돋보기.png' %}" alt="" class="w-full h-full object-cover">
+      </div>
 
-      <div class="font-bold text-[45px] text-end">
-        <div>인기있는 식물이 궁금하다면?</div>
+      <div class="font-bold text-[25px] sm:text-[45px] text-center sm:text-end">
+        <div class="mb-8 sm:mb-0">인기있는 식물이 궁금하다면?</div>
         <div><a class="text-[#1EB564]" href="{% url 'plants:recommendation' %}">보러가기</a></div>
       </div>
     </div>
   </section>
 
   {% comment %} 페이지 스크롤 스파이 {% endcomment %}
-  <div class="flex gap-3 fixed top-1/2 end-32 -translate-y-1/2">
+  <div class="hidden sm:block fixed top-1/2 end-32 -translate-y-1/2 z-50">
     <div class="flex flex-col gap-10 text-end h-full">
       <a href="#search" class="scrollspy-item text-gray-400">
         <div>검색</div>
@@ -168,9 +176,6 @@
         <div>식물목록</div>
       </a>
     </div>
-    <div class="border border-start border-gray-400 h-full">
-      <br><br><br><br><br><br><br><br><br>
-    </div>
   </div>
   {% endif %}
   
@@ -179,28 +184,28 @@
     <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
       <div class="w-full">
         {% comment %} 카테고리 {% endcomment %}
-        <div class="flex items-center justify-between border-0 border-b-[1px] border-gray-400 bg-white py-3 my-5 sticky top-[60px] z-10">
-          <div class="flex gap-10">
+        <div class="flex items-center justify-between border-0 border-b-[1px] border-gray-400 bg-white py-3 my-5 sticky top-0 sm:top-[60px] z-10">
+          <div class="flex gap-5 sm:gap-10">
             <div class='text-gray-400 hover:text-black'>
               <a href="{% url 'plants:category' %}?category=전체">
-                <span class="{% if category == '전체' %}text-black font-semibold{% endif %}">전체</span>
+                <span class="{% if category == '전체' %}text-black text-[14px] sm:text-[16px] font-semibold{% endif %}">전체</span>
               </a>
             </div>
             <div class='text-gray-400 hover:text-black'>
               <a href="{% url 'plants:category' %}?category=실내식물">
-                <span class="{% if category == '실내식물' %}text-black font-semibold{% endif %}">실내식물</span>
+                <span class="{% if category == '실내식물' %}text-black text-[14px] sm:text-[16px] font-semibold{% endif %}">실내식물</span>
               </a>
             </div>
             <div class='text-gray-400 hover:text-black'>
               <a href="{% url 'plants:category' %}?category=실외식물">
-                <span class="{% if category == '실외식물' %}text-black font-semibold{% endif %}">실외식물</span>
+                <span class="{% if category == '실외식물' %}text-black text-[14px] sm:text-[16px] font-semibold{% endif %}">실외식물</span>
               </a>
             </div>
           </div>
 
           <div class="flex items-center gap-10">
             {% comment %} 검색 {% endcomment %}
-            <form action="{% url 'plants:search' %}" method="GET" role="search">
+            <form action="{% url 'plants:search' %}" method="GET" role="search" class="hidden sm:block">
               <div class="border-0 border-b border-gray-300 flex items-center">
                 <input type="search" name="searched" class="ps-1 pe-3 h-8 w-60 text-sm bg-transparent focus:outline-none" placeholder="식물을 검색해보세요">
                 <span class="material-symbols-outlined text-gray-400">search</span>
@@ -214,7 +219,7 @@
 
         {% comment %} 식물목록 카드 {% endcomment %}
         {% if page_obj %}
-        <div class="grid grid-cols-4 gap-8 mb-10">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8 mb-10">
         {% for plant in page_obj %}
         <a href="{% url 'plants:detail' plant.pk %}">
           <div class="w-full mb-5 flex gap-5">
@@ -225,7 +230,7 @@
                 <div class="text-[12px] text-white w-fit rounded-md p-1 px-2 shadow-lg absolute top-2 left-2 {% if plant.category == "['실내식물']" %}bg-[#439A3C]{% elif plant.category == "['실외식물']" %}bg-[#9D9441]{% elif plant.category == "['실내식물', '실외식물']" %}bg-[#35493D]{% endif %}">{% if plant.category == "['실내식물']" %}실내{% elif plant.category == "['실외식물']" %}실외{% elif plant.category == "['실내식물', '실외식물']" %}실내, 실외{% endif %}</div>
               </div>
               <div class="flex items-center justify-between px-2">
-                <h3 class="text-[16px] font-semibold">{{ plant.title }}</h3>
+                <h3 class="text-[16px] font-semibold w-24 whitespace-nowrap overflow-hidden truncate">{{ plant.title }}</h3>
                 
                 <div class="flex items-center gap-2">
                   <span class="material-symbols-outlined text-[16px] mt-[0.5px]">favorite</span>

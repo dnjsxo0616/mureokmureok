@@ -5,7 +5,7 @@ body, ul, li, p, h1, h2, h3, h4 {
 }
 
 .slider-1 {
-    min-width:1200px;
+    width:100%;
 }
 
 .slider-1 > .owl-carousel > .owl-stage-outer > .owl-stage > .owl-item > .item {
@@ -81,21 +81,18 @@ body, ul, li, p, h1, h2, h3, h4 {
 }
 
 .slider-1 > .owl-carousel > .owl-stage-outer > .owl-stage > .owl-item > .item > .txt-box > h1 {
-    font-size:3rem;
     transition:opacity 1s 0.5s, transform 1s 0.5s;
     transform:translateY(500px);
     opacity:0;
 }
 
 .slider-1 > .owl-carousel > .owl-stage-outer > .owl-stage > .owl-item > .item > .txt-box > h2 {
-    font-size:2rem;
     transition:opacity 1s 1s, transform 1s 1s;
     transform:translateY(200px);
     opacity:0;
 }
 
 .slider-1 > .owl-carousel > .owl-stage-outer > .owl-stage > .owl-item > .item > .txt-box > div {
-    font-size:1.5rem;
     transition:opacity 1s 1.5s, transform 1s 1.5s;
     transform:translateY(200px);
     opacity:0;
@@ -106,79 +103,11 @@ body, ul, li, p, h1, h2, h3, h4 {
     opacity:1;
 }
 
-.collection-image_wrapper {
-    width: 56px;
-    height: 56px;
-    overflow: hidden;
-}
-
-.collection-image_wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.favor-image_wrapper {
-    width: 354px;
-    height: 250px;
-    overflow: hidden;
-}
-
-.favor-image_wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: all 0.2s linear;
-}
-
-.favor-image_wrapper img:hover {
-    transform: scale(1.1);
-}
-
-.community-image_wrapper {
-    width: 165px;
-    height: 110px;
-    overflow: hidden;
-}
-
-.community-image_wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.community-image_wrapper2 {
-    overflow: hidden;
-}
-
-.community-image_wrapper2 img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: all 0.2s linear;
-}
-
-.community-image_wrapper2 img:hover {
-    transform: scale(1.1);
-}
-
 .garden-image_wrapper {
     overflow: hidden;
 }
 
 .garden-image_wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.sale-image_wrapper {
-    width: 216px;
-    height: 180px;
-    overflow: hidden;
-}
-
-.sale-image_wrapper img {
     width: 100%;
     height: 100%;
     object-fit: cover;
