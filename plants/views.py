@@ -171,7 +171,9 @@ def detail(request, plant_pk):
     #         #     if '주2~3회 태그' in product.tags:
     #         #         filtered_products.append(product)
 
-    
+    products = Product.objects.all()
+   
+
     context = {
         'plant': plant,
         'category_list': category_list,
@@ -181,7 +183,7 @@ def detail(request, plant_pk):
         'humidity_list': humidity_list,
         'temperature_list': temperature_list,
         'allergy': allergy,
-        # 'products':products,
+        'products':products,
     }
     return render(request, 'plants/detail.html', context)
 
