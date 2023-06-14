@@ -28,7 +28,8 @@ def home(request):
     additional_garden_links = Garden.objects.annotate(num_likes=Count('like_users')).order_by('-num_likes')[1:7]
     recent_plants = Plant.objects.annotate(max_id=Max('id')).order_by('-max_id')
     recent_tags = recent_plants.distinct().values_list('tags__name', flat=True)[:5]
-    user_managements = Management.objects.filter(user=request.user)
+    
+    latest_management = Management.objects.filter(user=request.user).latest('managementdate') if request.user.is_authenticated and Management.objects.filter(user=request.user).exists() else None
 
     context = {
         'room_name': "broadcast",
@@ -37,7 +38,7 @@ def home(request):
         'recommended_gardens': recommended_gardens,
         'additional_garden_links': additional_garden_links,
         'recent_tags': recent_tags,
-        'user_managements': user_managements,
+        'latest_management': latest_management,
     }
 
     return render(request, 'home.html', context)
