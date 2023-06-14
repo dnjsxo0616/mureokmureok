@@ -20,11 +20,13 @@
 
 
     {% comment %} 임시삭제버튼 {% endcomment %}
+    {% if request.user.is_superuser %}
     <form action="{% url 'sales:delete' product.pk %}" nethod="POST">
       {% csrf_token %}
       <input type="submit" value="DELETE">
     </form>
     <p><a href="{% url 'sales:update' product.pk %}">수정</a></p>
+    {% endif %}
 
 
 

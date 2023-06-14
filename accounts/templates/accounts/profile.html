@@ -136,18 +136,18 @@
           <div>
             <div class="flex items-center gap-3 mb-5">
               <h2 class="text-[20px]"><b>내가 좋아요한 '상품'</b></h2>
-              <span class="text-gray-400 text-[18px]"><b>{{ person.like_supply.all|length }}</b></span>
+              <span class="text-gray-400 text-[18px]"><b>{{ person.like_products.all|length }}</b></span>
             </div>
-            {% if person.like_supply.all %}
+            {% if person.like_products.all %}
             <div class="slider-container">
               <div class="inner-slider flex gap-5">
-                {% for supply in person.like_supply.all %}
+                {% for product in person.like_products.all %}
                 <a href="#">
                   <div class="flex flex-col items-center gap-3">
                     <div class="border rounded-md favor-plants_wrapper">
-                      <img src="https://openimage.interpark.com/goods_image_big/7/1/1/8/10195487118c_l.jpg" alt="">
+                      <img src="{{ product.photo.url }}" alt="">
                     </div>
-                    <p class="text-[14px]">{{ supply.supply_name }}</p>
+                    <p class="text-[14px]">{{ product.title|slice:":7" }}</p>
                   </div>
                 </a>
                 {% endfor %}

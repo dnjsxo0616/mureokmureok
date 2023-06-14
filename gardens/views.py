@@ -22,6 +22,9 @@ def index(request):
 
 
 def create(request):
+    if not request.user.is_superuser:
+        return redirect('home')
+    
     if request.method == 'POST':
         form = GardenForm(request.POST, request.FILES)
         if form.is_valid():
@@ -43,6 +46,9 @@ def create(request):
 
 @login_required
 def delete(request,garden_pk):
+    if not request.user.is_superuser:
+        return redirect('home')
+    
     garden = Garden.objects.get(pk=garden_pk)
     if request.user == garden.user:
         garden.delete()
@@ -104,6 +110,9 @@ def comment_delete(request, garden_pk, comment_pk):
 
 @login_required
 def update(request, garden_pk):
+    if not request.user.is_superuser:
+        return redirect('home')
+
     garden = Garden.objects.get(pk=garden_pk)
     if request.method == 'POST':
         form = GardenForm(request.POST, request.FILES, instance=garden)

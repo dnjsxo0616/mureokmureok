@@ -62,7 +62,7 @@
               </a>
 
               {% comment %} 수정 및 삭제 드롭다운 버튼 {% endcomment %}
-              {% comment %} {% if request.user.is_superuser %} {% endcomment %}
+              {% if request.user.is_superuser %}
               <div class="relative mt-3">
                 <div class="dropdown text-end">
                   <button type="button" class="rounded-md flex justify-center items-center bg-white hover:bg-gray-100" id="plant-menu-button" aria-expanded="false" aria-haspopup="true">
@@ -81,7 +81,7 @@
                   </form>
                 </div>
               </div>
-              {% comment %} {% endif %} {% endcomment %}
+              {% endif %}
             </div>
           </div>
 
