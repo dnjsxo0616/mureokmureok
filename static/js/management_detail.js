@@ -70,6 +70,71 @@ entryUpdateModals.forEach((modal, index) => {
 });
 
 
+const entryUpdateModals2 = document.querySelectorAll(".entry-update-modal2");
+const entryUpdateBtns2 = document.querySelectorAll(".entry-update-btn2");
+const entryUpdateBackground2 = document.getElementById("entry-update-bg2");
+
+entryUpdateBtns2.forEach((btn, index) => {
+  btn.addEventListener("click", () => {
+    const modal = entryUpdateModals2[index];
+    modal.style.display = "flex";
+  });
+});
+
+
+entryUpdateModals2.forEach((modal, index) => {
+  modal.addEventListener("click", (e) => {
+    if (e.target.classList.contains("modal-overlay")) {
+      modal.style.display = "none";
+    }
+  });
+
+  entryUpdateBackground.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+
+  window.addEventListener("keyup", (e) => {
+    if (modal.style.display === "flex" && e.key === "Escape") {
+      modal.style.display = "none";
+    }
+  });
+});
+
+
+
+const entryInfoModal = document.querySelectorAll(".entry-info-modal");
+const entryInfoBtn = document.querySelectorAll(".entry-info-button");
+const entryInfoBackground = document.getElementById("entry-info-bg");
+
+function closeAllModals() {
+  entryInfoModal.forEach(modal => modal.style.display = "none");
+}
+
+entryInfoBtn.forEach((btn, index) => {
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    closeAllModals();
+    const modal = entryInfoModal[index];
+    modal.style.display = "flex";
+  });
+});
+
+entryInfoModal.forEach((modal, index) => {
+  modal.addEventListener("click", (e) => {
+    if (e.target.classList.contains("modal-overlay")) {
+      modal.style.display = "none";
+    }
+  });
+});
+
+document.body.addEventListener("click", closeAllModals);
+
+window.addEventListener("keyup", (e) => {
+  if (e.key === "Escape") {
+    closeAllModals();
+  }
+});
+
 
 
 
