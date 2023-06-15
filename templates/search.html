@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% load humanize %}
 
 {% block head %}
 <title>검색</title>
@@ -121,24 +121,24 @@
     
         <!-- 관리용품 검색결과 -->
         <section class="my-16">
-            <div class='mb-5 font-semibold text-[18px]'>관리용품 <span class="text-gray-500">({{ search_result_supplies|length }})</span></div>
-            {% if search_result_supplies %}
+            <div class='mb-5 font-semibold text-[18px]'>관리용품 <span class="text-gray-500">({{ search_result_sales|length }})</span></div>
+            {% if search_result_sales %}
             <div class="grid grid-cols-4 gap-8 mb-16">
-                {% for supply in search_result_supplies %}
-                <a href="{% url 'supplies:detail' supply.pk %}">
+                {% for product in search_result_sales %}
+                <a href="{% url 'sales:detail' product.pk %}">
                     <div class="w-full mb-5 flex gap-5">
                       <div class="flex flex-col gap-3">
                         <div class="rounded-xl border overflow-hidden relative">
-                          <img src="{{ supply.Thumbnail.url}}" alt="" class="w-full h-full object-cover duration-200 ease-linear hover:scale-105">
+                          <img src="{{ product.Thumbnail.url}}" alt="" class="w-full h-full object-cover duration-200 ease-linear hover:scale-105">
           
-                          <strong class='card--name'>{{ supply.supply_name }}</strong>
                         </div>
+                        <strong class='card--name'>{{ product.title }}</strong>
                         <div class="flex items-center justify-between px-2">
-                          <h3 class="text-[16px] font-semibold">가격 {{ supply.price }}</h3>
+                          <h3 class="text-[16px] font-semibold">가격 {{ product.price|intcomma }}</h3>
                           
                           <div class="flex items-center gap-2">
                             <span class="material-symbols-outlined text-[16px] mt-[0.5px]">favorite</span>
-                            <span id="garden-like-count">좋아요 {{ supply.like.count }}</span>
+                            <span id="garden-like-count">좋아요 {{ product.like.count }}</span>
                           </div>
                         </div>
                       </div>

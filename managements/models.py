@@ -24,6 +24,7 @@ class Management(models.Model):
     )
 
 
+
 class CalenderEntry(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     management = models.ForeignKey(Management, on_delete=models.CASCADE)

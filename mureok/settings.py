@@ -35,7 +35,6 @@ INSTALLED_APPS = [
     'communities',
     'gardens',
     'plants',
-    'supplies',
     'notices',
     'sales',
     'managements',

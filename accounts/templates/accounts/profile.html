@@ -13,8 +13,8 @@
   <div class="profile-banner_wrapper">
     <img src="{% static 'img/profile_banner.jpg' %}" alt="">
   </div>
-  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 relative z-30">
-    <div class="flex absolute top-[-40px] gap-10 w-full">
+  <div class="mx-auto max-w-7xl px-0 sm:px-2 sm:px-6 lg:px-8 relative z-30">
+    <div class="flex flex-col items-center sm:flex-row absolute top-[-40px] gap-[20px] sm:gap-10 w-full">
       <div class="profile-image_wrapper rounded-full border border-[#1EB564]">
         {% if person.image %}
           <img src="{{ person.image.url }}" alt="profile">
@@ -23,13 +23,13 @@
         {% endif %}
       </div>
       <div class="info-form">
-        <div class="flex items-center gap-5">
+        <div class="flex items-center mt-0 justify-center sm:flex sm:items-center sm:justify-start sm:gap-5">
           {% comment %} <div>{{ user_title.name }}</div> {% endcomment %}
           <div class="bg-white text-[#1EB564] p-1 px-2 rounded-md"><b>🌱뉴비</b></div>
           <div><b>포인트: {{ person.user_profile.points }}P</b></div>
         </div>
         <div class="mt-4 w-full">
-          <div class="flex items-center justify-between w-full">
+          <div class="flex flex-col items-center justify-center sm:flex-row sm:justify-between w-full">
             <div class="flex gap-5 items-center">
               <h1 class="text-[22px]"><b>{{ person.username }}</b></h1>
               {% if request.user != person %}
@@ -55,7 +55,7 @@
               </div>
   
               {% comment %} 회원정보수정, 비밀번호 변경, 탈퇴 드롭다운 {% endcomment %}
-              <div class="absolute right-0 z-10 mt-2 w-36 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="log-menu-button" tabindex="-1" id="log-dropdown" style="display: none;">
+              <div class="absolute right-0 z-10 sm:mt-2 w-36 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="log-menu-button" tabindex="-1" id="log-dropdown" style="display: none;">
                 <a href="{% url 'accounts:update' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="log-menu-item-0">회원정보 수정</a>
                 <a href="{% url 'accounts:change_password' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="log-menu-item-1">비밀번호 수정</a>
                 <form action="{% url 'accounts:delete' %}" method="POST">
@@ -67,10 +67,10 @@
             </div>
             {% endif %} 
           </div>
-          <h2 class="text-[14px] text-gray-400">{{ person.email }}</h2>
-          <div class="flex justify-between">
-            <div class="text-[16px] mt-1">팔로워 <b><span id="followers-count" class="cursor-pointer">{{ person.followers.count }}</span></b> · 팔로잉 <b><span id="followings-count" class="cursor-pointer">{{ person.followings.count }}</span></b></div>
-            <button class="text-[16px] bg-white border border-[#1EB564] text-[#1EB564] rounded-md px-3 py-1 hover:bg-[#1EB564] hover:text-white"><a href="{% url 'sales:order_list' %}">나의 주문 목록</a></button>
+          <h2 class="text-[14px] mt-2 sm:mt-0 text-gray-400 text-center sm:text-left">{{ person.email }}</h2>
+          <div class="flex flex-col items-center justify-center sm:flex-row sm:justify-between">
+            <div class="text-[16px] mt-2 sm:mt-1">팔로워 <b><span id="followers-count" class="cursor-pointer">{{ person.followers.count }}</span></b> · 팔로잉 <b><span id="followings-count" class="cursor-pointer">{{ person.followings.count }}</span></b></div>
+            <button class="text-[16px] mt-2 sm:mt-0 bg-white border border-[#1EB564] text-[#1EB564] rounded-md px-3 py-1 hover:bg-[#1EB564] hover:text-white"><a href="{% url 'sales:order_list' %}">나의 주문 목록</a></button>
           </div>
         </div>
       </div>
@@ -78,10 +78,10 @@
   </div>
 
   {% comment %} 좋아요 아이템 및 작성 포스트 목록 {% endcomment %}
-  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 relative flex justify-end z-10">
-    <div class="items-form border rounded-2xl my-28 p-5 flex flex-col">
-      <div class="flex justify-between gap-12">
-        <div class="w-6/12">
+  <div class="mx-auto max-w-7xl mt-5 sm:mt-0 sm:px-6 lg:px-8 relative flex justify-center sm:justify-end z-10">
+    <div class="items-form border my-[350px] rounded-2xl sm:my-28 sm:p-5 flex flex-col">
+      <div class="flex sm:flex-row flex-col justify-between gap-12 mb-1 sm:mb-0 mt-1 sm:mt-0 px-1 sm:px-0">
+        <div class="w-full sm:w-6/12">
           {% comment %} 좋아요한 식물 {% endcomment %}
           <div class="mb-5">
             <div class="flex items-center gap-3 mb-5">
@@ -160,7 +160,7 @@
         </div>
 
         {% comment %} 내가 작성한 포스트 {% endcomment %}
-        <div class="w-6/12">
+        <div class="w-full sm:w-6/12">
           <div class="flex items-center gap-3 mb-5">
             <h2 class="text-[20px]"><b>My Posts</b></h2>
             <span class="text-gray-400 text-[18px]"><b>{{ person.community_set.all|length }}</b></span>

@@ -1,8 +1,0 @@
-{% extends "base.html" %}
-{% block content %}
-<form action="{% url 'supplies:update' supply.pk %}" method='POST'  enctype="multipart/form-data">
-  {% csrf_token %}
-  {{form.as_p}}
-  <button type="submit" class=''>수정</button> 
-</form>
-{% endblock content %}  
