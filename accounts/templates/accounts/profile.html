@@ -24,18 +24,21 @@
       </div>
       <div class="info-form">
         <div class="flex items-center mt-0 justify-center sm:flex sm:items-center sm:justify-start sm:gap-5">
-          {% comment %} <div>{{ user_title.name }}</div> {% endcomment %}
-
-          {% if user_profile.title.name == '뉴비' %}
-          <div class="bg-white text-[#1EB564] p-1 px-2 rounded-md"><b>🌱{{ user_profile.title }}</b></div>
-          {% elif user_profile.title.name == '숙련자' %}
-          <div class="bg-white text-[#1EB564] p-1 px-2 rounded-md"><b>&#x1F33C;{{ user_profile.title }}</b></div>
-          {% elif user_profile.title.name == '전문가' %}
-          <div class="bg-white text-[#1EB564] p-1 px-2 rounded-md"><b>&#x1F334;{{ user_profile.title }}</b></div>
+          <!-- <div>{{ person.user_profile.title.name }}</div> -->
+          
+          {% if person.user_profile.title.name == '뉴비' %}
+          <div class="bg-white text-[#1EB564] p-1 px-2 rounded-md"><b>🌱{{ person.user_profile.title }}</b></div>
+          {% elif person.user_profile.title.name == '숙련자' %}
+          <div class="bg-white text-[#1EB564] p-1 px-2 rounded-md"><b>&#x1F33C;{{ person.user_profile.title }}</b></div>
+          {% elif person.user_profile.title.name == '전문가' %}
+          <div class="bg-white text-[#1EB564] p-1 px-2 rounded-md"><b>&#x1F334;{{ person.user_profile.title }}</b></div>
           {% endif %}
             
-
+          {% if person.user_profile.points >= 0 %}
           <div><b>포인트: {{ person.user_profile.points }}P</b></div>
+          {% else %}
+
+          {% endif %}
         </div>
         <div class="mt-4 w-full">
           <div class="flex flex-col items-center justify-center sm:flex-row sm:justify-between w-full">
