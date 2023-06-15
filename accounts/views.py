@@ -137,14 +137,12 @@ def change_password(request):
 def profile(request, username):
     User = get_user_model()
     person = User.objects.get(username=username)
-    # plants = Plant.objects.filter(user=person).order_by('-pk')
-    # gardens = Garden.objects.filter(user=person).order_by('-pk')
-    # communities = Community.objects.filter(user=person).order_by('-pk')
-    # supplies = Supply.objects.filter(user=person).order_by('-pk')
-
+    user_profile = User_profile.objects.get(user=person)
+    
     context = {
         'person': person,
-        'room_name': "broadcast"
+        'room_name': "broadcast",
+        'user_profile': user_profile
     }
     return render(request, 'accounts/profile.html', context)
 

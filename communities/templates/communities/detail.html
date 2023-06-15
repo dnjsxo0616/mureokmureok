@@ -44,7 +44,13 @@
               </div>
               <div class="flex gap-3">
                 <p class="font-semibold text-[14px] sm:text-[16px]">{{ community.user.username }}</p>
-                <p class="text-[14px]">🌱 {{ community.user.user_profile.title }}</p>
+                {% if community.user.user_profile.title.name == '뉴비' %}
+                <p class="text-[14px]">🌱{{ community.user.user_profile.title }}</p>
+                {% elif community.user.user_profile.title.name == '숙련자' %}
+                <p class="text-[14px]">&#x1F33C;{{ community.user.user_profile.title }}</p>
+                {% elif community.user.user_profile.title.name == '전문가' %}
+                <p class="text-[14px]">&#x1F334;{{ community.user.user_profile.title }}</p>
+                {% endif %}
               </div>
               
               {% comment %} 팔로우 버튼 {% endcomment %}

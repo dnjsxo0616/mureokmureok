@@ -25,7 +25,16 @@
       <div class="info-form">
         <div class="flex items-center mt-0 justify-center sm:flex sm:items-center sm:justify-start sm:gap-5">
           {% comment %} <div>{{ user_title.name }}</div> {% endcomment %}
-          <div class="bg-white text-[#1EB564] p-1 px-2 rounded-md"><b>🌱뉴비</b></div>
+
+          {% if user_profile.title.name == '뉴비' %}
+          <div class="bg-white text-[#1EB564] p-1 px-2 rounded-md"><b>🌱{{ user_profile.title }}</b></div>
+          {% elif user_profile.title.name == '숙련자' %}
+          <div class="bg-white text-[#1EB564] p-1 px-2 rounded-md"><b>&#x1F33C;{{ user_profile.title }}</b></div>
+          {% elif user_profile.title.name == '전문가' %}
+          <div class="bg-white text-[#1EB564] p-1 px-2 rounded-md"><b>&#x1F334;{{ user_profile.title }}</b></div>
+          {% endif %}
+            
+
           <div><b>포인트: {{ person.user_profile.points }}P</b></div>
         </div>
         <div class="mt-4 w-full">
