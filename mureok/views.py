@@ -28,7 +28,7 @@ def home(request):
     recommended_gardens = Garden.objects.annotate(num_likes=Count('like_users')).order_by('-num_likes')[:1]
     additional_garden_links = Garden.objects.annotate(num_likes=Count('like_users')).order_by('-num_likes')[1:7]
     recent_plants = Plant.objects.annotate(max_id=Max('id')).order_by('-max_id')
-    recent_tags = recent_plants.distinct().values_list('tags__name', flat=True)[:5]
+    recent_tags = recent_plants.distinct().values_list('tags__name', flat=True)[:4]
     
     latest_management = Management.objects.filter(user=request.user).latest('managementdate') if request.user.is_authenticated and Management.objects.filter(user=request.user).exists() else None
 
