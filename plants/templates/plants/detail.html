@@ -41,7 +41,7 @@
               <div class="text-[12px] sm:text-[14px] text-white w-fit h-fit rounded-md mt-1 p-[4px] px-[8px] shadow-sm {% if plant.category == "['실내식물']" %}bg-[#439A3C]{% elif plant.category == "['실외식물']" %}bg-[#9D9441]{% elif plant.category == "['실내식물', '실외식물']" %}bg-[#35493D]{% endif %}">{% if plant.category == "['실내식물']" %}실내{% elif plant.category == "['실외식물']" %}실외{% elif plant.category == "['실내식물', '실외식물']" %}실내, 실외{% endif %}</div>
 
               {% comment %} 식물이름 {% endcomment %}
-              <h1 class="text-[25px] w-64 font-semibold whitespace-nowrap overflow-hidden truncate">{{ plant.title }}</h1>
+              <h1 id="plant-title" class="text-[25px] w-64 font-semibold whitespace-nowrap overflow-hidden truncate">{{ plant.title }}</h1>
             </div>
 
             <div class="flex gap-5">
@@ -62,11 +62,41 @@
               </form>
 
               {% comment %} 식물 공유하기 {% endcomment %}
-              <a href="#">
-                <div class="flex items-center justify-center w-10 h-10 border rounded-md hover:bg-gray-100">
-                  <span class="material-symbols-outlined">share</span>
+              <div class="relative">
+                <a href="#">
+                  <div  id="share-menu-button" class="flex items-center justify-center w-10 h-10 border rounded-md hover:bg-gray-100">
+                    <span class="material-symbols-outlined">share</span>
+                  </div>
+                </a>
+                <div class="absolute left-0 mt-2 w-36 origin-top-left rounded-md bg-white shadow-lg overflow-hidden ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="share-menu-button" tabindex="-1" id="share-dropdown" style="display: none;">
+                  <ul>
+                    <li>
+                      <a href="javascript:shareTwitter2();">
+                        <button type="button" class="flex items-center gap-2 p-3 w-full hover:bg-gray-100">
+                          <img src="{% static 'img/twitter_logo.svg' %}" alt="" style="width: 19px; height: 15px;">
+                          <span>트위터</span>
+                        </button>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="javascript:shareFacebook2();">
+                        <button type="button" class="flex items-center gap-2 p-3 w-full hover:bg-gray-100">
+                          <img src="{% static 'img/facebook_logo.svg' %}" alt="" style="width: 19px; height: 19px;">
+                          <span>페이스북</span>
+                        </button>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="javascript:shareLink2();">
+                        <button type="button" class="flex items-center gap-2 p-3 w-full hover:bg-gray-100">
+                          <img src="https://seekicon.com/free-icon-download/link_7.svg" alt="" style="width: 18px; height: 16px;">
+                          <span>링크복사</span>
+                        </button>
+                      </a>
+                    </li>
+                  </ul>
                 </div>
-              </a>
+              </div>
 
               {% comment %} 수정 및 삭제 드롭다운 버튼 {% endcomment %}
 
@@ -521,4 +551,6 @@
 <script src="{% static 'js/plantCarousel.js' %}"></script>
 <script src="{% static 'js/plantDropdown.js' %}"></script>
 <script src="{% static 'js/plantTab.js' %}"></script>
+<script src="{% static 'js/plantShareDropdown.js' %}"></script>
+<script src="{% static 'js/plantShare.js' %}"></script>
 {% endblock script %}

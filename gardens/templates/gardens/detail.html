@@ -276,6 +276,29 @@
           
                   </div>
                   <div class="bg-gray-100 rounded-lg p-3">
+                    <div class="mb-3">
+                      {% if comment.score == 1 %}
+                        <div class="text-[18px] font-semibold">⭐0.5점</div>
+                      {% elif comment.score == 2 %}
+                        <div class="text-[18px] font-semibold">⭐1.0점</div>
+                      {% elif comment.score == 3 %}
+                        <div class="text-[18px] font-semibold">⭐1.5점</div>
+                      {% elif comment.score == 4 %}
+                        <div class="text-[18px] font-semibold">⭐2.0점</div>
+                      {% elif comment.score == 5 %}
+                        <div class="text-[18px] font-semibold">⭐2.5점</div>
+                      {% elif comment.score == 6 %}
+                        <div class="text-[18px] font-semibold">⭐3.0점</div>
+                      {% elif comment.score == 7 %}
+                        <div class="text-[18px] font-semibold">⭐3.5점</div>
+                      {% elif comment.score == 8 %}
+                        <div class="text-[18px] font-semibold">⭐4.0점</div>
+                      {% elif comment.score == 9 %}
+                        <div class="text-[18px] font-semibold">⭐4.5점</div>
+                      {% elif comment.score == 10 %}
+                        <div class="text-[18px] font-semibold">⭐5.0점</div>
+                      {% endif %}
+                    </div>
                     <p class="text-[14px] text-gray-500 mb-2">{{ comment.created_time }}</p>
 
                     {% comment %} 후기 제목 {% endcomment %}

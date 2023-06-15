@@ -153,7 +153,7 @@
           {% comment %}  작성된 리뷰 부분 {% endcomment %}
           <div class="mb-16">
             {% if reviews %}
-      
+
             {% for review in reviews|dictsortreversed:'created_at' %}
             <div class="flex gap-3 mb-5">
               <a href="{% url 'accounts:profile' review.user.username %}" class="h-fit">
@@ -237,7 +237,29 @@
                 </div>
                 <div class="bg-gray-100 rounded-lg p-3">
                   {% comment %} 리뷰 점수 {% endcomment %}
-                  <span>{{ review.score }}</span>
+                  <div class="mb-3">
+                    {% if review.score == 1 %}
+                      <div class="text-[18px] font-semibold">⭐0.5점</div>
+                    {% elif review.score == 2 %}
+                      <div class="text-[18px] font-semibold">⭐1.0점</div>
+                    {% elif review.score == 3 %}
+                      <div class="text-[18px] font-semibold">⭐1.5점</div>
+                    {% elif review.score == 4 %}
+                      <div class="text-[18px] font-semibold">⭐2.0점</div>
+                    {% elif review.score == 5 %}
+                      <div class="text-[18px] font-semibold">⭐2.5점</div>
+                    {% elif review.score == 6 %}
+                      <div class="text-[18px] font-semibold">⭐3.0점</div>
+                    {% elif review.score == 7 %}
+                      <div class="text-[18px] font-semibold">⭐3.5점</div>
+                    {% elif review.score == 8 %}
+                      <div class="text-[18px] font-semibold">⭐4.0점</div>
+                    {% elif review.score == 9 %}
+                      <div class="text-[18px] font-semibold">⭐4.5점</div>
+                    {% elif review.score == 10 %}
+                      <div class="text-[18px] font-semibold">⭐5.0점</div>
+                    {% endif %}
+                  </div>
 
                   {% comment %} 리뷰작성시간 {% endcomment %}
                   <p class="text-[14px] text-gray-500 mb-2">{{ review.created_time }}</p>
