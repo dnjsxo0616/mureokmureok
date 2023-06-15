@@ -2,7 +2,7 @@ const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 function deleteReview(event, product_pk, review_pk) {
   event.preventDefault();
   if (confirm('리뷰를 삭제하시겠습니까?')) {
-    fetch(`/sales/${product_pk}/review/${review_pk}/delete/`, {
+    fetch(`/sales/${product_pk}/reviews/${review_pk}/delete_review/`, {
       method: 'DELETE',
       headers: {
         'X-CSRFToken': csrftoken,
