@@ -1,12 +1,22 @@
 {% extends 'base.html' %}
+{% load static %}
+
 
 {% block content %}
-<div class="flex items-center justify-center min-h-screen">
-  <div class="bg-white p-10 rounded-lg shadow-lg">
-    <div class="text-5xl font-bold mb-6">주문이 완료되었습니다.</div>
-    <div class="text-right">
-      <a href="{% url 'sales:order_detail' order.order_number %}" class="text-[#1EB564]">주문 세부 정보 보러가기</a>
+<main>
+  <div class="sm:hidden h-14 px-2 flex items-center">
+    <div class="flex flex-shrink-0 items-center gap-4">
+        <img class="h-8 w-auto" src="{% static 'img/logo.svg' %}" alt="Your Company">
+        <p class="text-xl h-8 w-auto"><b>그린샵</b></p>
     </div>
   </div>
-</div>
+  <div class="flex items-center justify-center min-h-[500px] sm:min-h-[750px]">
+    <div class="bg-white p-10 border rounded-xl shadow-xl">
+      <div class="text-[25px] sm:text-5xl font-bold mb-16">주문이 완료되었습니다.</div>
+      <div class="text-center sm:text-right">
+        <a href="{% url 'sales:order_detail' order.order_number %}" class="text-[#1EB564]">주문 세부 정보 보러가기</a>
+      </div>
+    </div>
+  </div>
+</main>
 {% endblock content %}

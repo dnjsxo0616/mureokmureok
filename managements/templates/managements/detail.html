@@ -9,63 +9,67 @@
 
 {% block content %}
 <main>
+  <div class="sm:hidden h-14 px-2 flex items-center">
+    <div class="flex flex-shrink-0 items-center gap-4">
+        <img class="h-8 w-auto" src="{% static 'img/logo.svg' %}" alt="Your Company">
+        <p class="text-xl h-8 w-auto"><b>식집사</b></p>
+    </div>
+  </div>
   <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-    <p class="text-[14px] text-gray-500 mt-10 mb-8">
+    <p class="sm:text-[14px] text-gray-500 mt-3 sm:mt-10 mb-8">
       <a href="{% url 'managements:index' %}" class="hover:text-black">
         <span>식물관리</span>
       </a> > {{ management.nickname }}
     </p>
-   
-      {% comment %} 게시글 수정 및 삭제 부분{% endcomment %}
-      
 
+      {% comment %} 식물 수정 및 삭제 부분{% endcomment %}
       <div class="flex justify-end">
-        <a class="block text-start text-sm text-gray-700 hover:bg-gray-100 cursor-pointer border p-1 mb-3 px-2 me-5 rounded-md" href="{% url 'managements:update' management.pk %}">
-          식물 관리 수정하기
+        <a class="text-[12px] sm:text-[16px] block text-center text-gray-700 hover:bg-gray-100 cursor-pointer border p-1 mb-3 px-2 me-5 rounded-md" href="{% url 'managements:update' management.pk %}">
+          식물 수정하기
         </a>
       
-        <form method="POST" action="{% url 'managements:delete' management.pk %}" class="block border p-1 mb-3 px-2 rounded-md text-start text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" onclick="return confirm('식물 관리를 삭제하시겠습니까?')">
+        <form method="POST" action="{% url 'managements:delete' management.pk %}" class="text-[12px] sm:text-[16px] block border p-1 mb-3 px-2 rounded-md text-center text-gray-700 hover:bg-gray-100 cursor-pointer" onclick="return confirm('식물 관리를 삭제하시겠습니까?')">
           {% csrf_token %}
-          <input type="submit" value="식물 관리 삭제하기" class="cursor-pointer">
+          <input type="submit" value="식물 삭제하기" class="cursor-pointer">
         </form>
       </div>
 
     <section>
-      <div class="flex h-80 items-center gap-5">
+      <div class="flex sm:flex-row flex-col h-fit sm:h-80 items-center gap-5">
 
         {% comment %} 식물사진 {% endcomment %}
-        <div class="w-4/12 h-full overflow-hidden rounded-xl">
+        <div class="w-full h-64 sm:w-4/12 sm:h-full overflow-hidden rounded-xl">
           <img src="{{ management.photo.url }}" alt="" class="w-full h-full object-cover">
         </div>
 
         {% comment %} 정보카드 {% endcomment %}
-        <div class="w-8/12 h-full bg-gray-100 rounded-xl p-8 flex gap-16">
-          <div class="flex flex-col justify-between gap-5 w-2/12">
+        <div class="w-full h-fit sm:w-8/12 sm:h-full bg-gray-100 rounded-xl p-5 sm:p-8 flex flex-col sm:flex-row gap-5 sm:gap-16">
+          <div class="flex flex-row sm:flex-col justify-between gap-5 w-full sm:w-2/12">
             <div>
               <a href="{% url 'plants:detail' management.plant.id %}" class="text-gray-400 text-[14px] hover:text-black">
-                {{ management.plant }} (바로가기)
+                {{ management.plant }}<br class="hidden sm:block"> (바로가기)
               </a>
-              <h2 class="text-[25px] mt-1 mb-5 font-semibold">{{ management.nickname }}</h2>
-              <p class="text-[18px]">D+{{ management_time_passed }}</p>
+              <h2 class="text-[20px] sm:text-[25px] mt-1 mb-3 sm:mb-5 font-semibold">{{ management.nickname }}</h2>
+              <p class="text-[16px] sm:text-[18px]">D+{{ management_time_passed }}</p>
             </div>
   
             {% if management.score >= 80 %}
-            <div class="border border-[#1EB564] bg-white p-5 rounded-lg w-fit flex flex-col items-center gap-3">
-              <div class="w-10 h-10 overflow-hidden rounded-full">
+            <div class="border border-[#1EB564] bg-white p-3 sm:p-5 rounded-lg w-fit flex flex-col items-center gap-3">
+              <div class="w-8 h-8 sm:w-10 sm:h-10 overflow-hidden rounded-full">
                 <img src="{% static 'img/good.png' %}" alt="" class="w-full h-full object-cover">
               </div>
               <p class="font-semibold">{{ management.score }}점</p>
             </div>
             {% elif management.score < 80 and management.score >= 40 %}
-            <div class="border border-[#F0BB00] bg-white p-5 rounded-lg w-fit flex flex-col items-center gap-3">
-              <div class="w-10 h-10 overflow-hidden rounded-full">
+            <div class="border border-[#F0BB00] bg-white p-3 sm:p-5 rounded-lg w-fit flex flex-col items-center gap-3">
+              <div class="w-8 h-8 sm:w-10 sm:h-10 overflow-hidden rounded-full">
                 <img src="{% static 'img/nice.png' %}" alt="" class="w-full h-full object-cover">
               </div>
               <p class="font-semibold">{{ management.score }}점</p>
             </div>
             {% elif management.score < 40 %}
-            <div class="border border-red-600 bg-white p-5 rounded-lg w-fit flex flex-col items-center gap-3">
-              <div class="w-10 h-10 overflow-hidden rounded-full">
+            <div class="border border-red-600 bg-white p-3 sm:p-5 rounded-lg w-fit flex flex-col items-center gap-3">
+              <div class="w-8 h-8 sm:w-10 sm:h-10 overflow-hidden rounded-full">
                 <img src="{% static 'img/bad.png' %}" alt="" class="w-full h-full object-cover">
               </div>
               <p class="font-semibold">{{ management.score }}점</p>
@@ -73,10 +77,10 @@
             {% endif %}
           </div>
 
-          <div class="flex flex-col justify-between w-10/12">
+          <div class="flex flex-col justify-between w-full sm:w-10/12">
             {% comment %} 물주기 점수 {% endcomment %}
             <div class="flex flex-col gap-1">
-              <div class="flex items-center justify-between px-1">
+              <div class="flex items-center justify-between sm:px-1">
                 <h3 class="font-semibold">물주기</h3>
                 <span class="font-normal text-[14px] text-gray-500">(<span id="watering_score_num">{{ watering_score }}</span> / 20)</span>
               </div>
@@ -88,7 +92,7 @@
 
             {% comment %} 일조 점수 {% endcomment %}
             <div class="flex flex-col gap-1">
-              <div class="flex items-center justify-between px-1">
+              <div class="flex items-center justify-between sm:px-1">
                 <h3 class="font-semibold">일조</h3>
                 <span class="font-normal text-[14px] text-gray-500">(<span id="sunlight_score_num">{{ sunlight_score }}</span> / 20)</span>
               </div>
@@ -100,7 +104,7 @@
 
             {% comment %} 습도 점수 {% endcomment %}
             <div class="flex flex-col gap-1">
-              <div class="flex items-center justify-between px-1">
+              <div class="flex items-center justify-between sm:px-1">
                 <h3 class="font-semibold">습도</h3>
                 <span class="font-normal text-[14px] text-gray-500">(<span id="humidity_score_num">{{ humidity_score }}</span> / 20)</span>
               </div>
@@ -112,7 +116,7 @@
 
             {% comment %} 온도 점수 {% endcomment %}
             <div class="flex flex-col gap-1">
-              <div class="flex items-center justify-between px-1">
+              <div class="flex items-center justify-between sm:px-1">
                 <h3 class="font-semibold">온도</h3>
                 <span class="font-normal text-[14px] text-gray-500">(<span id="temperature_score_num">{{ temperature_score }}</span> / 20)</span>
               </div>
@@ -124,7 +128,7 @@
 
             {% comment %} 영양 점수 {% endcomment %}
             <div class="flex flex-col gap-1">
-              <div class="flex items-center justify-between px-1">
+              <div class="flex items-center justify-between sm:px-1">
                 <h3 class="font-semibold">영양</h3>
                 <span class="font-normal text-[14px] text-gray-500">(<span id="things_score_num">{{ things_score }}</span> / 20)</span>
               </div>
@@ -144,7 +148,7 @@
       <div class="w-full rounded-xl bg-gray-100 p-5">
         <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-5">
           {% comment %} 물주기탭 {% endcomment %}
-          <div class="w-full h-full flex items-center gap-5 bg-white border rounded-lg p-3">
+          <div class="w-full h-full flex flex-col sm:flex-row items-center gap-5 bg-white border rounded-lg p-3">
             <div class="flex flex-col items-center gap-3 px-2">
               <div class="w-14 h-12 overflow-hidden">
                 <img src="{% static 'img/water_pot.png' %}" alt="" class="w-full h-full object-cover">
@@ -160,7 +164,7 @@
           </div>
     
           {% comment %} 일조탭 {% endcomment %}
-          <div class="w-full h-full flex items-center gap-5 bg-white border rounded-lg p-3">
+          <div class="w-full h-full flex flex-col sm:flex-row items-center gap-5 bg-white border rounded-lg p-3">
             <div class="flex flex-col items-center gap-3 px-2">
               <div class="w-12 h-12 overflow-hidden">
                 <img src="{% static 'img/sun.png' %}" alt="" class="w-full h-full object-cover">
@@ -176,7 +180,7 @@
           </div>
     
           {% comment %} 습도탭 {% endcomment %}
-          <div class="w-full h-full flex items-center gap-5 bg-white border rounded-lg p-3">
+          <div class="w-full h-full flex flex-col sm:flex-row items-center gap-5 bg-white border rounded-lg p-3">
             <div class="flex flex-col items-center gap-3 px-2">
               <div class="w-12 h-12 overflow-hidden">
                 <img src="{% static 'img/humidity.png' %}" alt="" class="w-full h-full object-cover">
@@ -192,7 +196,7 @@
           </div>
     
           {% comment %} 온도탭 {% endcomment %}
-          <div class="w-full h-full flex items-center gap-5 bg-white border rounded-lg p-3">
+          <div class="w-full h-full flex flex-col sm:flex-row items-center gap-5 bg-white border rounded-lg p-3">
             <div class="flex flex-col items-center gap-3 px-2">
               <div class="w-12 h-12 overflow-hidden">
                 <img src="{% static 'img/temperature.png' %}" alt="" class="w-full h-full object-cover">
@@ -219,7 +223,7 @@
       </div>
 
       <div class="w-full rounded-xl bg-gray-100 p-5">
-        <div class="grid grid-cols-7 gap-4 mb-5">
+        <div class="grid grid-cols-7 gap-1 sm:gap-4 mb-5">
           <div class="col-span-1 text-center text-red-600 font-bold">일</div>
           <div class="col-span-1 text-center font-bold">월</div>
           <div class="col-span-1 text-center font-bold">화</div>
@@ -229,15 +233,15 @@
           <div class="col-span-1 text-center font-bold">토</div>
         </div>
         {% for weekData in calendarData %}
-        <div class="grid grid-cols-7 gap-4">
+        <div class="grid grid-cols-7 gap-1 sm:gap-4">
           {% for date in weekData %}
-            <div class="col-span-1 bg-white rounded-md border border-gray-200 mb-2 p-2 h-40">
+            <div class="col-span-1 bg-white rounded-md border border-gray-200 mb-2 p-2 h-20 sm:h-40">
               {% if date %}
-                {{ date.day }}
+                <p class="text-center sm:text-start">{{ date.day }}</p>
                 <!-- 엔트리 데이터 표시 -->
                 {% for entry in entries %}
                   {% if entry.entrydate|date:"Y-m-d" == date|date:"Y-m-d" %}
-                  <div class="flex flex-wrap">
+                  <div class="hidden sm:inline-flex flex flex-wrap">
                     <div class="w-full sm:w-2/3 md:w-1/2">
                         <div class="text-xs mt-1">W: {{ entry.watering }}</div>
                         <div class="text-xs mt-1">S: {{ entry.sunlight }}</div>
@@ -248,8 +252,6 @@
                       <div class="w-full sm:w-2/3 md:w-1/2">
                           <div class="text-xs mt-1">N: {{ entry.things }}</div>
                           <div class="text-xs mt-1">특이점: {{ entry.significant }}</div>
-
-                        
                               <div id="entry-update-btn" class="entry-update-btn text-xs cursor-pointer border p-1 mt-1 px-2 rounded-md text-[14px] hover:bg-gray-100" style="text-align: right; width: fit-content; margin-left: auto;">수정</div>
                               <form action="{% url 'managements:calenderentry_delete' management.pk entry.pk %}" class="text-xs cursor-pointer border p-1 mt-1 px-2 rounded-md text-[14px] hover:bg-gray-100" style="text-align: right; width: fit-content; margin-left: auto;" method="POST">
                                 {% csrf_token %}
@@ -259,6 +261,9 @@
 
                           <!-- <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="deletecalenderentry(event, {{ management.pk }}, {{ entry.pk }}, '{{ csrf_token }}')">삭제하기</a> -->
                         </div>
+                  </div>
+                  <div class="sm:hidden w-full h-full flex justify-center mt-3">
+                    <div class="w-3 h-3 rounded-full bg-[#1EB564]"></div>
                   </div>
                 {% comment %} 업데이트 modal {% endcomment %}
                 <div class="entry-update-modal relative z-30 modal-overlay hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="entry-update-modal">
@@ -334,59 +339,62 @@
       {% comment %} 후기생성 modal {% endcomment %}
       <div class="relative z-30 modal-overlay hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="entry-create-modal">
         <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" id="entry-bg"></div>
-        <div class="fixed top-1/2 start-1/2 -translate-x-1/2 -translate-y-1/2 transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+        <div class="fixed top-1/2 start-1/2 -translate-x-1/2 -translate-y-1/2 transform overflow-hidden rounded-lg bg-white w-full text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
           <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
             <div class="sm:flex sm:items-start w-full">
-              <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
-                <h3 class="text-base font-semibold leading-6 text-gray-900 mb-8" id="modal-title">후기작성</h3>
+              <div class="mt-3 sm:mt-0 sm:text-left w-full">
+                <h3 class="text-base font-semibold leading-6 text-gray-900 mb-3 sm:mb-8" id="modal-title">후기작성</h3>
                 <form action="{% url 'managements:calenderentry_create' management.pk %}" method="POST" id="garden_comment-Form">
                   {% csrf_token %}
-                  <div class="flex gap-3 mb-8 w-full text-xs">
-                    <div class="mb-2 w-2/12">{{ calenderentry_form.watering.label }} <span class="text-red-600 text-[20px]">*</span></div>
-                    <div>{{ calenderentry_form.watering }}</div>
-                  </div>
-              
-                  {% comment %} 일조량 {% endcomment %}
-                  <div class="flex gap-3 mb-8 w-full text-xs">
-                    <div class="mb-2 w-2/12">{{ calenderentry_form.sunlight.label }} <span class="text-red-600 text-[20px]">*</span></div>
-                    <div>{{ calenderentry_form.sunlight }}</div>
-                  </div>
-              
-                  {% comment %} 습도 {% endcomment %}
-                  <div class="flex gap-3 mb-8 w-full text-xs">
-                    <div class="mb-2 w-2/12">{{ calenderentry_form.humidity.label }} <span class="text-red-600 text-[20px]">*</span></div>
-                    <div>{{ calenderentry_form.humidity }}</div>
-                  </div>
-              
-                  {% comment %} 온도 {% endcomment %}
-                  <div class="flex gap-3 mb-8 w-full text-xs">
-                    <div class="mb-2 w-2/12">{{ calenderentry_form.temperature.label }} <span class="text-red-600 text-[20px]">*</span></div>
-                    <div>{{ calenderentry_form.temperature }}</div>
+                  <div class="w-full grid grid-cols-2 gap-2 sm:flex sm:flex-col">
+                    {% comment %} 물주기 {% endcomment %}
+                    <div class="flex sm:flex-row flex-col gap-3 mb-5 sm:mb-8 w-full">
+                      <div class="mb-1 sm:mb-2 sm:w-3/12">{{ calenderentry_form.watering.label }} <span class="text-red-600 text-[20px]">*</span></div>
+                      <div>{{ calenderentry_form.watering }}</div>
+                    </div>
+                
+                    {% comment %} 일조량 {% endcomment %}
+                    <div class="flex sm:flex-row flex-col gap-3 mb-5 sm:mb-8 w-full">
+                      <div class="mb-1 sm:mb-2 sm:w-3/12">{{ calenderentry_form.sunlight.label }} <span class="text-red-600 text-[20px]">*</span></div>
+                      <div>{{ calenderentry_form.sunlight }}</div>
+                    </div>
+                
+                    {% comment %} 습도 {% endcomment %}
+                    <div class="flex sm:flex-row flex-col gap-3 mb-5 sm:mb-8 w-full">
+                      <div class="mb-1 sm:mb-2 sm:w-3/12">{{ calenderentry_form.humidity.label }} <span class="text-red-600 text-[20px]">*</span></div>
+                      <div>{{ calenderentry_form.humidity }}</div>
+                    </div>
+                
+                    {% comment %} 온도 {% endcomment %}
+                    <div class="flex sm:flex-row flex-col gap-3 mb-5 sm:mb-8 w-full">
+                      <div class="mb-1 sm:mb-2 sm:w-3/12">{{ calenderentry_form.temperature.label }} <span class="text-red-600 text-[20px]">*</span></div>
+                      <div>{{ calenderentry_form.temperature }}</div>
+                    </div>
                   </div>
       
-                  <div class="flex gap-3 mb-8 w-full text-xs">
-                    <div class="mb-2 w-2/12">{{ calenderentry_form.things.label }} <span class="text-red-600 text-[20px]">*</span></div>
+                  {% comment %} 영양 {% endcomment %}
+                  <div class="flex sm:flex-row flex-col gap-3 mb-5 sm:mb-8 w-full">
+                    <div class="mb-1 sm:mb-2 sm:w-3/12">{{ calenderentry_form.things.label }} <span class="text-red-600 text-[20px]">*</span></div>
                     <div>{{ calenderentry_form.things }}</div>
                   </div>
       
-                  <div class="flex gap-3 mb-8 w-full text-xs">
-                    <div class="mb-2 w-2/12">{{ calenderentry_form.significant.label }} <span class="text-red-600 text-[20px]">*</span></div>
+                  {% comment %} 특이사항 {% endcomment %}
+                  <div class="flex sm:flex-row flex-col gap-3 mb-5 sm:mb-8 w-full">
+                    <div class="mb-1 sm:mb-2 sm:w-3/12">{{ calenderentry_form.significant.label }} <span class="text-red-600 text-[20px]">*</span></div>
                     <div>{{ calenderentry_form.significant }}</div>
                   </div>
       
-                  {% comment %} 습도 {% endcomment %}
-                  <div class="flex gap-3 mb-8 w-full text-xs">
-                    <div class="mb-2 w-2/12">{{ calenderentry_form.entrydate.label }} <span class="text-red-600 text-[20px]">*</span></div>
+                  {% comment %} 날짜 {% endcomment %}
+                  <div class="flex sm:flex-row flex-col gap-3 mb-5 sm:mb-8 w-full">
+                    <div class="mb-1 sm:mb-2 sm:w-3/12">{{ calenderentry_form.entrydate.label }} <span class="text-red-600 text-[20px]">*</span></div>
                     <div>{{ calenderentry_form.entrydate }}</div>
                   </div>
 
-                  <div class="flex justify-end">
+                  <div class="flex justify-center sm:justify-end text-center">
                     <input type="submit" class="bg-[#1EB564] text-white p-[5px] px-3 rounded-lg cursor-pointer hover:bg-[#148D4C]" value="작 성">
                   </div>
-
                 </form>
               </div>
-
             </div>
           </div>
         </div>
@@ -394,15 +402,10 @@
     </section>
   </div>
 </main>  
-
-
-
 {% endblock content %}
 
+
 {% block script %}
-
 <script src="{% static 'js/management_detail.js' %}"></script>
-
 <script src="{% static 'js/scoreChart.js' %}"></script>
 {% endblock script %}
-

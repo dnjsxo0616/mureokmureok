@@ -100,13 +100,13 @@
       
       {% comment %} 주문창 {% endcomment %}
       <table class="border-t border-b mt-[50px]">
-        <tr class="border-b text-center text-[20px]">
+        <tr class="border-b text-center text-[16px] sm:text-[20px]">
           <td>총 주문 상품 : <span class="font-bold">{{ cart_items|length }}개</span></td>
         </tr>
         <tr>
           <td class="flex justify-center">
             <table class="my-3">
-              <tr class="text-[25px] text-center">
+              <tr class="text-[18px] sm:text-[25px] text-center">
                 <td>{{ cart_total|intcomma }}원</td>
                 <td>+</td>
                 <td>0원</td>

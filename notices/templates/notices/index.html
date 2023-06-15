@@ -60,7 +60,10 @@
             <h4 class="text-[18px] truncate">{{ notice.title }}</h4>
             <p class="sm:hidden text-[12px] text-gray-500">{{ notice.created_at|date:'Y-m-d' }}</p>
           </div>
-          <div class="w-1/12 text-center text-[14px]">{{ notice.hits }}</div>
+          <div class="w-1/12 text-center text-[14px] flex sm:flex-none items-center gap-2 sm:gap-0 me-3 sm:me-0">
+            <span class="material-symbols-outlined sm:hidden text-gray-500 text-[18px]">visibility</span>
+            <p class="text-center grow">{{ notice.hits }}</p>
+          </div>
           <div class="hidden sm:block w-1/12 text-center text-[12px] text-gray-500">{{ notice.created_at|date:'Y-m-d' }}</div>
         </div>
       </a>

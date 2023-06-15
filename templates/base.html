@@ -66,7 +66,7 @@
                         </button>
 
                         {% comment %} 장바구니 드롭다운 {% endcomment %}
-                        <div class="absolute right-0 z-10 mt-2 w-80 h-80 origin-top-right rounded-md bg-white shadow-lg overflow-hidden ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="cart-button" tabindex="-1" id="cart-dropdown" style="display: none;">
+                        <div class="absolute right-0 z-10 mt-2 w-80 h-[355px] origin-top-right rounded-md bg-white shadow-lg overflow-hidden ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="cart-button" tabindex="-1" id="cart-dropdown" style="display: none;">
                             <div class="p-4 border-0 border-b-[1px] border-gray-300 flex items-center gap-3">
                                 <span class="text-[18px] font-semibold">장바구니</span><span class="text-gray-500">({{ cart_items|length }})</span>
                             </div>
@@ -101,6 +101,9 @@
                             </ul>
                             <a href="{% url 'sales:cart' %}" class="text-[12px] text-[#1EB564] hover:text-green-800">
                                 <div class="flex justify-center py-2 border-0 border-t-[1px] w-full">장바구니로 이동</div>
+                            </a>
+                            <a href="{% url 'sales:order_list' %}" class="text-[12px] text-[#1EB564] hover:text-green-800">
+                                <div class="flex justify-center py-2 border-0 border-t-[1px] w-full">나의 주문목록으로 이동</div>
                             </a>
                         </div>
                     </div>
@@ -183,7 +186,7 @@
     </nav>
 
     {% comment %} 모바일 하단 네비게이션 바 {% endcomment %}
-    <nav class="sm:hidden fixed bottom-0 left-0 z-50 w-screen h-16 bg-white border-t border-[#1EB564] dark:bg-gray-700 dark:border-gray-600">
+    <div class="sm:hidden fixed bottom-0 left-0 z-50 w-screen h-16 bg-white border-t border-[#1EB564] dark:bg-gray-700 dark:border-gray-600">
         <div class="grid h-full max-w-lg grid-cols-5 mx-auto font-medium">
             <a href="{% url 'home' %}" class="inline-flex flex-col gap-1 items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
                 <span class="material-symbols-outlined text-gray-500 group-hover:text-[#1EB564] dark:group-hover:text-[#1EB564] font-semibold" fill="currentColor">home</span>
@@ -201,12 +204,63 @@
                 <span class="material-symbols-outlined text-gray-500 group-hover:text-[#1EB564] dark:group-hover:text-[#1EB564] font-semibold" fill="currentColor">shopping_cart</span>
                 <span class="text-[12px] text-gray-500 dark:text-gray-400 group-hover:text-[#1EB564] dark:group-hover:text-[#1EB564]">그린샵</span>
             </a>
-            <a href="{% url 'sales:index' %}" class="inline-flex flex-col gap-1 items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
-                <span class="material-symbols-outlined text-gray-500 group-hover:text-[#1EB564] dark:group-hover:text-[#1EB564] font-semibold" fill="currentColor">more_vert</span>
-                <span class="text-[12px] text-gray-500 dark:text-gray-400 group-hover:text-[#1EB564] dark:group-hover:text-[#1EB564]">더보기</span>
-            </a>
+            <div class="w-full h-full relative">
+                <button type="button" id="more_dropdown_button" class="text-center h-full">
+                    <div class="h-full inline-flex flex-col gap-1 items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
+                        <span class="material-symbols-outlined text-gray-500 group-hover:text-[#1EB564] dark:group-hover:text-[#1EB564] font-semibold" fill="currentColor">more_vert</span>
+                        <span class="text-[12px] text-gray-500 dark:text-gray-400 group-hover:text-[#1EB564] dark:group-hover:text-[#1EB564]">더보기</span>
+                    </div>
+                </button>
+                {% comment %} 더보기 드롭다운 {% endcomment %}
+                <div class="absolute right-3 bottom-20 z-50 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="more_dropdown_button" tabindex="-1" id="more_dropdown" style="display: none;">
+                    <div>
+                        {% if request.user.is_authenticated %}
+                        <div class="flex items-center gap-5 px-4 py-3 border-0 border-b-[1px] border-gray-300">
+                            <div class="rounded-full w-12 h-12 overflow-hidden">
+                                {% if user.image %}
+                                <img src="{{ user.image.url }}" alt="">
+                                {% else %}
+                                <img src="{% static 'img/no_profile.jpg' %}" alt="">
+                                {% endif %}
+                            </div>
+                            <div>
+                                <p>{{ user.username }}</p>
+                                <p class="text-[12px] text-gray-500">{{ user.email }}</p>
+                            </div>
+                        </div>
+                        <div class="border-0 border-b-[1px] border-gray-300">
+                            <a href="{% url 'accounts:profile' user.username %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-0">내 프로필</a>
+                            <a href="{% url 'accounts:update' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-1">회원정보 수정</a>
+                            <a href="{% url 'accounts:logout' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-2">로그아웃</a>
+                        </div>
+                        {% else %}
+                        <div class="border-0 border-b-[1px] border-gray-300">
+                            <a href="{% url 'accounts:login' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-0">로그인</a>
+                            <a href="{% url 'accounts:signup' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-0">회원가입</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <div class="border-0 border-b-[1px] border-gray-300">
+                            <a href="{% url 'notices:index' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-0">공지사항</a>
+                        </div>
+                        <div class="border-0 border-b-[1px] border-gray-300">
+                            <a href="{% url 'communities:index' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-0">커뮤니티</a>
+                        </div>
+                        <div class="border-0 border-b-[1px] border-gray-300">
+                            <a href="{% url 'managements:index' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-2">식집사</a>
+                        </div>
+                        <a href="{% url 'sales:cart' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-2">
+                            장바구니
+                        </a>
+                        <a href="{% url 'sales:order_list' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-2">
+                            내 주문목록
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
-    </nav>
+    </div>
     
     
     {% block content %}{% endblock content %}
@@ -273,6 +327,7 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.umd.min.js"></script>
     <script src="{% static 'js/baseProfileDropdown.js' %}"></script>
+    <script src="{% static 'js/baseMoreDropdown.js' %}"></script>
     <script src="{% static 'js/baseAlarmDropdown.js' %}"></script>
     <script src="{% static 'js/baseCartDropdown.js' %}"></script>
     <script src="{% static 'js/baseCartDelete.js' %}"></script>
