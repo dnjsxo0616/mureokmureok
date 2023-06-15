@@ -80,8 +80,8 @@
   {% comment %} 좋아요 아이템 및 작성 포스트 목록 {% endcomment %}
   <div class="mx-auto max-w-7xl mt-5 sm:mt-0 sm:px-6 lg:px-8 relative flex justify-center sm:justify-end z-10">
     <div class="items-form border my-[350px] rounded-2xl sm:my-28 sm:p-5 flex flex-col">
-      <div class="flex justify-between gap-12 mb-1 sm:mb-0 mt-1 sm:mt-0 px-1 sm:px-0">
-        <div class="w-6/12">
+      <div class="flex sm:flex-row flex-col justify-between gap-12 mb-1 sm:mb-0 mt-1 sm:mt-0 px-1 sm:px-0">
+        <div class="w-full sm:w-6/12">
           {% comment %} 좋아요한 식물 {% endcomment %}
           <div class="mb-5">
             <div class="flex items-center gap-3 mb-5">
@@ -160,7 +160,7 @@
         </div>
 
         {% comment %} 내가 작성한 포스트 {% endcomment %}
-        <div class="w-6/12">
+        <div class="w-full sm:w-6/12">
           <div class="flex items-center gap-3 mb-5">
             <h2 class="text-[20px]"><b>My Posts</b></h2>
             <span class="text-gray-400 text-[18px]"><b>{{ person.community_set.all|length }}</b></span>
