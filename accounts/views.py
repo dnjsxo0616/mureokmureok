@@ -137,7 +137,7 @@ def change_password(request):
 def profile(request, username):
     User = get_user_model()
     person = User.objects.get(username=username)
-    user_profile = User_profile.objects.get(user=person)
+
     
     context = {
         'person': person,
