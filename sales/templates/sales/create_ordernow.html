@@ -1,40 +1,57 @@
 {% extends 'base.html' %}
+{% load static %}
+
+
+{% block head %}
+<title>주문하기</title>
+{% endblock head %}
+
 
 {% block content %}
-
-<form method="post" action="{% url 'sales:create_ordernow' product.pk %}" class="mx-auto px-[200px] pt-10 pb-10">
-  {% csrf_token %}
-  
-  <!-- 장바구니 상품 정보 -->
-  <div class="mb-4">
-    <label for="product_name" class="block font-medium text-sm text-gray-700">상품명</label>
-    <input type="text" id="product_name" name="product_name" value="{{ product.title }}" readonly class="w-full px-3 py-2 mt-1 text-gray-700 bg-gray-100 rounded-md">
-  </div>
-  
-  <div class="mb-4">
-    <label for="quantity" class="block font-medium text-sm text-gray-700">수량</label>
-    <input type="text" id="quantity" name="quantity" value="1" readonly class="w-full px-3 py-2 mt-1 text-gray-700 bg-gray-100 rounded-md">
-  </div>
-
-  <div class="mb-4">
-    <label for="price" class="block font-medium text-sm text-gray-700">금액</label>
-    <input type="text" id="price" name="price" value="{{ product.price }}" readonly class="w-full px-3 py-2 mt-1 text-gray-700 bg-gray-100 rounded-md">
-  </div>
-
-  <!-- 배송 주소 입력 필드 -->
-  <div class="mb-4">
-    <div class="flex justify-end">
+<main>
+  <div class="sm:hidden h-14 px-2 flex items-center">
+    <div class="flex flex-shrink-0 items-center gap-4">
+        <img class="h-8 w-auto" src="{% static 'img/logo.svg' %}" alt="Your Company">
+        <p class="text-xl h-8 w-auto"><b>그린샵</b></p>
     </div>
-    <label for="id_delivery_address" class="block font-medium text-sm text-gray-700">배송 주소</label>
-    <input type="text" name="delivery_address" id="id_delivery_address" class="w-full px-3 py-2 mt-1 text-gray-700 bg-gray-100 rounded-md"  required>
-    
   </div>
-  
-  <!-- 주문하기 버튼 -->
-  <button type="submit" class="w-full px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600" >주문하기</button>
-</form>
-
+  <div class="mx-auto max-w-7xl px-2 sm:px-36 sm:min-h-[700px]">
+    <h1 class="text-center text-[25px] font-semibold my-12">주문하기</h1>
+    <form method="post" action="{% url 'sales:create_ordernow' product.pk %}" class="mx-auto sm:px-[200px] mb-16">
+      {% csrf_token %}
+      
+      <!-- 장바구니 상품 정보 -->
+      <div class="mb-4">
+        <label for="product_name" class="block font-medium text-sm text-gray-700">상품명</label>
+        <input type="text" id="product_name" name="product_name" value="{{ product.title }}" readonly class="w-full px-3 py-2 mt-1 text-gray-700 bg-gray-100 rounded-md">
+      </div>
+      
+      <div class="mb-4">
+        <label for="quantity" class="block font-medium text-sm text-gray-700">수량</label>
+        <input type="text" id="quantity" name="quantity" value="1" readonly class="w-full px-3 py-2 mt-1 text-gray-700 bg-gray-100 rounded-md">
+      </div>
+    
+      <div class="mb-4">
+        <label for="price" class="block font-medium text-sm text-gray-700">금액</label>
+        <input type="text" id="price" name="price" value="{{ product.price }}" readonly class="w-full px-3 py-2 mt-1 text-gray-700 bg-gray-100 rounded-md">
+      </div>
+    
+      <!-- 배송 주소 입력 필드 -->
+      <div class="mb-4">
+        <div class="flex justify-end">
+        </div>
+        <label for="id_delivery_address" class="block font-medium text-sm text-gray-700">배송 주소</label>
+        <input type="text" name="delivery_address" id="id_delivery_address" class="w-full px-3 py-2 mt-1 text-gray-700 bg-gray-100 rounded-md"  required>
+        
+      </div>
+      
+      <!-- 주문하기 버튼 -->
+      <button type="submit" class="w-full px-4 py-2 mt-8 text-sm font-medium text-white bg-[#1EB564] rounded-md hover:bg-blue-600" >주문하기</button>
+    </form>
+  </div>
+</main>
 {% endblock content %}
+
 
 {% block script %}
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>

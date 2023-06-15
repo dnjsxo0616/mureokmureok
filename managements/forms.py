@@ -22,7 +22,7 @@ class ManagementForm(forms.ModelForm):
         label='식물 애칭',
         widget=forms.TextInput(
             attrs={
-                'class':'w-96 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
+                'class':'w-80 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
                 'id': '식물 애칭',
                 'placeholder': '식물 애칭을 입력해주세요.',
             }
@@ -32,7 +32,7 @@ class ManagementForm(forms.ModelForm):
         label="식물 만난 날짜",
         widget=NumberInput(
             attrs={
-                'class': 'border rounded-md p-2 ps-3 w-full h-auto focus:outline-none focus:ring-1 focus:ring-[#1EB564]',
+                'class': 'border rounded-md p-2 ps-3 w-80 focus:outline-none focus:ring-1 focus:ring-[#1EB564]',
                 'type': 'date',
             },
         ),
@@ -41,7 +41,7 @@ class ManagementForm(forms.ModelForm):
         label = '이미지',
         widget=forms.ClearableFileInput(
             attrs={
-                'class': 'w-96 bg-white border rounded-md focus:outline-none focus:ring-1 focus:ring-[#1EB564] text-gray-400',
+                'class': 'w-80 bg-white border rounded-md focus:outline-none focus:ring-1 focus:ring-[#1EB564] text-gray-400',
             }
         )
     )
@@ -123,7 +123,7 @@ class CalenderEntryForm(forms.ModelForm):
         label='특이 사항',
         widget=forms.TextInput(
             attrs={
-                'class':'w-96 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
+                'class':'w-80 bg-white border-[1px] p-1 px-2 rounded-lg focus:outline-none focus:border-[#1EB564] focus:border-[2px]',
                 'id': '특이 사항',
                 'placeholder': '특이 사항을 입력해주세요',
             }

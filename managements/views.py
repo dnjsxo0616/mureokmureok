@@ -348,7 +348,7 @@ def detail(request, management_pk):
 def index(request):
 
     managements = Management.objects.filter(user_id=request.user.id)
-    good_plants = 0
+    best_plants = 0
     nice_plants = 0
     bad_plants = 0
     sum_score = 0
@@ -358,7 +358,7 @@ def index(request):
     for management in managements:
         sum_score += management.score
         if management.score >= 80:
-            good_plants += 1
+            best_plants += 1
         elif management.score < 80 and management.score >= 40:
             nice_plants += 1
         elif management.score < 40:
@@ -376,7 +376,7 @@ def index(request):
 
     context = {
         'managements': managements,
-        'good_plants': good_plants,
+        'best_plants': best_plants,
         'nice_plants': nice_plants,
         'bad_plants': bad_plants,
         'average_score': average_score,

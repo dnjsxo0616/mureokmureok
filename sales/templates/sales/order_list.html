@@ -1,104 +1,144 @@
 {% extends 'base.html' %}
+{% load static %}
+
+
+{% block head %}
+<title>나의 주문목록</title>
+{% endblock head %}
+
 
 {% block content %}
 {% comment %} 가로로 넘치면 스크롤 {% endcomment %}
-<div class="overflow-x-auto min-h-screen">
-    <div class="text-center m-5 p-5 text-vold text-3xl">나의 주문 목록</div>
-    {% if orders %}
+<main>
+    <div class="sm:hidden h-14 px-2 flex items-center">
+        <div class="flex flex-shrink-0 items-center gap-4">
+            <img class="h-8 w-auto" src="{% static 'img/logo.svg' %}" alt="Your Company">
+            <p class="text-xl h-8 w-auto"><b>그린샵</b></p>
+        </div>
+    </div>
+    <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+        <div class="font-bold text-[20px] sm:text-[25px] mt-5 sm:mt-16 mb-8">나의 주문목록</div>
+        {% if orders %}
+    
+        {% comment %} min-w-full 최소 가로 너비 100%  / 분할선 divide-y{% endcomment %}
+            <table class="hidden sm:table w-full">
+                <thead>
+                    <tr class="border-b-2 border-[#1EB564]">
+                        <th class="px-6 py-3 bg-gray-50 text-left text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                            주문 번호
+                        </th>
+                        <th class="px-6 py-3 bg-gray-50 text-left text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                            주문 일자
+                        </th>
+                        <th class="px-6 py-3 bg-gray-50 text-left text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                            배송 주소
+                        </th>
+                        <th class="px-6 py-3 bg-gray-50 text-left text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                            상품명
+                        </th>
+                        <th class="px-6 py-3 bg-gray-50 text-left text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                            배송 상태
+                        </th>
+                        <th class="px-6 py-3 bg-gray-50 text-left text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                            수량
+                        </th>
+                        <th class="px-6 py-3 bg-gray-50 text-left text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                            가격
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for order in orders %}
+                    <tr>
+                        <td class="px-6 py-4 whitespace-no-wrap">
+                            {{ order.order_number }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-no-wrap">
+                            {{ order.order_date }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-no-wrap">
+                            {{ order.delivery_address }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-no-wrap">
+                            {{ order.product_name }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-no-wrap">
+                            {% if order.payment_status %}
+                            배송 시작!!
+                            {% else %}
+                            배송 준비중
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 whitespace-no-wrap">
+                            {{ order.quantity }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-no-wrap">
+                            {{ order.price }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
 
-    {% comment %} min-w-full 최소 가로 너비 100%  / 분할선 divide-y{% endcomment %}
-      <table class="mx-auto max-w-8xl px-2 sm:px-6 lg:px-8 divide-y divide-gray-200 text-xl">
-          <thead>
-              <tr class="border-b-2 border-[#1EB564]">
-                  <th class="px-6 py-3 bg-gray-50 text-left text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                      주문 번호
-                  </th>
-                  <th class="px-6 py-3 bg-gray-50 text-left text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                      주문 일자
-                  </th>
-                  <th class="px-6 py-3 bg-gray-50 text-left text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                      배송 주소
-                  </th>
-                  <th class="px-6 py-3 bg-gray-50 text-left text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                      상품명
-                  </th>
-                  <th class="px-6 py-3 bg-gray-50 text-left text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                      배송 상태
-                  </th>
-                  <th class="px-6 py-3 bg-gray-50 text-left text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                      수량
-                  </th>
-                  <th class="px-6 py-3 bg-gray-50 text-left text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                      가격
-                  </th>
-              </tr>
-          </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-              {% for order in orders %}
-              <tr>
-                  <td class="px-6 py-4 whitespace-no-wrap">
-                      {{ order.order_number }}
-                  </td>
-                  <td class="px-6 py-4 whitespace-no-wrap">
-                      {{ order.order_date }}
-                  </td>
-                  <td class="px-6 py-4 whitespace-no-wrap">
-                      {{ order.delivery_address }}
-                  </td>
-                  <td class="px-6 py-4 whitespace-no-wrap">
-                      {{ order.product_name }}
-                  </td>
-                  <td class="px-6 py-4 whitespace-no-wrap">
-                    {% if order.payment_status %}
-                      배송 시작!!
-                    {% else %}
-                      배송 준비중
-                    {% endif %}
-                  </td>
-                  <td class="px-6 py-4 whitespace-no-wrap">
-                      {{ order.quantity }}
-                  </td>
-                  <td class="px-6 py-4 whitespace-no-wrap">
-                      {{ order.price }}
-                  </td>
-              </tr>
-              {% endfor %}
-          </tbody>
-      </table>
-    {% else %}
-    <table class="mx-auto max-w-8xl px-2 sm:px-6 lg:px-8 divide-y divide-gray-200 text-xl">
-        <thead>
-            <tr class="border-b-2 border-[#1EB564]">
-                <th class="px-6 py-3 bg-gray-50 text-left text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                    주문 번호
-                </th>
-                <th class="px-6 py-3 bg-gray-50 text-left text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                    주문 일자
-                </th>
-                <th class="px-6 py-3 bg-gray-50 text-left text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                    배송 주소
-                </th>
-                <th class="px-6 py-3 bg-gray-50 text-left text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                    상품명
-                </th>
-                <th class="px-6 py-3 bg-gray-50 text-left text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                    배송 상태
-                </th>
-                <th class="px-6 py-3 bg-gray-50 text-left text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                    수량
-                </th>
-                <th class="px-6 py-3 bg-gray-50 text-left text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                    가격
-                </th>
-            </tr>
-        </thead>
-    </table>
-    <div class="flex justify-center mt-3">
-        <p>주문 상품이 없습니다.</p>
+            {% comment %} 모바일 버전 {% endcomment %}
+            <div class="sm:hidden flex flex-col gap-3 w-full min-h-[300px]">
+                {% for order in orders %}
+                <div class="border p-3 rounded-lg">
+                    <p class="text-[#1EB564] mb-3">{% if order.payment_status %}
+                        배송 시작!!
+                        {% else %}
+                        배송 준비중
+                        {% endif %}
+                    </p>
+                    <img src="{{ order.image.url }}" alt="">
+                    <p>주문번호 : {{ order.order_number }}</p>
+                    <p class="text-[14px] text-gray-500">{{ order.order_date }}</p>
+                    <p class="text-[14px] mb-3">{{ order.delivery_address }}</p>
+                    <p class="font-semibold text-[20px]">{{ order.product_name }}</p>
+                    <div class="flex justify-between">
+                        <p class="text-[18px]">{{ order.price }}원</p>
+                        <a href="{% url 'sales:order_detail' order.order_number %}">
+                            <div class="border rounded-md p-1 px-2 text-[14px]">상세보기</div>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+        <table class="hidden sm:table w-full">
+            <thead>
+                <tr class="border-b-2 border-[#1EB564]">
+                    <th class="px-6 py-3 bg-gray-50 text-left text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                        주문 번호
+                    </th>
+                    <th class="px-6 py-3 bg-gray-50 text-left text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                        주문 일자
+                    </th>
+                    <th class="px-6 py-3 bg-gray-50 text-left text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                        배송 주소
+                    </th>
+                    <th class="px-6 py-3 bg-gray-50 text-left text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                        상품명
+                    </th>
+                    <th class="px-6 py-3 bg-gray-50 text-left text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                        배송 상태
+                    </th>
+                    <th class="px-6 py-3 bg-gray-50 text-left text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                        수량
+                    </th>
+                    <th class="px-6 py-3 bg-gray-50 text-left text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                        가격
+                    </th>
+                </tr>
+            </thead>
+        </table>
+        <div class="flex items-center justify-center mt-3">
+            <p>주문 상품이 없습니다.</p>
+        </div>
+        {% endif %}
+        <div class="flex justify-center">
+            <button class="mt-[50px] mb-16 block text-center bg-white border border-[#1EB564] text-[#1EB564] rounded-md px-4 py-2 hover:bg-[#1EB564] hover:text-white mx-auto w-40 h-15"><a href="{% url 'accounts:profile' user.username %}">돌아가기</a></button>
+        </div>
     </div>
-    {% endif %}
-    <div class="flex justify-center">
-        <button class="mt-[50px] block text-center bg-white border border-[#1EB564] text-[#1EB564] rounded-md px-4 py-2 hover:bg-[#1EB564] hover:text-white mx-auto w-40 h-15"><a href="{% url 'accounts:profile' user.username %}">돌아가기</a></button>
-    </div>
-</div>
+</main>
 {% endblock content %}

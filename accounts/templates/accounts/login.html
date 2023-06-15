@@ -7,9 +7,15 @@
 
 
 {% block content %}
-<main class="bg-gray-100 h-screen flex">
-  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-    <div class="rounded-xl bg-white shadow-sm mx-auto p-8 mt-16 w-96">
+<main class="bg-gray-100 min-h-[580px] sm:min-h-[720px] flex">
+  <div class="mx-auto w-full px-2 sm:px-6 lg:px-8">
+    <div class="sm:hidden h-14 px-2 flex items-center">
+      <div class="flex flex-shrink-0 items-center gap-4">
+          <img class="h-8 w-auto" src="{% static 'img/logo.svg' %}" alt="Your Company">
+          <p class="text-xl h-8 w-auto"><b>무럭무럭</b></p>
+      </div>
+    </div>
+    <div class="rounded-xl bg-white shadow-sm mx-auto p-8 mt-16 w-[350px]">
       <div class="mb-5">
         <h1 class="text-[22px] text-center mb-3"><b>로그인</b></h1>
         <p class="text-center text-[14px]">아직 회원이 아니신가요? <a href="{% url 'accounts:signup' %}" class="text-[#1EB564]"><b>회원가입</b></a></p>

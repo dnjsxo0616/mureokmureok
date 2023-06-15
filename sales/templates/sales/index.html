@@ -101,24 +101,20 @@
         </form>
       </div>
       <div class="w-full sm:w-9/12">
-        {% comment %} sort방식 {% endcomment %}
-        <div class="w-full rounded-lg bg-gray-100 flex items-center justify-between p-2 px-4 text-gray-500 text-[14px] mb-3 sm:mb-5">
-          <div class="flex justify-between sm:gap-8 grow">
-            <a href="#" class="hover:text-black">인기순</a>
-            <a href="#" class="hover:text-black">낮은가격순</a>
-            <a href="#" class="hover:text-black">높은가격순</a>
-            <a href="#" class="hover:text-black">최신순</a>
-          </div>
+        <div class="flex items-center gap-5">
+          {% comment %} sort방식 {% endcomment %}
+          {% comment %} <div class="grow rounded-lg bg-gray-100 flex items-center justify-between p-2 px-4 text-gray-500 text-[14px] mb-3 sm:mb-5">
+            <div class="flex sm:justify-normal justify-between sm:gap-8 grow">
+              <a href="#" class="hover:text-black">인기순</a>
+              <a href="#" class="hover:text-black">낮은가격순</a>
+              <a href="#" class="hover:text-black">높은가격순</a>
+              <a href="#" class="hover:text-black">최신순</a>
+            </div>
+          </div> {% endcomment %}
           {% comment %} {% if request.user.is_superuser %} {% endcomment %}
-            <a href="{% url 'sales:create' %}" class="hidden sm:block text-[14px] border rounded-lg p-1 px-2 text-center bg-white hover:bg-gray-100">상품 등록</a>
+          <div class="w-fit hidden sm:block text-[14px] border rounded-lg p-1 px-2 text-center bg-white hover:bg-gray-100 mb-5"><a href="{% url 'sales:create' %}">상품 등록</a></div>
           {% comment %} {% endif %} {% endcomment %}
         </div>
-        {% comment %} <div class="w-full rounded-lg bg-gray-100 flex gap-8 p-2 px-4 text-gray-500 text-[14px] mb-5">
-          <a href="{% url 'sales:sort' %}?sort_type=popularity" class="hover:text-black">인기순</a>
-          <a href="{% url 'sales:sort' %}?sort_type=price_low" class="hover:text-black">낮은가격순</a>
-          <a href="{% url 'sales:sort' %}?sort_type=price_high" class="hover:text-black">높은가격순</a>
-          <a href="{% url 'sales:sort' %}?sort_type=latest" class="hover:text-black">최신순</a>
-        </div> {% endcomment %}
 
         <div class="sm:hidden text-[14px] border rounded-lg p-1 px-2 text-center bg-white hover:bg-gray-100 w-fit my-3">
           <a href="{% url 'sales:create' %}" class="w-fit">상품 등록</a>

@@ -24,19 +24,6 @@
       </a> > {{ product.title }}
     </p>
 
-
-    {% comment %} 임시삭제버튼 {% endcomment %}
-    {% if request.user.is_superuser %}
-    <form action="{% url 'sales:delete' product.pk %}" nethod="POST">
-      {% csrf_token %}
-      <input type="submit" value="DELETE">
-    </form>
-    <p><a href="{% url 'sales:update' product.pk %}">수정</a></p>
-    {% endif %}
-
-
-
-
     <div class="flex gap-8 mb-16">
       <div class="w-full sm:w-10/12">
         <div class="flex sm:flex-row flex-col gap-10 justify-between mb-10">
@@ -81,6 +68,28 @@
                     <span class="material-symbols-outlined text-[16px] mt-[0.5px]">chat_bubble</span>
                     <span class="text-[14px]">{{ product.reviews.all|length }}</span>
                   </div>
+                  
+                  {% comment %} 수정 및 삭제 드롭다운 버튼 {% endcomment %}
+                  {% comment %} {% if request.user.is_superuser %} {% endcomment %}
+                  <div class="relative">
+                    <div class="dropdown text-end">
+                      <button type="button" class="rounded-md flex justify-center items-center bg-white hover:bg-gray-100" id="sale-menu-button" aria-expanded="false" aria-haspopup="true">
+                        <span class="material-symbols-outlined text-[20px] text-black font-bold">more_vert</span>
+                      </button>
+                    </div>
+                    
+                    {% comment %} 상품 수정 및 삭제 부분{% endcomment %}
+                    <div class="absolute right-0 z-10 mt-2 w-36 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="sale-menu-button" tabindex="-1" id="sale-dropdown" style="display: none;">
+                      <a class="block text-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" href="{% url 'sales:update' product.pk %}">
+                        수정하기
+                      </a>
+                      <form method="POST" action="{% url 'sales:delete' product.pk %}" class="block px-4 py-2 text-start text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" onclick="return confirm('상품을 삭제하시겠습니까?')">
+                        {% csrf_token %}
+                        <input type="submit" value="삭제하기" class="cursor-pointer">
+                      </form>
+                    </div>
+                  </div>
+                  {% comment %} {% endif %} {% endcomment %}
                 </div>
               </div>
             </div>

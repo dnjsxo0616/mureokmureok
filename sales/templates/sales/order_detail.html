@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% load humanize%}
-{% block head %}
+{% load static %}
 
+{% block head %}
+<title>주문정보</title>
 <style>
   .card {
     border-radius: 0.5rem;
@@ -11,30 +13,61 @@
 {% endblock head %}
 
 {% block content %}
-<div class="flex items-center justify-center min-h-screen">
-  <div class="max-w-3xl w-full px-4 py-6 ">
-    <div class="card bg-white h-full">
-      <div class="card-header bg-green-600 text-white py-2 px-4">
-        <h1 class="text-2xl">주문 정보</h1>
-      </div>
-      <div class="card-body px-4 py-4">
-        <p class="text-xl mb-3 border-b pb-4 font-bold"><span class="text-4xl">주문상태:</span>
-          {% if order.payment_status %}
-            <span class="text-3xl text-[#1EB564]">배송 시작!!</span>
-          {% else %}
-          <span class="text-3xl text-[#1EB564]">배송 준비중</span>
-          {% endif %}
-        </p>
-        <p class="text-xl mb-3"><span class="font-bold">주문번호:</span> {{ order.order_number }}</p>
-        <p class="text-xl mb-3"><span class="font-bold">주문일시:</span> {{ order.order_date }}</p>
-        <p class="text-xl mb-3"><span class="font-bold">주문자:</span> {{ order.user }}</p>
-        <p class="text-xl mb-3"><span class="font-bold">상품명:</span> {{ order.product_name }}</p>
-        <p class="text-xl mb-3"><span class="font-bold">수량:</span> {{ order.quantity }}개</p>
-        <p class="text-xl mb-3"><span class="font-bold">금액:</span> {{ order.price|intcomma}}원</p>
-        <p class="text-xl mb-3"><span class="font-bold">주소:</span> {{ order.delivery_address }}</p>
-        <a href="{% url 'home' %}" class="mt-4 block text-center bg-white border border-[#1EB564] text-[#1EB564] rounded-md px-4 py-2 hover:bg-[#1EB564] hover:text-white">메인화면</a>
+<main>
+  <div class="sm:hidden h-14 px-2 flex items-center">
+    <div class="flex flex-shrink-0 items-center gap-4">
+        <img class="h-8 w-auto" src="{% static 'img/logo.svg' %}" alt="Your Company">
+        <p class="text-xl h-8 w-auto"><b>그린샵</b></p>
+    </div>
+  </div>
+  <div class="flex items-center justify-center min-h-[530px] sm:min-h-[700px]">
+    <div class="max-w-3xl w-full px-4 py-6 ">
+      <div class="card bg-white h-full">
+        <div class="card-header rounded-t-xl bg-green-600 text-white py-2 px-4">
+          <h1 class="text-2xl">주문 정보</h1>
+        </div>
+        <div class="card-body rounded-b-xl px-4 py-4">
+          <p class="flex items-center gap-5 text-xl mb-3 border-b pb-4 font-bold"><span class="text-[25px]">주문상태</span>
+            {% if order.payment_status %}
+              <span class="text-[20px] text-[#1EB564]">배송 시작!!</span>
+            {% else %}
+            <span class="text-[20px] text-[#1EB564]">배송 준비중</span>
+            {% endif %}
+          </p>
+          <div class="w-full flex flex-col gap-3">
+            <div class="flex">
+              <p class="font-bold w-3/12 sm:w-2/12">주문번호</p>
+              <p class="w-9/12 sm:w-10/12">{{ order.order_number }}</p>
+            </div>
+            <div class="flex">
+              <p class="font-bold w-3/12 sm:w-2/12">주문일시</p>
+              <p class="w-9/12 sm:w-10/12">{{ order.order_date }}</p>
+            </div>
+            <div class="flex">
+              <p class="font-bold w-3/12 sm:w-2/12">주문자</p>
+              <p class="w-9/12 sm:w-10/12">{{ order.user }}</p>
+            </div>
+            <div class="flex">
+              <p class="font-bold w-3/12 sm:w-2/12">상품명</p>
+              <p class="w-9/12 sm:w-10/12">{{ order.product_name }}</p>
+            </div>
+            <div class="flex">
+              <p class="font-bold w-3/12 sm:w-2/12">수량</p>
+              <p class="w-9/12 sm:w-10/12">{{ order.quantity }}개</p>
+            </div>
+            <div class="flex">
+              <p class="font-bold w-3/12 sm:w-2/12">금액</p>
+              <p class="w-9/12 sm:w-10/12">{{ order.price|intcomma}}원</p>
+            </div>
+            <div class="flex">
+              <p class="font-bold w-3/12 sm:w-2/12">주소</p>
+              <p class="w-9/12 sm:w-10/12">{{ order.delivery_address }}</p>
+            </div>
+          </div>
+          <a href="{% url 'home' %}" class="mt-4 block text-center bg-white border border-[#1EB564] text-[#1EB564] rounded-md px-4 py-2 hover:bg-[#1EB564] hover:text-white">메인화면</a>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</main>
 {% endblock content %}

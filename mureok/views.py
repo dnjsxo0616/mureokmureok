@@ -12,6 +12,7 @@ from django.db.models import Count
 from sales.models import Product
 from managements.models import Management
 
+
 def main(request):
     form = CustomAuthenticationForm
     context = {

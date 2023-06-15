@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% load humanize %}
 {% block head %}
   <!-- jQuery -->
@@ -47,56 +49,64 @@
 
 
 {% block content %}
+<div class="sm:hidden h-14 px-2 flex items-center">
+  <div class="flex flex-shrink-0 items-center gap-4">
+      <img class="h-8 w-auto" src="{% static 'img/logo.svg' %}" alt="Your Company">
+      <p class="text-xl h-8 w-auto"><b>그린샵</b></p>
+  </div>
+</div>
 
 <main class="min-h-screen">
-  <div class="font-bold text-[45px] text-center border-b pb-3 mb-5 mt-5">주문/결제</div>
+  <div class="font-bold text-[25px] sm:text-[30px] text-center border-b pb-3 mb-5 mt-5">주문/결제</div>
 
-  <div class="max-w-md mx-auto">
-    <div class="font-bold text-2xl text-left leading-relaxed">구매자 정보</div>
-    <table class="w-full table-auto">
+  <div class="max-w-md sm:mx-auto mx-3">
+    <div class="font-bold text-[18px] sm:text-2xl text-left leading-relaxed">구매자 정보</div>
+    <table class="w-full table-auto mt-5">
       <tr>
-        <td class="border px-4 py-2">이름</td>
-        <td class="border px-4 py-2">{{ request.user }}</td>
+        <td class="border px-4 py-2 text-[14px] sm:text-[16px]">이름</td>
+        <td class="border px-4 py-2 text-[14px] sm:text-[16px]">{{ request.user }}</td>
       </tr>
       <tr>
-        <td class="border px-4 py-2">이메일</td>
-        <td class="border px-4 py-2">{{request.user.email }}</td>
+        <td class="border px-4 py-2 text-[14px] sm:text-[16px]">이메일</td>
+        <td class="border px-4 py-2 text-[14px] sm:text-[16px]">{{request.user.email }}</td>
       </tr>
       <tr>
-        <td class="border px-4 py-2">배송 주소</td>
-        <td class="border px-4 py-2">{{ order.delivery_address }}</td>
-      </tr>
-    </table>
-  </div>
-  
-  <div class="max-w-md mx-auto">
-    <div class="font-bold text-2xl text-left leading-relaxed mt-8">배송 물품</div>
-    <table class="w-full table-auto">
-      <tr>
-        <td class="border px-4 py-2">상품명</td>
-        <td class="border px-4 py-2">{{ order.product_name }}</td>
-      </tr>
-      <tr>
-        <td class="border px-4 py-2">수량</td>
-        <td class="border px-4 py-2">{{ order.quantity }}</td>
+        <td class="border px-4 py-2 text-[14px] sm:text-[16px]">배송 주소</td>
+        <td class="border px-4 py-2 text-[14px] sm:text-[16px]">{{ order.delivery_address }}</td>
       </tr>
     </table>
   </div>
   
-  <div class="max-w-md mx-auto">
-    <div class="font-bold text-2xl text-left leading-relaxed mt-8">결제 정보</div>
-    <table class="w-full table-auto">
+  <div class="max-w-md sm:mx-auto mx-3">
+    <div class="font-bold text-[18px] sm:text-2xl text-left leading-relaxed mt-8">배송 물품</div>
+    <table class="w-full table-auto mt-5">
       <tr>
-        <td class="border px-4 py-2">금액</td>
-        <td class="border px-4 py-2">{{ order.price|intcomma }}</td>
+        <td class="border px-4 py-2 text-[14px] sm:text-[16px]">상품명</td>
+        <td class="border px-4 py-2 text-[14px] sm:text-[16px]">{{ order.product_name }}</td>
       </tr>
       <tr>
-        <td class="border px-4 py-2">할인쿠폰</td>
-        <td class="border px-4 py-2">0원 <span class="text-sm text-gray-400">적용 가능한 할인 쿠폰이 없습니다.</span></td> 
+        <td class="border px-4 py-2 text-[14px] sm:text-[16px]">수량</td>
+        <td class="border px-4 py-2 text-[14px] sm:text-[16px]">{{ order.quantity }}</td>
+      </tr>
+    </table>
+  </div>
+  
+  <div class="max-w-md sm:mx-auto mx-3">
+    <div class="font-bold text-[18px] sm:text-2xl text-left leading-relaxed mt-8">결제 정보</div>
+    <table class="w-full table-auto mt-5">
+      <tr>
+        <td class="border px-4 py-2 text-[14px] sm:text-[16px]">금액</td>
+        <td class="border px-4 py-2 text-[14px] sm:text-[16px]">{{ order.price|intcomma }}</td>
       </tr>
       <tr>
-        <td class="border px-4 py-2">배송비</td>
-        <td class="border px-4 py-2">0원</td>
+        <td class="border px-4 py-2 text-[14px] sm:text-[16px]">할인쿠폰</td>
+        <td class="border px-4 py-2 text-[14px] sm:text-[16px]">
+          <p>0원</p>
+          <p class="text-sm text-gray-400">적용 가능한 할인 쿠폰이 없습니다.</p></td> 
+      </tr>
+      <tr>
+        <td class="border px-4 py-2 text-[14px] sm:text-[16px]">배송비</td>
+        <td class="border px-4 py-2 text-[14px] sm:text-[16px]">0원</td>
       </tr>
     </table>
   </div>
@@ -104,7 +114,7 @@
   <div class="flex justify-center mt-8 mb-[50px]">
     <form method="post" action="{% url 'sales:delete_order' order.pk %}">
       {% csrf_token %}
-      <button type="submit" class="bg-white hover:bg-red-700 hover:text-white border border-red-500 text-red-500 font-bold rounded-md px-6 py-3 mx-2">주문 취소하기</button>
+      <button type="submit" class="bg-white hover:bg-red-700 hover:text-white border border-red-500 text-red-500 font-bold rounded-md px-6 py-3 mx-2">주문취소</button>
     </form>
     <button class="bg-white hover:bg-[#1EB564] hover:text-white border border-[#1EB564] text-[#1EB564] font-bold rounded-md px-6 py-3 mx-2" onclick="requestPay()">결제하기</button>
   </div>

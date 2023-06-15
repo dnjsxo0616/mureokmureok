@@ -74,7 +74,7 @@
       </form>
     </div>
     
-    <div class="hidden flex items-center justify-between gap-10 py-3 mb-5 sm:sticky sm:top-[65px] bg-white" id="content_qa">
+    <div class="hidden flex sm:flex-row flex-col sm:items-center sm:justify-between gap-10 py-3 mb-5 sm:sticky sm:top-[65px] bg-white" id="content_qa">
       <div class="flex items-center gap-10 pb-3">
         <a href="{% url 'communities:filter_communities' '전문가 Q&A' %}" class="text-gray-400 hover:text-black {% if '/전문가 Q&A/' in request.path %}btn_active{% endif %}">
           <li class="btn" onclick="changeTextColor(this)">전문가 Q&A</li>

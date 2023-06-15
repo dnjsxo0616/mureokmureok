@@ -13,7 +13,7 @@
 
 {% block content %}
 <main>
-    <div class="sm:hidden h-14 px-4 flex items-center">
+    <div class="sm:hidden h-14 px-2 flex items-center">
         <div class="flex flex-shrink-0 items-center gap-4">
             <img class="h-8 w-auto" src="{% static 'img/logo.svg' %}" alt="Your Company">
             <p class="text-xl h-8 w-auto"><b>무럭무럭</b></p>
@@ -140,13 +140,13 @@
                                     <img src="{{ plant.plant_images.first.image.url }}" alt="" class="w-full h-full object-cover">
                                 </div>
                                 <div class="flex flex-col gap-2 sm:flex-row items-center justify-between px-3">
-                                    <p class="text-[14px] sm:text-[18px] whitespace-nowrap overflow-hidden truncate w-24 sm:w-64 text-center sm:text-start"><b>{{ plant.title }}</b></p>
-                                    <a href="{% url 'plants:detail' plant.pk %}">
+                                    <p class="text-[14px] sm:text-[18px] whitespace-nowrap overflow-hidden truncate w-24 sm:w-64 text-center sm:text-start mt-5"><b>{{ plant.title }}</b></p>
+                                    {% comment %} <a href="{% url 'plants:detail' plant.pk %}">
                                         <div class="border rounded-md flex items-center justify-center items-center gap-1 p-1 px-2 hover:bg-gray-100">
                                             <span class="material-symbols-outlined text-[16px] mt-1">favorite</span>
                                             <p class="text-[12px]">{{ plant.like_users.count }}</p>
                                         </div>
-                                    </a>
+                                    </a> {% endcomment %}
                                 </div>
                             </a>
                         </div>
@@ -170,12 +170,12 @@
                         </a>
                     </div>
                 </div>
-            
-                {% for management in request.user.management_set.all %}
-                <a href="{% url 'managements:index' %}">
-                <div class="flex flex-col sm:items-start items-center gap-6">
+                
+                {% if request.user.management_set.all %}
+                <a href="{% url 'managements:index' %} request.user.management_set.all.last.pk">
+                    <div class="flex flex-col sm:items-start items-center gap-6">
                         <div class="border rounded-2xl overflow-hidden w-64 h-44 sm:w-[500px] sm:h-[300px]">
-                            <img src="{{ management.management_photo.url }}" alt="" class="w-full h-full object-cover">
+                            <img src="{{ request.user.management_set.all.last.management_photo.url }}" alt="" class="w-full h-full object-cover">
                         </div>
                         <div class="flex justify-between items-center px-5">
                             <div class="flex items-center gap-5">
@@ -186,13 +186,18 @@
                                         <img class="h-full w-full object-cover rounded-full border-[0.5px] border-[#1EB564]" src="{% static 'img/no_profile.jpg' %}" alt="">
                                     {% endif %}
                                 </div>
-                                <p class="text-[16px]"><b>{{ request.user.username }}님의 '{{ management.nickname }}'</b></p>
+                                <p class="text-[16px]"><b>{{ request.user.username }}님의 '{{ request.user.management_set.all.last.nickname }}'</b></p>
                             </div>
                         </div>
                     </div>
                 </a>
-                {% endfor %}
-                
+                {% else %}
+                <div class="flex flex-col sm:items-start items-center gap-6">
+                    <div class="border bg-white rounded-2xl overflow-hidden w-64 h-44 sm:w-[500px] sm:h-[300px] flex items-center justify-center">
+                        <img src="{% static 'img/식물실루엣.png' %}" alt="" class="h-full object-content">
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </div>
     </section>
@@ -243,14 +248,14 @@
                                     <p>{{ garden.content|striptags }}</p>
                                 </div>
                             </a>
-                            <div class="flex justify-end">
+                            {% comment %} <div class="flex justify-end">
                                 <a href="{% url 'gardens:detail' garden.pk %}">
                                     <div class="border rounded-md p-1 px-2 flex gap-2 w-fit hover:bg-gray-100">
                                         <span class="material-symbols-outlined">thumb_up</span>
                                         <p>{{ garden.like_users.count }}</p>
                                     </div>
                                 </a>
-                            </div>
+                            </div> {% endcomment %}
                         </div>
                         {% endfor %}
                     </div>
