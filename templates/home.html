@@ -171,27 +171,27 @@
                     </div>
                 </div>
             
-                {% for management in request.user.management_set.all %}
-                <a href="{% url 'managements:index' %}">
-                <div class="flex flex-col sm:items-start items-center gap-6">
-                        <div class="border rounded-2xl overflow-hidden w-64 h-44 sm:w-[500px] sm:h-[300px]">
-                            <img src="{{ management.management_photo.url }}" alt="" class="w-full h-full object-cover">
-                        </div>
-                        <div class="flex justify-between items-center px-5">
-                            <div class="flex items-center gap-5">
-                                <div class="h-8 w-8 rounded-full overflow-hidden">
-                                    {% if request.user.image %}
-                                        <img class="h-full w-full object-cover border-[0.5px] border-[#1EB564]" src="{{ request.user.image.url }}" alt="">
-                                    {% else %}
-                                        <img class="h-full w-full object-cover rounded-full border-[0.5px] border-[#1EB564]" src="{% static 'img/no_profile.jpg' %}" alt="">
-                                    {% endif %}
+                {% if latest_management %}
+                    <a href="{% url 'managements:index' %}">
+                        <div class="flex flex-col sm:items-start items-center gap-6">
+                            <div class="border rounded-2xl overflow-hidden w-64 h-44 sm:w-[500px] sm:h-[300px]">
+                                <img src="{{ latest_management.management_photo.url }}" alt="" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex justify-between items-center px-5">
+                                <div class="flex items-center gap-5">
+                                    <div class="h-8 w-8 rounded-full overflow-hidden">
+                                        {% if request.user.image %}
+                                            <img class="h-full w-full object-cover border-[0.5px] border-[#1EB564]" src="{{ request.user.image.url }}" alt="">
+                                        {% else %}
+                                            <img class="h-full w-full object-cover rounded-full border-[0.5px] border-[#1EB564]" src="{% static 'img/no_profile.jpg' %}" alt="">
+                                        {% endif %}
+                                    </div>
+                                    <p class="text-[16px]"><b>{{ request.user.username }}님의 '{{ latest_management.nickname }}'</b></p>
                                 </div>
-                                <p class="text-[16px]"><b>{{ request.user.username }}님의 '{{ management.nickname }}'</b></p>
                             </div>
                         </div>
-                    </div>
-                </a>
-                {% endfor %}
+                    </a>
+                {% endif %}
                 
             </div>
         </div>
