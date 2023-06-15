@@ -243,9 +243,9 @@
                   {% if entry.entrydate|date:"Y-m-d" == date|date:"Y-m-d" %}
                   <div class="hidden sm:inline-flex flex flex-wrap">
                     <div class="w-full sm:w-2/3 md:w-1/2">
-                        <div class="text-xs mt-1"><span class="material-symbols-outlined">water</span> {{ entry.watering }}</div>
+                        <div class="text-xs mt-1">W: {{ entry.watering }}</div>
                         <div class="text-xs mt-1">S: {{ entry.sunlight }}</div>
-                        <div class="text-xs mt-1"><span class="material-symbols-outlined">humidity_low</span> {{ entry.humidity|slice:"2:-2" }}</div>  
+                        <div class="text-xs mt-1">H: {{ entry.humidity|slice:"2:-2" }}</div>  
                         <div class="text-xs mt-1">T: {{ entry.temperature|slice:"2:-2" }}</div>
 
                       </div>
